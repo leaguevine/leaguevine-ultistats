@@ -15,6 +15,7 @@ It is very much in the early stages of development. Development will proceed in 
 8.  More browser compatibility using html and css techniques used by h5bp.com/mobile. Also add the bookmark bubble.
 
 Also in this directory you will be able to find some design documents, including
+
 *  Screen wireframes (preliminary version available)
 *  Model classes (available before v0.4 release)
 *  Controller classes (available before v0.4 release)
