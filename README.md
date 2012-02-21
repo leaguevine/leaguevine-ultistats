@@ -7,11 +7,16 @@ I am approaching version 0.1. There is not much here, but the major accomplishme
 The app looks terrible and performs terribly. It looks terrible because I have yet to write any CSS. 
 It performs terribly because every single tap communicates with the API. This should be a non-issue after v0.6 when the app will use local storage.
 
-To run the app,
+
+###Getting started locally.
+1.  Download this repo.
+2.  Download and install [node.js](http://nodejs.org/)
+3.  Open a terminal/console, change to the directory where you downloaded the repo
+4.  Run the app
 ```
 >node build server
 ```
-Then navigate your browser to http://localhost:8000
+5.  Then navigate your browser to http://localhost:8000
 The app will not work on any other URL:port unless I change the app's registration in the Leaguevine API.
 
 The first time you use the app it will bring you to the Leaguevine site to get a token.
