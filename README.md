@@ -58,8 +58,10 @@ There are several ways to handle clicks/taps in a Backbone.js app
 2.  HTML elements are themselves links and when the link is tapped or clicked
     1. the linked URL is navigated to by the browser. This is the same as following a bookmark (or a link shared between friends) OR
     2. the linked URL is intercepted, suppressed, and instead the relative URL is passed to router.navigate(href)
+
+Then, for 1.2, 2.1, and 2.2, a Router matches the URL to a function and the function performs some data manipulation and rendering.
     
 1.1 is not an option for pages we want to be bookmarkable because 1.1 never updates the address bar. 2.1 is absolutely necessary.  
-We could use 2.1 exclusively by making every touchable thing a hyperlinks but this is not performant because the browser would refresh the entire page for every tap.  
-Instead, to improve performance we will use 2.2 for navigation to any page that we want to be bookmarkable.  
+We could use 2.1 exclusively by making every touchable thing a hyperlink but this is not performant because the browser would refresh the entire page for every tap.  
+Instead, to improve performance we will use 2.2 for navigation to any page that we want to be bookmarkable. This has the advantage of allowing 2.1 to work for these pages.
 Finally, for interaction that should not be bookmarkable (e.g., entering stats), we will use 1.1
