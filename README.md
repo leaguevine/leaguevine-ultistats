@@ -12,11 +12,11 @@ It performs terribly because every single tap communicates with the API. This sh
 1.  Download this repo.
 2.  Download and install [node.js](http://nodejs.org/)
 3.  Open a terminal/console, change to the directory where you downloaded the repo
-4.  Run the app
+4.  
 ```
 >node build server
 ```
-5.  Then navigate your browser to http://localhost:8000
+5.  Navigate your browser to http://localhost:8000
 The app will not work on any other URL:port unless I change the app's registration in the Leaguevine API.
 
 The first time you use the app it will bring you to the Leaguevine site to get a token.
@@ -51,19 +51,15 @@ Finally, laying out views on the page is assisted by tbranyen's [Backbone.Layout
 
 ###Ultistats-specific notes
 There are several ways to handle clicks/taps in a Backbone.js app
-1.  HTML elements' .clicks are bound to a function AND
-  	a.  The function handles all data manipulation and rendering but never calls router.navigate(href)
-  	b.  The function handles some or no data manipulation and rendering then calls router.navigate(href).
+
+1. HTML elements' .clicks are bound to a function AND
+    1. the function handles all data manipulation and rendering but never calls router.navigate(href) OR
+    2. the function handles some or no data manipulation and rendering then calls router.navigate(href).
 2.  HTML elements are themselves links and when the link is tapped or clicked
-  	a.  The linked URL is navigated to by the browser. This is the same as following a bookmark (or a link shared between friends)
-  	b.  The linked URL is intercepted, suppressed, and instead the relative URL is passed to router.navigate(href)
-  	
-Since we want our pages to be bookmarkable, 1a is not an option because 1a never updates the address bar.
-For 1b, 2a, and 2b, when the address bar URL is updated either by direct navigation (2a) or by router.navigate(href), the URL fragment is matched to a route (by a Router) and the function associated with the match is called.
-  
-Since we want to be able to follow bookmarks, we must at a minimum have routes that match any URLs we want to navigate to by bookmarks. These routes reside in each module's router.
-To further complicate things, I can't seem to match routes such as lvus.com/teams/123 when navigating directly because, even though the Backbone instance still captures the URL request, it looks for all of the resources in lvus.com/teams/ instead of lvus.com/ . To avoid this problem I will turn off pushState.
-  
-Since we have route matching anyway, to minimize redundancy and to minimize page refreshes we will implement the following strategy:
-1  Whenever we want the result of tap/click to render a page that is bookmarkable, let the tap/click be on a <a href="relative_URL">something</a> element. Navigating to this link will be intercepted, suppressed, and then the app will call router.navigate(href). Everything required to render the requested page will be performed by the matching route, but hopefully we can spare some fetching and rendering of things that are already present.
-2  Whenever we want the result of a tap/click to not be bookmarkable (e.g. entering stats, sorting a table), then that element's .click will be bound to a function that does some data manipulation/rendering but does not call router.navigate(href)
+    1. the linked URL is navigated to by the browser. This is the same as following a bookmark (or a link shared between friends) OR
+    2. the linked URL is intercepted, suppressed, and instead the relative URL is passed to router.navigate(href)
+    
+1.1 is not an option for pages we want to be bookmarkable because 1.1 never updates the address bar. 2.1 is absolutely necessary.  
+We could use 2.1 exclusively by making every touchable thing a hyperlinks but this is not performant because the browser would refresh the entire page for every tap.  
+Instead, to improve performance we will use 2.2 for navigation to any page that we want to be bookmarkable.  
+Finally, for interaction that should not be bookmarkable (e.g., entering stats), we will use 1.1
