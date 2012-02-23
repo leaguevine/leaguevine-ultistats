@@ -106,7 +106,8 @@ function(namespace, Backbone, Player) {
 			if (!app.teams.get(teamId)) {app.teams.add( [{id: parseInt(teamId)}] );}//Insert this team into the collection.
 			team = app.teams.get(teamId);
 			team.fetch();
-			team.players = new Player.Collection(); //TODO: How can we get the Player module to get team-players instead of all players?
+			team.players = new Player.Collection([],{team: team});
+			//_.extend(team.players, {team : team});
 			team.players.fetch();
 			
 			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
@@ -150,9 +151,9 @@ function(namespace, Backbone, Player) {
 		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul.
 		serialize: function() {return this.model.toJSON();} //render looks for this to manipulate model before passing to the template.
 	});
-	Team.Views.List = Backbone.LayoutManager.View.extend({
+	Team.Views.List = Backbone.View.extend({
 		template: "teams/list",
-		className: "teams-wrapper",
+		className: "teams-wrapper", //This seems to create a div no matter what we do so it doesn't really matter.
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
 			this.collection.each(function(team) {//for each team in the collection.
@@ -168,7 +169,7 @@ function(namespace, Backbone, Player) {
 			}, this);
 		},
 	});
-	Team.Views.Detail = Backbone.LayoutManager.View.extend({  	
+	Team.Views.Detail = Backbone.View.extend({  	
 		template: "teams/detail",
 		//We were passed a model on creation, so we have this.model
 		render: function(layout) {

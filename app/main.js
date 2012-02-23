@@ -9,7 +9,8 @@ require(
     "jquery",
     "use!backbone",
     // Modules
-    "modules/team" //Requiring Team includes its dependents (e.g., Player)
+    "modules/team", //Requiring Team includes its dependents (e.g., Player)
+	"modules/tournament"
 	],
 
 /*
@@ -19,7 +20,7 @@ require(
  * but in this case we are defining the jQuery ready function which will execute
  * once everything has finished loading.
  */
-function(namespace, jQuery, Backbone, Team, Player) {
+function(namespace, jQuery, Backbone, Team, Tournament) {
 
 	var app = namespace.app; //Shorthanded app instance.
 	app.auth = {//Set the defaults for the auth object.

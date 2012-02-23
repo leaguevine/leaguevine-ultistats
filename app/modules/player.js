@@ -54,8 +54,12 @@ function(namespace, Backbone) {
 	Player.Collection = Backbone.Collection.extend({
 		model: Player.Model,
 		url: function() {// It is necessary to define the URL so that we can get the data from the API using .fetch
-			return app.auth.api_root + "players/?access_token=" + app.auth.d_token();
-			//TODO: If the collection has a team attached, then get team-players instead.
+			if (this.team) {//TODO: If the collection has a team attached, then get team-players instead.
+				return app.auth.api_root + "team_players/?team_ids=%5B" + this.team.id + "%5D&access_token=" + app.auth.d_token();
+			}
+			else {
+				return app.auth.api_root + "players/?access_token=" + app.auth.d_token(); //For getting players when there is no team.
+			}
 		},
 		parse: function(resp, xhr) {// Override the default parse so we can get at the list of players from the API response
 		//The Leaguevine API gives resp = {meta: Object, objects: [90 objects]}; We don't want meta.
@@ -65,16 +69,16 @@ function(namespace, Backbone) {
 		  }
 		  return this.models;//If we didn't get valid data, return whatever we have for models
 		},
-		/*initialize: function(models, options) {//initialize is an empty function by default.
+		initialize: function(models, options) {//initialize is an empty function by default.
 			//That's surprising because the docs suggest it should be possible to pass it models and options. 
 			//Here we implement initialize to accept models and options.
 		  if (models) {
 			this.models = models;
 		  }
 		  if (options) {
-			this.season = options.season;
+			this.team = options.team;
 		  }
-		},*/
+		},
 		comparator: function(player) {// Define how items in the collection will be sorted.
 		  return player.get("last_name").toLowerCase();
 		}
@@ -92,10 +96,8 @@ function(namespace, Backbone) {
 		},
 		listPlayers: function () {//Route for all players.
 			// Prepare the data.
-			// TODO: Eventually we will use a local storage so fetching will get from a local db
-			// instead of an API. For now, get from the API every time (very slow).
 			app.players = new Player.Collection();
-			app.players.fetch(); //Fetch automatically pulls the active season from the app object.
+			app.players.fetch();
 			
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
