@@ -5,12 +5,13 @@ define([
   "use!backbone",
 
   // Modules
+  "modules/navigation",
   "modules/game",
 
   // Plugins
   "use!plugins/backbone.layoutmanager"
 ],
-function(namespace, Backbone, Game) {
+function(namespace, Backbone, Navigation, Game) {
 	var app = namespace.app;
 	var Tournament = namespace.module();
 	
@@ -68,7 +69,7 @@ function(namespace, Backbone, Game) {
 			
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
-			myLayout.view(".navbar", new Tournament.Views.Nav ());//TODO: Make the navbar more dynamic.
+			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newtournament", name: "+"}));
 			myLayout.view(".content", new Tournament.Views.List ({collection: app.tournaments}));//pass the List view a collection of (fetched) tournaments.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
@@ -82,9 +83,9 @@ function(namespace, Backbone, Game) {
 			//TODO: Get brackets
 			
 			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
-			myLayout.view(".navbar", new Tournament.Views.Nav ());
+			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#edittournament/"+tournamentId, name: "Edit"}));
 			myLayout.view(".detail", new Tournament.Views.Detail( {model: tournament}));//Pass an options object to the view containing our tournament.
-			//Use a dynamic view that changes which games it shows based on tapping a button.
+			//Use a dynamic view that changes between pools/brackets/info
 			//myLayout.view(".list_children", new Game.Views.List({ collection: tournament.games }))
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		}
@@ -115,14 +116,13 @@ function(namespace, Backbone, Game) {
 			this.collection.bind("reset", function() {
 				this.render();
 			}, this);
-		},
+		}
 	});
 	Tournament.Views.Detail = Backbone.LayoutManager.View.extend({  	
 		template: "tournaments/detail",
 		//We were passed a model on creation, so we have this.model
 		render: function(layout) {
-			// The model has not yet been filled by the fetch process if it was fetched just now
-			// We need to update the view once the data have changed.
+			//this.model.toJSON().info is escaped HTML so we need to do something a little fancy to get the info in there.
 			return layout(this).render(this.model.toJSON());
 		},
 		initialize: function() {

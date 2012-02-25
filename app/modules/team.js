@@ -5,6 +5,7 @@ define([
   "use!backbone",
 
   // Modules
+  "modules/navigation",
   "modules/player",
 
   // Plugins
@@ -12,7 +13,7 @@ define([
 ],
 //Return the team module as an object or function.
 //We return it as an object, see the bottom of this callback.
-function(namespace, Backbone, Player) {
+function(namespace, Backbone, Navigation, Player) {
 	/******************
 	* MODULE TEMPLATE *
 	*******************/
@@ -96,7 +97,7 @@ function(namespace, Backbone, Player) {
 			
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
-			myLayout.view(".navbar", new Team.Views.Nav ());//TODO: Make the navbar more dynamic.
+			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newteam", name: "+"}));
 			myLayout.view(".content", new Team.Views.List ({collection: app.teams}));//pass the List view a collection of (fetched) teams.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
@@ -111,7 +112,7 @@ function(namespace, Backbone, Player) {
 			team.players.fetch();
 			
 			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
-			myLayout.view(".navbar", new Team.Views.Nav ());
+			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#editteam/"+teamId, name: "Edit"}));
 			myLayout.view(".detail", new Team.Views.Detail( {model: team}));//Pass an options object to the view containing our team.
 			myLayout.view(".list_children", new Player.Views.List({ collection: team.players }))
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
@@ -142,10 +143,7 @@ function(namespace, Backbone, Player) {
 		clickAction: function(ev){ //some click handling logic},//Handle the click.
 	})
  */
-
-	Team.Views.Nav = Backbone.View.extend({//TODO: More!
-		template: "navbar/navbar"
-	});
+	
 	Team.Views.Item = Backbone.View.extend({
 		template: "teams/item",
 		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul.
