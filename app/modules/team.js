@@ -32,14 +32,17 @@ function(namespace, Backbone, Navigation, Player) {
 	//
 	Team.Model = Backbone.Model.extend({// If you want to overshadow some model methods or default values then do so here.
 		defaults: {// Include defaults for any attribute that will be rendered.
-			name: '',
-			leaguevine_url: ''
+			name: "Team Name",
+			leaguevine_url: "",
+			info: ""
 		},
-		url: function() {//Our model URL does not conform to the default Collection.url + /this.id so we must define it here. 
-			return app.auth.api_root + "teams/" + this.id + "/?access_token=" + app.auth.d_token();
+		url: function() {//Our model URL does not conform to the default Collection.url + /this.id so we must define it here.
+			if (this.id) {return app.auth.api_root + "teams/" + this.id + "/?access_token=" + app.auth.d_token();}
+			else {return app.auth.api_root + "teams/?access_token=" + app.auth.d_token();} //For a new team post request. 
+			
 		}/*,
-		parse: function(resp, xhr) {//Here for debugging. Below is default behavior.
-			return resp;
+		parse: function(resp, xhr) {//Here for debugging.
+			return resp; //Default behaviour.
 		}*//*,
 		validate: function(attrs) {//Here for debugging. Lets us check the attributes.
 			//Check the attrs.
@@ -86,7 +89,9 @@ function(namespace, Backbone, Navigation, Player) {
 		// Faux-URLs come from Backbone.history.navigate or hashes in a URL from a followed link.
 		routes : {
 			"teams": "listTeams", //List all teams.
-			"teams/:teamId": "showTeam" //Show detail for one team.
+			"teams/:teamId": "showTeam", //Show detail for one team.
+			"newteam": "editTeam",
+			"editteam/:teamId": "editTeam"
 		},
 		listTeams: function () {//Route for all teams.
 			// Prepare the data.
@@ -97,7 +102,7 @@ function(namespace, Backbone, Navigation, Player) {
 			
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
-			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newteam", name: "+"}));
+			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newteam", name: "New"}));
 			myLayout.view(".content", new Team.Views.List ({collection: app.teams}));//pass the List view a collection of (fetched) teams.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
@@ -116,6 +121,23 @@ function(namespace, Backbone, Navigation, Player) {
 			myLayout.view(".detail", new Team.Views.Detail( {model: team}));//Pass an options object to the view containing our team.
 			myLayout.view(".list_children", new Player.Views.List({ collection: team.players }))
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+		},
+		editTeam: function (teamId) {			
+			var myLayout = app.router.useLayout("nav_content");
+			if (!app.teams) {app.teams = new Team.Collection();}//Will create an empty collection.
+			//If we have teamId, then we are editing. If not, then we are creating a new team.
+			if (teamId) {
+				if (!app.teams.get(teamId)) {app.teams.add( [{id: parseInt(teamId)}] );}//Insert this team into the collection.
+				team = app.teams.get(teamId);
+				team.fetch();
+				myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#teams/"+teamId, name: "Cancel"}));
+			}
+			else {
+				team = new Team.Model({season_id: app.auth.season});
+				myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#teams", name: "Cancel"}));
+			}
+			myLayout.view(".content", new Team.Views.Edit({model: team}));
+			myLayout.render(function(el) {$("#main").html(el);});
 		}
 	});
 	Team.router = new Team.Router();// INITIALIZE ROUTER
@@ -125,13 +147,14 @@ function(namespace, Backbone, Navigation, Player) {
 	//
 /*
  * With Backbone.LayoutManager, a View's default render: function(layout){return layout(this).render();}
- * We should override render for anything more complex (like iterating a collection).
+ * We should override render for anything more complex like variable fields in the view or iterating a collection.
+ * If the View's template expects any JSON, then a JSON object must be passed as a parameter to .render()/
  * The following is an example view with some defaults explained.
 	Team.Views.AView = Backbone.View.extend({
 		template: "path/to/template",//Must specify the path to the template.
 		className: "some-class-name",//Each top-level View in our layout is always wrapped in a div. We can give it a class.
 		tagName: "div",//By default inserts the contents of our templates into a div. Can use another type.
-		serialize: function() {return this.model.toJSON();},//looked for by render()
+		serialize: function() {return this.model.toJSON();},//looked for by render() if no argument is passed.
 		render: function(layout) {return layout(this).render();},//Default render method.
 		//render: function(layout) {return layout(this).render(this.model.toJSON());},//Combines the previous two lines, i.e., doesn't need serialize.
 		initialize: function() { //It is necessary to bind a model's change to re-render the view because the model is fetched asynchronously.
@@ -165,22 +188,61 @@ function(namespace, Backbone, Navigation, Player) {
 			this.collection.bind("reset", function() {
 				this.render();
 			}, this);
-		},
+		}
 	});
 	Team.Views.Detail = Backbone.View.extend({  	
 		template: "teams/detail",
 		//We were passed a model on creation, so we have this.model
-		render: function(layout) {
-			// The model has not yet been filled by the fetch process if it was fetched just now
-			// We need to update the view once the data have changed.
+		render: function(layout) {//Do I need this here?
 			return layout(this).render(this.model.toJSON());
+			// The model might not yet be hydrated by the asynchronous fetch process
 		},
 		initialize: function() {
+			// We might need to re-render after asynchronous fetch is complete.
     		this.model.bind("change", function() {
       			this.render();
     		}, this);
   		}
 	});
+	Team.Views.Edit = Backbone.View.extend({
+		template: "teams/edit",
+		render: function(layout) {return layout(this).render(this.model.toJSON());},
+		initialize: function() {
+			// We might need to re-render after asynchronous fetch is complete.
+    		this.model.bind("change", function() {
+      			this.render();
+    		}, this);
+  		},
+  		events: {
+			"click .save": "saveModel",
+			"click .delete": "deleteModel"
+		},
+		saveModel: function(ev){
+			app.teams.add(this.model);
+			this.model.save(
+				{
+					name:$("#name").val(),
+					info:$("#info").val()
+				},
+				{
+					headers: { "Authorization": "bearer " + app.auth.d_token() }
+					//error: function(){...} }//TODO: Add an error callback if not authorized.
+				}
+			);
+			Backbone.history.navigate('teams', true);
+			
+		},
+		deleteModel: function(ev) {
+			this.model.destroy(
+				{
+					headers: { "Authorization": "bearer " + app.auth.d_token() },
+					//error: function(model,respose){...}//TODO: Add an error callback to handle unauthorized delete requests.
+				}
+			);
+			//TODO: .destroy is supposed to bubble up through the collection but it doesn't seem to be in this case.
+			Backbone.history.navigate('teams', true);
+		}
+	})
 	
 	return Team;// Required, return the module for AMD compliance
 });
