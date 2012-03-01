@@ -24,7 +24,7 @@ function(namespace, Backbone, Navigation, Game) {
 			info: ''
 		},
 		url: function() {
-			return app.auth.api_root + "tournaments/" + this.id + "/?access_token=" + app.auth.d_token();
+			return app.api.root + "tournaments/" + this.id + "/?access_token=" + app.api.d_token();
 		}
 	});
 	
@@ -32,7 +32,7 @@ function(namespace, Backbone, Navigation, Game) {
 		model: Tournament.Model,
 		url: function() {// It is necessary to define the URL so that we can get the data from the API using .fetch
 			//TODO: Eventually data will be stored locally, eventually Leaguevine will have too much data to get all, so we will have to use smarter limits and offsets.
-			return app.auth.api_root + "tournaments/?season_id=" + app.auth.season + "&limit=200&access_token=" + app.auth.d_token();
+			return app.api.root + "tournaments/?season_id=" + app.api.season_id + "&limit=200&access_token=" + app.api.d_token();
 		},
 		parse: function(resp, xhr) {// Override the default parse so we can get at the list of tournaments from the API response
 		  if (resp.objects) {

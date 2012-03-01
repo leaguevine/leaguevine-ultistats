@@ -22,7 +22,7 @@ function(namespace, Backbone) {
 			leaguevine_url: ""
 		},
 		url: function() {
-			return app.auth.api_root + "games/" + this.id + "/?access_token=" + app.auth.d_token(); 
+			return app.api.root + "games/" + this.id + "/?access_token=" + app.api.d_token(); 
 		}
 	});
 	
@@ -30,10 +30,10 @@ function(namespace, Backbone) {
 		model: Game.Model,
 		url: function() {
 			if (this.tournament) {
-				return app.auth.api_root + "tournament_games/?tournament_ids=%5B" + this.tournament.id + "%5D&access_token=" + app.auth.d_token();
+				return app.api.root + "tournament_games/?tournament_ids=%5B" + this.tournament.id + "%5D&access_token=" + app.api.d_token();
 			}
 			else {
-				return app.auth.api_root + "games/?access_token=" + app.auth.d_token();
+				return app.api.root + "games/?access_token=" + app.api.d_token();
 			}
 		},
 		parse: function(resp, xhr) {

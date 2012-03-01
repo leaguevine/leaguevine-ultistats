@@ -225,8 +225,6 @@ td { vertical-align: top; }
 
   padding: 10px;
 
-  font-color: #333;
-
   float: left;
 
   overflow-y: auto;
@@ -255,8 +253,6 @@ td { vertical-align: top; }
 
 #main .players {
   padding: 10px;
-
-  font-color: #333;
 
   width: 625px;
 

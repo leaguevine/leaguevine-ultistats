@@ -1,15 +1,8 @@
-/*
- * Based on tbranyen's layout manager example.
- * https://github.com/tbranyen/layoutmanager-example
- * Which is itself based on his amd branch of backbone-boilerplate
- * https://github.com/tbranyen/backbone-boilerplate/tree/amd
- */
-
-// Set the require.js configuration
+// Set the require.js configuration for your application.
 require.config({
+  // Initialize the application with the main application file
+  deps: ["main"],
 
-  deps: ["main"],// Initialize the application with the main application file
-  
   paths: {
     // JavaScript folders
     libs: "../assets/js/libs",
@@ -20,11 +13,11 @@ require.config({
     underscore: "../assets/js/libs/underscore",
     backbone: "../assets/js/libs/backbone",
 
-    // Plugins
+    // Shim Plugin
     use: "../assets/js/plugins/use"
   },
 
-  use: {//a plugin needed to help backbone find underscore and jquery in order.
+  use: {
     backbone: {
       deps: ["use!underscore", "jquery"],
       attach: "Backbone"
@@ -43,4 +36,3 @@ require.config({
     }
   }
 });
-// End require.js configuration

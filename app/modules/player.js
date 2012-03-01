@@ -37,7 +37,7 @@ function(namespace, Backbone) {
 			leaguevine_url: ""
 		},
 		url: function() {//Our model URL does not conform to the default Collection.url + /this.id so we must define it here.
-			return app.auth.api_root + "players/" + this.id + "/?access_token=" + app.auth.d_token(); 
+			return app.api.root + "players/" + this.id + "/?access_token=" + app.api.d_token(); 
 		}/*,
 		parse: function(resp, xhr) {//Here for debugging. Below is default behavior.
 			return resp;
@@ -55,10 +55,10 @@ function(namespace, Backbone) {
 		model: Player.Model,
 		url: function() {// It is necessary to define the URL so that we can get the data from the API using .fetch
 			if (this.team) {//TODO: If the collection has a team attached, then get team-players instead.
-				return app.auth.api_root + "team_players/?team_ids=%5B" + this.team.id + "%5D&access_token=" + app.auth.d_token();
+				return app.api.root + "team_players/?team_ids=%5B" + this.team.id + "%5D&access_token=" + app.api.d_token();
 			}
 			else {
-				return app.auth.api_root + "players/?access_token=" + app.auth.d_token(); //For getting players when there is no team.
+				return app.api.root + "players/?access_token=" + app.api.d_token(); //For getting players when there is no team.
 			}
 		},
 		parse: function(resp, xhr) {// Override the default parse so we can get at the list of players from the API response

@@ -37,8 +37,8 @@ function(namespace, Backbone, Navigation, Player) {
 			info: ""
 		},
 		url: function() {//Our model URL does not conform to the default Collection.url + /this.id so we must define it here.
-			if (this.id) {return app.auth.api_root + "teams/" + this.id + "/?access_token=" + app.auth.d_token();}
-			else {return app.auth.api_root + "teams/?access_token=" + app.auth.d_token();} //For a new team post request. 
+			if (this.id) {return app.api.root + "teams/" + this.id + "/?access_token=" + app.api.d_token();}
+			else {return app.api.root + "teams/?access_token=" + app.api.d_token();} //For a new team post request. 
 			
 		}/*,
 		parse: function(resp, xhr) {//Here for debugging.
@@ -56,7 +56,7 @@ function(namespace, Backbone, Navigation, Player) {
 	Team.Collection = Backbone.Collection.extend({
 		model: Team.Model,
 		url: function() {// It is necessary to define the URL so that we can get the data from the API using .fetch
-			return app.auth.api_root + "teams/?season_id=" + app.auth.season + "&limit=200&access_token=" + app.auth.d_token();
+			return app.api.root + "teams/?season_id=" + app.api.season_id + "&limit=200&access_token=" + app.api.d_token();
 		},
 		parse: function(resp, xhr) {// Override the default parse so we can get at the list of teams from the API response
 		//The Leaguevine API gives resp = {meta: Object, objects: [90 objects]}; We don't want meta.
@@ -133,7 +133,7 @@ function(namespace, Backbone, Navigation, Player) {
 				myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#teams/"+teamId, name: "Cancel"}));
 			}
 			else {
-				team = new Team.Model({season_id: app.auth.season});
+				team = new Team.Model({season_id: app.api.season_id});
 				myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#teams", name: "Cancel"}));
 			}
 			myLayout.view(".content", new Team.Views.Edit({model: team}));
@@ -225,7 +225,7 @@ function(namespace, Backbone, Navigation, Player) {
 					info:$("#info").val()
 				},
 				{
-					headers: { "Authorization": "bearer " + app.auth.d_token() }
+					headers: { "Authorization": "bearer " + app.api.d_token() }
 					//error: function(){...} }//TODO: Add an error callback if not authorized.
 				}
 			);
@@ -235,7 +235,7 @@ function(namespace, Backbone, Navigation, Player) {
 		deleteModel: function(ev) {
 			this.model.destroy(
 				{
-					headers: { "Authorization": "bearer " + app.auth.d_token() },
+					headers: { "Authorization": "bearer " + app.api.d_token() },
 					//error: function(model,respose){...}//TODO: Add an error callback to handle unauthorized delete requests.
 				}
 			);
