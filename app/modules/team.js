@@ -7,26 +7,16 @@ define([
   // Modules
   "modules/navigation",
   "modules/player",
+  "modules/game",
 
   // Plugins
   "use!plugins/backbone.layoutmanager"
 ],
 //Return the team module as an object or function.
 //We return it as an object, see the bottom of this callback.
-function(namespace, Backbone, Navigation, Player) {
-	/******************
-	* MODULE TEMPLATE *
-	*******************/
-	// var app = namespace.app;
-	// var Team = namespace.module(); //Team is a custom module object containing a nested Views object.
-	// Team.Model = Backbone.Model.extend({ /* ... */ });
-	// Team.Collection = Backbone.Collection.extend({ /* ... */ });
-	// Team.Router = Backbone.Router.extend({ /* ... */ });
-	// Team.router = new Team.Router(); //initialize this router.
-	// Team.Views.Something = Backbone.View.extend({ /* ... */ }) or Backbone.LayoutManager.View.extend
+function(namespace, Backbone, Navigation, Player, Game) {
 	var app = namespace.app;
 	var Team = namespace.module();
-	
 	//
 	// MODEL
 	//
@@ -113,13 +103,17 @@ function(namespace, Backbone, Navigation, Player) {
 			team = app.teams.get(teamId);
 			team.fetch();
 			team.players = new Player.Collection([],{team: team});
-			//_.extend(team.players, {team : team});
+			//_.extend(team.players, {team : team}); //? Can't remember what I was planning here.
 			team.players.fetch();
+			team.games = new Game.Collection([],{team: team});
+			team.games.fetch();
 			
 			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
-			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#editteam/"+teamId, name: "Edit"}));
-			myLayout.view(".detail", new Team.Views.Detail( {model: team}));//Pass an options object to the view containing our team.
-			myLayout.view(".list_children", new Player.Views.List({ collection: team.players }))
+			myLayout.setViews({
+				".navbar": new Navigation.Views.Navbar({href: "#editteam/"+teamId, name: "Edit"}),
+				".detail": new Team.Views.Detail( {model: team}),
+				".list_children": new Team.Views.Multilist({ players: team.players, games: team.games})					
+			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
 		editTeam: function (teamId) {			
@@ -145,36 +139,16 @@ function(namespace, Backbone, Navigation, Player) {
 	//
 	// VIEWS
 	//
-/*
- * With Backbone.LayoutManager, a View's default render: function(layout){return layout(this).render();}
- * We should override render for anything more complex like variable fields in the view or iterating a collection.
- * If the View's template expects any JSON, then a JSON object must be passed as a parameter to .render()/
- * The following is an example view with some defaults explained.
-	Team.Views.AView = Backbone.View.extend({
-		template: "path/to/template",//Must specify the path to the template.
-		className: "some-class-name",//Each top-level View in our layout is always wrapped in a div. We can give it a class.
-		tagName: "div",//By default inserts the contents of our templates into a div. Can use another type.
-		serialize: function() {return this.model.toJSON();},//looked for by render() if no argument is passed.
-		render: function(layout) {return layout(this).render();},//Default render method.
-		//render: function(layout) {return layout(this).render(this.model.toJSON());},//Combines the previous two lines, i.e., doesn't need serialize.
-		initialize: function() { //It is necessary to bind a model's change to re-render the view because the model is fetched asynchronously.
-    		this.model.bind("change", function() {
-      			this.render();
-    		}, this);
-  		},
-		events: { click: "clickAction"}, //Bind this view's click to clickAction
-		clickAction: function(ev){ //some click handling logic},//Handle the click.
-	})
- */
-	
+	// Some of these views are very generic and would work across modules untouched with the exception of the template and maybe the className.
+	// TODO: (maybe) put generic views in a generic module. Allow the views to be initialized with template and classname.
 	Team.Views.Item = Backbone.View.extend({
 		template: "teams/item",
-		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul.
+		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul by the list's render function.
 		serialize: function() {return this.model.toJSON();} //render looks for this to manipulate model before passing to the template.
 	});
 	Team.Views.List = Backbone.View.extend({
 		template: "teams/list",
-		className: "teams-wrapper", //This seems to create a div no matter what we do so it doesn't really matter.
+		className: "teams-wrapper",
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
 			this.collection.each(function(team) {//for each team in the collection.
@@ -185,34 +159,26 @@ function(namespace, Backbone, Navigation, Player) {
 			return view.render({ count: this.collection.length });
 		},
 		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
+			this.collection.bind("reset", function() {this.render();}, this);//This one is necessary
+			this.collection.bind("change", function() {this.render();}, this);//Testing using others to try and find a bug
+			this.collection.bind("sync", function() {this.render();}, this);//Where the list does not reflect newly added or newly deleted
+			this.collection.bind("all", function() {this.render();}, this);//teams, though this might be due to the slow API
+			this.collection.bind("add", function() {this.render();}, this);//and won't be a problem when we switch to local storage.
 		}
-	});
-	Team.Views.Detail = Backbone.View.extend({  	
+	});	
+	Team.Views.Detail = Backbone.View.extend({
+		//We were passed a model on creation by Team.Router.showTeam(), so we have this.model  	
 		template: "teams/detail",
-		//We were passed a model on creation, so we have this.model
-		render: function(layout) {//Do I need this here?
-			return layout(this).render(this.model.toJSON());
-			// The model might not yet be hydrated by the asynchronous fetch process
-		},
-		initialize: function() {
-			// We might need to re-render after asynchronous fetch is complete.
-    		this.model.bind("change", function() {
-      			this.render();
-    		}, this);
-  		}
+		//I don't really need the render function, instead I can use a serialize function.
+		render: function(layout) {return layout(this).render(this.model.toJSON());},
+		// The model might not yet be hydrated by the asynchronous fetch process on the first render, so bind
+		//to the change action so that we can rerender when the fetch process is complete.
+		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
 	});
 	Team.Views.Edit = Backbone.View.extend({
 		template: "teams/edit",
 		render: function(layout) {return layout(this).render(this.model.toJSON());},
-		initialize: function() {
-			// We might need to re-render after asynchronous fetch is complete.
-    		this.model.bind("change", function() {
-      			this.render();
-    		}, this);
-  		},
+		initialize: function() {this.model.bind("change", function() {this.render();}, this);},
   		events: {
 			"click .save": "saveModel",
 			"click .delete": "deleteModel"
@@ -242,7 +208,26 @@ function(namespace, Backbone, Navigation, Player) {
 			//TODO: .destroy is supposed to bubble up through the collection but it doesn't seem to be in this case.
 			Backbone.history.navigate('teams', true);
 		}
-	})
+	});
+	Team.Views.Multilist = Backbone.View.extend({
+		template: "teams/multilist",
+		events: {
+			"click .button_players": "showPlayers",
+			"click .button_games": "showGames"
+		},
+		showPlayers: function(ev){console.log("Show players")},//TODO: Use jquery to show .players and hide .games
+		showGames: function(ev){console.log("Show games")},//TODO: Use jquery to show .games and hide .players
+		render: function(layout) {
+			var view = layout(this); //Get this view from the layout.
+			view.insert(".lists", new Player.Views.List( {collection: this.options.players} ));
+			view.insert(".lists", new Game.Views.List( {collection: this.options.games} ));
+			return view.render();
+		},
+		initialize: function() {
+			this.options.players.bind("reset", function() {this.render();}, this);
+			this.options.games.bind("reset", function() {this.render();}, this);
+		}
+	});
 	
 	return Team;// Required, return the module for AMD compliance
 });

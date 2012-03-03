@@ -46,7 +46,7 @@ Also in this directory you will be able to find some design documents, including
 ##Frameworks/Libraries
 This app is built atop the [Backbone.js framework](http://documentcloud.github.com/backbone/) which in turn depends on [Underscore.js](http://documentcloud.github.com/underscore/).
 Modules are loaded [asynchronously](http://requirejs.org/docs/whyamd.html) using [Require.js](http://requirejs.org/docs/api.html).
-Since Backbone and Underscore do not conform to the AMD specification, I am using [@tbranyen](http://twitter.com/tbranyen)'s [AMD version of these libraries](https://github.com/tbranyen/backbone-boilerplate/tree/amd).
+I am using [@tbranyen](http://twitter.com/tbranyen)'s [Backbone-boilerplate](https://github.com/tbranyen/backbone-boilerplate) which includes a plugin to allow backbone and underscore to work with Require.
 Finally, laying out views on the page is assisted by tbranyen's [Backbone.LayoutManager](https://github.com/tbranyen/backbone.layoutmanager).
 
 ###Ultistats-specific notes

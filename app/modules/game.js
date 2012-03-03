@@ -13,12 +13,11 @@ function(namespace, Backbone) {
 	
 	Game.Model = Backbone.Model.extend({
 		defaults: {
-			first_name: "",
-			last_name: "",
-			nickname: "",
-			birth_date: "",
-			height: "",
-			weight: "",
+			tournament: "",
+			team_1: "",
+			team_1_score: "",
+			team_2: "",
+			team_2_score: "",
 			leaguevine_url: ""
 		},
 		url: function() {
@@ -31,6 +30,9 @@ function(namespace, Backbone) {
 		url: function() {
 			if (this.tournament) {
 				return app.api.root + "tournament_games/?tournament_ids=%5B" + this.tournament.id + "%5D&access_token=" + app.api.d_token();
+			}
+			else if (this.team) {
+				return app.api.root + "games/?team_ids=%5B" + this.team.id + "%5D&access_token=" + app.api.d_token();
 			}
 			else {
 				return app.api.root + "games/?access_token=" + app.api.d_token();
@@ -47,11 +49,12 @@ function(namespace, Backbone) {
 			this.models = models;
 		  }
 		  if (options) {
-			this.tournament = options.tournament;
+		  	if (options.tournament) {this.tournament = options.tournament;}
+			if (options.team) {this.team = options.team;}
 		  }
 		},
 		comparator: function(game) {// Define how items in the collection will be sorted.
-		  return game.get("last_name").toLowerCase();
+		  return game.get("start_time");
 		}
 	});
 	
