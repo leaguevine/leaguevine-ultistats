@@ -4,39 +4,43 @@ define([
   // Libs
   "use!backbone",
 
+  // Modules
+  "modules/navigation",
+  
   // Plugins
   "use!plugins/backbone.layoutmanager"
 ],
-function(namespace, Backbone) {
+function(namespace, Backbone, Navigation) {
 	var app = namespace.app;
 	var Game = namespace.module();
 	
 	Game.Model = Backbone.Model.extend({
 		defaults: {
-			tournament: "",
-			team_1: "",
+			tournament: {id: "", name: ""},
+			team_1: {id: "", name: ""},
 			team_1_score: "",
-			team_2: "",
+			team_2: {id: "", name: ""},
 			team_2_score: "",
+			start_time: "",
 			leaguevine_url: ""
 		},
 		url: function() {
-			return app.api.root + "games/" + this.id + "/?access_token=" + app.api.d_token(); 
-		}
+				return app.api.root + "games/" + this.id + "/?access_token=" + app.api.d_token();
+				//TODO: Need a URL for making a new game.
+			}
 	});
 	
 	Game.Collection = Backbone.Collection.extend({
 		model: Game.Model,
 		url: function() {
-			if (this.tournament) {
-				return app.api.root + "tournament_games/?tournament_ids=%5B" + this.tournament.id + "%5D&access_token=" + app.api.d_token();
-			}
-			else if (this.team) {
-				return app.api.root + "games/?team_ids=%5B" + this.team.id + "%5D&access_token=" + app.api.d_token();
-			}
-			else {
-				return app.api.root + "games/?access_token=" + app.api.d_token();
-			}
+			var temp_url = app.api.root + "games/?";
+			var url_options = "";
+			if (this.tournament) {url_options = url_options + "&tournament_id=" + this.tournament.id;}
+			if (this.team) {url_options = url_options + "&team_ids=%5B" + this.team.id + "%5D";}
+			if (this.pool) {url_options = url_options + "&pool_id=" + this.pool.id}
+			if (this.bracket) {url_options = url_options + "&bracket_id=" + this.bracket.id}
+			url_options = url_options + "&access_token=" + app.api.d_token();
+			return temp_url + url_options.substring(1);
 		},
 		parse: function(resp, xhr) {
 		  if (resp.objects) {
@@ -63,14 +67,12 @@ function(namespace, Backbone) {
 			"games": "listGames", //List all games.
 			"games/:gameId": "showGame" //Show detail for one game.
 		},
-		listGames: function () {//Route for all games.
-			// Prepare the data.
+		listGames: function () {
 			app.games = new Game.Collection();
 			app.games.fetch();
-			
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
-			myLayout.view(".navbar", new Game.Views.Nav ());//TODO: Make the navbar more dynamic.
+			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newgame", name: "New"}));
 			myLayout.view(".content", new Game.Views.List ({collection: app.games}));//pass the List view a collection of (fetched) games.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
@@ -80,13 +82,13 @@ function(namespace, Backbone) {
 			if (!app.games.get(gameId)) {app.games.add( [{id: parseInt(gameId)}] );}//Insert this game into the collection.
 			game = app.games.get(gameId);
 			game.fetch();
-			
 			//TODO: Get some game stats.
-			
 			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
-			myLayout.view(".navbar", new Game.Views.Nav ());
-			myLayout.view(".detail", new Game.Views.Detail( {model: game}));//Pass an options object to the view containing our game.
-			//myLayout.view(".list_children", new Game.Views.List({ collection: game.games }))
+			myLayout.setViews({
+				".navbar": new Navigation.Views.Navbar({href: "#editgame/"+gameId, name: "Edit"}),
+				".detail": new Game.Views.Detail( {model: game}),
+				".list_children": new Game.Views.Multilist({stats: {} })//TODO: add stats					
+			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		}
 	});
@@ -144,10 +146,7 @@ function(namespace, Backbone) {
 	});
 	Game.Views.Detail = Backbone.LayoutManager.View.extend({  	
 		template: "games/detail",
-		//We were passed a model on creation, so we have this.model
 		render: function(layout) {
-			// The model has not yet been filled by the fetch process if it was fetched just now
-			// We need to update the view once the data have changed.
 			return layout(this).render(this.model.toJSON());
 		},
 		initialize: function() {
@@ -155,6 +154,24 @@ function(namespace, Backbone) {
       			this.render();
     		}, this);
   		}
+	});
+	Game.Views.Multilist = Backbone.View.extend({
+		template: "games/multilist",
+		events: {
+			"click .button_team_stats": "showTeamStats",
+			"click .button_player_stats": "showPlayerStats"
+		},
+		showTeamStats: function(ev){console.log("TODO: Show Team Stats")},
+		showPlayerStats: function(ev){console.log("TODO: Show Player Stats")},
+		render: function(layout) {
+			var view = layout(this); //Get this view from the layout.
+			//We have this.options.stats
+			//view.insert(".lists", new Game.Views.List( {collection: this.options.games} ));
+			return view.render();
+		},
+		initialize: function() {
+			//this.options.stats.bind("reset", function() {this.render();}, this);
+		}
 	});
 	
 	return Game;// Required, return the module for AMD compliance

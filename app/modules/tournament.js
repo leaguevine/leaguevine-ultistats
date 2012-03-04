@@ -69,7 +69,7 @@ function(namespace, Backbone, Navigation, Game) {
 			
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
-			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newtournament", name: "+"}));
+			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newtournament", name: "New"}));
 			myLayout.view(".content", new Tournament.Views.List ({collection: app.tournaments}));//pass the List view a collection of (fetched) tournaments.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
@@ -79,14 +79,16 @@ function(namespace, Backbone, Navigation, Game) {
 			if (!app.tournaments.get(tournamentId)) {app.tournaments.add( [{id: parseInt(tournamentId)}] );}//Insert this tournament into the collection.
 			tournament = app.tournaments.get(tournamentId);
 			tournament.fetch();
-			//TODO: Get pools
-			//TODO: Get brackets
+			tournament.games = new Game.Collection([],{tournament: tournament});
+			tournament.games.fetch();
 			
 			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
-			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#edittournament/"+tournamentId, name: "Edit"}));
-			myLayout.view(".detail", new Tournament.Views.Detail( {model: tournament}));//Pass an options object to the view containing our tournament.
-			//Use a dynamic view that changes between pools/brackets/info
-			//myLayout.view(".list_children", new Game.Views.List({ collection: tournament.games }))
+			myLayout.setViews({
+				".navbar": new Navigation.Views.Navbar({href: "#edittournament/"+tournamentId, name: "Edit"}),
+				".detail": new Tournament.Views.Detail( {model: tournament}),
+				//Use a dynamic view that changes between pools/brackets/info
+				".list_children": new Tournament.Views.Multilist({ games: tournament.games })					
+			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		}
 	});
@@ -118,7 +120,7 @@ function(namespace, Backbone, Navigation, Game) {
 			}, this);
 		}
 	});
-	Tournament.Views.Detail = Backbone.LayoutManager.View.extend({  	
+	Tournament.Views.Detail = Backbone.View.extend({  	
 		template: "tournaments/detail",
 		//We were passed a model on creation, so we have this.model
 		render: function(layout) {
@@ -130,6 +132,28 @@ function(namespace, Backbone, Navigation, Game) {
       			this.render();
     		}, this);
   		}
+	});
+	Tournament.Views.Multilist = Backbone.View.extend({
+		template: "tournaments/multilist",
+		events: {
+			"click .button_standings": "showStandings",
+			"click .button_pools": "showPools",
+			"click .button_brackets": "showBrackets"
+		},
+		showStandings: function(ev){console.log("TODO: Show Standings")},
+		showPools: function(ev){console.log("TODO: Show Pools")},
+		showBrackets: function(ev){console.log("TODO: Show Brackets")},
+		render: function(layout) {
+			var view = layout(this); //Get this view from the layout.
+			//We have this.options.games
+			//TODO: Get the games for the pools or brackets depending on what was toggled.
+			//layout.view(".lists", new Game.Views.List( {collection: this.options.games} ));
+			view.insert(".lists", new Game.Views.List( {collection: this.options.games} ));
+			return view.render();
+		},
+		initialize: function() {
+			this.options.games.bind("reset", function() {this.render();}, this);
+		}
 	});
 	
 	return Tournament;// Required, return the module for AMD compliance

@@ -1,6 +1,11 @@
-<h3><%= first_name %> (<%= nickname %>) <%= last_name %></h3>
-<ul>
-	<li> DOB: <%= birth_date %></li>
-	<li> Height: <%= height %> cm</li>
-	<li> Weight: <%= weight %> kg?</li>
-</ul>
+<a href="#tournaments/<%= tournament.id %>"><%= tournament.name %></a>
+<%= start_time %>
+<div id="team1">
+	<a href="#teams/<%= team_1.id %>"><%= team_1.name %></a>
+	<%= team_1_score %>
+</div>
+<div>VS</div>
+<div id="team2">
+	<a href="#teams/<%= team_2.id %>"><%= team_2.name %></a>
+	<%= team_2_score %>
+</div>

@@ -27,17 +27,10 @@ function(namespace, Backbone, Navigation, Player, Game) {
 			info: ""
 		},
 		url: function() {//Our model URL does not conform to the default Collection.url + /this.id so we must define it here.
-			if (this.id) {return app.api.root + "teams/" + this.id + "/?access_token=" + app.api.d_token();}
-			else {return app.api.root + "teams/?access_token=" + app.api.d_token();} //For a new team post request. 
-			
-		}/*,
-		parse: function(resp, xhr) {//Here for debugging.
-			return resp; //Default behaviour.
-		}*//*,
-		validate: function(attrs) {//Here for debugging. Lets us check the attributes.
-			//Check the attrs.
-			//console.log(attrs)
-		}*/
+			var temp_url = app.api.root + "teams/";
+			if (this.id) {temp_url = temp_url + this.id + "/";}
+			return temp_url + "?access_token=" + app.api.d_token(); 
+		}
 	});
   
 	//
@@ -46,7 +39,10 @@ function(namespace, Backbone, Navigation, Player, Game) {
 	Team.Collection = Backbone.Collection.extend({
 		model: Team.Model,
 		url: function() {// It is necessary to define the URL so that we can get the data from the API using .fetch
-			return app.api.root + "teams/?season_id=" + app.api.season_id + "&limit=200&access_token=" + app.api.d_token();
+			var temp_url = app.api.root + "teams/?";
+			var url_options = "";
+			url_options = url_options + "&season_id=" + app.api.season_id + "&limit=200" + "&access_token=" + app.api.d_token();
+			return temp_url + url_options.substring(1);
 		},
 		parse: function(resp, xhr) {// Override the default parse so we can get at the list of teams from the API response
 		//The Leaguevine API gives resp = {meta: Object, objects: [90 objects]}; We don't want meta.
@@ -175,6 +171,25 @@ function(namespace, Backbone, Navigation, Player, Game) {
 		//to the change action so that we can rerender when the fetch process is complete.
 		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
 	});
+	Team.Views.Multilist = Backbone.View.extend({
+		template: "teams/multilist",
+		events: {
+			"click .button_players": "showPlayers",
+			"click .button_games": "showGames"
+		},
+		showPlayers: function(ev){console.log("Show players")},//TODO: Use jquery to show .players and hide .games
+		showGames: function(ev){console.log("Show games")},//TODO: Use jquery to show .games and hide .players
+		render: function(layout) {
+			var view = layout(this); //Get this view from the layout.
+			view.insert(".lists", new Player.Views.List( {collection: this.options.players} ));
+			view.insert(".lists", new Game.Views.List( {collection: this.options.games} ));
+			return view.render();
+		},
+		initialize: function() {
+			this.options.players.bind("reset", function() {this.render();}, this);
+			this.options.games.bind("reset", function() {this.render();}, this);
+		}
+	});
 	Team.Views.Edit = Backbone.View.extend({
 		template: "teams/edit",
 		render: function(layout) {return layout(this).render(this.model.toJSON());},
@@ -207,25 +222,6 @@ function(namespace, Backbone, Navigation, Player, Game) {
 			);
 			//TODO: .destroy is supposed to bubble up through the collection but it doesn't seem to be in this case.
 			Backbone.history.navigate('teams', true);
-		}
-	});
-	Team.Views.Multilist = Backbone.View.extend({
-		template: "teams/multilist",
-		events: {
-			"click .button_players": "showPlayers",
-			"click .button_games": "showGames"
-		},
-		showPlayers: function(ev){console.log("Show players")},//TODO: Use jquery to show .players and hide .games
-		showGames: function(ev){console.log("Show games")},//TODO: Use jquery to show .games and hide .players
-		render: function(layout) {
-			var view = layout(this); //Get this view from the layout.
-			view.insert(".lists", new Player.Views.List( {collection: this.options.players} ));
-			view.insert(".lists", new Game.Views.List( {collection: this.options.games} ));
-			return view.render();
-		},
-		initialize: function() {
-			this.options.players.bind("reset", function() {this.render();}, this);
-			this.options.games.bind("reset", function() {this.render();}, this);
 		}
 	});
 	
