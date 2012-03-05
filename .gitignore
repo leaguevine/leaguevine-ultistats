@@ -1,4 +1,6 @@
-
 .project
 
 assets/js/plugins/jquery.ba-throttle-debounce.js
+
+# Ignore swap files
+*.sw?
