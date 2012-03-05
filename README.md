@@ -67,9 +67,9 @@ Instead, to improve performance we will use 2.2 for navigation to any page that 
 Finally, for interaction that should not be bookmarkable (e.g., entering stats), we will use 1.1
 
 ###Connecting to the Leaguevine API
-This app comes with some default settings to automatically connect to the Leaguevine API. These defaults assume you will be serving these files at http://localhost:8000/ and that you wish to use the API client that Chad created. To serve this app at a different URL or to use your own client, you can create a localSettings.py file that sits at the root of the leaguevine-ultistats repository. Here is an example file:
+This app comes with some default settings to automatically connect to the Leaguevine API. These defaults assume you will be serving these files at http://localhost:8000/ and that you wish to use the API client that Chad created. To serve this app at a different URL or to use your own client, you can create a localSettings.js file that sits at the root of the leaguevine-ultistats repository. Here is an example file:
 
-    /* localSettings.py */
+    /* localSettings.js */
     var localSettings = {
         Leaguevine: {
             API: {
