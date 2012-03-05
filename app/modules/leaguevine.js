@@ -35,27 +35,32 @@ function(namespace, Backbone) {
 			Backbone.history.navigate('teams', true);//After the token has been updated, navigate to some index site.
 		}
 	});
-  
-  	Leaguevine.API =
-  		{	
-			root: "http://api.playwithlv.com/v1/",
-			base: "http://playwithlv.com/oauth2/authorize/?response_type=token&scope=universal&",
-			client_id: "5b830cb7c788b095c94732c8ca03cb",
-			redirect_uri: "http://localhost:8000/",
-			season_id: "20041",
-			d_token: function() {//Modules will reference this dynamic token			
-				if (!this.token) {
-					var stored_api = JSON.parse(localStorage.getItem('auth_object')); //Pull our token out of local storage if it exists.
-					_.extend(this,stored_api);
-				}
-				if (!this.token) {
-					window.location = this.base + "&client_id=" + this.client_id + "&redirect_uri=" + this.redirect_uri;
-				}
-				else {
-					return this.token;
-				}
-			}
-		};
+
+  	Leaguevine.API = {	
+            root: "http://api.playwithlv.com/v1/",
+            base: "http://playwithlv.com/oauth2/authorize/?response_type=token&scope=universal",
+            client_id: "5b830cb7c788b095c94732c8ca03cb",
+            redirect_uri: "http://localhost:8000/",
+            season_id: 20041,
+            d_token: function() {//Modules will reference this dynamic token			
+            if (!this.token) {
+                var stored_api = JSON.parse(localStorage.getItem('auth_object')); //Pull our token out of local storage if it exists.
+                _.extend(this,stored_api);
+            }
+            if (!this.token) {
+                window.location = this.base + "&client_id=" + this.client_id + "&redirect_uri=" + this.redirect_uri;
+            }
+            else {
+                return this.token;
+            }
+        }
+    };
+
+    if (typeof localSettings != 'undefined' && 
+        typeof localSettings.Leaguevine != 'undefined' && 
+        typeof localSettings.Leaguevine.API != 'undefined') {
+        _.extend(Leaguevine.API, localSettings.Leaguevine.API);
+    }
 		
 	return Leaguevine;
 });

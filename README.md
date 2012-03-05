@@ -65,3 +65,17 @@ Then, for 1.2, 2.1, and 2.2, a Router matches the URL to a function and the func
 We could use 2.1 exclusively by making every touchable thing a hyperlink but this is not performant because the browser would refresh the entire page for every tap.  
 Instead, to improve performance we will use 2.2 for navigation to any page that we want to be bookmarkable. This has the advantage of allowing 2.1 to work for these pages.
 Finally, for interaction that should not be bookmarkable (e.g., entering stats), we will use 1.1
+
+###Connecting to the Leaguevine API
+This app comes with some default settings to automatically connect to the Leaguevine API. These defaults assume you will be serving these files at http://localhost:8000/ and that you wish to use the API client that Chad created. To serve this app at a different URL or to use your own client, you can create a localSettings.py file that sits at the root of the leaguevine-ultistats repository. Here is an example file:
+
+    /* localSettings.py */
+    var localSettings = {
+        Leaguevine: {
+            API: {
+                client_id: "26a25288917682b6d3abcdbf433de3", //Client ID registered on the developer pages
+                redirect_uri: "http://ultistats.localhost:8000/", //Redirect URI specified when registering
+                token: "d54191ebb0", //Optionally pass a working token to bypass the entire oauth process
+            }
+        }
+    }
