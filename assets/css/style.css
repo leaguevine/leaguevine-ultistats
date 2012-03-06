@@ -202,71 +202,7 @@ td { vertical-align: top; }
 /* ==|== primary styles =====================================================
    Author: Chadwick Boulay, Leaguevine.com
    ========================================================================== */
-
-#main {
-  margin: 20px;
-  font-size: 14px;
-  font-family: "Gill Sans", Times, serif;
-}
-
-#main header h1 {
-  font-size: 25px;
-  color: #3A474C;
-  font-weight: normal;
-}
-
-#main header h1 span {
-  font-size: 22px;
-  color: #6C7A80;
-}
-
-#main .teams {
-  width: 305px;
-
-  padding: 10px;
-
-  float: left;
-
-  overflow-y: auto;
-}
-
-#main .teams ul {
-  margin: 0; padding: 0;
-}
-
-#main .teams li {
-  background: #DDD;
-  display: block;
-
-  border: 2px solid #333;
-
-  padding: 5px;
-
-  margin: 5px;
-
-  cursor: pointer;
-}
-
-#main hr {
-  border-top: 1px solid #333;
-}
-
-#main .players {
-  padding: 10px;
-
-  width: 625px;
-
-  overflow-y: auto;
-}
-
-#main .players ul {
-  margin: 0; padding: 0;
-}
-
-#main .players li {
-  background: lightred;
-  font-weight: normal;
-}
+div.lists{display:block;}
 
 /*
  * Media queries for responsive design github.com/h5bp/mobile-boilerplate/wiki/The-Style

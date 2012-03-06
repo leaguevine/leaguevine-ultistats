@@ -7,16 +7,17 @@ define([
   // Modules
   "modules/navigation",
   "modules/game",
+  "modules/tournteam",
 
   // Plugins
   "use!plugins/backbone.layoutmanager"
 ],
-function(namespace, Backbone, Navigation, Game) {
+function(namespace, Backbone, Navigation, Game, TournTeam) {
 	var app = namespace.app;
 	var Tournament = namespace.module();
 	
 	Tournament.Model = Backbone.Model.extend({
-		defaults: {// Include defaults for any attribute that will be rendered.
+		defaults: {
 			name: '',
 			leaguevine_url: '',
 			start_date: '',
@@ -30,66 +31,51 @@ function(namespace, Backbone, Navigation, Game) {
 	
 	Tournament.Collection = Backbone.Collection.extend({
 		model: Tournament.Model,
-		url: function() {// It is necessary to define the URL so that we can get the data from the API using .fetch
-			//TODO: Eventually data will be stored locally, eventually Leaguevine will have too much data to get all, so we will have to use smarter limits and offsets.
+		url: function() {
 			return app.api.root + "tournaments/?season_id=" + app.api.season_id + "&limit=200&access_token=" + app.api.d_token();
 		},
-		parse: function(resp, xhr) {// Override the default parse so we can get at the list of tournaments from the API response
+		parse: function(resp, xhr) {
 		  if (resp.objects) {
 			return resp.objects;
 		  }
-		  return this.models;//If we didn't get valid data, return whatever we have for models
+		  return this.models;
 		},
-		/*initialize: function(models, options) {//initialize is an empty function by default.
-			//That's surprising because the docs suggest it should be possible to pass it models and options. 
-			//Here we implement initialize to accept models and options.
-		  if (models) {
-			this.models = models;
-		  }
-		  if (options) {
-			this.season = options.season;
-		  }
-		},*/
-		comparator: function(tournament) {// Define how items in the collection will be sorted.
+		comparator: function(tournament) {
 		  return tournament.get("name").toLowerCase();
 		}
 	});
 	
 	Tournament.Router = Backbone.Router.extend({
-		// Create a router to map faux-URLs to actions.
-		// Faux-URLs come from Backbone.history.navigate or hashes in a URL from a followed link.
 		routes : {
 			"tournaments": "listTournaments", //List all tournaments.
 			"tournaments/:tournamentId": "showTournament" //Show detail for one tournament.
 		},
-		listTournaments: function () {//Route for all tournaments.
-			// Prepare the data.
+		listTournaments: function () {
 			app.tournaments = new Tournament.Collection();
-			app.tournaments.fetch(); //Fetch automatically pulls the active season from the app object.
+			app.tournaments.fetch(); 
 			
-			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
-			// Layout from cache might have different views set. Let's (re-)set them now.
+			var myLayout = app.router.useLayout("nav_content");
 			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newtournament", name: "New"}));
-			myLayout.view(".content", new Tournament.Views.List ({collection: app.tournaments}));//pass the List view a collection of (fetched) tournaments.
-			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+			myLayout.view(".content", new Tournament.Views.List ({collection: app.tournaments}));
+			myLayout.render(function(el) {$("#main").html(el);});
 		},
 		showTournament: function (tournamentId) {
-			//Prepare the data.
-			if (!app.tournaments) {app.tournaments = new Tournament.Collection();}//Will create an empty collection.
-			if (!app.tournaments.get(tournamentId)) {app.tournaments.add( [{id: parseInt(tournamentId)}] );}//Insert this tournament into the collection.
+			if (!app.tournaments) {app.tournaments = new Tournament.Collection();}
+			if (!app.tournaments.get(tournamentId)) {app.tournaments.add( [{id: parseInt(tournamentId)}] );}
 			tournament = app.tournaments.get(tournamentId);
 			tournament.fetch();
-			tournament.games = new Game.Collection([],{tournament: tournament});
+			tournament.games = new Game.Collection([],{tournamentId: tournamentId});
 			tournament.games.fetch();
+			tournament.teams = new TournTeam.Collection([],{tournament: tournament});
+			tournament.teams.fetch();
 			
-			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
+			var myLayout = app.router.useLayout("nav_detail_list");
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({href: "#edittournament/"+tournamentId, name: "Edit"}),
 				".detail": new Tournament.Views.Detail( {model: tournament}),
-				//Use a dynamic view that changes between pools/brackets/info
-				".list_children": new Tournament.Views.Multilist({ games: tournament.games })					
+				".list_children": new Tournament.Views.Multilist({ games: tournament.games, teams: tournament.teams })					
 			});
-			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+			myLayout.render(function(el) {$("#main").html(el);});
 		}
 	});
 	Tournament.router = new Tournament.Router();// INITIALIZE ROUTER
@@ -99,8 +85,8 @@ function(namespace, Backbone, Navigation, Game) {
 	});
 	Tournament.Views.Item = Backbone.View.extend({
 		template: "tournaments/item",
-		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul.
-		serialize: function() {return this.model.toJSON();} //render looks for this to manipulate model before passing to the template.
+		tagName: "li",
+		serialize: function() {return this.model.toJSON();} 
 	});
 	Tournament.Views.List = Backbone.LayoutManager.View.extend({
 		template: "tournaments/list",
@@ -140,15 +126,25 @@ function(namespace, Backbone, Navigation, Game) {
 			"click .button_pools": "showPools",
 			"click .button_brackets": "showBrackets"
 		},
-		showStandings: function(ev){console.log("TODO: Show Standings")},
-		showPools: function(ev){console.log("TODO: Show Pools")},
-		showBrackets: function(ev){console.log("TODO: Show Brackets")},
+		showStandings: function(ev){
+			$('.games-wrapper').hide();
+			$('.tournteams-wrapper').show();
+			console.log("TODO: Show Standings")
+		},
+		showPools: function(ev){
+			$('.tournteams-wrapper').hide();
+			$('.games-wrapper').show();
+			console.log("TODO: Show Pools")
+		},
+		showBrackets: function(ev){
+			console.log("TODO: Show Brackets")
+		},
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
-			//We have this.options.games
-			//TODO: Get the games for the pools or brackets depending on what was toggled.
-			//layout.view(".lists", new Game.Views.List( {collection: this.options.games} ));
-			view.insert(".lists", new Game.Views.List( {collection: this.options.games} ));
+			this.setViews({
+				".standings": new TournTeam.Views.List( {collection: this.options.teams} ),
+				".games_list": new Game.Views.List( {collection: this.options.games} )
+			});
 			return view.render();
 		},
 		initialize: function() {

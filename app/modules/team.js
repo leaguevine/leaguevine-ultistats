@@ -44,24 +44,12 @@ function(namespace, Backbone, Navigation, Player, Game) {
 			url_options = url_options + "&season_id=" + app.api.season_id + "&limit=200" + "&access_token=" + app.api.d_token();
 			return temp_url + url_options.substring(1);
 		},
-		parse: function(resp, xhr) {// Override the default parse so we can get at the list of teams from the API response
-		//The Leaguevine API gives resp = {meta: Object, objects: [90 objects]}; We don't want meta.
-		//Each of objects is a JSON object with {id: some_id, info: "", leaguvine_url: "...", name: "team name", etc}
-		  if (resp.objects) {// Safety check ensuring only valid data is used
+		parse: function(resp, xhr) {
+		  if (resp.objects) {
 			return resp.objects;//Return the array of objects.
 		  }
 		  return this.models;//If we didn't get valid data, return whatever we have for models
 		},
-		/*initialize: function(models, options) {//initialize is an empty function by default.
-			//That's surprising because the docs suggest it should be possible to pass it models and options. 
-			//Here we implement initialize to accept models and options.
-		  if (models) {
-			this.models = models;
-		  }
-		  if (options) {
-			this.season = options.season;
-		  }
-		},*/
 		comparator: function(team) {// Define how items in the collection will be sorted.
 		  return team.get("name").toLowerCase();
 		}
@@ -135,8 +123,6 @@ function(namespace, Backbone, Navigation, Player, Game) {
 	//
 	// VIEWS
 	//
-	// Some of these views are very generic and would work across modules untouched with the exception of the template and maybe the className.
-	// TODO: (maybe) put generic views in a generic module. Allow the views to be initialized with template and classname.
 	Team.Views.Item = Backbone.View.extend({
 		template: "teams/item",
 		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul by the list's render function.
@@ -155,11 +141,7 @@ function(namespace, Backbone, Navigation, Player, Game) {
 			return view.render({ count: this.collection.length });
 		},
 		initialize: function() {
-			this.collection.bind("reset", function() {this.render();}, this);//This one is necessary
-			this.collection.bind("change", function() {this.render();}, this);//Testing using others to try and find a bug
-			this.collection.bind("sync", function() {this.render();}, this);//Where the list does not reflect newly added or newly deleted
-			this.collection.bind("all", function() {this.render();}, this);//teams, though this might be due to the slow API
-			this.collection.bind("add", function() {this.render();}, this);//and won't be a problem when we switch to local storage.
+			this.collection.bind("reset", function() {this.render();}, this);
 		}
 	});	
 	Team.Views.Detail = Backbone.View.extend({
@@ -177,12 +159,20 @@ function(namespace, Backbone, Navigation, Player, Game) {
 			"click .button_players": "showPlayers",
 			"click .button_games": "showGames"
 		},
-		showPlayers: function(ev){console.log("Show players")},//TODO: Use jquery to show .players and hide .games
-		showGames: function(ev){console.log("Show games")},//TODO: Use jquery to show .games and hide .players
+		showPlayers: function(ev){
+			$('.games-wrapper').hide();
+			$('.players-wrapper').show();
+		},
+		showGames: function(ev){
+			$('.players-wrapper').hide();
+			$('.games-wrapper').show();
+		},
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
-			view.insert(".lists", new Player.Views.List( {collection: this.options.players} ));
-			view.insert(".lists", new Game.Views.List( {collection: this.options.games} ));
+			this.setViews({
+				".players_list": new Player.Views.List( {collection: this.options.players} ),
+				".games_list": new Game.Views.List( {collection: this.options.games} )
+			});
 			return view.render();
 		},
 		initialize: function() {
