@@ -156,24 +156,28 @@ function(namespace, Backbone, Navigation, Player, Game) {
 	Team.Views.Multilist = Backbone.View.extend({
 		template: "teams/multilist",
 		events: {
-			"click .button_players": "showPlayers",
-			"click .button_games": "showGames"
+			"click .bplayers": "showPlayers",
+			"click .bgames": "showGames"
 		},
 		showPlayers: function(ev){
-			$('.games-wrapper').hide();
-			$('.players-wrapper').show();
+			$('.lgames').hide();
+			$('.lplayers').show();
 		},
 		showGames: function(ev){
-			$('.players-wrapper').hide();
-			$('.games-wrapper').show();
+			$('.lplayers').hide();
+			$('.lgames').show();
 		},
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
 			this.setViews({
-				".players_list": new Player.Views.List( {collection: this.options.players} ),
-				".games_list": new Game.Views.List( {collection: this.options.games} )
+				".lgames": new Game.Views.List( {collection: this.options.games} ),
+				".lplayers": new Player.Views.List( {collection: this.options.players} )
 			});
-			return view.render();
+			return view.render().then(function(el) {
+				//I'd rather the render function only do this once, instead of everytime the data are reset
+				//But it might turn out to be a non-issue.
+				$('.lplayers').hide();
+			});
 		},
 		initialize: function() {
 			this.options.players.bind("reset", function() {this.render();}, this);

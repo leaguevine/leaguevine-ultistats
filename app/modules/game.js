@@ -45,7 +45,7 @@ function(namespace, Backbone, Navigation) {
 		url: function() {
 			var temp_url = app.api.root + "games/?";
 			var url_options = "";
-			if (this.tournamentId) {url_options = url_options + "&tournament_id=" + tournamentId;}
+			if (this.tournament) {url_options = url_options + "&tournament_id=" + this.tournament.id;}
 			if (this.team) {url_options = url_options + "&team_ids=%5B" + this.team.id + "%5D";}
 			if (this.pool) {url_options = url_options + "&pool_id=" + this.pool.id}
 			if (this.bracket) {url_options = url_options + "&bracket_id=" + this.bracket.id}
@@ -144,18 +144,18 @@ function(namespace, Backbone, Navigation) {
 	Game.Views.Multilist = Backbone.View.extend({
 		template: "games/multilist",
 		events: {
-			"click .team_stats": "showTeamStats",
-			"click .player_stats": "showPlayerStats",
-			"click .track_game": "trackGame"
+			"click .bteam_stats": "showTeamStats",
+			"click .bplayer_stats": "showPlayerStats",
+			"click .btrack_game": "trackGame"
 		},
 		showTeamStats: function(ev){
-			$('.player-stats-wrapper').hide();
-			$('.team-stats-wrapper').show();
+			$('.lplayer_stats').hide();
+			$('.lteam_stats').show();
 			console.log("TODO: Show Team Stats")
 		},
 		showPlayerStats: function(ev){
-			$('.team-stats-wrapper').hide();
-			$('.player-stats-wrapper').show();
+			$('.lteam_stats').hide();
+			$('.lplayer_stats').show();
 			console.log("TODO: Show Player Stats")
 		},
 		trackGame: function(ev) {
@@ -167,7 +167,9 @@ function(namespace, Backbone, Navigation) {
 				".players_list": new Player.Views.List( {collection: this.options.players} ),
 				".games_list": new Game.Views.List( {collection: this.options.games} )
 			});*/
-			return view.render();
+			return view.render().then(function(el) {
+				$('.lplayer_stats').hide();
+			});
 		},
 		initialize: function() {
 			//this.options.stats.bind("reset", function() {this.render();}, this);
