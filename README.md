@@ -79,3 +79,5 @@ This app comes with some default settings to automatically connect to the League
             }
         }
     }
+
+Place this file in the directory /assets/js/
