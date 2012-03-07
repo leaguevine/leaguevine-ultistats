@@ -5,8 +5,6 @@
  */
 (function(window) {
 
-"use strict";
-
 // Alias the libraries from the global object
 var Backbone = window.Backbone;
 var _ = window._;
@@ -55,7 +53,7 @@ function viewRender(root) {
     }
 
     // Resolve partials with the View element.
-    handler.resolveWith(root, root.el);
+    handler.resolveWith(root, [root.el]);
   }
 
   return {
@@ -264,7 +262,7 @@ var LayoutManager = Backbone.View.extend({
             view.__manager__.hasRendered = true;
           }
 
-          viewDeferred.resolveWith(view, view.el).then(viewResolve);
+          viewDeferred.resolveWith(view, [view.el]).then(viewResolve);
         }
 
         if (!view.__manager__.isManaged) {
@@ -372,7 +370,7 @@ var LayoutManager = Backbone.View.extend({
 
       // Once all subViews have been rendered, resolve this View's deferred.
       options.when(promises).then(function() {
-        viewDeferred.resolveWith(root, root.el);
+        viewDeferred.resolveWith(root, [root.el]);
       });
     });
 
