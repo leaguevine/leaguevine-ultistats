@@ -7,8 +7,9 @@ require([
 
   // Modules
   "modules/leaguevine",
-  "modules/team", //Requiring Team includes its dependents (e.g., Player)
-  "modules/tournament"
+  "modules/team", //Requiring Team includes its dependents (e.g., Player) and initializes its router.
+  "modules/tournament",
+  "modules/trackedgame"
 ],
 /*
  * The following callback is called after the dependices are loaded.
@@ -17,7 +18,7 @@ require([
  * but in this case we are defining the jQuery ready function which will execute
  * once everything has finished loading.
  */
-function(namespace, jQuery, Backbone, Leaguevine, Team, Tournament) {
+function(namespace, jQuery, Backbone, Leaguevine, Team, Tournament, TrackedGame) {
 	
 	var app = namespace.app; //Shorthanded app namespace.
 

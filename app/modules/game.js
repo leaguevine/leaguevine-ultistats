@@ -16,11 +16,21 @@ function(namespace, Backbone, Navigation) {
 	
 	Game.Model = Backbone.Model.extend({
 		defaults: {
-			tournament: {id: "", name: ""},
-			team_1: {id: "", name: ""},
+			id: "",
+			team_1: {
+				id: "",
+				name: ""
+			},
 			team_1_score: "",
-			team_2: {id: "", name: ""},
+			team_2: {
+				id: "",
+				name: ""
+			},
 			team_2_score: "",
+			tournament: {
+				id: "",
+				name: "",
+			},
 			start_time: "",
 			leaguevine_url: ""
 		},
@@ -87,7 +97,7 @@ function(namespace, Backbone, Navigation) {
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({href: "#editgame/"+gameId, name: "Edit"}),
 				".detail": new Game.Views.Detail( {model: game}),
-				".list_children": new Game.Views.Multilist({stats: {} })//TODO: add stats					
+				".list_children": new Game.Views.Multilist({model: game})//TODO: add stats					
 			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		}
@@ -97,30 +107,6 @@ function(namespace, Backbone, Navigation) {
 	//
 	// VIEWS
 	//
-/*
- * With Backbone.LayoutManager, a View's default render: function(layout){return layout(this).render();}
- * We should override render for anything more complex (like iterating a collection).
- * The following is an example view with some defaults explained.
-	Game.Views.AView = Backbone.View.extend({
-		template: "path/to/template",//Must specify the path to the template.
-		className: "some-class-name",//Each top-level View in our layout is always wrapped in a div. We can give it a class.
-		tagName: "div",//By default inserts the contents of our templates into a div. Can use another type.
-		serialize: function() {return this.model.toJSON();},//looked for by render()
-		render: function(layout) {return layout(this).render();},//Default render method.
-		//render: function(layout) {return layout(this).render(this.model.toJSON());},//Combines the previous two lines, i.e., doesn't need serialize.
-		initialize: function() { //It is necessary to bind a model's change to re-render the view because the model is fetched asynchronously.
-    		this.model.bind("change", function() {
-      			this.render();
-    		}, this);
-  		},
-		events: { click: "clickAction"}, //Bind this view's click to clickAction
-		clickAction: function(ev){ //some click handling logic},//Handle the click.
-	})
- */
-
-	Game.Views.Nav = Backbone.View.extend({//TODO: More!
-		template: "navbar/navbar"
-	});
 	Game.Views.Item = Backbone.View.extend({
 		template: "games/item",
 		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul.
@@ -158,16 +144,32 @@ function(namespace, Backbone, Navigation) {
 	Game.Views.Multilist = Backbone.View.extend({
 		template: "games/multilist",
 		events: {
-			"click .button_team_stats": "showTeamStats",
-			"click .button_player_stats": "showPlayerStats"
+			"click .bteam_stats": "showTeamStats",
+			"click .bplayer_stats": "showPlayerStats",
+			"click .btrack_game": "trackGame"
 		},
-		showTeamStats: function(ev){console.log("TODO: Show Team Stats")},
-		showPlayerStats: function(ev){console.log("TODO: Show Player Stats")},
+		showTeamStats: function(ev){
+			$('.lplayer_stats').hide();
+			$('.lteam_stats').show();
+			console.log("TODO: Show Team Stats")
+		},
+		showPlayerStats: function(ev){
+			$('.lteam_stats').hide();
+			$('.lplayer_stats').show();
+			console.log("TODO: Show Player Stats")
+		},
+		trackGame: function(ev) {
+			app.router.navigate("#track/"+this.model.id, true);
+		},
 		render: function(layout) {
-			var view = layout(this); //Get this view from the layout.
-			//We have this.options.stats
-			//view.insert(".lists", new Game.Views.List( {collection: this.options.games} ));
-			return view.render();
+			var view = layout(this);
+			/*this.setViews({
+				".players_list": new Player.Views.List( {collection: this.options.players} ),
+				".games_list": new Game.Views.List( {collection: this.options.games} )
+			});*/
+			return view.render().then(function(el) {
+				$('.lplayer_stats').hide();
+			});
 		},
 		initialize: function() {
 			//this.options.stats.bind("reset", function() {this.render();}, this);
