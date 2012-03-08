@@ -28,13 +28,15 @@ function(namespace, Backbone) {
 	//
 	Player.Model = Backbone.Model.extend({// If you want to overshadow some model methods or default values then do so here.
 		defaults: {// Include defaults for any attribute that will be rendered.
+			id: "",
 			first_name: "",
 			last_name: "",
 			nickname: "",
 			birth_date: "",
 			height: "",
 			weight: "",
-			leaguevine_url: ""
+			leaguevine_url: "",
+			number: ""
 		},
 		url: function() {//Our model URL does not conform to the default Collection.url + /this.id so we must define it here.
 			return app.api.root + "players/" + this.id + "/?access_token=" + app.api.d_token(); 
@@ -65,6 +67,11 @@ function(namespace, Backbone) {
 		//The Leaguevine API gives resp = {meta: Object, objects: [90 objects]}; We don't want meta.
 		//Each of objects is a JSON object with {id: some_id, info: "", leaguvine_url: "...", name: "player name", etc}
 		  if (resp.objects) {// Safety check ensuring only valid data is used
+			if (this.team) {
+				return _.map(resp.objects, function(obj){
+					return _.extend(obj.player,{number: obj.number});
+				});
+			}
 			return resp.objects;//Return the array of objects.
 		  }
 		  return this.models;//If we didn't get valid data, return whatever we have for models
