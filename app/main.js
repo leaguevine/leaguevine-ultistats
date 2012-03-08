@@ -18,7 +18,7 @@ require([
  * but in this case we are defining the jQuery ready function which will execute
  * once everything has finished loading.
  */
-function(namespace, jQuery, Backbone, Leaguevine, Team, Tournament, TrackedGame) {
+function(namespace, $, Backbone, Leaguevine, Team, Tournament, TrackedGame) {
 	
 	var app = namespace.app; //Shorthanded app namespace.
 
@@ -53,7 +53,7 @@ function(namespace, jQuery, Backbone, Leaguevine, Team, Tournament, TrackedGame)
 	// Treat the jQuery ready function as the entry point to the application.
 	// Inside this function, kick-off all initialization, everything up to this
 	// point should be definitions.
-	jQuery(function($) {
+	$(function() {
 		// Define your master router on the application namespace and trigger all
 		// navigation from this instance.
 		app.router = new Router();
