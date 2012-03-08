@@ -13,10 +13,11 @@ function(namespace, Backbone) {
 	/*
 	 * This module defines the API properties.
 	 */
+    var app = namespace.app;
 
   	// Create a new module
   	var Leaguevine = namespace.module();
-  	
+
   	Leaguevine.Router = Backbone.Router.extend({
 		
 		routes: {
@@ -35,6 +36,7 @@ function(namespace, Backbone) {
 			Backbone.history.navigate('teams', true);//After the token has been updated, navigate to some index site.
 		}
 	});
+    Leaguevine.router = new Leaguevine.Router();// INITIALIZE ROUTER
 
   	Leaguevine.API = {	
             root: "http://api.playwithlv.com/v1/",
