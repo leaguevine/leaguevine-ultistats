@@ -52,7 +52,7 @@ function(namespace, Backbone, Navigation, Game, TournTeam) {
 		},
 		listTournaments: function () {
 			app.tournaments = new Tournament.Collection();
-			app.tournaments.fetch(); 
+			app.tournaments.fetch();
 			
 			var myLayout = app.router.useLayout("nav_content");
 			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newtournament", name: "New"}));

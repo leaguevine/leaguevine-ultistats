@@ -27,18 +27,24 @@ function(namespace, Backbone, Player, Game) {
 			"track/:gameId": "trackGame",
 		},
 		trackGame: function (gameId) {
+			//TODO: check to see if app.trackedGame exists, and if it has the same id as gameId
+			//If so, use app.trackedGame, else create a new trackedGame.
 			var trackedGame = new Game.Model({id: gameId});
 			trackedGame.fetch();
 			//This router won't get called again unless manually refreshed,
 			//so pass the views as much data as they need.
 			var myLayout = app.router.useLayout("tracked_game");
 			myLayout.setViews({
-				".scoreboard": new TrackedGame.Views.Scoreboard({trackedGame:trackedGame}),
-				".player_area": new TrackedGame.Views.PlayerArea({trackedGame:trackedGame}),
-				".action_area": new TrackedGame.Views.ActionArea({trackedGame:trackedGame, show_main:true})
+				".sub_team_1": new TrackedGame.Views.SubTeam({model:trackedGame}),
+				".sub_team_2": new TrackedGame.Views.SubTeam({model:trackedGame}),
+				".t_game": new TrackedGame.Views.GameAction({model:trackedGame})
 			});
-			
-			myLayout.render(function(el) {$("#main").html(el);});
+			myLayout.render(function(el) {
+				$("#main").html(el);
+				$('.sub_team_1').hide();
+				$('.sub_team_2').hide();
+				$('.t_game').show();
+			});//TODO: then hide sub_team_2 and t_game
 		},
 	});
 	TrackedGame.router = new TrackedGame.Router();// INITIALIZE ROUTER
@@ -46,16 +52,30 @@ function(namespace, Backbone, Player, Game) {
 	//
 	// VIEWS
 	//
+	TrackedGame.Views.GameAction = Backbone.View.extend({
+		template: "trackedgame/game_action",
+		render: function(layout) {
+			var view = layout(this);
+			this.setViews({
+				".scoreboard": new TrackedGame.Views.Scoreboard({model: this.model}),
+				".player_area": new TrackedGame.Views.PlayerArea({model: this.model}),
+				".action_area": new TrackedGame.Views.ActionArea({model: this.model, showing_alternate: false})
+			});
+			return view.render();
+		},
+		//render will be called anytime the data change.
+		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
+	});
 	TrackedGame.Views.Scoreboard = Backbone.View.extend({
 		template: "trackedgame/scoreboard",
-		serialize: function() {return this.options.trackedGame.toJSON();},
-		initialize: function() {this.options.trackedGame.bind("change", function() {this.render();}, this);}
+		serialize: function() {return this.model.toJSON();},
+		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
 	});
 	TrackedGame.Views.PlayerArea = Backbone.View.extend({
 		template: "trackedgame/player_area",
-		serialize: function() {return this.options.trackedGame.toJSON();},
+		serialize: function() {return this.model.toJSON();},
 		//Get what we need from this.options.trackedGame and set the player buttons
-		initialize: function() {this.options.trackedGame.bind("change", function() {this.render();}, this);}
+		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
 	});
 	TrackedGame.Views.ActionArea = Backbone.View.extend({
 		template: "trackedgame/action_area",
@@ -75,20 +95,21 @@ function(namespace, Backbone, Player, Game) {
 		undo: function(ev){
 			console.log("TODO: undo")
 		},
-		misc: function(ev){
-			if (this.options.show_main) {
-				this.$('.alternate_action').show();
-				this.$('.main_action').hide();
-				this.options.show_main=false;
+		misc: function(ev){//toggle which buttons are being displayed.
+			if (this.options.showing_alternate) {
+				this.$('.alternate_action').hide();
+				this.$('.main_action').show();
+				this.options.showing_alternate=false;
 			}
 			else {
-				this.$('.main_action').show();
-				this.$('.alternate_action').hide();
-				this.options.show_main=true;
+				this.$('.main_action').hide();
+				this.$('.alternate_action').show();
+				this.options.showing_alternate=true;
 			}
 		},
 		score: function(ev){
 			console.log("TODO: score")
+			//ev.currentTarget.classList
 		},
 		completion: function(ev){
 			console.log("TODO: completion")
@@ -113,22 +134,38 @@ function(namespace, Backbone, Player, Game) {
 		},
 		injury: function(ev){
 			console.log("TODO: injury")
+			//show the substitution screen for a team.
+			$('.t_game').hide();
+			$('.sub_team_1').show();
+			$('.sub_team_2').hide();
 		},
 		
 		render: function(layout) {
 			var view = layout(this);
 			return view.render().then(function(el) {
-				if (this.options.show_main) {
-					this.$('.alternate_action').hide();
-					this.$('.main_action').show();
-				}
-				else {
-					this.$('.alternate_action').show();
-					this.$('.main_action').hide();
-				}
+				this.misc();
 			});
 		},
-		initialize: function() {this.options.trackedGame.bind("change", function() {this.render();}, this);}
+		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
 	});
+	
+	TrackedGame.Views.SubTeam = Backbone.View.extend({
+		template: "trackedgame/game_substitution",
+		initialize: function() {this.model.bind("change", function() {this.render();}, this);},
+		events: {
+			"click .sub_next": "sub_next",
+			"click .sub_done": "sub_done"
+		},
+		sub_next: function(ev){
+			$('.sub_team_1').hide();
+			$('.sub_team_2').show();
+		},
+		sub_done: function(ev){
+			$('.sub_team_1').hide();
+			$('.sub_team_2').hide();
+			$('.t_game').show();
+		}
+	});
+	
 	return TrackedGame;
 });

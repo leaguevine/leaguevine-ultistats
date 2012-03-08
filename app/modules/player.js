@@ -36,7 +36,8 @@ function(namespace, Backbone) {
 			height: "",
 			weight: "",
 			leaguevine_url: "",
-			number: ""
+			number: "",
+			on_field: false
 		},
 		url: function() {//Our model URL does not conform to the default Collection.url + /this.id so we must define it here.
 			return app.api.root + "players/" + this.id + "/?access_token=" + app.api.d_token(); 

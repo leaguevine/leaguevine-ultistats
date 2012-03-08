@@ -32,7 +32,8 @@ function(namespace, Backbone, Navigation) {
 				name: "",
 			},
 			start_time: "",
-			leaguevine_url: ""
+			leaguevine_url: "",
+			events: []
 		},
 		url: function() {
 				return app.api.root + "games/" + this.id + "/?access_token=" + app.api.d_token();

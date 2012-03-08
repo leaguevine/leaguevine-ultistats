@@ -24,7 +24,10 @@ function(namespace, Backbone, Navigation, Player, Game) {
 		defaults: {// Include defaults for any attribute that will be rendered.
 			name: "Team Name",
 			leaguevine_url: "",
-			info: ""
+			info: "",
+			has_possession: false,
+			players: new Player.Collection(),
+			games: new Game.Collection()
 		},
 		url: function() {//Our model URL does not conform to the default Collection.url + /this.id so we must define it here.
 			var temp_url = app.api.root + "teams/";
@@ -82,8 +85,8 @@ function(namespace, Backbone, Navigation, Player, Game) {
 		},
 		showTeam: function (teamId) {
 			//Prepare the data.
-			if (!app.teams) {app.teams = new Team.Collection();}//Will create an empty collection.
-			if (!app.teams.get(teamId)) {app.teams.add( [{id: parseInt(teamId)}] );}//Insert this team into the collection.
+			if (!app.teams) {app.teams = new Team.Collection();}//In case we were navigated to directly, recreate the top-level data.
+			if (!app.teams.get(teamId)) {app.teams.add( [{id: parseInt(teamId)}] );}
 			team = app.teams.get(teamId);
 			team.fetch();
 			team.players = new Player.Collection([],{team: team});
