@@ -194,3 +194,198 @@ ul.obj-list {
 .titlebar .add a p{
     display: none;
 }
+
+/* =============================================================================
+   Game Tracking
+   ========================================================================== */
+.scoreboard {
+    height: 25px;
+}
+    .scoreboard .name {
+        float: left;
+        width: 34%;
+        padding: 5px;
+        overflow: hidden;
+    }
+
+    .scoreboard .team1 {
+        text-align: right;
+    }
+
+    .scoreboard .score {
+        float: left;
+        width: 12%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        text-align: center;
+    }
+
+    .scoreboard .last_action {
+        clear: both;
+        text-align: center;
+    }
+
+.player_area {
+    clear: both;
+    margin-top: 15px;
+    width: 60%;
+    border: 1px solid #c3c3c3;
+    float: left;
+}
+
+.alternate_action,
+.main_action {
+    position: absolute;
+    top: 40px;
+    right: 0px;
+    width: 40%;
+}
+
+.alternate_action {
+    display: none;
+}
+
+.management {
+    clear: both;
+    padding-top: 15px;
+}
+
+.track {
+    height: 100%;
+    display: block;
+    position: absolute;
+    height:auto;
+    bottom:0;
+    top:0;
+    left:0;
+    right:0;
+}
+
+    .track p {
+        margin: 0px;
+    }
+
+    .track button {
+        border: 1px solid #a9a9a9;
+        background-color: white;
+        padding: 12px 5px;
+        text-align: center;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        font-size: 12px;
+        font-weight: bold;
+        overflow: hidden;
+        word-wrap: none;
+    }
+
+        .track button:active {
+            background-color: #0377cc;
+            color: white !important;
+        }
+
+        .track .player_buttons {
+            text-align: center;
+        }
+
+        .track button.player {
+            padding: 5px;
+            float: middle;
+        }
+        .track .player_buttons li:nth-of-type(odd) button{
+            float: left;
+            margin-left: 5px;
+        }
+        .track .player_buttons li:nth-of-type(even) button{
+            float: right;
+            margin-right: 5px;
+        }
+
+            .track button.player .player_name{
+                display: block;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+                
+            .track button.player .player_number{
+                display: block;
+                overflow: hidden;
+                white-space: nowrap;
+                font-size: 10px;
+                color: #a9a9a9;
+            }
+
+    .track .main_action,
+    .track .alternate_action {
+        text-align: center;
+    }
+
+        .track .player_area button {
+            width: 45%;
+            color: #767676;
+            margin-top: 10px;
+        }
+
+        .track .main_action button,
+        .track .alternate_action button {
+            margin-bottom: 10px;
+            width: 90%;
+        }
+
+        .track .management button.misc,
+        .track .main_action button,
+        .track .alternate_action button {
+            color: #073962;
+        }
+
+            .track .main_action button.score {
+                color: #0377cc;
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+
+        .track .management {
+            margin-left: 5px;
+        }
+
+        .track .management button {
+            width: 29%;
+        }
+
+            .track .management button.undo {
+                color: #750808;
+            }
+
+    .track .offense_teamname {
+        clear: both;
+        text-align: center;
+        padding-top: 5px;
+        margin-bottom: 5px;
+    }
+        .track .offense_teamname p{
+            color: #767676;
+            font-size: 10px;
+        }
+
+.player_prompt {
+    text-align: center;
+}
+
+    .player_prompt p{
+        font-size: 11px;
+        margin-top: 5px;
+        font-weight: bold;
+    }
+
+.action_prompt {
+    text-align: center;
+}
+
+    .action_prompt p{
+        font-size: 11px;
+        margin-top: 5px;
+        font-weight: bold;
+    }
+
+#score_prompt {
+    margin-top: 8px;
+}
