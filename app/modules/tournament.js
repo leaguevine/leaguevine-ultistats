@@ -6,13 +6,14 @@ define([
 
   // Modules
   "modules/navigation",
+  "modules/title",
   "modules/game",
   "modules/tournteam",
 
   // Plugins
   "use!plugins/backbone.layoutmanager"
 ],
-function(namespace, Backbone, Navigation, Game, TournTeam) {
+function(namespace, Backbone, Navigation, Title, Game, TournTeam) {
 	var app = namespace.app;
 	var Tournament = namespace.module();
 	
@@ -56,6 +57,7 @@ function(namespace, Backbone, Navigation, Game, TournTeam) {
 			
 			var myLayout = app.router.useLayout("nav_content");
 			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newtournament", name: "New"}));
+			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Tournaments"}));
 			myLayout.view(".content", new Tournament.Views.List ({collection: app.tournaments}));
 			myLayout.render(function(el) {$("#main").html(el);});
 		},
@@ -72,6 +74,7 @@ function(namespace, Backbone, Navigation, Game, TournTeam) {
 			var myLayout = app.router.useLayout("nav_detail_list");
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({href: "#edittournament/"+tournamentId, name: "Edit"}),
+			    ".titlebar": new Title.Views.Titlebar({title: tournament.get("name"), left_btn_txt: "list", left_btn_class: "back", left_btn_href:"#tournaments"}),
 				".detail": new Tournament.Views.Detail( {model: tournament}),
 				".list_children": new Tournament.Views.Multilist({ games: tournament.games, teams: tournament.teams })					
 			});
