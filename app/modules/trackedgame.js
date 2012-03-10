@@ -27,23 +27,22 @@ function(namespace, Backbone, Player, Game) {
 			"track/:gameId": "trackGame",
 		},
 		trackGame: function (gameId) {
-			//TODO: check to see if app.trackedGame exists, and if it has the same id as gameId
-			//If so, use app.trackedGame, else create a new trackedGame.
-			var trackedGame = new Game.Model({id: gameId});
-			trackedGame.fetch();
-			//This router won't get called again unless manually refreshed,
-			//so pass the views as much data as they need.
+			if ((!app.trackedGame) || (app.trackedGame.id != gameId)){
+				app.trackedGame = new Game.Model({id: gameId});
+			}
+			app.trackedGame.fetch();
+			//This router might not get called again for a while if user stays on track-game screen.
 			var myLayout = app.router.useLayout("tracked_game");
 			myLayout.setViews({
-				".sub_team_1": new TrackedGame.Views.SubTeam({model:trackedGame}),
-				".sub_team_2": new TrackedGame.Views.SubTeam({model:trackedGame}),
-				".t_game": new TrackedGame.Views.GameAction({model:trackedGame})
+				".sub_team_1": new TrackedGame.Views.SubTeam({model:app.trackedGame, team_ix:1}),
+				".sub_team_2": new TrackedGame.Views.SubTeam({model:app.trackedGame, team_ix:2}),
+				".t_game": new TrackedGame.Views.GameAction({model:app.trackedGame})
 			});
 			myLayout.render(function(el) {
 				$("#main").html(el);
-				$('.sub_team_1').hide();
+				//$('.sub_team_1').hide();
 				$('.sub_team_2').hide();
-				$('.t_game').show();
+				$('.t_game').hide();
 			});//TODO: then hide sub_team_2 and t_game
 		},
 	});
@@ -76,6 +75,7 @@ function(namespace, Backbone, Player, Game) {
 		serialize: function() {return this.model.toJSON();},
 		//Get what we need from this.options.trackedGame and set the player buttons
 		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
+		//ev.currentTarget.classList
 	});
 	TrackedGame.Views.ActionArea = Backbone.View.extend({
 		template: "trackedgame/action_area",
@@ -109,7 +109,6 @@ function(namespace, Backbone, Player, Game) {
 		},
 		score: function(ev){
 			console.log("TODO: score")
-			//ev.currentTarget.classList
 		},
 		completion: function(ev){
 			console.log("TODO: completion")
@@ -157,13 +156,29 @@ function(namespace, Backbone, Player, Game) {
 			"click .sub_done": "sub_done"
 		},
 		sub_next: function(ev){
-			$('.sub_team_1').hide();
-			$('.sub_team_2').show();
+			if (this.options.team_ix==1) {
+				$('.sub_team_1').hide();
+				$('.sub_team_2').show();
+			}
+			else {
+				$('.sub_team_2').hide();
+				$('.sub_team_1').show();
+			}
 		},
 		sub_done: function(ev){
 			$('.sub_team_1').hide();
 			$('.sub_team_2').hide();
 			$('.t_game').show();
+		},
+		render: function(layout) {
+			var view = layout(this); //Get this view from the layout.
+			var this_team = this.options.team_ix==1 ? this.model.attributes.team_1 : this.model.attributes.team_2;
+			//this_team.attributes.players.each(function(player) {
+			//	view.insert("ul .off_field", new Player.Views.Item({
+			//		model: player
+			//	}));
+			//});
+			return view.render(this_team.toJSON());
 		}
 	});
 	

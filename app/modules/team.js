@@ -26,8 +26,8 @@ function(namespace, Backbone, Navigation, Player, Game) {
 			leaguevine_url: "",
 			info: "",
 			has_possession: false,
-			players: new Player.Collection(),
-			games: new Game.Collection()
+			players: [],
+			games: []
 		},
 		url: function() {//Our model URL does not conform to the default Collection.url + /this.id so we must define it here.
 			var temp_url = app.api.root + "teams/";

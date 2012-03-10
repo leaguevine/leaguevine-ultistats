@@ -6,31 +6,25 @@ define([
 
   // Modules
   "modules/navigation",
+  "modules/team",
+  "modules/tournament",
+  "modules/gameevent",
   
   // Plugins
   "use!plugins/backbone.layoutmanager"
 ],
-function(namespace, Backbone, Navigation) {
+function(namespace, Backbone, Navigation, Team, Tournament, GameEvent) {
 	var app = namespace.app;
 	var Game = namespace.module();
 	
 	Game.Model = Backbone.Model.extend({
 		defaults: {
 			id: "",
-			team_1: {
-				id: "",
-				name: ""
-			},
+			team_1: {id:"", name:"", players: []},
 			team_1_score: "",
-			team_2: {
-				id: "",
-				name: ""
-			},
+			team_2: {id:"", name:"", players: []},
 			team_2_score: "",
-			tournament: {
-				id: "",
-				name: "",
-			},
+			tournament: {},
 			start_time: "",
 			leaguevine_url: "",
 			events: []
@@ -38,7 +32,13 @@ function(namespace, Backbone, Navigation) {
 		url: function() {
 				return app.api.root + "games/" + this.id + "/?access_token=" + app.api.d_token();
 				//TODO: Need a URL for making a new game.
-			}
+		},
+		parse: function(resp, xhr){
+			return resp;
+			// TODO: overwrite the parse to build a model with nested models.
+			// Only nest models that have API equivalents
+			// 
+		}
 	});
 	
 	Game.Collection = Backbone.Collection.extend({

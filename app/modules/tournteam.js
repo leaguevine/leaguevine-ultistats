@@ -18,7 +18,7 @@ function(namespace, Backbone, Team) {
 	//
 	// MODEL
 	//
-	TournTeam.Model = Team.Model.extend({
+	TournTeam.Model = Backbone.Model.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
 			team: {id: "", name:""},
 			final_standing: "",
@@ -33,7 +33,7 @@ function(namespace, Backbone, Team) {
 	//
 	// COLLECTION
 	//
-	TournTeam.Collection = Team.Collection.extend({
+	TournTeam.Collection = Backbone.Collection.extend({
 		model: TournTeam.Model,
 		url: function() {// It is necessary to define the URL so that we can get the data from the API using .fetch
 			return app.api.root + "tournament_teams/?" + "tournament_ids=%5B" + this.tournament.id + "%5D&access_token=" + app.api.d_token();
