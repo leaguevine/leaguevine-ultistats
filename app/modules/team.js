@@ -6,6 +6,7 @@ define([
 
   // Modules
   "modules/navigation",
+  "modules/title",
   "modules/player",
   "modules/game",
 
@@ -14,7 +15,7 @@ define([
 ],
 //Return the team module as an object or function.
 //We return it as an object, see the bottom of this callback.
-function(namespace, Backbone, Navigation, Player, Game) {
+function(namespace, Backbone, Navigation, Title, Player, Game) {
 	var app = namespace.app;
 	var Team = namespace.module();
 	//
@@ -80,6 +81,7 @@ function(namespace, Backbone, Navigation, Player, Game) {
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
 			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newteam", name: "New"}));
+			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Teams", right_btn_href: "#newteam", right_btn_class: "add"}));
 			myLayout.view(".content", new Team.Views.List ({collection: app.teams}));//pass the List view a collection of (fetched) teams.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
@@ -99,7 +101,8 @@ function(namespace, Backbone, Navigation, Player, Game) {
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({href: "#editteam/"+teamId, name: "Edit"}),
 				".detail": new Team.Views.Detail( {model: team}),
-				".list_children": new Team.Views.Multilist({ players: team.players, games: team.games})					
+				".list_children": new Team.Views.Multilist({ players: team.players, games: team.games}), 
+                ".titlebar": new Title.Views.Titlebar({title: team.get("name"), left_btn_href:"#teams", left_btn_class: "back", left_btn_txt: "Teams", right_btn_href: "#editteam/"+teamId, right_btn_txt: "Edit"})
 			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
@@ -112,6 +115,7 @@ function(namespace, Backbone, Navigation, Player, Game) {
 				team = app.teams.get(teamId);
 				team.fetch();
 				myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#teams/"+teamId, name: "Cancel"}));
+                myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Edit", left_btn_href: "#teams/"+teamId, left_btn_class: "back", left_btn_txt: "Cancel"}));
 			}
 			else {
 				team = new Team.Model({season_id: app.api.season_id});
