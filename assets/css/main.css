@@ -106,6 +106,7 @@ ul.obj-list {
 
 .titlebar { 
     background: -webkit-gradient(linear, left top,left bottom, from(#afbbcb), to(#6e86a4), color-stop(0.48, #8b9db5), color-stop(0.5, #8195af));
+    background: -moz-linear-gradient(#afbbcb, #6e86a4);
     border-bottom: 1px solid #22374a;
     height: 42px;
     text-align: center;
@@ -124,6 +125,7 @@ ul.obj-list {
 
 .titlebar .btn a{ 
     background: -webkit-gradient(linear, left top, left bottom, from(#9fb3cc), to(#5b80ab), color-stop(0.5, #6b8bb2), color-stop(0.51, #597eaa)); 
+    background: -moz-linear-gradient(#9fb3cc, #5b80ab);
     border: 1px solid rgba(0,0,0, 0.4);  
     display: block;
     height: 26px; 
@@ -133,6 +135,7 @@ ul.obj-list {
     position: relative; 
     text-decoration: none;
     -webkit-border-radius: 5px; 
+    -moz-border-radius: 5px;
     z-index: 3;
 }
 
@@ -149,14 +152,18 @@ ul.obj-list {
 
 #title_left_btn.back #title_left_pointer span{ 
     background: -webkit-gradient(linear, left top, right bottom, from(#9fb3cc), to(#5b80ab), color-stop(0.5, #6b8bb2), color-stop(0.51, #597eaa));   
+    background: -moz-linear-gradient(#9fb3cc, #638bb9);
     border: 1px solid rgba(0,0,0, 0.4); 
     border-right: 0; 
     border-top: 0;
     display: block; 
     height: 16px; 
     -webkit-border-radius: 1px; 
+    -moz-border-radius: 1px;
     -webkit-box-shadow: 0 1px 0 rgba(255,255,255, 0.25);
+    -moz-box-shadow: 0 1px 0 rgba(255,255,255, 0.25);
     -webkit-transform: skew(15deg);
+    -moz-transform: skew(15deg);
     width: 15px; 
     z-index: 2;
 } 
@@ -171,6 +178,7 @@ ul.obj-list {
     position: absolute; 
     top: 11px; 
     -webkit-transform: rotate(51deg);
+    -moz-transform: rotate(51deg);
     z-index: 1; 
 }
 
