@@ -74,9 +74,9 @@ function(namespace, Backbone, Navigation, Title, Game, TournTeam) {
 			var myLayout = app.router.useLayout("nav_detail_list");
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({href: "#edittournament/"+tournamentId, name: "Edit"}),
-			    ".titlebar": new Title.Views.Titlebar({title: tournament.get("name"), left_btn_txt: "list", left_btn_class: "back", left_btn_href:"#tournaments"}),
 				".detail": new Tournament.Views.Detail( {model: tournament}),
-				".list_children": new Tournament.Views.Multilist({ games: tournament.games, teams: tournament.teams })					
+				".list_children": new Tournament.Views.Multilist({ games: tournament.games, teams: tournament.teams }),					
+				".titlebar": new Title.Views.Titlebar({title: tournament.get("name"), left_btn_href:"#tournaments", left_btn_class:"back", left_btn_txt:"Tournaments"}),
 			});
 			myLayout.render(function(el) {$("#main").html(el);});
 		}
