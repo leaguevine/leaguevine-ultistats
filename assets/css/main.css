@@ -41,6 +41,54 @@ ul.obj-list {
             color: black;
         }
 
+/* ------------------- Forms ------------------- */
+form {
+    padding: 15px;
+}
+
+form label {
+    color: #767676;
+    display: block;
+    font-weight: bold;
+    margin-bottom: 3px;
+    margin-top: 8px;
+}
+
+form input {
+    height: 25px;
+    width: 80%;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+}
+
+form button {
+    background-color: #d7d9da;
+    background: -moz-linear-gradient(#e9ebed, #d7d9da);
+    background: -webkit-gradient(linear, left top, left bottom, from(#e9ebed), to(#d7d9da), color-stop(0.5, #e9ebed), color-stop(0.51, #d7d9da)); 
+    border: 2px solid #767676;
+    font-size: 14px;
+    font-weight: bold;
+    height: 35px;
+    margin-top: 8px;
+    width: 80%;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+}
+
+    button.save {
+        background-color: #71b574;
+        background: -webkit-gradient(linear, left top, left bottom, from(#79c37d), to(#71b574), color-stop(0.5, #79c37d), color-stop(0.51, #71b574)); 
+        background: -moz-linear-gradient(#79c37d, #71b574);
+        color: white;
+    }
+
+    button.delete {
+        background-color: #b71a1a;
+        background: -webkit-gradient(linear, left top, left bottom, from(#d01e1e), to(#b71a1a), color-stop(0.5, #d01e1e), color-stop(0.51, #b71a1a)); 
+        background: -moz-linear-gradient(#d01e1e, #b71a1a);
+        color: white;
+    }
+
 /* =============================================================================
    Page loading spinner
    ========================================================================== */
@@ -299,7 +347,7 @@ ul.obj-list {
     }
 
         .track button:active {
-            background-color: #0377cc;
+            background-color: #0377cc !important;
             color: white !important;
         }
 
