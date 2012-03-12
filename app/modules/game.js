@@ -190,11 +190,15 @@ function(namespace, Backbone, Navigation, Title) {
 		showTeamStats: function(ev){
 			$('.lplayer_stats').hide();
 			$('.lteam_stats').show();
+            $('.list_children button').removeClass('is_active');
+            $('button.bteam_stats').addClass('is_active');
 			console.log("TODO: Show Team Stats")
 		},
 		showPlayerStats: function(ev){
 			$('.lteam_stats').hide();
 			$('.lplayer_stats').show();
+            $('.list_children button').removeClass('is_active');
+            $('button.bplayer_stats').addClass('is_active');
 			console.log("TODO: Show Player Stats")
 		},
 		trackGame: function(ev) {

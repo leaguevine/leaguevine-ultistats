@@ -130,18 +130,24 @@ function(namespace, Backbone, Navigation, Title, Game, TournTeam) {
 			$('.lbrackets').hide();
 			$('.lpools').hide();
 			$('.lstandings').show();
+            $('.list_children button').removeClass('is_active');
+            $('button.bstandings').addClass('is_active');
 			//console.log("TODO: Show Standings");
 		},
 		showPools: function(ev){
 			$('.lstandings').hide();
 			$('.lbrackets').hide();
 			$('.lpools').show();
+            $('.list_children button').removeClass('is_active');
+            $('button.bpools').addClass('is_active');
 			//console.log("TODO: Show Pools");
 		},
 		showBrackets: function(ev){
 			$('.lstandings').hide();
 			$('.lpools').hide();
 			$('.lbrackets').show();
+            $('.list_children button').removeClass('is_active');
+            $('button.bbrackets').addClass('is_active');
 			//console.log("TODO: Show Brackets")
 		},
 		render: function(layout) {
