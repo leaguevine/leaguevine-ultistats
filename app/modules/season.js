@@ -18,7 +18,8 @@ function(namespace, Backbone, Leaguevine) {
 			name: '',
 			start_date: '',
 			end_date: ''
-		}
+		},
+		urlRoot: Leaguevine.API.root + "seasons"
 	});
 	
 	Season.Collection = Backbone.Collection.extend({
