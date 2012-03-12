@@ -6,68 +6,48 @@ define([
 
   // Modules
   "modules/navigation",
-  "modules/team",
+  "modules/season",
   "modules/tournament",
-  "modules/gameevent",
-  
-  // Plugins
-  "use!plugins/backbone.layoutmanager"
+  "modules/team",
+  "modules/event"
 ],
-function(namespace, Backbone, Navigation, Team, Tournament, GameEvent) {
+function(namespace, Backbone, Navigation, Season, Tournament, Team) {
 	var app = namespace.app;
 	var Game = namespace.module();
 	
-	Game.Model = Backbone.Model.extend({
-		defaults: {
-			id: "",
-			team_1: {id:"", name:"", players: []},
+	Game.Model = Backbone.RelationalModel.extend({
+		//has children team_1, team_2, tournament, season, events (not included)
+		relations: [
+			{
+				key: 'season',
+				relatedModel: Season.Model,
+				type: Backbone.HasOne
+			},
+			{
+				key: 'tournament',
+				relatedModel: Tournament.Model,
+				type: Backbone.HasOne
+			},
+			{
+				key: 'team_1',
+				relatedModel: Team.Model,
+				type: Backbone.HasOne
+			},
+			{
+				key: 'team_2',
+				relatedModel: Team.Model,
+				type: Backbone.HasOne
+			}
+		],
+		defaults: {//other attributes that are not models.
 			team_1_score: "",
-			team_2: {id:"", name:"", players: []},
 			team_2_score: "",
-			tournament: {},
-			start_time: "",
-			leaguevine_url: "",
-			events: []
-		},
-		url: function() {
-				return app.api.root + "games/" + this.id + "/?access_token=" + app.api.d_token();
-				//TODO: Need a URL for making a new game.
-		},
-		parse: function(resp, xhr){
-			return resp;
-			// TODO: overwrite the parse to build a model with nested models.
-			// Only nest models that have API equivalents
-			// 
+			start_time: ""
 		}
 	});
 	
 	Game.Collection = Backbone.Collection.extend({
 		model: Game.Model,
-		url: function() {
-			var temp_url = app.api.root + "games/?";
-			var url_options = "";
-			if (this.tournament) {url_options = url_options + "&tournament_id=" + this.tournament.id;}
-			if (this.team) {url_options = url_options + "&team_ids=%5B" + this.team.id + "%5D";}
-			if (this.pool) {url_options = url_options + "&pool_id=" + this.pool.id}
-			if (this.bracket) {url_options = url_options + "&bracket_id=" + this.bracket.id}
-			url_options = url_options + "&access_token=" + app.api.d_token();
-			return temp_url + url_options.substring(1);
-		},
-		parse: function(resp, xhr) {
-		  if (resp.objects) {
-			return resp.objects;
-		  }
-		  return this.models;
-		},
-		initialize: function(models, options) {
-		  if (models) {
-			this.models = models;
-		  }
-		  if (options) {
-		  	if (options.tournament) {this.tournament = options.tournament;}
-			if (options.team) {this.team = options.team;}
-		  }
-		},
 		comparator: function(game) {// Define how items in the collection will be sorted.
 		  return game.get("start_time");
 		}

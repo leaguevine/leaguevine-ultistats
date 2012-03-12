@@ -5,22 +5,29 @@ define([
   "use!backbone",
 
   // Modules
-  "modules/team",
-
-  // Plugins
-  "use!plugins/backbone.layoutmanager"
+  "modules/tournament",
+  "modules/team"
 ],
-// This module has no router. It is merely a data extension of the team module.
-// A separate module is needed because the API call is different.
-function(namespace, Backbone, Team) {
+function(namespace, Backbone, Tournament, Team) {
 	var app = namespace.app;
 	var TournTeam = namespace.module();
 	//
 	// MODEL
 	//
-	TournTeam.Model = Backbone.Model.extend({
+	TournTeam.Model = Backbone.RelationalModel.extend({
+		relations: [
+			{
+				key: 'tournament',
+				relatedModel: Tournament.Model,
+				type: Backbone.HasOne
+			},
+			{
+				key: 'team',
+				relatedModel: Team.Model,
+				type: Backbone.HasOne
+			}
+		],
 		defaults: {// Include defaults for any attribute that will be rendered.
-			team: {id: "", name:""},
 			final_standing: "",
 			seed: ""
 		},

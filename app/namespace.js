@@ -4,7 +4,9 @@ define([
   "use!underscore",
   "use!backbone",
   // Plugins
-  "use!plugins/backbone.layoutmanager"
+  "use!plugins/backbone.layoutmanager",
+  "use!plugins/backbone-tastypie",
+  "use!plugins/backbone-relational"
 ],
 
 function($, _, Backbone) {

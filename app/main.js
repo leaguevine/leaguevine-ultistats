@@ -1,15 +1,14 @@
 require([
-  "namespace",
+	"namespace",
 
-  // Libs
-  "jquery",
-  "use!backbone",
+	// Libs
+	"jquery",
+	"use!backbone",//depends on underscore so _ is loaded too
 
-  // Modules
-  "modules/leaguevine",
-  "modules/team", //Requiring Team includes its dependents (e.g., Player) and initializes its router.
-  "modules/tournament",
-  "modules/trackedgame"
+	// Modules - Only need Leaguevine and modules with Routers
+	"modules/leaguevine",
+	"modules/season",
+	"modules/team"
 ],
 /*
  * The following callback is called after the dependices are loaded.
@@ -18,7 +17,7 @@ require([
  * but in this case we are defining the jQuery ready function which will execute
  * once everything has finished loading.
  */
-function(namespace, $, Backbone, Leaguevine, Team, Tournament, TrackedGame) {
+function(namespace, $, Backbone, Leaguevine, Season) {
 	
 	var app = namespace.app; //Shorthanded app namespace.
 
@@ -47,7 +46,11 @@ function(namespace, $, Backbone, Leaguevine, Team, Tournament, TrackedGame) {
 			"": "index",
 		},
 		
-		index: function () {Backbone.history.navigate('teams', true);} // Only works if I have a route to match teams
+		index: function () {
+			app.season = new Season.Model({id: app.season_id});
+			app.season.fetch();
+			Backbone.history.navigate('teams', true); // Only works if I have a route to match teams
+		}
 	});	
 
 	// Treat the jQuery ready function as the entry point to the application.

@@ -1,38 +1,49 @@
 // Set the require.js configuration for your application.
 require.config({
-  // Initialize the application with the main application file
-  deps: ["main"],
+	// Initialize the application with the main application file
+	deps: ["main"], //Will call main.js as soon as require() is defined.
 
-  paths: {
-    // JavaScript folders
-    libs: "../assets/js/libs",
-    plugins: "../assets/js/plugins",
+	paths: { //Tell require.js where to find scripts
+		// JavaScript folders
+		libs: "../assets/js/libs",
+		plugins: "../assets/js/plugins",
 
-    // Libraries
-    jquery: "../assets/js/libs/jquery",
-    underscore: "../assets/js/libs/underscore",
-    backbone: "../assets/js/libs/backbone",
+		// Libraries
+		jquery: "../assets/js/libs/jquery",
+		underscore: "../assets/js/libs/underscore",
+		backbone: "../assets/js/libs/backbone",
+	
+		// 'use.js' for loading non-AMD
+		use: "../assets/js/plugins/use" //https://github.com/tbranyen/use.js
+	},
 
-    // Shim Plugin
-    use: "../assets/js/plugins/use"
-  },
-
-  use: {
-    backbone: {
-      deps: ["use!underscore", "jquery"],
-      attach: "Backbone"
-    },
-
-    underscore: {
-      attach: "_"
-    },
+	use: { //Define configuration for each non-AMD script.
+		//Module's require defines these with (e.g.) use!underscore
+		underscore: {//If something use!underscore, it'll have access to _
+			attach: "_"
+		},
+		
+		backbone: {//If something use!backbone, it'll have access to Backbone
+			deps: ["use!underscore", "jquery"],
+			attach: function(_, $) {
+				return Backbone;
+			}
+		},
     
-    "plugins/backbone.layoutmanager": {//a plugin which is a fancy extension of regular Backbone.View
-      deps: ["use!backbone"]
-    },
+		"plugins/backbone.layoutmanager": {//extends Backbone, probably will not be called.
+			deps: ["use!backbone"]
+		},
 
-    "plugins/jquery.ba-throttle-debounce": {//throttling is used to limit a function execution even if it is called very very often.
-      deps: ["jquery"]
-    }
-  }
+		"plugins/jquery.ba-throttle-debounce": {
+			deps: ["jquery"]
+		},
+		
+		"plugins/backbone-tastypie": {
+			deps: ["use!backbone"]
+		},
+		
+		"plugins/backbone-relational": {
+			deps: ["use!backbone", "use!plugins/backbone-tastypie"]
+		}
+	}
 });

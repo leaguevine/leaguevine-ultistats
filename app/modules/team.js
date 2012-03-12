@@ -1,38 +1,35 @@
-define([
+require([
   "namespace",
 
   // Libs
   "use!backbone",
 
   // Modules
+  "modules/leaguevine",
   "modules/navigation",
-  "modules/player",
-  "modules/game",
-
-  // Plugins
-  "use!plugins/backbone.layoutmanager"
+  "modules/season"
 ],
-//Return the team module as an object or function.
-//We return it as an object, see the bottom of this callback.
-function(namespace, Backbone, Navigation, Player, Game) {
+
+function(namespace, Backbone, Leaguevine, Navigation, Season) {
 	var app = namespace.app;
 	var Team = namespace.module();
 	//
 	// MODEL
 	//
-	Team.Model = Backbone.Model.extend({// If you want to overshadow some model methods or default values then do so here.
+	Team.Model = Backbone.RelationalModel.extend({
+		relations: [//tournaments through many-to-many tournteams, season, players through many-to-many teamplayers, games as one-to-many
+			{
+				key: 'season',
+				relatedModel: Season.Model,
+				type: Backbone.HasOne,
+				reverseRelation: {
+	                key: 'season'
+               }
+            }
+		],
 		defaults: {// Include defaults for any attribute that will be rendered.
-			name: "Team Name",
-			leaguevine_url: "",
-			info: "",
-			has_possession: false,
-			players: [],
-			games: []
-		},
-		url: function() {//Our model URL does not conform to the default Collection.url + /this.id so we must define it here.
-			var temp_url = app.api.root + "teams/";
-			if (this.id) {temp_url = temp_url + this.id + "/";}
-			return temp_url + "?access_token=" + app.api.d_token(); 
+			name: "",
+			info: ""
 		}
 	});
   
@@ -41,18 +38,13 @@ function(namespace, Backbone, Navigation, Player, Game) {
 	//
 	Team.Collection = Backbone.Collection.extend({
 		model: Team.Model,
-		url: function() {// It is necessary to define the URL so that we can get the data from the API using .fetch
+		urlRoot: Leaguevine.API.root + "teams",
+		/*url: function() {// It is necessary to define the URL so that we can get the data from the API using .fetch
 			var temp_url = app.api.root + "teams/?";
 			var url_options = "";
 			url_options = url_options + "&season_id=" + app.api.season_id + "&limit=200" + "&access_token=" + app.api.d_token();
 			return temp_url + url_options.substring(1);
-		},
-		parse: function(resp, xhr) {
-		  if (resp.objects) {
-			return resp.objects;//Return the array of objects.
-		  }
-		  return this.models;//If we didn't get valid data, return whatever we have for models
-		},
+		},*/
 		comparator: function(team) {// Define how items in the collection will be sorted.
 		  return team.get("name").toLowerCase();
 		}
@@ -71,6 +63,9 @@ function(namespace, Backbone, Navigation, Player, Game) {
 			"editteam/:teamId": "editTeam"
 		},
 		listTeams: function () {//Route for all teams.
+			if (!app.season) {
+				app.season = new Season.Model({id: app.season_id});
+			}
 			// Prepare the data.
 			// TODO: Eventually we will use a local storage so fetching will get from a local db
 			// instead of an API. For now, get from the API every time (very slow).

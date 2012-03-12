@@ -5,6 +5,8 @@
  */
 (function(window) {
 
+"use strict";
+
 // Alias the libraries from the global object
 var Backbone = window.Backbone;
 var _ = window._;

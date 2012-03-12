@@ -9,7 +9,9 @@ define([
   "modules/game",
 
   // Plugins
-  "use!plugins/backbone.layoutmanager"
+  "use!plugins/backbone.layoutmanager",
+  "use!plugins/backbone-relational",
+	"use!plugins/backbone-tastypie"
 ],
 /*
 This module is an interface for tracking game action.

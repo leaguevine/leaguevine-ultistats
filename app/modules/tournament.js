@@ -5,44 +5,38 @@ define([
   "use!backbone",
 
   // Modules
+  "modules/leaguevine",
   "modules/navigation",
-  "modules/game",
-  "modules/tournteam",
-
-  // Plugins
-  "use!plugins/backbone.layoutmanager"
+  "modules/season"
 ],
-function(namespace, Backbone, Navigation, Game, TournTeam) {
+function(namespace, Backbone, Leaguevine, Navigation, Season) {
 	var app = namespace.app;
 	var Tournament = namespace.module();
 	
-	Tournament.Model = Backbone.Model.extend({
+	Tournament.Model = Backbone.RelationalModel.extend({
+		//only has a season as child
+		//is backref'd by game, and many-to-many to Team throuh TournTeam
+		relations: [
+			{
+				key: 'season',
+				relatedModel: Season.Model,
+				type: Backbone.HasOne
+			}
+		],
 		defaults: {
 			name: '',
-			leaguevine_url: '',
 			start_date: '',
 			end_date: '',
 			info: ''
-		},
-		url: function() {
-			return app.api.root + "tournaments/" + this.id + "/?access_token=" + app.api.d_token();
 		}
 	});
 	
 	Tournament.Collection = Backbone.Collection.extend({
 		model: Tournament.Model,
-		url: function() {
-			return app.api.root + "tournaments/?season_id=" + app.api.season_id + "&limit=200&access_token=" + app.api.d_token();
-		},
-		parse: function(resp, xhr) {
-		  if (resp.objects) {
-			return resp.objects;
-		  }
-		  return this.models;
-		},
 		comparator: function(tournament) {
 		  return tournament.get("name").toLowerCase();
-		}
+		},
+		urlRoot: Leaguevine.API.root + "tournaments"
 	});
 	
 	Tournament.Router = Backbone.Router.extend({

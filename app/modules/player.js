@@ -1,54 +1,31 @@
 define([
+	"require",
   "namespace",
 
   // Libs
   "use!backbone",
-
-  // Plugins
-  "use!plugins/backbone.layoutmanager"
+  
+  // Modules
+  "modules/navigation",
+  "modules/teamplayer"
 ],
-//Return the player module as an object or function.
-//We return it as an object, see the bottom of this callback.
-function(namespace, Backbone) {
-	/******************
-	* MODULE TEMPLATE *
-	*******************/
-	// var app = namespace.app;
-	// var Team = namespace.module(); //Team is a custom module object containing a nested Views object.
-	// Team.Model = Backbone.Model.extend({ /* ... */ });
-	// Team.Collection = Backbone.Collection.extend({ /* ... */ });
-	// Team.Router = Backbone.Router.extend({ /* ... */ });
-	// Team.router = new Team.Router(); //initialize this router.
-	// Team.Views.Something = Backbone.View.extend({ /* ... */ }) or Backbone.LayoutManager.View.extend
+function(namespace, Backbone, Navigation) {
 	var app = namespace.app;
 	var Player = namespace.module();
 	
 	//
 	// MODEL
 	//
-	Player.Model = Backbone.Model.extend({// If you want to overshadow some model methods or default values then do so here.
+	Player.Model = Backbone.RelationalModel.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
-			id: "",
+			age: "",
+			birth_date: "",
 			first_name: "",
+			height: "",
 			last_name: "",
 			nickname: "",
-			birth_date: "",
-			height: "",
 			weight: "",
-			leaguevine_url: "",
-			number: "",
-			on_field: false
-		},
-		url: function() {//Our model URL does not conform to the default Collection.url + /this.id so we must define it here.
-			return app.api.root + "players/" + this.id + "/?access_token=" + app.api.d_token(); 
-		}/*,
-		parse: function(resp, xhr) {//Here for debugging. Below is default behavior.
-			return resp;
-		}*//*,
-		validate: function(attrs) {//Here for debugging. Lets us check the attributes.
-			//Check the attrs.
-			//console.log(attrs)
-		}*/
+		}
 	});
   
 	//
@@ -56,37 +33,6 @@ function(namespace, Backbone) {
 	//
 	Player.Collection = Backbone.Collection.extend({
 		model: Player.Model,
-		url: function() {// It is necessary to define the URL so that we can get the data from the API using .fetch
-			if (this.team) {//TODO: If the collection has a team attached, then get team-players instead.
-				return app.api.root + "team_players/?team_ids=%5B" + this.team.id + "%5D&access_token=" + app.api.d_token();
-			}
-			else {
-				return app.api.root + "players/?access_token=" + app.api.d_token(); //For getting players when there is no team.
-			}
-		},
-		parse: function(resp, xhr) {// Override the default parse so we can get at the list of players from the API response
-		//The Leaguevine API gives resp = {meta: Object, objects: [90 objects]}; We don't want meta.
-		//Each of objects is a JSON object with {id: some_id, info: "", leaguvine_url: "...", name: "player name", etc}
-		  if (resp.objects) {// Safety check ensuring only valid data is used
-			if (this.team) {
-				return _.map(resp.objects, function(obj){
-					return _.extend(obj.player,{number: obj.number});
-				});
-			}
-			return resp.objects;//Return the array of objects.
-		  }
-		  return this.models;//If we didn't get valid data, return whatever we have for models
-		},
-		initialize: function(models, options) {//initialize is an empty function by default.
-			//That's surprising because the docs suggest it should be possible to pass it models and options. 
-			//Here we implement initialize to accept models and options.
-		  if (models) {
-			this.models = models;
-		  }
-		  if (options) {
-			this.team = options.team;
-		  }
-		},
 		comparator: function(player) {// Define how items in the collection will be sorted.
 		  return player.get("last_name").toLowerCase();
 		}

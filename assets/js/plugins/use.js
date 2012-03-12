@@ -15,14 +15,16 @@ define({
   load: function(name, req, load, config) {
     // Dojo provides access to the config object through the req function.
     if (!config) {
-      config = req.rawConfig;
+      config = require.rawConfig;
     }
 
     var module = config.use && config.use[name];
 
-    // No module to load so return early.
+    // No module to load, throw.
     if (!module) {
-      return load();
+      throw new TypeError("Module '" + name + "' is undefined or does not" +
+        " have a `use` config. Make sure it exists, add a `use` config, or" +
+        " don't use use! on it");
     }
 
     // Attach to the build map for use in the write method below.
