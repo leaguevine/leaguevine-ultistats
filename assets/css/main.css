@@ -392,6 +392,7 @@ form button {
         font-weight: bold;
         overflow: hidden;
         word-wrap: none;
+        -webkit-tap-highlight-color: #0377cc;
     }
 
         .track button:active {
