@@ -7,9 +7,10 @@ define([
   // Modules
   "modules/leaguevine",
   "modules/navigation",
+  "modules/title",
   "modules/season"
 ],
-function(namespace, Backbone, Leaguevine, Navigation, Season) {
+function(namespace, Backbone, Leaguevine, Navigation, Title, Season) {
 	var app = namespace.app;
 	var Tournament = namespace.module();
 	
@@ -50,6 +51,7 @@ function(namespace, Backbone, Leaguevine, Navigation, Season) {
 			
 			var myLayout = app.router.useLayout("nav_content");
 			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newtournament", name: "New"}));
+			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Tournaments", right_btn_href: "#newtournament", right_btn_class: "add"}));
 			myLayout.view(".content", new Tournament.Views.List ({collection: app.tournaments}));
 			myLayout.render(function(el) {$("#main").html(el);});
 		},
@@ -67,7 +69,9 @@ function(namespace, Backbone, Leaguevine, Navigation, Season) {
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({href: "#edittournament/"+tournamentId, name: "Edit"}),
 				".detail": new Tournament.Views.Detail( {model: tournament}),
-				".list_children": new Tournament.Views.Multilist({ games: tournament.games, teams: tournament.teams })					
+				".list_children": new Tournament.Views.Multilist({ games: tournament.games, teams: tournament.teams }),					
+				".titlebar": new Title.Views.Titlebar({title: tournament.get("name"), left_btn_href:"#tournaments", left_btn_class:"back", left_btn_txt:"Tournaments", 
+					right_btn_href: "#edittournament/"+tournamentId, right_btn_txt: "Edit"})
 			});
 			myLayout.render(function(el) {$("#main").html(el);});
 		}
