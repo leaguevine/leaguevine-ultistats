@@ -66,7 +66,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			
 			var myLayout = app.router.useLayout("nav_content");
 			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newtournament", name: "New"}));
-			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Tournaments", right_btn_href: "#newtournament", right_btn_class: "add"}));
+			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Tournaments"}));
 			myLayout.view(".content", new Tournament.Views.List ({collection: tournaments}));
 			myLayout.render(function(el) {$("#main").html(el);});
 		},
@@ -87,8 +87,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 				".navbar": new Navigation.Views.Navbar({href: "#edittournament/"+tournamentId, name: "Edit"}),
 				".detail": new Tournament.Views.Detail( {model: tournament}),
 				".list_children": new Tournament.Views.Multilist({ games: games, tournteams: tournteams }),					
-				".titlebar": new Title.Views.Titlebar({title: tournament.get("name"), left_btn_href:"#tournaments", left_btn_class:"back", left_btn_txt:"Tournaments", 
-					right_btn_href: "#edittournament/"+tournamentId, right_btn_txt: "Edit"})
+				".titlebar": new Title.Views.Titlebar({title: tournament.get("name"), left_btn_href:"#tournaments", left_btn_class:"back", left_btn_txt:"Tournaments"})
 			});
 			myLayout.render(function(el) {$("#main").html(el);});
 		}
@@ -115,7 +114,9 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		},
 		initialize: function() {
 			this.collection.bind("reset", function() {
-				this.render();
+                if (Backbone.history.fragment == "tournaments") {
+                    this.render();
+                }
 			}, this);
 		}
 	});
@@ -142,18 +143,24 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			$('.lbrackets').hide();
 			$('.lpools').hide();
 			$('.lstandings').show();
+            $('.list_children button').removeClass('is_active');
+            $('button.bstandings').addClass('is_active');
 			//console.log("TODO: Show Standings");
 		},
 		showPools: function(ev){
 			$('.lstandings').hide();
 			$('.lbrackets').hide();
 			$('.lpools').show();
+            $('.list_children button').removeClass('is_active');
+            $('button.bpools').addClass('is_active');
 			//console.log("TODO: Show Pools");
 		},
 		showBrackets: function(ev){
 			$('.lstandings').hide();
 			$('.lpools').hide();
 			$('.lbrackets').show();
+            $('.list_children button').removeClass('is_active');
+            $('button.bbrackets').addClass('is_active');
 			//console.log("TODO: Show Brackets")
 		},
 		render: function(layout) {

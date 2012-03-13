@@ -8,8 +8,9 @@ define([
   // Modules
   "modules/leaguevine",
   "modules/navigation",
+  "modules/title",
 ],
-function(require, namespace, Backbone, Leaguevine, Navigation) {
+function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 	var app = namespace.app;
 	var Game = namespace.module();
 	
@@ -87,6 +88,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation) {
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
 			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newgame", name: "New"}));
+			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Games"}));
 			myLayout.view(".content", new Game.Views.List ({collection: app.games}));//pass the List view a collection of (fetched) games.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
@@ -94,8 +96,16 @@ function(require, namespace, Backbone, Leaguevine, Navigation) {
 			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
 			//Prepare the data.
 			game = new Game.Model({id: gameId});
-			game.fetch();
-			
+			game.fetch({
+				success: function (model, response) {
+                    // After the game has been fetched, render the nav-bar so the back button says tournament
+                    // if the game is part of a tournament
+                    var myLayout = app.router.useLayout("div");
+                    myLayout.view("div", new Game.Views.Titlebar({model: game}));
+                    myLayout.render(function(el) {$(".titlebar").html(el)});
+               }
+            });
+
 			//TODO: Get some game stats.
 			
 			myLayout.setViews({
@@ -103,6 +113,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation) {
 				".detail": new Game.Views.Detail( {model: game}),
 				".list_children": new Game.Views.Multilist({model: game})//TODO: add stats					
 			});
+			myLayout.view(".titlebar", new Game.Views.Titlebar({model: game}));
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		}
 	});
@@ -116,6 +127,34 @@ function(require, namespace, Backbone, Leaguevine, Navigation) {
 		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul.
 		serialize: function() {return this.model.toJSON();} //render looks for this to manipulate model before passing to the template.
 	});
+	Game.Views.Titlebar = Backbone.View.extend({
+        template: "layouts/div", //Use an empty template for rendering since it's just a wrapper around Title.Views.Titlebar
+        render: function(layout) { //Render the title for the game depending on if it is in a tournament or not
+            var view = layout(this);
+            var tournamentId = this.model.get('tournament_id');
+            var left_btn_href = "#games";
+            var left_btn_txt = "Games";
+            if (tournamentId != null) {
+                //Set the back button to point to this game's tournament if it is part of a tournament
+                left_btn_href = "#tournaments/" + tournamentId;
+                left_btn_txt = "Tournament";
+            }
+            this.setViews(
+                {"div": new Title.Views.Titlebar({
+                    title: "Game", 
+                    left_btn_href: left_btn_href, 
+                    left_btn_class: "back", 
+                    left_btn_txt: left_btn_txt
+                })
+            });
+            return view.render(function(el) { debugger });
+        },
+		initialize: function() {
+    		this.bind("change", function() {
+      			this.render();
+    		}, this);
+  		}
+    });
 	Game.Views.List = Backbone.LayoutManager.View.extend({
 		template: "games/list",
 		className: "games-wrapper",
@@ -155,11 +194,15 @@ function(require, namespace, Backbone, Leaguevine, Navigation) {
 		showTeamStats: function(ev){
 			$('.lplayer_stats').hide();
 			$('.lteam_stats').show();
+            $('.list_children button').removeClass('is_active');
+            $('button.bteam_stats').addClass('is_active');
 			console.log("TODO: Show Team Stats")
 		},
 		showPlayerStats: function(ev){
 			$('.lteam_stats').hide();
 			$('.lplayer_stats').show();
+            $('.list_children button').removeClass('is_active');
+            $('button.bplayer_stats').addClass('is_active');
 			console.log("TODO: Show Player Stats")
 		},
 		trackGame: function(ev) {
