@@ -104,7 +104,7 @@ function(require, namespace, Backbone) {
 			this.setViews({
 				".scoreboard": new TrackedGame.Views.Scoreboard({model: this.model}),
 				".player_area": new TrackedGame.Views.PlayerArea({model: this.model}),
-				".action_area": new TrackedGame.Views.ActionArea({model: this.model, showing_alternate: false})
+				".action_area": new TrackedGame.Views.ActionArea({model: this.model, showing_alternate: true})
 			});
 			return view.render();
 		},

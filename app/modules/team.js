@@ -108,7 +108,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			//team.set('teamplayers', teamplayers);
 			
 			var Game = require("modules/game");
-			games = new Game.Collection([],{team_id: team.get('id')});
+			games = new Game.Collection([],{team_1_id: team.get('id')});
 			games.fetch();
 			//team.set('games', games);
 			
