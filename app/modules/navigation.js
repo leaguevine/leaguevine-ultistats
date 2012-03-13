@@ -10,6 +10,16 @@ define([
 function(namespace, Backbone, Game) {
 	var app = namespace.app;
 	var Navigation = namespace.module();
+
+    //Initialize the URLs for the navigation buttons
+    //We remember the last page viewed within each sub-navigation so subsequent clicks on that
+    //navigation button take the user to the most recently viewed page instead of the top menu
+    app.navigation = {
+        tournaments_href: "tournaments",
+        teams_href: "teams",
+        game_href: "game",
+        settings_href: "settings"
+    }
 	
 	Navigation.Views.Navbar = Backbone.View.extend({
     	template: "navbar/navbar",
@@ -20,7 +30,8 @@ function(namespace, Backbone, Game) {
 	    render: function(layout) {
 	    	var view = layout(this);
 
-            // Set the classes for the currently viewed navigation button
+
+            // Initialize the classes for the currently viewed navigation button
             var tournaments_class = "";
             var teams_class = "";
             var game_class = "";
@@ -29,15 +40,19 @@ function(namespace, Backbone, Game) {
             var fragment = Backbone.history.fragment;
             if (fragment.indexOf("tournament") != -1) { // If the current URL is a tournament URL
                 tournaments_class = currently_viewed;
+                app.navigation.tournaments_href = fragment;
             } 
             else if (fragment.indexOf("team") != -1) { // If the current URL is a team URL
                 teams_class = currently_viewed;
+                app.navigation.teams_href = fragment;
             } 
             else if (fragment.indexOf("game") != -1) {
                 game_class = currently_viewed;
+                app.navigation.games_href = fragment;
             }
             else if (fragment.indexOf("settings") != -1) {
                 settings_class = currently_viewed;
+                app.navigation.settings_href = fragment;
             }
         
 	    	return view.render({
@@ -47,6 +62,10 @@ function(namespace, Backbone, Game) {
                 teams_class: teams_class,
                 game_class: game_class,
                 settings_class: settings_class,
+                tournaments_href: app.navigation.tournaments_href,
+                teams_href: app.navigation.teams_href,
+                games_href: app.navigation.games_href,
+                settings_href: app.navigation.settings_href,
             });
 	    },
 	    initialize: function() {
