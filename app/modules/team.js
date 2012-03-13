@@ -90,7 +90,16 @@ function(namespace, Backbone, Navigation, Title, Player, Game) {
 			if (!app.teams) {app.teams = new Team.Collection();}//In case we were navigated to directly, recreate the top-level data.
 			if (!app.teams.get(teamId)) {app.teams.add( [{id: parseInt(teamId)}] );}
 			team = app.teams.get(teamId);
-			team.fetch();
+            titlebarOptions = {title: team.get("name"), left_btn_href:"#teams", left_btn_class: "back", left_btn_txt: "Teams", right_btn_href: "#editteam/"+teamId, right_btn_txt: "Edit"};
+
+            team.fetch({success: function (model, response) {
+                // After the team has been fetched, render the nav-bar with the team's fetched name
+                var myLayout = app.router.useLayout("div");
+                titlebarOptions.title = team.get("name");
+                myLayout.view("div", new Title.Views.Titlebar(titlebarOptions));
+                myLayout.render(function(el) {$(".titlebar").html(el)});
+                }
+            });
 			team.players = new Player.Collection([],{team: team});
 			//_.extend(team.players, {team : team}); //? Can't remember what I was planning here.
 			team.players.fetch();
@@ -102,7 +111,8 @@ function(namespace, Backbone, Navigation, Title, Player, Game) {
 				".navbar": new Navigation.Views.Navbar({}),
 				".detail": new Team.Views.Detail( {model: team}),
 				".list_children": new Team.Views.Multilist({ players: team.players, games: team.games}), 
-                ".titlebar": new Title.Views.Titlebar({title: team.get("name"), left_btn_href:"#teams", left_btn_class: "back", left_btn_txt: "Teams", right_btn_href: "#editteam/"+teamId, right_btn_txt: "Edit"})
+               // ".titlebar": new Title.Views.Titlebar({title: team.get("name"), left_btn_href:"#teams", left_btn_class: "back", left_btn_txt: "Teams", right_btn_href: "#editteam/"+teamId, right_btn_txt: "Edit"})
+                ".titlebar": new Title.Views.Titlebar(titlebarOptions)
 			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
