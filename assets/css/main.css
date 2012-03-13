@@ -101,7 +101,7 @@ button {
     width: 100%;
     bottom: 0px;
     text-align: center;
-    display: none;
+    display: none; 
 }
 
 /* =============================================================================
@@ -125,6 +125,7 @@ button {
         background-image: none;
     }
 
+        .navbar a.currently_viewed,
         .navbar a:hover {
             background-color: #2f2f2f;
             color: white;
