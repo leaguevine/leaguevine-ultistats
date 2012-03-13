@@ -80,7 +80,7 @@ function(namespace, Backbone, Navigation, Title, Player, Game) {
 			
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
-			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newteam", name: "New"}));
+			myLayout.view(".navbar", new Navigation.Views.Navbar({}));
 			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Teams", right_btn_href: "#newteam", right_btn_class: "add"}));
 			myLayout.view(".content", new Team.Views.List ({collection: app.teams}));//pass the List view a collection of (fetched) teams.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
@@ -99,7 +99,7 @@ function(namespace, Backbone, Navigation, Title, Player, Game) {
 			
 			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
 			myLayout.setViews({
-				".navbar": new Navigation.Views.Navbar({href: "#editteam/"+teamId, name: "Edit"}),
+				".navbar": new Navigation.Views.Navbar({}),
 				".detail": new Team.Views.Detail( {model: team}),
 				".list_children": new Team.Views.Multilist({ players: team.players, games: team.games}), 
                 ".titlebar": new Title.Views.Titlebar({title: team.get("name"), left_btn_href:"#teams", left_btn_class: "back", left_btn_txt: "Teams", right_btn_href: "#editteam/"+teamId, right_btn_txt: "Edit"})
@@ -110,16 +110,17 @@ function(namespace, Backbone, Navigation, Title, Player, Game) {
 			var myLayout = app.router.useLayout("nav_content");
 			if (!app.teams) {app.teams = new Team.Collection();}//Will create an empty collection.
 			//If we have teamId, then we are editing. If not, then we are creating a new team.
-			if (teamId) {
+			if (teamId) { //make the edit team page
 				if (!app.teams.get(teamId)) {app.teams.add( [{id: parseInt(teamId)}] );}//Insert this team into the collection.
 				team = app.teams.get(teamId);
 				team.fetch();
-				myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#teams/"+teamId, name: "Cancel"}));
+				myLayout.view(".navbar", new Navigation.Views.Navbar({}));
                 myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Edit", left_btn_href: "#teams/"+teamId, left_btn_class: "back", left_btn_txt: "Cancel"}));
 			}
-			else {
+			else { //make the add team page
 				team = new Team.Model({season_id: app.api.season_id});
-				myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#teams", name: "Cancel"}));
+				myLayout.view(".navbar", new Navigation.Views.Navbar({}));
+                myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Add a Team", left_btn_href: "#teams", left_btn_class: "back", left_btn_txt: "Cancel"}));
 			}
 			myLayout.view(".content", new Team.Views.Edit({model: team}));
 			myLayout.render(function(el) {$("#main").html(el);});
