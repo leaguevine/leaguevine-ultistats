@@ -101,7 +101,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
                     // After the game has been fetched, render the nav-bar so the back button says tournament
                     // if the game is part of a tournament
                     var myLayout = app.router.useLayout("div");
-                    myLayout.view("div", new Game.Views.Titlebar({model: game}));
+                    myLayout.view("div", new Game.Views.Titlebar({model: model}));
                     myLayout.render(function(el) {$(".titlebar").html(el)});
                }
             });
@@ -147,7 +147,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
                     left_btn_txt: left_btn_txt
                 })
             });
-            return view.render(function(el) { debugger });
+            return view.render(function(el) {});
         },
 		initialize: function() {
     		this.bind("change", function() {
@@ -176,7 +176,17 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 	Game.Views.Detail = Backbone.LayoutManager.View.extend({  	
 		template: "games/detail",
 		render: function(layout) {
-			return layout(this).render(this.model.toJSON());
+            game = this.model.toJSON();
+            if (game.start_time != "" ){ //parse the start time and make it human-readable
+                start_time = new Date(game.start_time);
+                minutes = start_time.getMinutes();
+                if (minutes < 10) {minutes = '0' + minutes;}
+                game.start_time_string = start_time.getHours() + ':' + minutes + ' ' + start_time.toLocaleDateString();
+            }
+            else {
+                game.start_time_string = "";
+            }
+			return layout(this).render(game);
 		},
 		initialize: function() {
     		this.model.bind("change", function() {
@@ -189,7 +199,6 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		events: {
 			"click .bteam_stats": "showTeamStats",
 			"click .bplayer_stats": "showPlayerStats",
-			"click .btrack_game": "trackGame"
 		},
 		showTeamStats: function(ev){
 			$('.lplayer_stats').hide();
@@ -204,9 +213,6 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
             $('.list_children button').removeClass('is_active');
             $('button.bplayer_stats').addClass('is_active');
 			console.log("TODO: Show Player Stats")
-		},
-		trackGame: function(ev) {
-			app.router.navigate("#track/"+this.model.get('id'), true);
 		},
 		render: function(layout) {
 			var view = layout(this);

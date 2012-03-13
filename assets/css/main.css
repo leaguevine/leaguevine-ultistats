@@ -57,21 +57,23 @@ form label {
 
 form input {
     height: 25px;
-    width: 80%;
+    width: 95%;
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
 }
 
-form button {
-    background-color: #d7d9da;
-    background: -moz-linear-gradient(#e9ebed, #d7d9da);
-    background: -webkit-gradient(linear, left top, left bottom, from(#e9ebed), to(#d7d9da), color-stop(0.5, #e9ebed), color-stop(0.51, #d7d9da)); 
-    border: 2px solid #767676;
+/* ------------------- Buttons ------------------- */
+
+button {
+    background-color: #E2E5EB;
+    background: -moz-linear-gradient(#FAFBFE, #E2E5EB);
+    background: -webkit-gradient(linear, left top, left bottom, from(#FAFBFE), to(#E2E5EB), color-stop(0.5, #E9EBED), color-stop(0.51, #E2E5EB)); 
+    border: 1px solid #767676;
     font-size: 14px;
     font-weight: bold;
     height: 35px;
     margin-top: 8px;
-    width: 80%;
+    width: 95%;
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
 }
@@ -155,11 +157,24 @@ form button {
 
 #title_txt {
     color: white;
+    display: block;
+    top: 0px;
+    left: 0px;
+    line-height: 40px;
     font-size: 18px;
     font-weight: bold;
-    line-height: 40px;
+    margin: 0px 0px;
+    position: absolute;
     text-shadow: 0 -1px 0 rgba(0,0,0, 0.4);
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
 }
+    #title_txt span {
+        padding-left: 115px;
+        padding-right: 115px;
+    }
 
 .titlebar .disabled{
     display: none;
@@ -275,7 +290,6 @@ form button {
     border-bottom: 1px solid #c3c3c3;
     border-top: 1px solid #767676;
     height: 42px;
-    margin-top: 10px;
     text-align: center;
     width: 100%;
     -webkit-box-shadow: inset 0 1px 1px -1px #fff;
@@ -311,6 +325,48 @@ form button {
         background: -webkit-gradient(linear, left top,left bottom, from(#DBDDE3), to(#E2E5EB));
         background: -moz-linear-gradient(#DBDDE3, #E2E5EB);
     }
+
+/* =============================================================================
+   Games
+   ========================================================================== */
+#game_detail {
+    padding: 15px;
+}
+
+#game_detail .game_tournament,
+#game_detail .start_time,
+#team1, #team2 {
+    clear: both;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#team1_name, #team2_name {
+    float: left;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+    #team1_name a, 
+    #team2_name a{
+        color: #333;
+        text-decoration: none;
+    }
+
+#team1_score, #team2_score {
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#game_detail .game_tournament,
+#game_detail .start_time {
+    color: #a9a9a9;
+}
+
+#game_detail .game_tournament {
+    padding-top: 0px;
+}
 
 /* =============================================================================
    Game Tracking
@@ -385,14 +441,14 @@ form button {
     .track button {
         border: 1px solid #a9a9a9;
         background-color: white;
-        padding: 12px 5px;
-        text-align: center;
-        -webkit-border-radius: 8px;
-        -moz-border-radius: 8px;
         font-size: 12px;
         font-weight: bold;
+        margin: 0px;
+        text-align: center;
         overflow: hidden;
         word-wrap: none;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
         -webkit-tap-highlight-color: #0377cc;
     }
 
@@ -457,8 +513,8 @@ form button {
 
             .track .main_action button.score {
                 color: #0377cc;
-                padding-top: 20px;
-                padding-bottom: 20px;
+                padding-top: 15px;
+                padding-bottom: 30px;
             }
 
         .track .management {
@@ -505,5 +561,16 @@ form button {
     }
 
 #score_prompt {
-    margin-top: 8px;
+    margin-top: 15px;
 }
+
+/* =============================================================================
+   Tournaments
+   ========================================================================== */
+
+#tournament_start_date {
+    text-align: center;
+    color: #767676;
+    margin: 10px; 0px;
+}
+

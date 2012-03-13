@@ -100,8 +100,18 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		showTeam: function (teamId) {
 			//Prepare the data.
 			team = new Team.Model({id: teamId});
-			team.fetch();
 			
+            titlebarOptions = {title: team.get("name"), left_btn_href:"#teams", left_btn_class: "back", left_btn_txt: "Teams", right_btn_href: "#editteam/"+teamId, right_btn_txt: "Edit"};
+
+            team.fetch({success: function (model, response) {
+                // After the team has been fetched, render the nav-bar with the team's fetched name
+                var myLayout = app.router.useLayout("div");
+                titlebarOptions.title = team.get("name");
+                myLayout.view("div", new Title.Views.Titlebar(titlebarOptions));
+                myLayout.render(function(el) {$(".titlebar").html(el)});
+                }
+            });
+
 			var TeamPlayer = require("modules/teamplayer");
 			teamplayers = new TeamPlayer.Collection([],{team_id: team.get('id')});
 			teamplayers.fetch();
@@ -117,7 +127,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 				".navbar": new Navigation.Views.Navbar({}),
 				".detail": new Team.Views.Detail( {model: team}),
 				".list_children": new Team.Views.Multilist({ teamplayers: teamplayers, games: games}), 
-                ".titlebar": new Title.Views.Titlebar({title: team.get("name"), left_btn_href:"#teams", left_btn_class: "back", left_btn_txt: "Teams", right_btn_href: "#editteam/"+teamId, right_btn_txt: "Edit"})
+                ".titlebar": new Title.Views.Titlebar(titlebarOptions)
 			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},

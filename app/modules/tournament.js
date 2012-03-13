@@ -71,9 +71,20 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			myLayout.render(function(el) {$("#main").html(el);});
 		},
 		showTournament: function (tournamentId) {
-			tournament = new Tournament.Model({id: tournamentId});
-			tournament.fetch();
-			
+            tournament = new Tournament.Model({id: tournamentId});
+            titlebarOptions = {title: tournament.get("name"), 
+                               left_btn_href:"#tournaments", 
+                               left_btn_class:"back", 
+                               left_btn_txt:"Tournaments"};
+            tournament.fetch({success: function (model, response) {
+                // After the tournament has been fetched, render the nav-bar with the tournament's fetched name
+                var myLayout = app.router.useLayout("div");
+                titlebarOptions.title = model.get("name");
+                myLayout.view("div", new Title.Views.Titlebar(titlebarOptions));
+                myLayout.render(function(el) {$(".titlebar").html(el)});
+                }
+            });
+
 			var TournTeam = require("modules/tournteam");
 			tournteams = new TournTeam.Collection([],{tournament_id: tournament.get('id')});
 			tournteams.fetch();
@@ -87,7 +98,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 				".navbar": new Navigation.Views.Navbar({href: "#edittournament/"+tournamentId, name: "Edit"}),
 				".detail": new Tournament.Views.Detail( {model: tournament}),
 				".list_children": new Tournament.Views.Multilist({ games: games, tournteams: tournteams }),					
-				".titlebar": new Title.Views.Titlebar({title: tournament.get("name"), left_btn_href:"#tournaments", left_btn_class:"back", left_btn_txt:"Tournaments"})
+				".titlebar": new Title.Views.Titlebar(titlebarOptions)
 			});
 			myLayout.render(function(el) {$("#main").html(el);});
 		}
@@ -123,8 +134,14 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 	Tournament.Views.Detail = Backbone.View.extend({  	
 		template: "tournaments/detail",
 		render: function(layout) {
-			//this.model.toJSON().info is escaped HTML so we need to do something a little fancy to get the info in there.
-			return layout(this).render(this.model.toJSON());
+            tournament = this.model.toJSON();
+            // Create a human-readable date for this tournament
+            tournament.start_date_string = '';
+            if (tournament.start_date != '') {
+                start_date = new Date(tournament.start_date);
+                tournament.start_date_string = start_date.toLocaleDateString();
+            }
+            return layout(this).render(tournament);
 		},
 		initialize: function() {
     		this.model.bind("change", function() {
