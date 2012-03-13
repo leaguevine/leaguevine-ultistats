@@ -19,7 +19,7 @@ function(namespace, Backbone, Navigation, Title, Game, TournTeam) {
 	
 	Tournament.Model = Backbone.Model.extend({
 		defaults: {
-			name: '',
+			name: 'Tournament',
 			leaguevine_url: '',
 			start_date: '',
 			end_date: '',
@@ -65,7 +65,18 @@ function(namespace, Backbone, Navigation, Title, Game, TournTeam) {
 			if (!app.tournaments) {app.tournaments = new Tournament.Collection();}
 			if (!app.tournaments.get(tournamentId)) {app.tournaments.add( [{id: parseInt(tournamentId)}] );}
 			tournament = app.tournaments.get(tournamentId);
-			tournament.fetch();
+            titlebarOptions = {title: tournament.get("name"), 
+                               left_btn_href:"#tournaments", 
+                               left_btn_class:"back", 
+                               left_btn_txt:"Tournaments"};
+            tournament.fetch({success: function (model, response) {
+                // After the tournament has been fetched, render the nav-bar with the tournament's fetched name
+                var myLayout = app.router.useLayout("div");
+                titlebarOptions.title = tournament.get("name");
+                myLayout.view("div", new Title.Views.Titlebar(titlebarOptions));
+                myLayout.render(function(el) {$(".titlebar").html(el)});
+                }
+            });
 			tournament.games = new Game.Collection([],{tournament: tournament});
 			tournament.games.fetch();
 			tournament.teams = new TournTeam.Collection([],{tournament: tournament});
@@ -76,7 +87,7 @@ function(namespace, Backbone, Navigation, Title, Game, TournTeam) {
 				".navbar": new Navigation.Views.Navbar({href: "#edittournament/"+tournamentId, name: "Edit"}),
 				".detail": new Tournament.Views.Detail( {model: tournament}),
 				".list_children": new Tournament.Views.Multilist({ games: tournament.games, teams: tournament.teams }),					
-				".titlebar": new Title.Views.Titlebar({title: tournament.get("name"), left_btn_href:"#tournaments", left_btn_class:"back", left_btn_txt:"Tournaments"}),
+				".titlebar": new Title.Views.Titlebar(titlebarOptions),
 			});
 			myLayout.render(function(el) {$("#main").html(el);});
 		}
