@@ -111,7 +111,6 @@ function(namespace, Backbone, Navigation, Title, Player, Game) {
 				".navbar": new Navigation.Views.Navbar({}),
 				".detail": new Team.Views.Detail( {model: team}),
 				".list_children": new Team.Views.Multilist({ players: team.players, games: team.games}), 
-               // ".titlebar": new Title.Views.Titlebar({title: team.get("name"), left_btn_href:"#teams", left_btn_class: "back", left_btn_txt: "Teams", right_btn_href: "#editteam/"+teamId, right_btn_txt: "Edit"})
                 ".titlebar": new Title.Views.Titlebar(titlebarOptions)
 			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.

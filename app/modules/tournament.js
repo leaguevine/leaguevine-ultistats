@@ -72,7 +72,7 @@ function(namespace, Backbone, Navigation, Title, Game, TournTeam) {
             tournament.fetch({success: function (model, response) {
                 // After the tournament has been fetched, render the nav-bar with the tournament's fetched name
                 var myLayout = app.router.useLayout("div");
-                titlebarOptions.title = tournament.get("name");
+                titlebarOptions.title = model.get("name");
                 myLayout.view("div", new Title.Views.Titlebar(titlebarOptions));
                 myLayout.render(function(el) {$(".titlebar").html(el)});
                 }
@@ -123,8 +123,14 @@ function(namespace, Backbone, Navigation, Title, Game, TournTeam) {
 	Tournament.Views.Detail = Backbone.View.extend({  	
 		template: "tournaments/detail",
 		render: function(layout) {
-			//this.model.toJSON().info is escaped HTML so we need to do something a little fancy to get the info in there.
-			return layout(this).render(this.model.toJSON());
+            tournament = this.model.toJSON();
+            // Create a human-readable date for this tournament
+            tournament.start_date_string = '';
+            if (tournament.start_date != '') {
+                start_date = new Date(tournament.start_date);
+                tournament.start_date_string = start_date.toLocaleDateString();
+            }
+            return layout(this).render(tournament);
 		},
 		initialize: function() {
     		this.model.bind("change", function() {
