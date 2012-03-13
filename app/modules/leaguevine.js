@@ -43,7 +43,7 @@ function(namespace, Backbone) {
             base: "http://playwithlv.com/oauth2/authorize/?response_type=token&scope=universal",
             client_id: "5b830cb7c788b095c94732c8ca03cb",
             redirect_uri: "http://localhost:8000/",
-            season_id: 20041,
+            season_id: 7291,
             d_token: function() {//Modules will reference this dynamic token			
             if (!this.token) {
                 var stored_api = JSON.parse(localStorage.getItem('auth_object')); //Pull our token out of local storage if it exists.

@@ -1,4 +1,5 @@
 define([
+	"require",
   "namespace",
 
   // Libs
@@ -8,36 +9,49 @@ define([
   "modules/leaguevine",
   "modules/navigation",
   "modules/title",
-  "modules/season"
+  
+  "modules/tournteam",
+  "modules/game"
 ],
-function(namespace, Backbone, Leaguevine, Navigation, Title, Season) {
+function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 	var app = namespace.app;
 	var Tournament = namespace.module();
 	
-	Tournament.Model = Backbone.RelationalModel.extend({
-		//only has a season as child
-		//is backref'd by game, and many-to-many to Team throuh TournTeam
-		relations: [
-			{
-				key: 'season',
-				relatedModel: Season.Model,
-				type: Backbone.HasOne
-			}
-		],
+	Tournament.Model = Backbone.Model.extend({
 		defaults: {
 			name: '',
 			start_date: '',
 			end_date: '',
-			info: ''
+			info: '',
+			season: {},
+			tournteams: {},
+			games: {}
+		},
+		urlRoot: Leaguevine.API.root + "tournaments",
+		parse: function(resp, xhr) {
+			resp = Backbone.Model.prototype.parse(resp);
+			return resp;
+		},
+		toJSON: function() {//get rid of tournteams
+			return _.clone(this.attributes);
 		}
 	});
 	
 	Tournament.Collection = Backbone.Collection.extend({
 		model: Tournament.Model,
+		urlRoot: Leaguevine.API.root + "tournaments",
 		comparator: function(tournament) {
 		  return tournament.get("name").toLowerCase();
 		},
-		urlRoot: Leaguevine.API.root + "tournaments"
+		parse: function(resp, xhr) {
+			resp = Backbone.Collection.prototype.parse(resp);
+			return resp;
+		},
+		initialize: function(models, options) {
+			if (options) {
+        		this.season_id = options.season_id;
+    		}
+		}
 	});
 	
 	Tournament.Router = Backbone.Router.extend({
@@ -46,30 +60,33 @@ function(namespace, Backbone, Leaguevine, Navigation, Title, Season) {
 			"tournaments/:tournamentId": "showTournament" //Show detail for one tournament.
 		},
 		listTournaments: function () {
-			app.tournaments = new Tournament.Collection();
-			app.tournaments.fetch();
+			// Prepare the data.
+			tournaments = new Tournament.Collection([],{season_id: Leaguevine.API.season_id});
+			tournaments.fetch();
 			
 			var myLayout = app.router.useLayout("nav_content");
 			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newtournament", name: "New"}));
 			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Tournaments", right_btn_href: "#newtournament", right_btn_class: "add"}));
-			myLayout.view(".content", new Tournament.Views.List ({collection: app.tournaments}));
+			myLayout.view(".content", new Tournament.Views.List ({collection: tournaments}));
 			myLayout.render(function(el) {$("#main").html(el);});
 		},
 		showTournament: function (tournamentId) {
-			if (!app.tournaments) {app.tournaments = new Tournament.Collection();}
-			if (!app.tournaments.get(tournamentId)) {app.tournaments.add( [{id: parseInt(tournamentId)}] );}
-			tournament = app.tournaments.get(tournamentId);
+			tournament = new Tournament.Model({id: tournamentId});
 			tournament.fetch();
-			tournament.games = new Game.Collection([],{tournament: tournament});
-			tournament.games.fetch();
-			tournament.teams = new TournTeam.Collection([],{tournament: tournament});
-			tournament.teams.fetch();
+			
+			var TournTeam = require("modules/tournteam");
+			tournteams = new TournTeam.Collection([],{tournament_id: tournament.get('id')});
+			tournteams.fetch();
+			
+			var Game = require("modules/game");
+			games = new Game.Collection([],{tournament_id: tournament.get('id')});
+			games.fetch();
 			
 			var myLayout = app.router.useLayout("nav_detail_list");
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({href: "#edittournament/"+tournamentId, name: "Edit"}),
 				".detail": new Tournament.Views.Detail( {model: tournament}),
-				".list_children": new Tournament.Views.Multilist({ games: tournament.games, teams: tournament.teams }),					
+				".list_children": new Tournament.Views.Multilist({ games: games, tournteams: tournteams }),					
 				".titlebar": new Title.Views.Titlebar({title: tournament.get("name"), left_btn_href:"#tournaments", left_btn_class:"back", left_btn_txt:"Tournaments", 
 					right_btn_href: "#edittournament/"+tournamentId, right_btn_txt: "Edit"})
 			});
@@ -141,8 +158,10 @@ function(namespace, Backbone, Leaguevine, Navigation, Title, Season) {
 		},
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
+			var TournTeam = require("modules/tournteam");
+			var Game = require("modules/game");
 			this.setViews({
-				".lstandings": new TournTeam.Views.List( {collection: this.options.teams} ),
+				".lstandings": new TournTeam.Views.TeamList( {collection: this.options.tournteams} ),
 				".lpools": new Game.Views.List( {collection: this.options.games} ),
 				".lbrackets": new Game.Views.List( {collection: this.options.games} )
 			});
@@ -153,7 +172,7 @@ function(namespace, Backbone, Leaguevine, Navigation, Title, Season) {
 		},
 		initialize: function() {
 			this.options.games.bind("reset", function() {this.render();}, this);
-			this.options.teams.bind("reset", function() {this.render();}, this);
+			this.options.tournteams.bind("reset", function() {this.render();}, this);
 		}
 	});
 	

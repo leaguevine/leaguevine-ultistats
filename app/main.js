@@ -7,8 +7,8 @@ require([
 
 	// Modules - Only need Leaguevine and modules with Routers
 	"modules/leaguevine",
-	"modules/season",
-	"modules/team"
+	"modules/team",
+	"modules/trackedgame"
 ],
 /*
  * The following callback is called after the dependices are loaded.
@@ -17,7 +17,7 @@ require([
  * but in this case we are defining the jQuery ready function which will execute
  * once everything has finished loading.
  */
-function(namespace, $, Backbone, Leaguevine, Season) {
+function(namespace, $, Backbone, Leaguevine) {
 	
 	var app = namespace.app; //Shorthanded app namespace.
 
@@ -47,8 +47,6 @@ function(namespace, $, Backbone, Leaguevine, Season) {
 		},
 		
 		index: function () {
-			app.season = new Season.Model({id: app.season_id});
-			app.season.fetch();
 			Backbone.history.navigate('teams', true); // Only works if I have a route to match teams
 		}
 	});	

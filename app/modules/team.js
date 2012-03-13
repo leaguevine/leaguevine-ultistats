@@ -1,4 +1,5 @@
 require([
+  "require",
   "namespace",
 
   // Libs
@@ -8,29 +9,34 @@ require([
   "modules/leaguevine",
   "modules/navigation",
   "modules/title",
-  "modules/season"
+  "modules/teamplayer",
+  "modules/game"
 ],
 
-function(namespace, Backbone, Leaguevine, Navigation, Title, Season) {
+function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 	var app = namespace.app;
 	var Team = namespace.module();
+	
 	//
 	// MODEL
 	//
-	Team.Model = Backbone.RelationalModel.extend({
-		relations: [//tournaments through many-to-many tournteams, season, players through many-to-many teamplayers, games as one-to-many
-			{
-				key: 'season',
-				relatedModel: Season.Model,
-				type: Backbone.HasOne,
-				reverseRelation: {
-	                key: 'season'
-               }
-            }
-		],
+	Team.Model = Backbone.Model.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
+			id: "",//id is used as href in template so we need default.
 			name: "",
-			info: ""
+			info: "",
+			season: {},
+			teamplayers: {},
+			games: {}
+		},
+		urlRoot: Leaguevine.API.root + "teams",
+		parse: function(resp, xhr) {
+			resp = Backbone.Model.prototype.parse(resp);
+			return resp;
+		},
+		toJSON: function() {
+			//TODO: Remove attributes that are not stored (teamplayers, games)
+			return _.clone(this.attributes);
 		}
 	});
   
@@ -40,17 +46,32 @@ function(namespace, Backbone, Leaguevine, Navigation, Title, Season) {
 	Team.Collection = Backbone.Collection.extend({
 		model: Team.Model,
 		urlRoot: Leaguevine.API.root + "teams",
-		/*url: function() {// It is necessary to define the URL so that we can get the data from the API using .fetch
-			var temp_url = app.api.root + "teams/?";
-			var url_options = "";
-			url_options = url_options + "&season_id=" + app.api.season_id + "&limit=200" + "&access_token=" + app.api.d_token();
-			return temp_url + url_options.substring(1);
-		},*/
+		url: function(models) {
+			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
+			url += '/?'
+			if ( models && models.length ) {
+				url += 'team_ids=' + JSON.stringify(models.pluck('id')) + '&';
+			}
+			if (this.season_id) {
+				url += 'season_id=' + this.season_id + '&';
+			}
+			url += 'limit=200';
+			return url;
+		},
 		comparator: function(team) {// Define how items in the collection will be sorted.
 		  return team.get("name").toLowerCase();
+		},
+		parse: function(resp, xhr) {
+			resp = Backbone.Collection.prototype.parse(resp);
+			return resp;
+		},
+		initialize: function(models, options) {
+			if (options) {
+        		this.season_id = options.season_id;
+    		}
 		}
 	});
-  
+	
 	//
 	// ROUTER
 	//
@@ -64,39 +85,38 @@ function(namespace, Backbone, Leaguevine, Navigation, Title, Season) {
 			"editteam/:teamId": "editTeam"
 		},
 		listTeams: function () {//Route for all teams.
-			if (!app.season) {
-				app.season = new Season.Model({id: app.season_id});
-			}
 			// Prepare the data.
-			// TODO: Eventually we will use a local storage so fetching will get from a local db
-			// instead of an API. For now, get from the API every time (very slow).
-			app.teams = new Team.Collection();
-			app.teams.fetch(); //Fetch automatically pulls the active season from the app object.
+			teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
+			teams.fetch();
 			
+			// Prepare the layout/view(s)
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
 			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newteam", name: "New"}));
 			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Teams", right_btn_href: "#newteam", right_btn_class: "add"}));
-			myLayout.view(".content", new Team.Views.List ({collection: app.teams}));//pass the List view a collection of (fetched) teams.
+			myLayout.view(".content", new Team.Views.List ({collection: teams}));//pass the List view a collection of (fetched) teams.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
 		showTeam: function (teamId) {
 			//Prepare the data.
-			if (!app.teams) {app.teams = new Team.Collection();}//In case we were navigated to directly, recreate the top-level data.
-			if (!app.teams.get(teamId)) {app.teams.add( [{id: parseInt(teamId)}] );}
-			team = app.teams.get(teamId);
+			team = new Team.Model({id: teamId});
 			team.fetch();
-			team.players = new Player.Collection([],{team: team});
-			//_.extend(team.players, {team : team}); //? Can't remember what I was planning here.
-			team.players.fetch();
-			team.games = new Game.Collection([],{team: team});
-			team.games.fetch();
+			
+			var TeamPlayer = require("modules/teamplayer");
+			teamplayers = new TeamPlayer.Collection([],{team_id: team.get('id')});
+			teamplayers.fetch();
+			//team.set('teamplayers', teamplayers);
+			
+			var Game = require("modules/game");
+			games = new Game.Collection([],{team_id: team.get('id')});
+			games.fetch();
+			//team.set('games', games);
 			
 			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({href: "#editteam/"+teamId, name: "Edit"}),
 				".detail": new Team.Views.Detail( {model: team}),
-				".list_children": new Team.Views.Multilist({ players: team.players, games: team.games}), 
+				".list_children": new Team.Views.Multilist({ teamplayers: teamplayers, games: games}), 
                 ".titlebar": new Title.Views.Titlebar({title: team.get("name"), left_btn_href:"#teams", left_btn_class: "back", left_btn_txt: "Teams", right_btn_href: "#editteam/"+teamId, right_btn_txt: "Edit"})
 			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
@@ -149,10 +169,7 @@ function(namespace, Backbone, Leaguevine, Navigation, Title, Season) {
 	Team.Views.Detail = Backbone.View.extend({
 		//We were passed a model on creation by Team.Router.showTeam(), so we have this.model  	
 		template: "teams/detail",
-		//I don't really need the render function, instead I can use a serialize function.
-		render: function(layout) {return layout(this).render(this.model.toJSON());},
-		// The model might not yet be hydrated by the asynchronous fetch process on the first render, so bind
-		//to the change action so that we can rerender when the fetch process is complete.
+		serialize: function() {return this.model.toJSON();},
 		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
 	});
 	Team.Views.Multilist = Backbone.View.extend({
@@ -171,9 +188,11 @@ function(namespace, Backbone, Leaguevine, Navigation, Title, Season) {
 		},
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
+			var Game = require("modules/game");
+			var TeamPlayer = require("modules/teamplayer");
 			this.setViews({
 				".lgames": new Game.Views.List( {collection: this.options.games} ),
-				".lplayers": new Player.Views.List( {collection: this.options.players} )
+				".lplayers": new TeamPlayer.Views.PlayerList( {collection: this.options.teamplayers} )
 			});
 			return view.render().then(function(el) {
 				//I'd rather the render function only do this once, instead of everytime the data are reset
@@ -182,7 +201,7 @@ function(namespace, Backbone, Leaguevine, Navigation, Title, Season) {
 			});
 		},
 		initialize: function() {
-			this.options.players.bind("reset", function() {this.render();}, this);
+			this.options.teamplayers.bind("reset", function() {this.render();}, this);
 			this.options.games.bind("reset", function() {this.render();}, this);
 		}
 	});
@@ -222,4 +241,5 @@ function(namespace, Backbone, Leaguevine, Navigation, Title, Season) {
 	});
 	
 	return Team;// Required, return the module for AMD compliance
+	//exports.Team = Team;
 });

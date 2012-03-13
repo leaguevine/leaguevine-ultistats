@@ -12,32 +12,27 @@ function(namespace, Backbone, Leaguevine) {
 	var app = namespace.app;
 	var Season = namespace.module();
 	
-	Season.Model = Backbone.RelationalModel.extend({
-		//urlRoot: Leaguevine.API.root + "seasons",
+	Season.Model = Backbone.Model.extend({
 		defaults: {
 			name: '',
 			start_date: '',
-			end_date: ''
+			end_date: '',
+			teams: {}//one-to-many
 		},
-		urlRoot: Leaguevine.API.root + "seasons"
+		urlRoot: Leaguevine.API.root + "seasons",
+		parse: function(resp, xhr) {
+			resp = Backbone.Model.prototype.parse(resp);
+			return resp;
+		},
+		toJSON: function() {
+			return _.clone(this.attributes);
+		}
 	});
 	
 	Season.Collection = Backbone.Collection.extend({
 		model: Season.Model,
 		urlRoot: Leaguevine.API.root + "seasons"
 	});
-	
-	Season.Router = Backbone.Router.extend({
-		routes : {
-			"seasons": "test"
-		},
-		test: function () {
-			//app.seasons = new Season.Collection();
-			//app.seasons.fetch();
-			app.season = new Season.Model({id: Leaguevine.API.season_id});
-		}
-	});
-	Season.router = new Season.Router();// INITIALIZE ROUTER
 	
 	return Season;// Required, return the module for AMD compliance
 });

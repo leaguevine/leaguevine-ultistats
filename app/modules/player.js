@@ -6,18 +6,21 @@ define([
   "use!backbone",
   
   // Modules
+  "modules/leaguevine",
   "modules/navigation",
+  "modules/title",
   "modules/teamplayer"
 ],
-function(namespace, Backbone, Navigation) {
+function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 	var app = namespace.app;
 	var Player = namespace.module();
 	
 	//
 	// MODEL
 	//
-	Player.Model = Backbone.RelationalModel.extend({
+	Player.Model = Backbone.Model.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
+			id: "", //Needed for template
 			age: "",
 			birth_date: "",
 			first_name: "",
@@ -25,6 +28,16 @@ function(namespace, Backbone, Navigation) {
 			last_name: "",
 			nickname: "",
 			weight: "",
+			teamplayers: {}//used to get to teams
+		},
+		urlRoot: Leaguevine.API.root + "players",
+		parse: function(resp, xhr) {
+			resp = Backbone.Model.prototype.parse(resp);
+			return resp;
+		},
+		toJSON: function() {
+			//TODO: Remove attributes that are not stored (templayers)
+			return _.clone(this.attributes);
 		}
 	});
   
@@ -35,6 +48,16 @@ function(namespace, Backbone, Navigation) {
 		model: Player.Model,
 		comparator: function(player) {// Define how items in the collection will be sorted.
 		  return player.get("last_name").toLowerCase();
+		},
+		urlRoot: Leaguevine.API.root + "players",
+		parse: function(resp, xhr) {
+			resp = Backbone.Collection.prototype.parse(resp);
+			return resp;
+		},
+		initialize: function(models, options) {
+			if (options) {
+        		this.season_id = options.season_id;
+    		}
 		}
 	});
   
@@ -61,18 +84,23 @@ function(namespace, Backbone, Navigation) {
 		},
 		showPlayer: function (playerId) {
 			//Prepare the data.
-			if (!app.players) {app.players = new Player.Collection();}//Will create an empty collection.
-			if (!app.players.get(playerId)) {app.players.add( [{id: parseInt(playerId)}] );}//Insert this player into the collection.
-			player = app.players.get(playerId);
+			player = new Player.Model({id: playerId});
 			player.fetch();
 			
-			//TODO: Get some player stats.
+			var TeamPlayer = require("modules/teamplayer");
+			teamplayers = new TeamPlayer.Collection([],{player_id: player.get('id')});
+			teamplayers.fetch();
+			//player.set('teamplayers', teamplayers);
 			
+			//TODO: Get some player stats and add them to Multilist
 			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
-			myLayout.view(".navbar", new Player.Views.Nav ());
-			myLayout.view(".detail", new Player.Views.Detail( {model: player}));//Pass an options object to the view containing our player.
-			//myLayout.view(".list_children", new Player.Views.List({ collection: player.players }))
-			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+			myLayout.setViews({
+				".navbar": new Navigation.Views.Navbar({href: "#editplayer/"+playerId, name: "Edit"}),
+				".detail": new Player.Views.Detail( {model: player}),
+				".list_children": new Player.Views.Multilist({ teamplayers: teamplayers}),
+                ".titlebar": new Title.Views.Titlebar({title: player.get("first_name")+" "+player.get("last_name"), left_btn_href:"#players", left_btn_class: "back", left_btn_txt: "Players", right_btn_href: "#editplayer/"+playerId, right_btn_txt: "Edit"})
+			});
+			myLayout.render(function(el) {$("#main").html(el);});
 		}
 	});
 	Player.router = new Player.Router();// INITIALIZE ROUTER
@@ -80,27 +108,6 @@ function(namespace, Backbone, Navigation) {
 	//
 	// VIEWS
 	//
-/*
- * With Backbone.LayoutManager, a View's default render: function(layout){return layout(this).render();}
- * We should override render for anything more complex (like iterating a collection).
- * The following is an example view with some defaults explained.
-	Player.Views.AView = Backbone.View.extend({
-		template: "path/to/template",//Must specify the path to the template.
-		className: "some-class-name",//Each top-level View in our layout is always wrapped in a div. We can give it a class.
-		tagName: "div",//By default inserts the contents of our templates into a div. Can use another type.
-		serialize: function() {return this.model.toJSON();},//looked for by render()
-		render: function(layout) {return layout(this).render();},//Default render method.
-		//render: function(layout) {return layout(this).render(this.model.toJSON());},//Combines the previous two lines, i.e., doesn't need serialize.
-		initialize: function() { //It is necessary to bind a model's change to re-render the view because the model is fetched asynchronously.
-    		this.model.bind("change", function() {
-      			this.render();
-    		}, this);
-  		},
-		events: { click: "clickAction"}, //Bind this view's click to clickAction
-		clickAction: function(ev){ //some click handling logic},//Handle the click.
-	})
- */
-
 	Player.Views.Nav = Backbone.View.extend({//TODO: More!
 		template: "navbar/navbar"
 	});
@@ -140,6 +147,28 @@ function(namespace, Backbone, Navigation) {
       			this.render();
     		}, this);
   		}
+	});
+	Player.Views.Multilist = Backbone.View.extend({
+		template: "players/multilist",
+		events: {
+			"click .bteams": "showTeams"
+		},
+		showTeams: function(ev){
+			$('.lteams').show();
+		},
+		render: function(layout) {
+			var view = layout(this); //Get this view from the layout.
+			var TeamPlayer = require("modules/teamplayer");
+			this.setViews({
+				".lteams": new TeamPlayer.Views.TeamList( {collection: this.options.teamplayers} )
+			});
+			return view.render().then(function(el) {
+				$('.lteams').hide();
+			});
+		},
+		initialize: function() {
+			this.options.teamplayers.bind("reset", function() {this.render();}, this);
+		}
 	});
 	
 	return Player;// Required, return the module for AMD compliance

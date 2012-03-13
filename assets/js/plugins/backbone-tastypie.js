@@ -102,8 +102,13 @@
 				});
 			url += 'set/' + ids.join( ';' ) + '/';
 		}
-		// if there are no models, then request a collection filtering on related...
-		
+		else {// if there are no models, then request a collection filtering on related...
+			//TODO: Find a way to search for related HasOne's, but for now specify the season.
+			if (this.season) {
+				url += '?'
+				url += 'season_id=' + this.season.get('id')
+			}
+		}
 		return url || null;
 	};
 

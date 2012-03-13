@@ -1,26 +1,45 @@
 define([
+	"require",
   "namespace",
 
   // Libs
   "use!backbone",
 
-  // Modules
-  "modules/player",
+  // Modules  
   "modules/game",
-
-  // Plugins
-  "use!plugins/backbone.layoutmanager",
-  "use!plugins/backbone-relational",
-	"use!plugins/backbone-tastypie"
+  "modules/player",
+  "modules/gameevent"
 ],
 /*
 This module is an interface for tracking game action.
-This module does not manage any of its own data but instead relies on its inherited modules.
+It has some data that is not persisted to the server.
 */
-function(namespace, Backbone, Player, Game) {
+function(require, namespace, Backbone) {
 	var app = namespace.app;
 	var TrackedGame = namespace.module();
-
+	
+	TrackedGame.Model = Backbone.Model.extend({
+		defaults: {
+			game: {},
+			teamplayers_1: {},
+			teamplayers_1_onfield : {},
+			teamplayers_2: {},
+			teamplayers_2_onfield : {},
+			gameevents: {}
+		},
+		toJSON: function() {//flatten the data so they are easy to read.
+			var temp = _.clone(this.attributes);
+			temp.game = this.get('game').toJSON();
+			temp.teamplayers_1 = this.get('teamplayers_1').toJSON();
+			temp.teamplayers_2 = this.get('teamplayers_2').toJSON();
+			temp.gameevents = this.get('gameevents').toJSON();
+			return temp;
+		},
+		bootstrap: function(){
+			console.log('TODO: Bootstrap');
+		}
+	});
+	
 	//
 	// ROUTER
 	//
@@ -29,23 +48,48 @@ function(namespace, Backbone, Player, Game) {
 			"track/:gameId": "trackGame",
 		},
 		trackGame: function (gameId) {
-			if ((!app.trackedGame) || (app.trackedGame.id != gameId)){
-				app.trackedGame = new Game.Model({id: gameId});
-			}
-			app.trackedGame.fetch();
-			//This router might not get called again for a while if user stays on track-game screen.
 			var myLayout = app.router.useLayout("tracked_game");
+			//var Team = require("modules/team");
+			var Game = require("modules/game");
+			var Player = require("modules/player");
+			var GameEvent = require("modules/gameevent");
+			
+			trackedgame = new TrackedGame.Model();
+			
+			//Get the game
+			game = new Game.Model({id: gameId});
+			game.fetch();
+			trackedgame.set('game',game);
+			
+			//Get the roster for each team
+			teamplayers_1 = new Player.Collection([],{team_id: game.get('team_1_id')});
+			trackedgame.set('teamplayers_1',teamplayers_1);
+			teamplayers_2 = new Player.Collection([],{team_id: game.get('team_2_id')});
+			trackedgame.set('teamplayers_2',teamplayers_2);
+			
+			//Get events for the game
+			gameevents = new GameEvent.Collection([],{game_id: gameId});
+			gameevents.fetch();
+			trackedgame.set('gameevents',gameevents);
+			
+			//Bootstrap the TrackedGame state from the events.
+			//TODO: bind something to bootstrap.
+			trackedgame.bootstrap();
+			//Maybe I need to bind some change events so trackedgame will register a change when the previous fetch's return.'
+			
+			//This router might not get called again for a while if user stays on track-game screen.
 			myLayout.setViews({
-				".sub_team_1": new TrackedGame.Views.SubTeam({model:app.trackedGame, team_ix:1}),
-				".sub_team_2": new TrackedGame.Views.SubTeam({model:app.trackedGame, team_ix:2}),
-				".t_game": new TrackedGame.Views.GameAction({model:app.trackedGame})
+				".sub_team_1": new TrackedGame.Views.SubTeam({model: trackedgame, team_ix:1}),
+				".sub_team_2": new TrackedGame.Views.SubTeam({model: trackedgame, team_ix:2}),
+				".t_game": new TrackedGame.Views.GameAction({model: trackedgame})
 			});
+			//myLayout.render(function(el) {$("#main").html(el);});
 			myLayout.render(function(el) {
 				$("#main").html(el);
 				//$('.sub_team_1').hide();
 				$('.sub_team_2').hide();
 				$('.t_game').hide();
-			});//TODO: then hide sub_team_2 and t_game
+			});
 		},
 	});
 	TrackedGame.router = new TrackedGame.Router();// INITIALIZE ROUTER
@@ -69,8 +113,12 @@ function(namespace, Backbone, Player, Game) {
 	});
 	TrackedGame.Views.Scoreboard = Backbone.View.extend({
 		template: "trackedgame/scoreboard",
-		serialize: function() {return this.model.toJSON();},
-		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
+		serialize: function() {
+			return this.model.toJSON();
+		},
+		initialize: function() {
+			this.model.get('game').bind("change", function() {this.render();}, this);
+		}
 	});
 	TrackedGame.Views.PlayerArea = Backbone.View.extend({
 		template: "trackedgame/player_area",
@@ -143,6 +191,7 @@ function(namespace, Backbone, Player, Game) {
 		
 		render: function(layout) {
 			var view = layout(this);
+			//return view.render();
 			return view.render().then(function(el) {
 				this.misc();
 			});
@@ -152,7 +201,11 @@ function(namespace, Backbone, Player, Game) {
 	
 	TrackedGame.Views.SubTeam = Backbone.View.extend({
 		template: "trackedgame/game_substitution",
-		initialize: function() {this.model.bind("change", function() {this.render();}, this);},
+		initialize: function() {
+			this.model.get('game').bind("change", function() {this.render();}, this);
+			this.model.get('teamplayers_1').bind("change", function() {this.render();}, this);
+			this.model.get('teamplayers_2').bind("change", function() {this.render();}, this);
+		},
 		events: {
 			"click .sub_next": "sub_next",
 			"click .sub_done": "sub_done"
@@ -174,13 +227,14 @@ function(namespace, Backbone, Player, Game) {
 		},
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
-			var this_team = this.options.team_ix==1 ? this.model.attributes.team_1 : this.model.attributes.team_2;
+			var this_team = this.options.team_ix==1 ? this.model.get('game').get('team_1') : this.model.get('game').get('team_2');
 			//this_team.attributes.players.each(function(player) {
 			//	view.insert("ul .off_field", new Player.Views.Item({
 			//		model: player
 			//	}));
 			//});
-			return view.render(this_team.toJSON());
+			//I probably want to construct some nested object that includes the relevant team and playerlist
+			return view.render(this_team);
 		}
 	});
 	

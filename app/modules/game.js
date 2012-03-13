@@ -1,48 +1,38 @@
 define([
+  "require",
   "namespace",
 
   // Libs
   "use!backbone",
 
   // Modules
+  "modules/leaguevine",
   "modules/navigation",
-  "modules/season",
-  "modules/tournament",
-  "modules/team",
-  "modules/event"
 ],
-function(namespace, Backbone, Navigation, Season, Tournament, Team) {
+function(require, namespace, Backbone, Leaguevine, Navigation) {
 	var app = namespace.app;
 	var Game = namespace.module();
 	
-	Game.Model = Backbone.RelationalModel.extend({
-		//has children team_1, team_2, tournament, season, events (not included)
-		relations: [
-			{
-				key: 'season',
-				relatedModel: Season.Model,
-				type: Backbone.HasOne
-			},
-			{
-				key: 'tournament',
-				relatedModel: Tournament.Model,
-				type: Backbone.HasOne
-			},
-			{
-				key: 'team_1',
-				relatedModel: Team.Model,
-				type: Backbone.HasOne
-			},
-			{
-				key: 'team_2',
-				relatedModel: Team.Model,
-				type: Backbone.HasOne
-			}
-		],
-		defaults: {//other attributes that are not models.
+	Game.Model = Backbone.Model.extend({
+		defaults: {
+			id: "",
 			team_1_score: "",
 			team_2_score: "",
-			start_time: ""
+			start_time: "",
+			season: {},
+			tournament: {},
+			team_1: {name: ""},
+			team_2: {name: ""}
+			//pool, swiss_round, bracket
+		},
+		urlRoot: Leaguevine.API.root + "games",
+		parse: function(resp, xhr) {
+			resp = Backbone.Model.prototype.parse(resp);
+			return resp;
+		},
+		toJSON: function() {
+			//TODO: Remove attributes that are not stored (gameevents)
+			return _.clone(this.attributes);
 		}
 	});
 	
@@ -50,6 +40,40 @@ function(namespace, Backbone, Navigation, Season, Tournament, Team) {
 		model: Game.Model,
 		comparator: function(game) {// Define how items in the collection will be sorted.
 		  return game.get("start_time");
+		},
+		urlRoot: Leaguevine.API.root + "games",
+		url: function(models) {
+			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
+			url += '/?'
+			if ( models && models.length ) {
+				url += 'game_ids=' + JSON.stringify(models.pluck('id')) + '&';
+			}
+			if (this.season_id) {
+				url += 'season_id=' + this.season_id + '&';
+			}
+			if (this.tournament_id) {
+				url += 'tournament_id=' + this.tournament_id + '&';
+			}
+			if (this.team_1_id || this.team_2_id) {
+				url += 'team_ids=%5B';
+				if (this.team_1_id){url += this.team_1_id;}
+				if (this.team_1_id && this.team_2_id){url += ',';}
+				if (this.team_2_id){url += this.team_2_id;}
+				url += '%5D&';
+			}
+			return url.substr(0,url.length-1);
+		},
+		parse: function(resp, xhr) {
+			resp = Backbone.Collection.prototype.parse(resp);
+			return resp;
+		},
+		initialize: function(models, options) {
+			if (options) {
+				if (options.season_id) {this.season_id = options.season_id;}
+				if (options.tournament_id) {this.tournament_id = options.tournament_id;}
+				if (options.team_1_id) {this.team_1_id = options.team_1_id;}
+				if (options.team_2_id) {this.team_2_id = options.team_2_id;}
+    		}
 		}
 	});
 	
@@ -58,9 +82,8 @@ function(namespace, Backbone, Navigation, Season, Tournament, Team) {
 			"games": "listGames", //List all games.
 			"games/:gameId": "showGame" //Show detail for one game.
 		},
-		listGames: function () {
-			app.games = new Game.Collection();
-			app.games.fetch();
+		listGames: function () {//AFAIK we don't have any routers taking us here.
+			games = new Game.Collection([],{season_id: Leaguevine.API.season_id});
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
 			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newgame", name: "New"}));
@@ -68,13 +91,13 @@ function(namespace, Backbone, Navigation, Season, Tournament, Team) {
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
 		showGame: function (gameId) {
-			//Prepare the data.
-			if (!app.games) {app.games = new Game.Collection();}//Will create an empty collection.
-			if (!app.games.get(gameId)) {app.games.add( [{id: parseInt(gameId)}] );}//Insert this game into the collection.
-			game = app.games.get(gameId);
-			game.fetch();
-			//TODO: Get some game stats.
 			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
+			//Prepare the data.
+			game = new Game.Model({id: gameId});
+			game.fetch();
+			
+			//TODO: Get some game stats.
+			
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({href: "#editgame/"+gameId, name: "Edit"}),
 				".detail": new Game.Views.Detail( {model: game}),
@@ -140,7 +163,7 @@ function(namespace, Backbone, Navigation, Season, Tournament, Team) {
 			console.log("TODO: Show Player Stats")
 		},
 		trackGame: function(ev) {
-			app.router.navigate("#track/"+this.model.id, true);
+			app.router.navigate("#track/"+this.model.get('id'), true);
 		},
 		render: function(layout) {
 			var view = layout(this);

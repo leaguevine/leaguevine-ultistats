@@ -5,8 +5,8 @@ define([
   "use!backbone",
   // Plugins
   "use!plugins/backbone.layoutmanager",
-  "use!plugins/backbone-tastypie",
-  "use!plugins/backbone-relational"
+  "use!plugins/backbone-tastypie"
+  //,"use!plugins/backbone-relational"
 ],
 
 function($, _, Backbone) {
@@ -43,9 +43,12 @@ function($, _, Backbone) {
   });//end Backbone.LayoutManager.configure
 
   return {
-    // Create a custom object with a nested Views object
+    // Create a custom object with a nested Views object and a blank Model
     module: function(additionalProps) {
-      return _.extend({ Views: {} }, additionalProps);
+		return _.extend({
+			/*Model: Backbone.RelationalModel.extend(),*/
+			Views: {}
+		}, additionalProps);
     },
 
     // Keep active application instances namespaced under an app object.
