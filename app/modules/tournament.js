@@ -103,7 +103,9 @@ function(namespace, Backbone, Navigation, Title, Game, TournTeam) {
 		},
 		initialize: function() {
 			this.collection.bind("reset", function() {
-				this.render();
+                if (Backbone.history.fragment == "tournaments") {
+                    this.render();
+                }
 			}, this);
 		}
 	});

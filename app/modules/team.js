@@ -149,7 +149,11 @@ function(namespace, Backbone, Navigation, Title, Player, Game) {
 			return view.render({ count: this.collection.length });
 		},
 		initialize: function() {
-			this.collection.bind("reset", function() {this.render();}, this);
+			this.collection.bind("reset", function() { 
+                if (Backbone.history.fragment == "teams") {
+                    this.render();
+                }
+            }, this);
 		}
 	});	
 	Team.Views.Detail = Backbone.View.extend({
