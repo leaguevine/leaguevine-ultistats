@@ -136,8 +136,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			if (!app.teams) {app.teams = new Team.Collection();}//Will create an empty collection.
 			//If we have teamId, then we are editing. If not, then we are creating a new team.
 			if (teamId) { //make the edit team page
-				if (!app.teams.get(teamId)) {app.teams.add( [{id: parseInt(teamId)}] );}//Insert this team into the collection.
-				team = app.teams.get(teamId);
+				team = new Team.Model({id: teamId});
 				team.fetch();
 				myLayout.view(".navbar", new Navigation.Views.Navbar({}));
                 myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Edit", left_btn_href: "#teams/"+teamId, left_btn_class: "back", left_btn_txt: "Cancel"}));
