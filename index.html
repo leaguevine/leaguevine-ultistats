@@ -12,7 +12,15 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" href="assets/css/main.css">
   <!-- Optional local settings specific to the installation's environment -->
+</head>
+
+<body>
+  <!-- Main container -->
+  <div role="main" id="main"></div>
+  <div id="page_loading_area"><img src="assets/img/ajax-loader.gif" /></div>
+  <!-- Application source -->
   <script type="text/javascript" src="assets/js/plugins/localSettings.js"></script>
+  <script data-main="app/config" src="assets/js/libs/require.js"></script>
   <script type="text/javascript" src="assets/js/libs/jquery.js"></script>
   <script type="text/javascript">
     $(function () {
@@ -29,13 +37,5 @@
         }, 1000);
     });
   </script>
-</head>
-
-<body>
-  <!-- Main container -->
-  <div role="main" id="main"></div>
-  <div id="page_loading_area"><img src="assets/img/ajax-loader.gif" /></div>
-  <!-- Application source -->
-  <script data-main="app/config" src="assets/js/libs/require.js"></script>
 </body>
 </html>
