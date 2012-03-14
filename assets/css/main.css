@@ -65,30 +65,24 @@ form input {
 /* ------------------- Buttons ------------------- */
 
 button {
-    background-color: #E2E5EB;
-    background: -moz-linear-gradient(#FAFBFE, #E2E5EB);
-    background: -webkit-gradient(linear, left top, left bottom, from(#FAFBFE), to(#E2E5EB), color-stop(0.5, #E9EBED), color-stop(0.51, #E2E5EB)); 
+    background-color: #E9EBED;
     border: 1px solid #767676;
     font-size: 14px;
     font-weight: bold;
     height: 35px;
     margin-top: 8px;
-    width: 95%;
+    width: 100%;
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
 }
 
     button.save {
         background-color: #6e86a4;
-        background: -webkit-gradient(linear, left top,left bottom, from(#afbbcb), to(#6e86a4), color-stop(0.48, #8b9db5), color-stop(0.5, #8195af));
-        background: -moz-linear-gradient(#afbbcb, #6e86a4);
         color: white;
     }
 
     button.delete {
         background-color: #b71a1a;
-        background: -webkit-gradient(linear, left top, left bottom, from(#d01e1e), to(#b71a1a), color-stop(0.5, #d01e1e), color-stop(0.51, #b71a1a)); 
-        background: -moz-linear-gradient(#d01e1e, #b71a1a);
         color: white;
     }
 
@@ -183,8 +177,6 @@ button {
 
 .titlebar { 
     background-color: #6e86a4;
-    background: -webkit-gradient(linear, left top,left bottom, from(#afbbcb), to(#6e86a4), color-stop(0.48, #8b9db5), color-stop(0.5, #8195af));
-    background: -moz-linear-gradient(#afbbcb, #6e86a4);
     border-bottom: 1px solid #22374a;
     height: 42px;
     text-align: center;
@@ -202,8 +194,7 @@ button {
 }
 
 .titlebar .btn a{ 
-    background: -webkit-gradient(linear, left top, left bottom, from(#9fb3cc), to(#5b80ab), color-stop(0.5, #6b8bb2), color-stop(0.51, #597eaa)); 
-    background: -moz-linear-gradient(#9fb3cc, #5b80ab);
+    background-color: #5b80ab;
     border: 1px solid rgba(0,0,0, 0.4);  
     display: block;
     height: 26px; 
@@ -229,8 +220,7 @@ button {
 }
 
 #title_left_btn.back #title_left_pointer span{ 
-    background: -webkit-gradient(linear, left top, right bottom, from(#9fb3cc), to(#5b80ab), color-stop(0.5, #6b8bb2), color-stop(0.51, #597eaa));   
-    background: -moz-linear-gradient(#9fb3cc, #638bb9);
+    background-color: #5b80ab;
     border: 1px solid rgba(0,0,0, 0.4); 
     border-right: 0; 
     border-top: 0;
@@ -238,8 +228,6 @@ button {
     height: 16px; 
     -webkit-border-radius: 1px; 
     -moz-border-radius: 1px;
-    -webkit-box-shadow: 0 1px 0 rgba(255,255,255, 0.25);
-    -moz-box-shadow: 0 1px 0 rgba(255,255,255, 0.25);
     -webkit-transform: skew(15deg);
     -moz-transform: skew(15deg);
     width: 15px; 
@@ -286,8 +274,6 @@ button {
    ========================================================================== */
 .list_children div.buttons {
     background-color: #E2E5EB;
-    background: -webkit-gradient(linear, left top,left bottom, from(#FAFBFE), to(#E2E5EB));
-    background: -moz-linear-gradient(#FAFBFE, #E2E5EB);
     border-bottom: 1px solid #c3c3c3;
     border-top: 1px solid #767676;
     height: 42px;
@@ -304,8 +290,6 @@ button {
 
 .list_children button {
     background-color: #FAFBFE;
-    background: -webkit-gradient(linear, left top,left bottom, from(#FAFBFE), to(#E2E5EB));
-    background: -moz-linear-gradient(#FAFBFE, #E2E5EB);
     border: 1px solid #c3c3c3;
     color: #505C77;
     font-weight: bold;
@@ -323,8 +307,7 @@ button {
     .list_children button.is_active,
     .list_children button:active {
         background-color: #DBDDE3;
-        background: -webkit-gradient(linear, left top,left bottom, from(#DBDDE3), to(#E2E5EB));
-        background: -moz-linear-gradient(#DBDDE3, #E2E5EB);
+        border: 1px solid #8599c6;
     }
 
 /* =============================================================================
@@ -574,4 +557,3 @@ button {
     color: #767676;
     margin: 10px; 0px;
 }
-
