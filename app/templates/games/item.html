@@ -1,1 +1,9 @@
-<a href='#games/<%= id %>'><%= team_1.name %> <%= team_1_score %>  -  <%= team_2_score %> <%= team_2.name %></a>
+<a class="game_list_item_link" href='#games/<%= id %>'>
+    <div class="game_list_team_name"><%= team_1.name %></div>
+    <div class="game_list_icon_spacer">&nbsp</div>
+    <div class="game_list_team_score"><%= team_1_score %></div>
+    <div class="game_list_team_name"><%= team_2.name %></div>
+    <div class="game_list_icon_spacer">&nbsp</div>
+    <div class="game_list_team_score"><%= team_2_score %></div>
+    <div class="game_list_start_time"><%= start_time_string %></div>
+</a>

@@ -357,6 +357,41 @@ a, a:hover, a:visited {
     padding-top: 0px;
 }
 
+/* ------------------- Games in lists --------------------- */
+.game_list_item_link {
+    height: 35px;
+}
+
+.game_list_team_name {
+    clear: both;
+    padding-left: 15px;
+    float: left;
+    width: 60%;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.game_list_team_score {
+    width: 10%;
+    float: right;
+    padding-right: 20px;
+    font-weight: bold;
+    font-size: 13px;
+    text-align: right;
+}
+
+.game_list_icon_spacer {
+    width: 5%;
+    float: right;
+}
+
+.game_list_start_time {
+    clear: both;
+    padding-left: 25px;
+    font-size: 11px;
+    color: #767676;
+}
+
 /* =============================================================================
    Game Tracking
    ========================================================================== */

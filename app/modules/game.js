@@ -25,6 +25,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			team_1: {name: ""},
 			team_2: {name: ""}
 			//pool, swiss_round, bracket
+            
 		},
 		urlRoot: Leaguevine.API.root + "games",
 		parse: function(resp, xhr) {
@@ -33,8 +34,22 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		},
 		toJSON: function() {
 			//TODO: Remove attributes that are not stored (gameevents)
-			return _.clone(this.attributes);
-		}
+			game = _.clone(this.attributes);
+
+            // Add a formatted start time 
+            game.start_time_string = "";
+            if (game.start_time != "" ){ //parse the start time and make it human-readable
+                arr = game.start_time.split(/[- :T]/);
+                start_time_utc = new Date(arr[0], arr[1]-1, arr[2], arr[3], arr[4]); //Parse the ISOformat start time
+                tz_minutes_offset = new Date().getTimezoneOffset() //The offset in minutes from GMT/UTC
+                start_time = new Date(start_time_utc.getTime() + (tz_minutes_offset * 60 * 1000)); //Start time using user's system clock
+                minutes = start_time.getMinutes();
+                if (minutes < 10) {minutes = '0' + minutes;} //Make the minutes field two digits
+                game.start_time_string = start_time.getHours() + ':' + minutes + ' ' + start_time.toLocaleDateString();
+            }
+
+            return game
+		},
 	});
 	
 	Game.Collection = Backbone.Collection.extend({
@@ -119,7 +134,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		}
 	});
 	Game.router = new Game.Router();// INITIALIZE ROUTER
-  	
+
 	//
 	// VIEWS
 	//
@@ -178,15 +193,6 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		template: "games/detail",
 		render: function(layout) {
             game = this.model.toJSON();
-            if (game.start_time != "" ){ //parse the start time and make it human-readable
-                start_time = new Date(game.start_time);
-                minutes = start_time.getMinutes();
-                if (minutes < 10) {minutes = '0' + minutes;}
-                game.start_time_string = start_time.getHours() + ':' + minutes + ' ' + start_time.toLocaleDateString();
-            }
-            else {
-                game.start_time_string = "";
-            }
 			return layout(this).render(game);
 		},
 		initialize: function() {
