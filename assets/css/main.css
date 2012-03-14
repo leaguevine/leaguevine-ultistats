@@ -86,6 +86,11 @@ button {
         color: white;
     }
 
+/* ------------------- Links ------------------- */
+a, a:hover, a:visited {
+    color: #444e65;
+}
+
 /* =============================================================================
    Page loading spinner
    ========================================================================== */
@@ -559,6 +564,20 @@ button {
     text-align: center;
     color: #767676;
     margin: 10px; 0px;
+}
+
+/* ------------------ Standings --------------------- */
+#tournament_standings {
+    margin: 15px;
+    font-size: 14px;
+}
+
+#tournament_standings th {
+    text-align: left;
+}
+
+#tournament_standings tr {
+    height: 25px;
 }
 
 /* =============================================================================

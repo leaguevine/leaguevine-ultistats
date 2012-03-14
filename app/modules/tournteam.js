@@ -81,16 +81,16 @@ function(require, namespace, Backbone, Leaguevine) {
 	
 	TournTeam.Views.Team = Backbone.View.extend({
 		template: "tournteams/team",
-		tagName: "li",
+		tagName: "tr",
 		serialize: function() {return this.model.toJSON();}
 	});
-	TournTeam.Views.TeamList = Backbone.View.extend({
+	TournTeam.Views.TeamList = Backbone.View.extend({//Renders the standings for a tournament
 		template: "tournteams/list",
 		className: "tournteams-wrapper",
 		render: function(layout) {
 			var view = layout(this);
 			this.collection.each(function(team) {
-				view.insert("ul", new TournTeam.Views.Team({
+				view.insert("table", new TournTeam.Views.Team({
 					model: team
 				}));
 			});
