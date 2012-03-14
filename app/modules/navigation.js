@@ -17,7 +17,7 @@ function(namespace, Backbone, Game) {
     app.navigation = {
         tournaments_href: "tournaments",
         teams_href: "teams",
-        game_href: "game",
+        games_href: "games",
         settings_href: "settings"
     }
 	
@@ -34,7 +34,7 @@ function(namespace, Backbone, Game) {
             // Initialize the classes for the currently viewed navigation button
             var tournaments_class = "";
             var teams_class = "";
-            var game_class = "";
+            var games_class = "";
             var settings_class = "";
             var currently_viewed = "currently_viewed";
             var fragment = Backbone.history.fragment;
@@ -46,8 +46,8 @@ function(namespace, Backbone, Game) {
                 teams_class = currently_viewed;
                 app.navigation.teams_href = fragment;
             } 
-            else if (fragment.indexOf("game") != -1) {
-                game_class = currently_viewed;
+            else if (fragment.indexOf("games") != -1) {
+                games_class = currently_viewed;
                 app.navigation.games_href = fragment;
             }
             else if (fragment.indexOf("settings") != -1) {
@@ -60,7 +60,7 @@ function(namespace, Backbone, Game) {
                 name: this.options.name, 
                 tournaments_class: tournaments_class,
                 teams_class: teams_class,
-                game_class: game_class,
+                games_class: games_class,
                 settings_class: settings_class,
                 tournaments_href: app.navigation.tournaments_href,
                 teams_href: app.navigation.teams_href,

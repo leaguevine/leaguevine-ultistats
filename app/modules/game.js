@@ -87,9 +87,10 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			games = new Game.Collection([],{season_id: Leaguevine.API.season_id});
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
+            games.fetch();
 			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newgame", name: "New"}));
 			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Games"}));
-			myLayout.view(".content", new Game.Views.List ({collection: app.games}));//pass the List view a collection of (fetched) games.
+			myLayout.view(".content", new Game.Views.List ({collection: games}));//pass the List view a collection of (fetched) games.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
 		showGame: function (gameId) {

@@ -7,9 +7,10 @@ require([
 
 	// Modules - Only need Leaguevine and modules with Routers
 	"modules/leaguevine",
+	"modules/settings",
 	"modules/team",
 	"modules/tournament",
-	"modules/trackedgame"
+	"modules/trackedgame",
 ],
 /*
  * The following callback is called after the dependices are loaded.
