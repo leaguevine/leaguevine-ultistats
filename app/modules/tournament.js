@@ -153,20 +153,36 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		template: "tournaments/multilist",
 		events: {
 			"click .bstandings": "showStandings",
+			"click .bgames": "showGames",
+        /*
 			"click .bpools": "showPools",
 			"click .bbrackets": "showBrackets"
+            */
 		},
+        showGames: function(ev){
+			$('.lbrackets').hide();
+			$('.lpools').hide();
+			$('.lstandings').hide();
+            $('.lgames').show();
+            $('.list_children button').removeClass('is_active');
+            $('button.bgames').addClass('is_active');
+        },
 		showStandings: function(ev){
 			$('.lbrackets').hide();
 			$('.lpools').hide();
+			$('.lgames').hide();
 			$('.lstandings').show();
             $('.list_children button').removeClass('is_active');
             $('button.bstandings').addClass('is_active');
 			//console.log("TODO: Show Standings");
 		},
+        /* 
+        // Don't show these yet. To enable showing pools and brackets, we 
+        // need to return lists of pools and brackets instead of games, and then style these.
 		showPools: function(ev){
 			$('.lstandings').hide();
 			$('.lbrackets').hide();
+			$('.lgames').hide();
 			$('.lpools').show();
             $('.list_children button').removeClass('is_active');
             $('button.bpools').addClass('is_active');
@@ -175,22 +191,28 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		showBrackets: function(ev){
 			$('.lstandings').hide();
 			$('.lpools').hide();
+			$('.lgames').hide();
 			$('.lbrackets').show();
             $('.list_children button').removeClass('is_active');
             $('button.bbrackets').addClass('is_active');
 			//console.log("TODO: Show Brackets")
 		},
+        */
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
 			var TournTeam = require("modules/tournteam");
 			var Game = require("modules/game");
 			this.setViews({
 				".lstandings": new TournTeam.Views.TeamList( {collection: this.options.tournteams} ),
+				".lgames": new Game.Views.List( {collection: this.options.games} ),
+                /*
 				".lpools": new Game.Views.List( {collection: this.options.games} ),
 				".lbrackets": new Game.Views.List( {collection: this.options.games} )
+                */
 			});
 			return view.render().then(function(el) {
 				$('.lpools').hide();
+				$('.lgames').hide();
 				$('.lbrackets').hide();
 			});
 		},
