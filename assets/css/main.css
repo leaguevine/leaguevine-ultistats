@@ -361,8 +361,11 @@ button {
     .scoreboard .name {
         float: left;
         width: 34%;
+        height: 10px;
         padding: 5px;
         overflow: hidden;
+        word-break: break-all;
+        word-wrap: none;
     }
 
     .scoreboard .team1 {
