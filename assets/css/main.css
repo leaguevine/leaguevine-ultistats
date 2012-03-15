@@ -21,7 +21,7 @@ ul.obj-list {
 }
 
     ul.obj-list li a{
-        border-top: 1px solid #e0e0e0;
+        border-bottom: 1px solid #e0e0e0;
         display: block;
         padding-left: 15px;
         padding-right: 5px;
@@ -325,8 +325,8 @@ a, a:hover, a:visited {
 
     .list_children button.is_active,
     .list_children button:active {
-        background-color: #DBDDE3;
-        border: 1px solid #8599c6;
+        border: 2px solid #8599c6;
+        color: #424c62;
     }
 
 /* =============================================================================

@@ -211,9 +211,11 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
                 */
 			});
 			return view.render().then(function(el) {
+                /*
 				$('.lpools').hide();
-				$('.lgames').hide();
 				$('.lbrackets').hide();
+                */
+				$('.lstandings').hide();
 			});
 		},
 		initialize: function() {

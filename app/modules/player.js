@@ -85,7 +85,23 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		showPlayer: function (playerId) {
 			//Prepare the data.
 			player = new Player.Model({id: playerId});
-			player.fetch();
+
+            titlebarOptions = {
+                title: player.get("first_name")+" "+player.get("last_name"), 
+                left_btn_href:"#players", 
+                left_btn_class: "back", 
+                left_btn_txt: "Players", 
+                right_btn_href: "#editplayer/"+playerId, 
+                right_btn_txt: "Edit"
+            };
+
+			player.fetch({success: function() { // Re-render the titlebar with the player's name
+                var myLayout = app.router.useLayout("div");
+                titlebarOptions.title = player.get("first_name")+" "+player.get("last_name");
+                myLayout.view("div", new Title.Views.Titlebar(titlebarOptions));
+                myLayout.render(function(el) {$(".titlebar").html(el)});
+                }
+            });
 			
 			var TeamPlayer = require("modules/teamplayer");
 			teamplayers = new TeamPlayer.Collection([],{player_id: player.get('id')});
@@ -98,7 +114,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 				".navbar": new Navigation.Views.Navbar({href: "#editplayer/"+playerId, name: "Edit"}),
 				".detail": new Player.Views.Detail( {model: player}),
 				".list_children": new Player.Views.Multilist({ teamplayers: teamplayers}),
-                ".titlebar": new Title.Views.Titlebar({title: player.get("first_name")+" "+player.get("last_name"), left_btn_href:"#players", left_btn_class: "back", left_btn_txt: "Players", right_btn_href: "#editplayer/"+playerId, right_btn_txt: "Edit"})
+                ".titlebar": new Title.Views.Titlebar(titlebarOptions)
 			});
 			myLayout.render(function(el) {$("#main").html(el);});
 		}
@@ -162,14 +178,11 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			this.setViews({
 				".lteams": new TeamPlayer.Views.TeamList( {collection: this.options.teamplayers} )
 			});
-			return view.render().then(function(el) {
-				$('.lteams').hide();
-			});
+			return view.render();
 		},
 		initialize: function() {
 			this.options.teamplayers.bind("reset", function() {this.render();}, this);
 		}
 	});
-	
 	return Player;// Required, return the module for AMD compliance
 });
