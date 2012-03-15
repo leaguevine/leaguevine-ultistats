@@ -22,9 +22,9 @@ function(require, namespace, Backbone) {
 		defaults: {
 			game: {},
 			teamplayers_1: {},
-			teamplayers_1_onfield : {},
+			teamplayers_1_onfield : [],
 			teamplayers_2: {},
-			teamplayers_2_onfield : {},
+			teamplayers_2_onfield : [],
 			gameevents: {}
 		},
 		toJSON: function() {//flatten the data so they are easy to read.

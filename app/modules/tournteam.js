@@ -43,11 +43,11 @@ function(require, namespace, Backbone, Leaguevine) {
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
 			url += '/?'
-			if (this.team) {
-				url += 'team_ids=%5B' + this.team.get('id') + '%5D&';
+			if (this.team_id) {
+				url += 'team_ids=%5B' + this.team_id + '%5D&';
 			}
-			if (this.tournament) {
-				url += 'tournament_ids=%5B' + this.tournament.get('id') + '%5D&';
+			if (this.tournament_id) {
+				url += 'tournament_ids=%5B' + this.tournament_id + '%5D&';
 			}
 			return url.substr(0,url.length-1);
 		},
@@ -73,8 +73,8 @@ function(require, namespace, Backbone, Leaguevine) {
 		},
 		initialize: function(models, options) {
 			if (options) {
-				if (options.team) {this.team = options.team;}
-				if (options.tournament) {this.tournament = options.tournament;}
+				if (options.team_id) {this.team_id = options.team_id;}
+				if (options.tournament_id) {this.tournament_id = options.tournament_id;}
     		}
 		}
 	});
