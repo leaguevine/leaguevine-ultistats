@@ -34,6 +34,10 @@ require.config({
 			deps: ["use!backbone"]
 		},
 
+		"plugins/backbone.localStorage": {
+			deps: ["use!backbone"]
+		},
+		
 		"plugins/jquery.ba-throttle-debounce": {
 			deps: ["jquery"]
 		},
@@ -44,6 +48,10 @@ require.config({
 		
 		"plugins/backbone-relational": {
 			deps: ["use!backbone", "use!plugins/backbone-tastypie"]
+		},
+		
+		"plugins/spinner": {
+			deps: ["jquery"]
 		}
 	}
 });

@@ -5,8 +5,9 @@ define([
   "use!backbone",
   // Plugins
   "use!plugins/backbone.layoutmanager",
-  "use!plugins/backbone-tastypie"
+  "use!plugins/backbone-tastypie",
   //,"use!plugins/backbone-relational"
+  "use!plugins/spinner"
 ],
 
 function($, _, Backbone) {

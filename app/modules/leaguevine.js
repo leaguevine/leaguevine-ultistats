@@ -30,9 +30,10 @@ function(namespace, Backbone) {
 				var pair = element.split("="); //Get the key and value.
 				var temp_obj = {};
 				temp_obj[pair[0]]=pair[1]; //Put the key and value into a temp object.
-				_.extend(app.api,temp_obj); //Extend/overwrite our app.auth with the key/value of the temp object.
+				_.extend(app.api,temp_obj); //Extend/overwrite our app.api with the key/value of the temp object.
 			});
-			localStorage.setItem('auth_object', JSON.stringify(app.api));			
+			localStorage.setItem('auth_object', JSON.stringify(app.api));
+			//TODO: After token is received, navigate to the most recent page.
 			Backbone.history.navigate('teams', true);//After the token has been updated, navigate to some index site.
 		}
 	});
