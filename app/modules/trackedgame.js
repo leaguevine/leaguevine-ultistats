@@ -31,8 +31,8 @@ function(require, namespace, Backbone) {
 			onfield_2: [],
 			offfield_2: [],
 			team_in_possession_ix: 1,
-			player_in_possession_id: '',
-			team_pulled_ix: ''
+			player_in_possession_id: NaN,
+			team_pulled_ix: NaN
 		},
 		toJSON: function() {//flatten the data so they are easy to read.
 			var temp = _.clone(this.attributes);
@@ -43,6 +43,48 @@ function(require, namespace, Backbone) {
 			temp.offfield_2 = this.get('offfield_2').toJSON();
 			temp.gameevents = this.get('gameevents').toJSON();
 			return temp;
+		},
+		player_tap: function(pl_id){
+			var GameEvent = require("modules/gameevent");
+			var d = new Date();//"2011-12-19T15:28:46.493Z"
+			time = d.getUTCFullYear() + '-' + (d.getUTCMonth() + 1) + '-' + d.getUTCDate() + 'T' + d.getUTCHours() + ':' + d.getUTCMinutes() + ':' + d.getUTCSeconds();
+			var gameid = this.get('game').get('id');
+			//pl_id is the tapped player. Might be NaN
+			//last_player_id might be NaN
+			var last_pl_id = this.get('player_in_possession_id');
+			if (!last_pl_id && pl_id){
+				var this_event = new GameEvent.Model({
+					type: 10, 
+					time: time,
+					game_id: gameid, 
+					player_1_id: pl_id
+				});
+			} else if (last_pl_id && !pl_id){
+				var this_event = new GameEvent.Model({
+					type: 20, 
+					time: time,
+					game_id: gameid, 
+					player_1_id: last_pl_id
+				});
+			} else if (last_pl_id && pl_id){
+				var this_event = new GameEvent.Model({
+					type: 21, 
+					time: time,
+					game_id: gameid, 
+					player_1_id: last_pl_id,
+					player_2_id: pl_id
+				});
+			}
+			//save the event to the server.
+			this_event.save([], {
+				headers: {"Authorization": "bearer " + app.api.d_token()},
+				succes: function(model, response){
+					//Add the event to the trackedgame.get('gameevents')
+					this.model.get('gameevents').add(model);
+					//save the trackedgame.
+					this.model.save();
+				}
+			});
 		}
 	});
 	
@@ -160,7 +202,11 @@ function(require, namespace, Backbone) {
 			this.model.bind("change", function() {this.render();}, this);
 			this.model.get('game').bind("change", function() {this.render();}, this);
 			this.model.get('onfield_1').bind("reset", function() {this.render();}, this);
+			this.model.get('onfield_1').bind("add", function() {this.render();}, this);
+			this.model.get('onfield_1').bind("remove", function() {this.render();}, this);
 			this.model.get('onfield_2').bind("reset", function() {this.render();}, this);
+			this.model.get('onfield_2').bind("add", function() {this.render();}, this);
+			this.model.get('onfield_2').bind("remove", function() {this.render();}, this);
 		},
 		//tracked_game(layout)<div .t_game>->GameAction<div .player_area>->PlayerArea
 		template: "trackedgame/player_area",
@@ -197,8 +243,15 @@ function(require, namespace, Backbone) {
 				}));
 			}
 			return view.render({ team: this.model.get('game').get('team_'+this.options.team_ix) });
+		},
+		events: {
+			"click .button": "player_tap"
+		},
+		player_tap: function(ev){
+			this.model.player_tap(parseInt($(ev.target).parents('button').attr('id')));
+			console.log("TODO: Be clever about player taps");
 		}
-		//TODO: attach a click function to each button.
+		
 	});
 	TrackedGame.Views.PlayerButton = Backbone.View.extend({
 		//Can bind this teamplayer change to render... useful if player name/number changes. Why would it?
@@ -208,6 +261,8 @@ function(require, namespace, Backbone) {
 			return this.model.toJSON();
 		}
 		//ev.currentTarget.classList
+		//Since tapping a player button will have different context depending on what the last event was or what the last tap was...
+		//then we'll need access to the trackedgame object which is not easily available in this view.
 	});
 	
 	
@@ -303,21 +358,6 @@ function(require, namespace, Backbone) {
 			//It is possible for the opposite to be true, e.g. on new game.
 			//this.model.get('onfield_'+this.options.team_ix).bind("change", function() {this.render();}, this);
 		},
-		events: {
-			"click .sub_next": "sub_next",
-			"click .sub_done": "sub_done"
-		},
-		sub_next: function(ev){
-			//I would prefer to tighten the scope on this but I'm not sure how to access
-			//the parent element's class without searching the whole DOM.
-			$('.sub_team_'+this.options.team_ix).hide();
-			$('.sub_team_'+(3-this.options.team_ix)).show();
-		},
-		sub_done: function(ev){
-			$('.sub_team_1').hide();
-			$('.sub_team_2').hide();
-			$('.t_game').show();
-		},
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
 			this.model.get('onfield_'+this.options.team_ix).each(function(tp) {
@@ -331,6 +371,45 @@ function(require, namespace, Backbone) {
 				}));
 			});
 			return view.render({ team: this.model.get('game').get('team_'+this.options.team_ix) });
+		},
+		events: {
+			"click .sub_next": "sub_next",
+			"click .sub_done": "sub_done",
+			"click .roster_player": "toggle_roster"
+		},
+		sub_next: function(ev){
+			//I would prefer to tighten the scope on this but I'm not sure how to access
+			//the parent element's class without searching the whole DOM.
+			$('.sub_team_'+this.options.team_ix).hide();
+			$('.sub_team_'+(3-this.options.team_ix)).show();
+		},
+		sub_done: function(ev){
+			$('.sub_team_1').hide();
+			$('.sub_team_2').hide();
+			$('.t_game').show();
+		},
+		toggle_roster: function(ev){			
+			var player_id = parseInt(ev.target.id);
+			var is_onfield = $(ev.target).parents('.roster').hasClass('sub_on_field'); 
+			var team_ix = $(ev.target).parents('.substitution').hasClass('sub_team_1') ? 1 : 2;
+			var this_player = {};
+			//this.model is the trackedgame.
+			if (is_onfield) {//move to offfield
+				this_player = this.model.get('onfield_'+team_ix).find( function(tp) {
+					return tp.get('player_id')==player_id;
+				});
+				this.model.get('onfield_'+team_ix).remove(this_player);
+				this.model.get('offfield_'+team_ix).add(this_player);
+			} else {//move to onfield
+				if (this.model.get('onfield_'+team_ix).length<7){
+					this_player = this.model.get('offfield_'+team_ix).find( function(tp) {
+						return tp.get('player_id')==player_id;
+					});
+					this.model.get('onfield_'+team_ix).add(this_player);
+					this.model.get('offfield_'+team_ix).remove(this_player);
+				}
+			}
+			this.render();
 		}
 		
 		//TODO: Bind player entries to a function that swaps them from off-field to on-field
