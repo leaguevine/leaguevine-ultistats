@@ -21,21 +21,5 @@
   <!-- Application source -->
   <script type="text/javascript" src="assets/js/plugins/localSettings.js"></script>
   <script data-main="app/config" src="assets/js/libs/require.js"></script>
-  <script type="text/javascript" src="assets/js/libs/jquery.js"></script>
-  <script type="text/javascript">
-    $(function () {
-       $("#page_loading_area").ajaxStart(function() {
-           // Anytime any ajax request (system wide) starts, start the spinner
-           $(this).show();
-       });
-       $("#page_loading_area").ajaxStop(function() {
-           // Any time any ajax request ends, end the spinner
-           $(this).hide();
-       });
-        setTimeout(function () {
-          window.scrollTo(0, 1);
-        }, 1000);
-    });
-  </script>
 </body>
 </html>

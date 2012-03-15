@@ -44,6 +44,10 @@ require.config({
 		
 		"plugins/backbone-relational": {
 			deps: ["use!backbone", "use!plugins/backbone-tastypie"]
+		},
+		
+		"plugins/spinner": {
+			deps: ["jquery"]
 		}
 	}
 });
