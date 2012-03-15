@@ -34,9 +34,10 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		},
 		toJSON: function() {
 			//TODO: Remove attributes that are not stored (gameevents)
-			game = _.clone(this.attributes);
+			var game = _.clone(this.attributes);
 
             // Add a formatted start time 
+            // TODO: Put this function in namespace?
             game.start_time_string = "";
             if (game.start_time != "" ){ //parse the start time and make it human-readable
                 arr = game.start_time.split(/[- :T]/);

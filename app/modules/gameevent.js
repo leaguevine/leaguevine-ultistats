@@ -14,13 +14,13 @@ function(require, namespace, Backbone, Leaguevine) {
 	var GameEvent = namespace.module();
 	GameEvent.Model = Backbone.Model.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
-			time: '',//YYYY-MM-DDTHH:MM:SS±hh:mm
-			type: 0,//Need to set a dict somewhere, probably in Leaguevine.API
-			ordinal_number: '',//smaller is earlier
-			game: {},
-			player_1: {},
-			player_2: {},
-			player_3: {}
+			type: NaN,//Need to set a dict somewhere, probably in Leaguevine.API
+			time: NaN,//YYYY-MM-DDTHH:MM:SS±hh:mm
+			ordinal_number: NaN,//smaller is earlier
+			game_id: NaN,
+			player_1_id: NaN,
+			player_2_id: NaN,
+			player_3_id: NaN
 		},
 		urlRoot: Leaguevine.API.root + "events",
 		parse: function(resp, xhr) {
@@ -29,6 +29,11 @@ function(require, namespace, Backbone, Leaguevine) {
 		},
 		toJSON: function() {
 			//TODO: Remove attributes that are not stored (events)
+			var temp = _.clone(this.attributes);
+			var keys = _.keys(temp);
+			_.each(keys, function(key){
+				if (!temp[key]) {this.unset(key);}
+			}, this);
 			return _.clone(this.attributes);
 		}
 	});

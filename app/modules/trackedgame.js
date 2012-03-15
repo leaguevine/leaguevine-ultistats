@@ -31,8 +31,8 @@ function(require, namespace, Backbone) {
 			onfield_2: [],
 			offfield_2: [],
 			team_in_possession_ix: 1,
-			player_in_possession_id: '',
-			team_pulled_ix: ''
+			player_in_possession_id: NaN,
+			team_pulled_ix: NaN
 		},
 		toJSON: function() {//flatten the data so they are easy to read.
 			var temp = _.clone(this.attributes);
@@ -43,6 +43,48 @@ function(require, namespace, Backbone) {
 			temp.offfield_2 = this.get('offfield_2').toJSON();
 			temp.gameevents = this.get('gameevents').toJSON();
 			return temp;
+		},
+		player_tap: function(pl_id){
+			var GameEvent = require("modules/gameevent");
+			var d = new Date();//"2011-12-19T15:28:46.493Z"
+			time = d.getUTCFullYear() + '-' + (d.getUTCMonth() + 1) + '-' + d.getUTCDate() + 'T' + d.getUTCHours() + ':' + d.getUTCMinutes() + ':' + d.getUTCSeconds();
+			var gameid = this.get('game').get('id');
+			//pl_id is the tapped player. Might be NaN
+			//last_player_id might be NaN
+			var last_pl_id = this.get('player_in_possession_id');
+			if (!last_pl_id && pl_id){
+				var this_event = new GameEvent.Model({
+					type: 10, 
+					time: time,
+					game_id: gameid, 
+					player_1_id: pl_id
+				});
+			} else if (last_pl_id && !pl_id){
+				var this_event = new GameEvent.Model({
+					type: 20, 
+					time: time,
+					game_id: gameid, 
+					player_1_id: last_pl_id
+				});
+			} else if (last_pl_id && pl_id){
+				var this_event = new GameEvent.Model({
+					type: 21, 
+					time: time,
+					game_id: gameid, 
+					player_1_id: last_pl_id,
+					player_2_id: pl_id
+				});
+			}
+			//save the event to the server.
+			this_event.save([], {
+				headers: {"Authorization": "bearer " + app.api.d_token()},
+				succes: function(model, response){
+					//Add the event to the trackedgame.get('gameevents')
+					this.model.get('gameevents').add(model);
+					//save the trackedgame.
+					this.model.save();
+				}
+			});
 		}
 	});
 	
@@ -206,7 +248,8 @@ function(require, namespace, Backbone) {
 			"click .button": "player_tap"
 		},
 		player_tap: function(ev){
-			console.log("TODO: Do something with player tap")
+			this.model.player_tap(parseInt($(ev.target).parents('button').attr('id')));
+			console.log("TODO: Be clever about player taps");
 		}
 		
 	});
@@ -218,6 +261,8 @@ function(require, namespace, Backbone) {
 			return this.model.toJSON();
 		}
 		//ev.currentTarget.classList
+		//Since tapping a player button will have different context depending on what the last event was or what the last tap was...
+		//then we'll need access to the trackedgame object which is not easily available in this view.
 	});
 	
 	
