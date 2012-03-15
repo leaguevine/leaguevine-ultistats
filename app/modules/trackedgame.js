@@ -160,7 +160,11 @@ function(require, namespace, Backbone) {
 			this.model.bind("change", function() {this.render();}, this);
 			this.model.get('game').bind("change", function() {this.render();}, this);
 			this.model.get('onfield_1').bind("reset", function() {this.render();}, this);
+			this.model.get('onfield_1').bind("add", function() {this.render();}, this);
+			this.model.get('onfield_1').bind("remove", function() {this.render();}, this);
 			this.model.get('onfield_2').bind("reset", function() {this.render();}, this);
+			this.model.get('onfield_2').bind("add", function() {this.render();}, this);
+			this.model.get('onfield_2').bind("remove", function() {this.render();}, this);
 		},
 		//tracked_game(layout)<div .t_game>->GameAction<div .player_area>->PlayerArea
 		template: "trackedgame/player_area",
@@ -197,8 +201,14 @@ function(require, namespace, Backbone) {
 				}));
 			}
 			return view.render({ team: this.model.get('game').get('team_'+this.options.team_ix) });
+		},
+		events: {
+			"click .button": "player_tap"
+		},
+		player_tap: function(ev){
+			console.log("TODO: Do something with player tap")
 		}
-		//TODO: attach a click function to each button.
+		
 	});
 	TrackedGame.Views.PlayerButton = Backbone.View.extend({
 		//Can bind this teamplayer change to render... useful if player name/number changes. Why would it?
@@ -346,11 +356,13 @@ function(require, namespace, Backbone) {
 				this.model.get('onfield_'+team_ix).remove(this_player);
 				this.model.get('offfield_'+team_ix).add(this_player);
 			} else {//move to onfield
-				this_player = this.model.get('offfield_'+team_ix).find( function(tp) {
-					return tp.get('player_id')==player_id;
-				});
-				this.model.get('onfield_'+team_ix).add(this_player);
-				this.model.get('offfield_'+team_ix).remove(this_player);
+				if (this.model.get('onfield_'+team_ix).length<7){
+					this_player = this.model.get('offfield_'+team_ix).find( function(tp) {
+						return tp.get('player_id')==player_id;
+					});
+					this.model.get('onfield_'+team_ix).add(this_player);
+					this.model.get('offfield_'+team_ix).remove(this_player);
+				}
 			}
 			this.render();
 		}
