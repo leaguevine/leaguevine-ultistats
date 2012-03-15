@@ -303,21 +303,6 @@ function(require, namespace, Backbone) {
 			//It is possible for the opposite to be true, e.g. on new game.
 			//this.model.get('onfield_'+this.options.team_ix).bind("change", function() {this.render();}, this);
 		},
-		events: {
-			"click .sub_next": "sub_next",
-			"click .sub_done": "sub_done"
-		},
-		sub_next: function(ev){
-			//I would prefer to tighten the scope on this but I'm not sure how to access
-			//the parent element's class without searching the whole DOM.
-			$('.sub_team_'+this.options.team_ix).hide();
-			$('.sub_team_'+(3-this.options.team_ix)).show();
-		},
-		sub_done: function(ev){
-			$('.sub_team_1').hide();
-			$('.sub_team_2').hide();
-			$('.t_game').show();
-		},
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
 			this.model.get('onfield_'+this.options.team_ix).each(function(tp) {
@@ -333,7 +318,20 @@ function(require, namespace, Backbone) {
 			return view.render({ team: this.model.get('game').get('team_'+this.options.team_ix) });
 		},
 		events: {
-			click: "toggle_roster"
+			"click .sub_next": "sub_next",
+			"click .sub_done": "sub_done",
+			"click .roster_player": "toggle_roster"
+		},
+		sub_next: function(ev){
+			//I would prefer to tighten the scope on this but I'm not sure how to access
+			//the parent element's class without searching the whole DOM.
+			$('.sub_team_'+this.options.team_ix).hide();
+			$('.sub_team_'+(3-this.options.team_ix)).show();
+		},
+		sub_done: function(ev){
+			$('.sub_team_1').hide();
+			$('.sub_team_2').hide();
+			$('.t_game').show();
 		},
 		toggle_roster: function(ev){			
 			var player_id = parseInt(ev.target.id);
