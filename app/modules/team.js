@@ -52,10 +52,13 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			if ( models && models.length ) {
 				url += 'team_ids=' + JSON.stringify(models.pluck('id')) + '&';
 			}
+            if (this.name) {
+                url += 'name=' + this.name + '&';
+            }
 			if (this.season_id) {
 				url += 'season_id=' + this.season_id + '&';
 			}
-			url += 'limit=200';
+			url += 'limit=30';
 			return url;
 		},
 		comparator: function(team) {// Define how items in the collection will be sorted.
@@ -68,6 +71,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		initialize: function(models, options) {
 			if (options) {
         		this.season_id = options.season_id;
+        		this.name = options.name;
     		}
 		}
 	});
@@ -86,15 +90,15 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		},
 		listTeams: function () {//Route for all teams.
 			// Prepare the data.
-			teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
-			teams.fetch();
+			app.teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
+			app.teams.fetch();
 			
 			// Prepare the layout/view(s)
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
 			myLayout.view(".navbar", new Navigation.Views.Navbar({}));
 			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Teams", right_btn_href: "#newteam", right_btn_class: "add"}));
-			myLayout.view(".content", new Team.Views.List ({collection: teams}));//pass the List view a collection of (fetched) teams.
+			myLayout.view(".content", new Team.Views.SearchableList({collection: app.teams}));//pass the List view a collection of (fetched) teams.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
 		showTeam: function (teamId) {
@@ -180,6 +184,30 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
             }, this);
 		}
 	});	
+    Team.Views.SearchableList = Backbone.View.extend({
+        template: "teams/searchable_list",
+        events: {
+            "keyup #team_search": "filterTeams"
+        },
+        filterTeams: function(ev){//If a user types something into the search box, filter on the string
+            var search_string = ev.currentTarget.value;
+			teams = new Team.Collection([],{name: search_string});
+			teams.fetch();
+            teams.fetch({success: function (model, response) {
+                app.teams.reset(model.models);
+                }
+            });
+        },
+		render: function(layout) {
+            var view = layout(this); //Get this view from the layout.
+			this.setViews({
+				".team_list_area": new Team.Views.List( {collection: this.collection} ),
+			});
+			return view.render().then(function(el) {
+				$('.team_list_area').html(el);
+			});
+        }
+    });
 	Team.Views.Detail = Backbone.View.extend({
 		//We were passed a model on creation by Team.Router.showTeam(), so we have this.model  	
 		template: "teams/detail",
