@@ -58,7 +58,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			if (this.season_id) {
 				url += 'season_id=' + this.season_id + '&';
 			}
-			url += 'limit=30';
+			url += 'limit=30&';
+            url += 'order_by=[name, -season_id]';
 			return url;
 		},
 		comparator: function(team) {// Define how items in the collection will be sorted.
