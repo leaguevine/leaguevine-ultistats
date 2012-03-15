@@ -8,7 +8,9 @@ define([
   // Modules  
   "modules/game",
   "modules/player",
-  "modules/gameevent"
+  "modules/gameevent",
+  
+  "use!plugins/backbone.localStorage"
 ],
 /*
 This module is an interface for tracking game action.
@@ -19,24 +21,28 @@ function(require, namespace, Backbone) {
 	var TrackedGame = namespace.module();
 	
 	TrackedGame.Model = Backbone.Model.extend({
+		sync: Backbone.localSync,
+		localStorage: new Backbone.LocalStore("trackedGame"),
 		defaults: {
 			game: {},
-			teamplayers_1: {},
-			teamplayers_1_onfield : [],
-			teamplayers_2: {},
-			teamplayers_2_onfield : [],
-			gameevents: {}
+			gameevents: [],
+			onfield_1: [],
+			offfield_1: [],
+			onfield_2: [],
+			offfield_2: [],
+			team_in_possession_ix: 1,
+			player_in_possession_id: '',
+			team_pulled_ix: ''
 		},
 		toJSON: function() {//flatten the data so they are easy to read.
 			var temp = _.clone(this.attributes);
 			temp.game = this.get('game').toJSON();
-			temp.teamplayers_1 = this.get('teamplayers_1').toJSON();
-			temp.teamplayers_2 = this.get('teamplayers_2').toJSON();
+			temp.onfield_1 = this.get('onfield_1').toJSON();
+			temp.offfield_1 = this.get('offfield_1').toJSON();
+			temp.onfield_2 = this.get('onfield_2').toJSON();
+			temp.offfield_2 = this.get('offfield_2').toJSON();
 			temp.gameevents = this.get('gameevents').toJSON();
 			return temp;
-		},
-		bootstrap: function(){
-			console.log('TODO: Bootstrap');
 		}
 	});
 	
@@ -51,31 +57,41 @@ function(require, namespace, Backbone) {
 			var myLayout = app.router.useLayout("tracked_game");
 			//var Team = require("modules/team");
 			var Game = require("modules/game");
-			var Player = require("modules/player");
+			var TeamPlayer = require("modules/teamplayer");
 			var GameEvent = require("modules/gameevent");
 			
-			trackedgame = new TrackedGame.Model();
+			var trackedgame = new TrackedGame.Model({id: gameId});
+			trackedgame.fetch(); //localStorage
 			
-			//Get the game
-			game = new Game.Model({id: gameId});
-			game.fetch();
-			trackedgame.set('game',game);
+			//We want the child objects to be converted to the proper model types.
+			var newGame = new Game.Model(trackedgame.get('game'));
+			if (!trackedgame.get('game').id) {newGame.set('id',gameId);}
+			trackedgame.set('game',newGame, {silent:true});
+				
+			for (var ix=1;ix<3;ix++) {
+				trackedgame.set('onfield_'+ix, new TeamPlayer.Collection(trackedgame.get('onfield_'+ix)), {silent: true});
+				trackedgame.set('offfield_'+ix, new TeamPlayer.Collection(trackedgame.get('offfield_'+ix)), {silent: true});
+			}
 			
-			//Get the roster for each team
-			teamplayers_1 = new Player.Collection([],{team_id: game.get('team_1_id')});
-			trackedgame.set('teamplayers_1',teamplayers_1);
-			teamplayers_2 = new Player.Collection([],{team_id: game.get('team_2_id')});
-			trackedgame.set('teamplayers_2',teamplayers_2);
+			//We want the child objects to be fresh. This is easy for game (just fetch), but we can't fetch onfield or offfield immediately because we need team_id, which isn't available until after game has returned.
+			trackedgame.get('game').fetch({success: function(model, response) {
+				for(var ix=1;ix<3;ix++) {
+					if (trackedgame.get('onfield_'+ix).length==0) {
+						_.extend(trackedgame.get('onfield_'+ix),{team_id: model.get('team_'+ix+'_id')});
+					} else {trackedgame.get('onfield_'+ix).fetch();}
+					if (trackedgame.get('offfield_'+ix).length==0) {
+						_.extend(trackedgame.get('offfield_'+ix),{team_id: model.get('team_'+ix+'_id')});
+					}
+					trackedgame.get('offfield_'+ix).fetch();
+				}
+			}});
 			
-			//Get events for the game
-			gameevents = new GameEvent.Collection([],{game_id: gameId});
-			gameevents.fetch();
-			trackedgame.set('gameevents',gameevents);
+			//Events should have been loaded from localStorage if they exist,
+			//but they must be made into a collection of game events.
+			trackedgame.set('gameevents',
+				new GameEvent.Collection(trackedgame.get('gameevents'),{game_id: gameId}));
 			
-			//Bootstrap the TrackedGame state from the events.
-			//TODO: bind something to bootstrap.
-			trackedgame.bootstrap();
-			//Maybe I need to bind some change events so trackedgame will register a change when the previous fetch's return.'
+			console.log("TODO: figure out trackedgame.get('team_pulled_ix')");
 			
 			//This router might not get called again for a while if user stays on track-game screen.
 			myLayout.setViews({
@@ -83,12 +99,18 @@ function(require, namespace, Backbone) {
 				".sub_team_2": new TrackedGame.Views.SubTeam({model: trackedgame, team_ix:2}),
 				".t_game": new TrackedGame.Views.GameAction({model: trackedgame})
 			});
+			
 			//myLayout.render(function(el) {$("#main").html(el);});
 			myLayout.render(function(el) {
 				$("#main").html(el);
-				//$('.sub_team_1').hide();
+				$('.sub_team_1').hide();
 				$('.sub_team_2').hide();
 				$('.t_game').hide();
+				if (trackedgame.get('gameevents').length>0) {
+					$('.t_game').show();
+				} else {
+					$('.sub_team_1').show();
+				}
 			});
 		},
 	});
@@ -97,7 +119,12 @@ function(require, namespace, Backbone) {
 	//
 	// VIEWS
 	//
+	
+	/*
+	Parent view for the game screen
+	*/
 	TrackedGame.Views.GameAction = Backbone.View.extend({
+		//DO NOT BIND RE-RENDER TO ANYTHING HERE!
 		template: "trackedgame/game_action",
 		render: function(layout) {
 			var view = layout(this);
@@ -107,27 +134,91 @@ function(require, namespace, Backbone) {
 				".action_area": new TrackedGame.Views.ActionArea({model: this.model, showing_alternate: true})
 			});
 			return view.render();
-		},
-		//render will be called anytime the data change.
-		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
+		}
 	});
+	
+	/*
+	View for Scoreboard
+	*/
 	TrackedGame.Views.Scoreboard = Backbone.View.extend({
+		initialize: function() {
+			//I only want this to re-render when details about the game (score) change.
+			this.model.get('game').bind("change", function() {this.render();}, this);
+		},
 		template: "trackedgame/scoreboard",
 		serialize: function() {
 			return this.model.toJSON();
-		},
-		initialize: function() {
-			this.model.get('game').bind("change", function() {this.render();}, this);
 		}
 	});
+	
+	/*
+	Nested views for player buttons. PlayerArea>TeamPlayerArea*2>PlayerButton*8
+	*/
 	TrackedGame.Views.PlayerArea = Backbone.View.extend({
+		initialize: function() {
+			//I want this (and its children) to re-render whenever any of the following change.
+			this.model.bind("change", function() {this.render();}, this);
+			this.model.get('game').bind("change", function() {this.render();}, this);
+			this.model.get('onfield_1').bind("reset", function() {this.render();}, this);
+			this.model.get('onfield_2').bind("reset", function() {this.render();}, this);
+		},
+		//tracked_game(layout)<div .t_game>->GameAction<div .player_area>->PlayerArea
 		template: "trackedgame/player_area",
-		serialize: function() {return this.model.toJSON();},
-		//Get what we need from this.options.trackedGame and set the player buttons
-		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
+		render: function(layout) {
+			var view = layout(this);
+			this.setViews({
+				".player_area_1": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix:1}),
+				".player_area_2": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix:2}),
+			});
+			return view.render().then(function(el) {
+				this.show_teamplayer();
+			});
+		},
+		show_teamplayer: function () {
+			this.$('.player_area_'+(3-this.model.get('team_in_possession_ix'))).hide();
+			this.$('.player_area_'+this.model.get('team_in_possession_ix')).show();
+		}
+	});
+	TrackedGame.Views.TeamPlayerArea = Backbone.View.extend({
+		//DO NOT BIND RE-RENDER TO ANYTHING HERE! Otherwise we will just insert buttons upon buttons.
+		template: "trackedgame/teamplayer_area",
+		render: function(layout) {
+			var view = layout(this);
+			this.model.get('onfield_'+this.options.team_ix).each(function(player) {
+				view.insert("ul", new TrackedGame.Views.PlayerButton({
+					model: player
+				}));
+			});
+			//insert unknown buttons for less than 8 players.
+			var TeamPlayer = require("modules/teamplayer");
+			for(var i=this.model.get('onfield_'+this.options.team_ix).length;i<8;i++){
+				view.insert("ul", new TrackedGame.Views.PlayerButton({
+					model: new TeamPlayer.Model({player: {id:"unknown",last_name:"unknown"}})
+				}));
+			}
+			return view.render({ team: this.model.get('game').get('team_'+this.options.team_ix) });
+		}
+		//TODO: attach a click function to each button.
+	});
+	TrackedGame.Views.PlayerButton = Backbone.View.extend({
+		//Can bind this teamplayer change to render... useful if player name/number changes. Why would it?
+		template: "trackedgame/player_button",
+		tagName: "li",
+		serialize: function() {
+			return this.model.toJSON();
+		}
 		//ev.currentTarget.classList
 	});
+	
+	
+	/*
+	View for action buttons. ActionArea> (should this be nested?)
+	*/
 	TrackedGame.Views.ActionArea = Backbone.View.extend({
+		initialize: function() {
+			//This should re-render whenever ... ?
+			this.model.bind("change", function() {this.render();}, this);
+		},
 		template: "trackedgame/action_area",
 		events: {
 			"click .undo": "undo",
@@ -195,30 +286,32 @@ function(require, namespace, Backbone) {
 			return view.render().then(function(el) {
 				this.misc();
 			});
-		},
-		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
+		}
 	});
+
 	
+	/*
+	Parent view for the substitution screen. The layout has 2 of these.
+	*/
 	TrackedGame.Views.SubTeam = Backbone.View.extend({
 		template: "trackedgame/game_substitution",
 		initialize: function() {
+			//This should re-render whenever onfield, offfield, or game change.
 			this.model.get('game').bind("change", function() {this.render();}, this);
-			this.model.get('teamplayers_1').bind("change", function() {this.render();}, this);
-			this.model.get('teamplayers_2').bind("change", function() {this.render();}, this);
+			this.model.get('offfield_'+this.options.team_ix).bind("reset", function() {this.render();}, this);
+			//Is it possible for onfield to change without offfield changing? I don't think so.
+			//It is possible for the opposite to be true, e.g. on new game.
+			//this.model.get('onfield_'+this.options.team_ix).bind("change", function() {this.render();}, this);
 		},
 		events: {
 			"click .sub_next": "sub_next",
 			"click .sub_done": "sub_done"
 		},
 		sub_next: function(ev){
-			if (this.options.team_ix==1) {
-				$('.sub_team_1').hide();
-				$('.sub_team_2').show();
-			}
-			else {
-				$('.sub_team_2').hide();
-				$('.sub_team_1').show();
-			}
+			//I would prefer to tighten the scope on this but I'm not sure how to access
+			//the parent element's class without searching the whole DOM.
+			$('.sub_team_'+this.options.team_ix).hide();
+			$('.sub_team_'+(3-this.options.team_ix)).show();
 		},
 		sub_done: function(ev){
 			$('.sub_team_1').hide();
@@ -227,16 +320,31 @@ function(require, namespace, Backbone) {
 		},
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
-			var this_team = this.options.team_ix==1 ? this.model.get('game').get('team_1') : this.model.get('game').get('team_2');
-			//this_team.attributes.players.each(function(player) {
-			//	view.insert("ul .off_field", new Player.Views.Item({
-			//		model: player
-			//	}));
-			//});
-			//I probably want to construct some nested object that includes the relevant team and playerlist
-			return view.render(this_team);
+			this.model.get('onfield_'+this.options.team_ix).each(function(tp) {
+				view.insert(".on_field", new TrackedGame.Views.RosterItem({
+					model: tp
+				}));
+			});
+			this.model.get('offfield_'+this.options.team_ix).each(function(tp) {
+				view.insert(".off_field", new TrackedGame.Views.RosterItem({
+					model: tp
+				}));
+			});
+			return view.render({ team: this.model.get('game').get('team_'+this.options.team_ix) });
+		}
+		
+		//TODO: Bind player entries to a function that swaps them from off-field to on-field
+	});
+	TrackedGame.Views.RosterItem = Backbone.View.extend({
+		//Can bind this teamplayer change to render... useful if player name/number changes. Why would it?
+		template: "trackedgame/roster_item",
+		tagName: "li",
+		serialize: function() {
+			return this.model.toJSON();
 		}
 	});
+	
+	
 	
 	return TrackedGame;
 });
