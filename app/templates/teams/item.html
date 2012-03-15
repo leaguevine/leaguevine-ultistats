@@ -1,1 +1,6 @@
-<a href='#teams/<%= id %>'><%= name %></a>
+<a class="teams_list_item_link" href='#teams/<%= id %>'>
+    <div class="teams_list_team_name"><%= name %></div>
+    <div class="teams_list_season_name">
+        <%= season_name %> <%= league_name %>
+    </div>
+</a>

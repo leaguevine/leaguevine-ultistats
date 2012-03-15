@@ -1,1 +1,8 @@
-<a href='#players/<%= player.id %>'><%= number %> <%= player.first_name %> (<%= player.nickname %>) <%= player.last_name %></a>
+<a class="team_player_list_link" href='#players/<%= player.id %>'>
+    <span class="team_player_list_number"><%= number %></span>
+    <span class="team_player_list_name">
+        <%= player.first_name %> 
+        <% if (player.nickname) { %>"<% } %><%= player.nickname %><% if (player.nickname) { %>"<% } %> 
+        <%= player.last_name %>
+    </span>
+</a>

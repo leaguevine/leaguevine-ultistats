@@ -24,7 +24,7 @@ ul.obj-list {
     ul.obj-list li a{
         border-top: 1px solid #e0e0e0;
         display: block;
-        padding-left: 5px;
+        padding-left: 15px;
         padding-right: 5px;
         padding-bottom: 10px;
         padding-top: 10px;
@@ -331,6 +331,32 @@ a, a:hover, a:visited {
     }
 
 /* =============================================================================
+   Teams
+   ========================================================================== */
+a.teams_list_item_link {
+    height: 30px;
+    margin: 0px;
+    padding: 5px;
+}
+
+.teams_list_team_name {
+    font-weight: bold;
+}
+
+.teams_list_season_name {
+    font-size: 11px;
+    color: #9a9a9a;
+}
+
+/* =============================================================================
+   TeamPlayers
+   ========================================================================== */
+
+.team_player_list_number {
+    color: #767676;
+}
+
+/* =============================================================================
    Games
    ========================================================================== */
 #game_detail {
@@ -379,7 +405,6 @@ a, a:hover, a:visited {
 
 .game_list_team_name {
     clear: both;
-    padding-left: 15px;
     float: left;
     width: 60%;
     font-weight: bold;
@@ -402,7 +427,7 @@ a, a:hover, a:visited {
 
 .game_list_start_time {
     clear: both;
-    padding-left: 25px;
+    padding-left: 10px;
     font-size: 11px;
     color: #767676;
 }
