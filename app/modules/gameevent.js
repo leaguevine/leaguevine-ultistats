@@ -34,6 +34,8 @@ function(require, namespace, Backbone, Leaguevine) {
 			_.each(keys, function(key){
 				if (!temp[key]) {this.unset(key);}
 			}, this);
+            date = new Date(); //The time now
+            this.set('time', date.toJSON().substring(0, 19) + "+00:00"); //The current time in ISO Format
 			return _.clone(this.attributes);
 		}
 	});

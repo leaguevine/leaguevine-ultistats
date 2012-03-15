@@ -78,6 +78,9 @@ function(require, namespace, Backbone) {
 			//save the event to the server.
 			this_event.save([], {
 				headers: {"Authorization": "bearer " + app.api.d_token()},
+                error: function(originalModel, resp, options) {
+                    //TODO: Do something with the error. Maybe log the error and retry again later?
+                },
 				succes: function(model, response){
 					//Add the event to the trackedgame.get('gameevents')
 					this.model.get('gameevents').add(model);
