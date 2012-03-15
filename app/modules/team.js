@@ -1,4 +1,4 @@
-require([
+define([
   "require",
   "namespace",
 
@@ -62,7 +62,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			return url;
 		},
 		comparator: function(team) {// Define how items in the collection will be sorted.
-		  return team.get("name").toLowerCase();
+            return team.get("name").toLowerCase();
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Collection.prototype.parse(resp);
@@ -162,7 +162,17 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 	Team.Views.Item = Backbone.View.extend({
 		template: "teams/item",
 		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul by the list's render function.
-		serialize: function() {return this.model.toJSON();} //render looks for this to manipulate model before passing to the template.
+		serialize: function() {
+            // Add a couple attributes to the team for displaying
+            team = this.model.toJSON();
+            team.season_name = '';
+            team.league_name = '';
+            if (team.season != null) {
+                team.season_name = team.season.name;
+                team.league_name = team.season.league.name;
+            }
+            return team
+        } //render looks for this to manipulate model before passing to the template.
 	});
 	Team.Views.List = Backbone.View.extend({
 		template: "teams/list",
