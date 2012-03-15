@@ -321,12 +321,12 @@ function(require, namespace, Backbone) {
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
 			this.model.get('onfield_'+this.options.team_ix).each(function(tp) {
-				view.insert(".on_field", new TrackedGame.Views.RosterItem({
+				view.insert(".sub_on_field", new TrackedGame.Views.RosterItem({
 					model: tp
 				}));
 			});
 			this.model.get('offfield_'+this.options.team_ix).each(function(tp) {
-				view.insert(".off_field", new TrackedGame.Views.RosterItem({
+				view.insert(".sub_off_field", new TrackedGame.Views.RosterItem({
 					model: tp
 				}));
 			});

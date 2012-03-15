@@ -1,11 +1,25 @@
-<div class="team_header"><%= team.name %></div>
-<div class="roster_wrapper">
-	<div>ON FIELD</div>
-	<ul class="roster on_field"></ul>
-	<div>OFF FIELD</div>
-	<ul class="roster off_field"></ul>
-</div>
-<div class="substitution buttons">
-	<button class="button sub_next">NextTeam</button>
-	<button class="button sub_done">Done</button>
+<div class="track sub_page_wrapper">
+    <div class="sub_team_header">
+        <span class="sub_team_name">
+            <%= team.name %>
+        </span>
+    </div>
+    <div class="sub_wrapper">
+        <div class="sub_on_field_wrapper">
+            <div class="sub_on_field_area">
+                <div class="sub_on_field_title">On field</div>
+                <ul class="roster sub_on_field"></ul>
+            </div>
+        </div>
+        <div class="sub_off_field_wrapper">
+            <div class="sub_off_field_area">
+                <div class="sub_off_field_title">Off field</div>
+                <ul class="roster sub_off_field"></ul>
+            </div>
+        </div>
+    </div>
+    <div class="sub_buttons_area">
+        <button class="button sub_next">NextTeam</button>
+        <button class="button sub_done">Done</button>
+    </div>
 </div>
