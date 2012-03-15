@@ -95,17 +95,15 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 	
 	Game.Router = Backbone.Router.extend({
 		routes : {
-			"games": "listGames", //List all games.
+			"games": "findGames", //List all games.
 			"games/:gameId": "showGame" //Show detail for one game.
 		},
-		listGames: function () {//AFAIK we don't have any routers taking us here.
-			games = new Game.Collection([],{season_id: Leaguevine.API.season_id});
+		findGames: function () {
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
-            games.fetch();
-			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newgame", name: "New"}));
+			myLayout.view(".navbar", new Navigation.Views.Navbar());
 			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Games"}));
-			myLayout.view(".content", new Game.Views.List ({collection: games}));//pass the List view a collection of (fetched) games.
+			myLayout.view(".content", new Game.Views.Find());
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
 		showGame: function (gameId) {
@@ -170,6 +168,9 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
       			this.render();
     		}, this);
   		}
+    });
+    Game.Views.Find = Backbone.View.extend({
+        template: "games/find"
     });
 	Game.Views.List = Backbone.LayoutManager.View.extend({
 		template: "games/list",
