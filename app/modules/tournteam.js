@@ -82,7 +82,11 @@ function(require, namespace, Backbone, Leaguevine) {
 	TournTeam.Views.Team = Backbone.View.extend({
 		template: "tournteams/team",
 		tagName: "tr",
-		serialize: function() {return this.model.toJSON();}
+        serialize: function() {
+            tournteam = this.model.toJSON();
+            tournteam.team = this.model.get('team').toJSON(); //Expand the team on the model as well
+            return tournteam;
+        }
 	});
 	TournTeam.Views.TeamList = Backbone.View.extend({//Renders the standings for a tournament
 		template: "tournteams/list",
