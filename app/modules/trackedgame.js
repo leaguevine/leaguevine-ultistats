@@ -331,6 +331,30 @@ function(require, namespace, Backbone) {
 				}));
 			});
 			return view.render({ team: this.model.get('game').get('team_'+this.options.team_ix) });
+		},
+		events: {
+			click: "toggle_roster"
+		},
+		toggle_roster: function(ev){			
+			var player_id = parseInt(ev.target.id);
+			var is_onfield = $(ev.target).parents('.roster').hasClass('on_field'); 
+			var team_ix = $(ev.target).parents('.substitution').hasClass('sub_team_1') ? 1 : 2;
+			var this_player = {};
+			//this.model is the trackedgame.
+			if (is_onfield) {//move to offfield
+				this_player = this.model.get('onfield_'+team_ix).find( function(tp) {
+					return tp.get('player_id')==player_id;
+				});
+				this.model.get('onfield_'+team_ix).remove(this_player);
+				this.model.get('offfield_'+team_ix).add(this_player);
+			} else {//move to onfield
+				this_player = this.model.get('offfield_'+team_ix).find( function(tp) {
+					return tp.get('player_id')==player_id;
+				});
+				this.model.get('onfield_'+team_ix).add(this_player);
+				this.model.get('offfield_'+team_ix).remove(this_player);
+			}
+			this.render();
 		}
 		
 		//TODO: Bind player entries to a function that swaps them from off-field to on-field
