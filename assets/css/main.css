@@ -460,13 +460,19 @@ a.teams_list_item_link {
     }
 
     .scoreboard .last_action {
+        margin-top: 5px;
         clear: both;
         text-align: center;
     }
 
+    .scoreboard .score_area {
+        height: 23px;
+        border-bottom: 1px solid #c3c3c3;
+    }
+
 .player_area {
     clear: both;
-    margin-top: 15px;
+    margin-top: 35px;
     width: 60%;
     border: 1px solid #c3c3c3;
     float: right;
@@ -475,7 +481,7 @@ a.teams_list_item_link {
 .alternate_action,
 .main_action {
     position: absolute;
-    top: 40px;
+    top: 60px;
     left: 0px;
     width: 40%;
 }
