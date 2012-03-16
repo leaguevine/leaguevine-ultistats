@@ -91,20 +91,21 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		},
 		listTeams: function () {//Route for all teams.
 			// Prepare the data.
-			app.teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
-			app.teams.fetch();
+			//var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
+			var teams = new Team.Collection();//No defaults?
+			teams.fetch();
 			
 			// Prepare the layout/view(s)
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
 			myLayout.view(".navbar", new Navigation.Views.Navbar({}));
 			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Teams", right_btn_href: "#newteam", right_btn_class: "add"}));
-			myLayout.view(".content", new Team.Views.SearchableList({collection: app.teams}));//pass the List view a collection of (fetched) teams.
+			myLayout.view(".content", new Team.Views.SearchableList({collection: teams}));//pass the List view a collection of (fetched) teams.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
 		showTeam: function (teamId) {
 			//Prepare the data.
-			team = new Team.Model({id: teamId});
+			var team = new Team.Model({id: teamId});
 			
             titlebarOptions = {title: team.get("name"), left_btn_href:"#teams", left_btn_class: "back", left_btn_txt: "Teams", right_btn_href: "#editteam/"+teamId, right_btn_txt: "Edit"};
 
@@ -118,12 +119,12 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
             });
 
 			var TeamPlayer = require("modules/teamplayer");
-			teamplayers = new TeamPlayer.Collection([],{team_id: team.get('id')});
+			var teamplayers = new TeamPlayer.Collection([],{team_id: team.get('id')});
 			teamplayers.fetch();
 			//team.set('teamplayers', teamplayers);
 			
 			var Game = require("modules/game");
-			games = new Game.Collection([],{team_1_id: team.get('id')});
+			var games = new Game.Collection([],{team_1_id: team.get('id')});
 			games.fetch();
 			//team.set('games', games);
 			
@@ -138,19 +139,17 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		},
 		editTeam: function (teamId) {			
 			var myLayout = app.router.useLayout("nav_content");
-			if (!app.teams) {app.teams = new Team.Collection();}//Will create an empty collection.
 			//If we have teamId, then we are editing. If not, then we are creating a new team.
 			if (teamId) { //make the edit team page
-				team = new Team.Model({id: teamId});
-				team.fetch();
-				myLayout.view(".navbar", new Navigation.Views.Navbar({}));
+				var team = new Team.Model({id: teamId});
                 myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Edit", left_btn_href: "#teams/"+teamId, left_btn_class: "back", left_btn_txt: "Cancel"}));
 			}
 			else { //make the add team page
-				team = new Team.Model({season_id: app.api.season_id});
-				myLayout.view(".navbar", new Navigation.Views.Navbar({}));
+				var team = new Team.Model({season_id: app.api.season_id});//Do we need the season_id here?
                 myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Add a Team", left_btn_href: "#teams", left_btn_class: "back", left_btn_txt: "Cancel"}));
 			}
+			team.fetch();
+			myLayout.view(".navbar", new Navigation.Views.Navbar({}));
 			myLayout.view(".content", new Team.Views.Edit({model: team}));
 			myLayout.render(function(el) {$("#main").html(el);});
 		}
@@ -160,64 +159,43 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 	//
 	// VIEWS
 	//
-	Team.Views.Item = Backbone.View.extend({
-		template: "teams/item",
-		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul by the list's render function.
-		serialize: function() {
-            // Add a couple attributes to the team for displaying
-            team = this.model.toJSON();
-            team.season_name = '';
-            team.league_name = '';
-            if (team.season != null) {
-                team.season_name = team.season.name;
-                team.league_name = team.season.league.name;
-            }
-            return team
-        } //render looks for this to manipulate model before passing to the template.
-	});
-	Team.Views.List = Backbone.View.extend({
-		template: "teams/list",
-		className: "teams-wrapper",
-		render: function(layout) {
-			var view = layout(this); //Get this view from the layout.
-			this.collection.each(function(team) {//for each team in the collection.
-				view.insert("ul", new Team.Views.Item({//Inserts the team into the ul in the list template.
-					model: team//pass each team to a Item view instance.
-				}));
-			});
-			return view.render({ count: this.collection.length });
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() { 
-                if (Backbone.history.fragment == "teams") {
-                    this.render();
-                }
-            }, this);
-		}
-	});	
     Team.Views.SearchableList = Backbone.View.extend({
+    	//Our team collection is this.collection
         template: "teams/searchable_list",
         events: {
             "keyup #team_search": "filterTeams"
         },
         filterTeams: function(ev){//If a user types something into the search box, filter on the string
             var search_string = ev.currentTarget.value;
-			teams = new Team.Collection([],{name: search_string});
-			teams.fetch();
-            teams.fetch({success: function (model, response) {
-                app.teams.reset(model.models);
-                }
-            });
+            this.collection.name = search_string;//TODO: Check this. Might need to make URL look for options.name
+			this.collection.fetch({
+				add: true,
+				success: function (collection, response){
+					//I think response is already parsed, right?
+					//Get rid of anything in response that is already in our collection.
+					response = _.reject(response, function(model){
+						return get(collection.get(model.id))
+					});
+				}
+			});
+			this.render();
         },
 		render: function(layout) {
             var view = layout(this); //Get this view from the layout.
+            //How can we get the search string in here? Maybe above it needs to be part of this.
+            var temp_collection = _.filter(this.collection, function (team){
+            	return team.get("name").toLowerCase().indexOf(search_string) != -1//Return true if team name has search_string
+            });
 			this.setViews({
-				".team_list_area": new Team.Views.List( {collection: this.collection} ),
+				".team_list_area": new Team.Views.List( {collection: temp_collection})
 			});
 			return view.render().then(function(el) {
 				$('.team_list_area').html(el);
 			});
-        }
+       },
+       initialize: function() {
+	        this.collection.bind("reset", function() {this.render();}, this);
+		}
     });
 	Team.Views.Detail = Backbone.View.extend({
 		//We were passed a model on creation by Team.Router.showTeam(), so we have this.model  	
@@ -271,7 +249,6 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			"click .delete": "deleteModel"
 		},
 		saveModel: function(ev){
-			app.teams.add(this.model);
 			this.model.save(
 				{
 					name:$("#name").val(),
@@ -292,9 +269,43 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 					//error: function(model,respose){...}//TODO: Add an error callback to handle unauthorized delete requests.
 				}
 			);
-			//TODO: .destroy is supposed to bubble up through the collection but it doesn't seem to be in this case.
 			Backbone.history.navigate('teams', true);
 		}
+	});
+	Team.Views.List = Backbone.View.extend({
+		template: "teams/list",
+		className: "teams-wrapper",
+		render: function(layout) {
+			var view = layout(this); //Get this view from the layout.
+			this.collection.each(function(team) {//for each team in the collection.
+				view.insert("ul", new Team.Views.Item({//Inserts the team into the ul in the list template.
+					model: team//pass each team to a Item view instance.
+				}));
+			});
+			return view.render({ count: this.collection.length });
+		},
+		initialize: function() {
+			this.collection.bind("reset", function() { 
+                if (Backbone.history.fragment == "teams") {
+                    this.render();
+                }
+            }, this);
+		}
+	});
+	Team.Views.Item = Backbone.View.extend({
+		template: "teams/item",
+		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul by the list's render function.
+		serialize: function() {
+            // Add a couple attributes to the team for displaying
+            var team = this.model.toJSON();
+            team.season_name = '';
+            team.league_name = '';
+            if (team.season != null) {
+                team.season_name = team.season.name;
+                team.league_name = team.season.league.name;
+            }
+            return team
+        } //render looks for this to manipulate model before passing to the template.
 	});
 	
 	return Team;// Required, return the module for AMD compliance
