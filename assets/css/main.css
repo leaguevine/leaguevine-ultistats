@@ -469,14 +469,14 @@ a.teams_list_item_link {
     margin-top: 15px;
     width: 60%;
     border: 1px solid #c3c3c3;
-    float: left;
+    float: right;
 }
 
 .alternate_action,
 .main_action {
     position: absolute;
     top: 40px;
-    right: 0px;
+    left: 0px;
     width: 40%;
 }
 
@@ -484,9 +484,12 @@ a.teams_list_item_link {
     display: none;
 }
 
-.management {
+.extra_actions {
     clear: both;
-    padding-top: 15px;
+    float: right;
+    padding: 15px 5px;
+    text-align: right;
+    width: 100%; 
 }
 
 .track {
@@ -572,27 +575,27 @@ a.teams_list_item_link {
             width: 90%;
         }
 
-        .track .management button.misc,
+        .track .extra_actions button.misc,
         .track .main_action button,
         .track .alternate_action button {
             color: #073962;
         }
 
             .track .main_action button.score {
-                color: #0377cc;
                 padding-top: 15px;
                 padding-bottom: 30px;
             }
 
-        .track .management {
+        .track .extra_actions {
             margin-left: 5px;
+            float: right;
         }
 
-        .track .management button {
+        .track .extra_actions button {
             width: 29%;
         }
 
-            .track .management button.undo {
+            .track .extra_actions button.undo {
                 color: #750808;
             }
 
@@ -607,25 +610,32 @@ a.teams_list_item_link {
             font-size: 10px;
         }
 
+span.button_line_1,
+span.button_line_2 {
+    display: block;
+    font-size: 11px;
+}
+
 .player_prompt {
     text-align: center;
 }
 
-    .player_prompt p{
-        font-size: 11px;
-        margin-top: 5px;
-        font-weight: bold;
-    }
+.player_prompt_action{
+    font-size: 11px;
+    margin-top: 5px;
+    font-weight: bold;
+}
 
 .action_prompt {
     text-align: center;
 }
 
-    .action_prompt p{
-        font-size: 11px;
-        margin-top: 5px;
-        font-weight: bold;
-    }
+.action_prompt_player,
+.action_prompt_action{
+    font-size: 11px;
+    margin-top: 5px;
+    font-weight: bold;
+}
 
 #score_prompt {
     margin-top: 15px;

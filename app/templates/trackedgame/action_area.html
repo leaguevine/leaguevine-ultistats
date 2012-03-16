@@ -1,21 +1,33 @@
 <div class="buttons main_action">
-    <div id="throw_prompt" class="action_prompt"><p>TODO threw a:</p></div>
+    <div id="throw_prompt" class="action_prompt">
+        <div class="action_prompt_player">
+            PLAYER
+        </div>
+        <div class="action_prompt_action">
+            Threw a:
+        </div>
+    </div>
     <button class="button completion">Completion</button>
-	<button class="button throwaway">Throwaway</button>
+    <button class="button throwaway">
+        <span class="button_line_1">Untouched</span> 
+        <span class="button_line_2">Throwaway</span>
+    </button>
 	<button class="button dropped_pass">Dropped pass</button>
-	<button class="button defd_pass">D'ed Pass</button>
-    <div id="score_prompt" class="action_prompt"><p>TODO caught a:</p></div>
+	<button class="button ded_pass">D'ed Pass</button>
     <button class="button score">Score</button>
 </div>
 <div class="buttons alternate_action">
-    <div id="alternate_action_prompt" class="action_prompt"><p>What happened?</p></div>
+    <div id="alternate_action_prompt" class="action_prompt">
+        <div class="action_prompt_player"></div>
+        <div class="action_prompt_action">What happened?</div>
+    </div>
 	<button class="button unknown_turn">Unknown Turn</button>
 	<button class="button timeout">Timeout</button>
 	<button class="button end_of_period">End of period</button>
 	<button class="button injury">Injury</button>
 	<button class="button foul">Foul</button>
 </div>
-<div class="buttons management">
-	<button class="button undo">Undo</button>
-	<button class="button misc">Misc</button>
+<div class="buttons extra_actions">
+    <button class="button misc">Misc</button>
+    <button class="button undo">Undo</button>
 </div>
