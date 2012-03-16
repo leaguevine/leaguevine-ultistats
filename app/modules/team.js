@@ -167,12 +167,13 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
         },
         filterTeams: function(ev){//If a user types something into the search box, filter on the string
             var search_string = ev.currentTarget.value;
-            this.collection.name = search_string;//TODO: Check this. Might need to make URL look for options.name
+            this.collection.name = search_string;
+            //TODO: Will this correctly set the .name property so the URL function will recognize it?
 			this.collection.fetch({
 				add: true,
 				success: function (collection, response){
-					//I think response is already parsed, right?
-					//Get rid of anything in response that is already in our collection.
+					//TODO: Do I use response or collection?
+					//DO I use collection or this.collection?
 					response = _.reject(response, function(model){
 						return get(collection.get(model.id))
 					});
@@ -182,7 +183,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
         },
 		render: function(layout) {
             var view = layout(this); //Get this view from the layout.
-            //How can we get the search string in here? Maybe above it needs to be part of this.
+            //TODO: We need the search_string. We might be able to find it using jquery or we could make it part of this. in the above function.
             var temp_collection = _.filter(this.collection, function (team){
             	return team.get("name").toLowerCase().indexOf(search_string) != -1//Return true if team name has search_string
             });
