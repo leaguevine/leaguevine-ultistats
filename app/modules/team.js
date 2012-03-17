@@ -180,7 +180,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 					my_collection.reset(_.union(my_collection.models, models));
 				}
 			});
-			my_collection.reset(my_collection.models);//I hope the name attribute passes through.
+			//my_collection.reset(my_collection.models);//I hope the name attribute passes through.
+			my_collection.trigger('reset');
         },
 		render: function(layout) {
             var view = layout(this); //Get this view from the layout.
