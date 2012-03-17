@@ -91,8 +91,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		},
 		listTeams: function () {//Route for all teams.
 			// Prepare the data.
-			//var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
-			var teams = new Team.Collection();//No defaults?
+			var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
+			//var teams = new Team.Collection();//No defaults?
 			teams.fetch();
 			
 			// Prepare the layout/view(s)
@@ -167,37 +167,74 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
         },
         filterTeams: function(ev){//If a user types something into the search box, filter on the string
             var search_string = ev.currentTarget.value;
-            this.collection.name = search_string;
-            //TODO: Will this correctly set the .name property so the URL function will recognize it?
-			this.collection.fetch({
-				add: true,
-				success: function (collection, response){
-					//TODO: Do I use response or collection?
-					//DO I use collection or this.collection?
-					response = _.reject(response, function(model){
-						return get(collection.get(model.id))
+            var my_collection=this.collection;
+            my_collection.name=search_string;
+            //Create a new collection for fetching
+            var search_results = new Team.Collection([],{name: search_string});
+			search_results.fetch({//Fetch the new collection
+				success: function (collection, response){//When it returns, add it to our current collection.
+					//returned models with identical properties will have different cids, thus _.union does not discriminate.
+					var models = _.reject(collection.models, function(model){
+						return my_collection.pluck("id").indexOf(model.get("id")) != -1
 					});
+					my_collection.reset(_.union(my_collection.models, models));
 				}
 			});
-			this.render();
+			my_collection.reset(my_collection.models);//I hope the name attribute passes through.
         },
 		render: function(layout) {
             var view = layout(this); //Get this view from the layout.
-            //TODO: We need the search_string. We might be able to find it using jquery or we could make it part of this. in the above function.
-            var temp_collection = _.filter(this.collection, function (team){
-            	return team.get("name").toLowerCase().indexOf(search_string) != -1//Return true if team name has search_string
-            });
+            var temp_collection = {};
 			this.setViews({
-				".team_list_area": new Team.Views.List( {collection: temp_collection})
+				".team_list_area": new Team.Views.List( {collection: this.collection})
 			});
 			return view.render().then(function(el) {
 				$('.team_list_area').html(el);
 			});
        },
        initialize: function() {
-	        this.collection.bind("reset", function() {this.render();}, this);
+       		this.search_string = "";
 		}
     });
+	Team.Views.List = Backbone.View.extend({
+		template: "teams/list",
+		className: "teams-wrapper",
+		render: function(layout) {
+			var view = layout(this); //Get this view from the layout.
+			var filter_by = this.collection.name ? this.collection.name : "";
+			this.collection.each(function(team) {//for each team in the collection.
+				//Do collection filtering here
+				if (!filter_by || team.get("name").toLowerCase().indexOf(filter_by.toLowerCase()) != -1) {
+					view.insert("ul", new Team.Views.Item({//Inserts the team into the ul in the list template.
+						model: team//pass each team to a Item view instance.
+					}));
+				}
+			});
+			return view.render({ count: this.collection.length });
+		},
+		initialize: function() {
+			this.collection.bind("reset", function() { 
+                if (Backbone.history.fragment == "teams") {
+                    this.render();
+                }
+            }, this);
+		}
+	});
+	Team.Views.Item = Backbone.View.extend({
+		template: "teams/item",
+		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul by the list's render function.
+		serialize: function() {
+            // Add a couple attributes to the team for displaying
+            var team = this.model.toJSON();
+            team.season_name = '';
+            team.league_name = '';
+            if (team.season != null) {
+                team.season_name = team.season.name;
+                team.league_name = team.season.league.name;
+            }
+            return team
+        } //render looks for this to manipulate model before passing to the template.
+	});
 	Team.Views.Detail = Backbone.View.extend({
 		//We were passed a model on creation by Team.Router.showTeam(), so we have this.model  	
 		template: "teams/detail",
@@ -273,42 +310,6 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			Backbone.history.navigate('teams', true);
 		}
 	});
-	Team.Views.List = Backbone.View.extend({
-		template: "teams/list",
-		className: "teams-wrapper",
-		render: function(layout) {
-			var view = layout(this); //Get this view from the layout.
-			this.collection.each(function(team) {//for each team in the collection.
-				view.insert("ul", new Team.Views.Item({//Inserts the team into the ul in the list template.
-					model: team//pass each team to a Item view instance.
-				}));
-			});
-			return view.render({ count: this.collection.length });
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() { 
-                if (Backbone.history.fragment == "teams") {
-                    this.render();
-                }
-            }, this);
-		}
-	});
-	Team.Views.Item = Backbone.View.extend({
-		template: "teams/item",
-		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul by the list's render function.
-		serialize: function() {
-            // Add a couple attributes to the team for displaying
-            var team = this.model.toJSON();
-            team.season_name = '';
-            team.league_name = '';
-            if (team.season != null) {
-                team.season_name = team.season.name;
-                team.league_name = team.season.league.name;
-            }
-            return team
-        } //render looks for this to manipulate model before passing to the template.
-	});
-	
 	return Team;// Required, return the module for AMD compliance
 	//exports.Team = Team;
 });
