@@ -397,8 +397,11 @@ function(require, namespace, Backbone) {
 			var old_tp_list = is_onfield ? this.model.get('onfield_'+this.options.team_ix) : this.model.get('offfield_'+this.options.team_ix);
 			var new_tp_list = is_onfield ? this.model.get('offfield_'+this.options.team_ix) : this.model.get('onfield_'+this.options.team_ix);
 			if (is_onfield || new_tp_list.length<7){
-				var player_ix = _.pluck(old_tp_list.pluck("player"),"id").indexOf(player_id);
-				var this_player = old_tp_list.at(player_ix);
+				var this_player = old_tp_list.find( function(tp) {
+					return tp.get('player_id')==player_id;
+				});
+				//var player_ix = _.pluck(old_tp_list.pluck("player"),"id").indexOf(player_id);
+				//var this_player = old_tp_list.at(player_ix);
 				old_tp_list.remove(this_player);
 				new_tp_list.add(this_player);
 				this.render();
