@@ -393,29 +393,17 @@ function(require, namespace, Backbone) {
 		},
 		toggle_roster: function(ev){			
 			var player_id = parseInt(ev.target.id);
-			var is_onfield = $(ev.target).parents('.roster').hasClass('sub_on_field'); 
-			var team_ix = $(ev.target).parents('.substitution').hasClass('sub_team_1') ? 1 : 2;
-			var this_player = {};
-			//this.model is the trackedgame.
-			if (is_onfield) {//move to offfield
-				this_player = this.model.get('onfield_'+team_ix).find( function(tp) {
-					return tp.get('player_id')==player_id;
-				});
-				this.model.get('onfield_'+team_ix).remove(this_player);
-				this.model.get('offfield_'+team_ix).add(this_player);
-			} else {//move to onfield
-				if (this.model.get('onfield_'+team_ix).length<7){
-					this_player = this.model.get('offfield_'+team_ix).find( function(tp) {
-						return tp.get('player_id')==player_id;
-					});
-					this.model.get('onfield_'+team_ix).add(this_player);
-					this.model.get('offfield_'+team_ix).remove(this_player);
-				}
+			var is_onfield = this.$(ev.target).parents('.roster').hasClass('sub_on_field');
+			var old_tp_list = is_onfield ? this.model.get('onfield_'+this.options.team_ix) : this.model.get('offfield_'+this.options.team_ix);
+			var new_tp_list = is_onfield ? this.model.get('offfield_'+this.options.team_ix) : this.model.get('onfield_'+this.options.team_ix);
+			if (is_onfield || new_tp_list.length<7){
+				var player_ix = _.pluck(old_tp_list.pluck("player"),"id").indexOf(player_id);
+				var this_player = old_tp_list.at(player_ix);
+				old_tp_list.remove(this_player);
+				new_tp_list.add(this_player);
+				this.render();
 			}
-			this.render();
 		}
-		
-		//TODO: Bind player entries to a function that swaps them from off-field to on-field
 	});
 	TrackedGame.Views.RosterItem = Backbone.View.extend({
 		//Can bind this teamplayer change to render... useful if player name/number changes. Why would it?
