@@ -20,7 +20,10 @@ function(require, namespace, Backbone, Leaguevine) {
 			game_id: NaN,
 			player_1_id: NaN,
 			player_2_id: NaN,
-			player_3_id: NaN
+			player_3_id: NaN,
+			player_1_team_id: NaN,
+			player_2_team_id: NaN,
+			player_3_team_id: NaN
 		},
 		urlRoot: Leaguevine.API.root + "events",
 		parse: function(resp, xhr) {

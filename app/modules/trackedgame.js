@@ -53,28 +53,44 @@ function(require, namespace, Backbone) {
 			var this_event = new GameEvent.Model({time: time, game_id: gameid});
 			//pl_id is the tapped player. Might be NaN
 			var last_pl_id = this.get('player_in_possession_id');//last_player_id might be NaN
+			//team_ix is index of team that player is on. Might be NaN.
+			var team_id = this.get('game').get('team_'+team_in_possession_ix).id;
+			var other_team_id = this.get('game').get('team_'+(3-this.team_in_possession_ix)).id;
+			
 			// The meaning of a player tap depends on the current state.
 			// https://github.com/leaguevine/leaguevine-ultistats/issues/7
 			switch (this.get('current_state')){//pickup, dropped, ded, scored, pulled, default
-				case 'pickup'://pickup event --> default
+				case 'pickup'://pickup event(10) --> default
+					this_event.set({type: 10, player_1_id: pl_id, player_1_team_id: team_id});
+					this.set({player_in_possession_id: pl_id});
 					break;
 				case 'drop'://Drop event --> turnover --> pickup
+					this_event.set({type: 33, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
+					this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
+					this.set({player_in_possession_id: NaN});
+					this.set('current_state','pickup');
 					break;
 				case 'd'://D event --> pickup
+					this_event.set({type: 34, player_1_id: last_pl_id, player_3_id: pl_id, player_1_team_id: other_team_id, player_3_team_id: team_id});
+					this.set({player_in_possession_id: NaN});
+					this.set('current_state','pickup');
 					break;
 				case 'score'://score event --> pulled + substitution screen
+					this_event.set({type: 22, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
+					this.set({player_in_possession_id: NaN});
+					this.set('current_state','pulled');
+					//TODO: Show the substitution screen
 					break;
 				case 'pulled'://pull event --> turnover --> pickup
+					this_event.set({type: 1, player_1_id: last_pl_id, player_1_team_id: team_id});
+					this.set({player_in_possession_id: NaN});
+					this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
+					this.set('current_state','pickup');
 					break;
-				default://pass event
-					break;
-			}
-			if (!last_pl_id && pl_id){
-				this_event.set({type: 10, player_1_id: pl_id});
-			} else if (last_pl_id && !pl_id){
-				this_event.set({type: 20, player_1_id: last_pl_id});
-			} else if (last_pl_id && pl_id){
-				this_event.set({type: 21, player_1_id: last_pl_id, player_2_id: pl_id});
+				default://pass event.
+					this_event.set({type: 21, player_1_id: last_pl_id, player_2_id: pl_id});
+					this.set({player_in_possession_id: pl_id});
+					//neither team nor state change.
 			}
 			//save the event to the server.
 			this_event.save([], {
@@ -83,12 +99,11 @@ function(require, namespace, Backbone) {
                     //TODO: Do something with the error. Maybe log the error and retry again later?
                 },
 				succes: function(model, response){
-					//Add the event to the trackedgame.get('gameevents')
-					this.model.get('gameevents').add(model);
-					//save the trackedgame.
-					this.model.save();
 				}
 			});
+			this.get('gameevents').add(model);//Add the event to the trackedgame.get('gameevents')
+			this.save();//save the trackedgame.
+			this.trigger("change");//Should trigger some re-renders.
 		}
 	});
 	
@@ -189,6 +204,7 @@ function(require, namespace, Backbone) {
 		initialize: function() {
 			//I only want this to re-render when details about the game (score) change.
 			this.model.get('game').bind("change", function() {this.render();}, this);
+			//Can I bind to this.model.get('team_in_possession_ix') ?
 		},
 		template: "trackedgame/scoreboard",
 		serialize: function() {
@@ -201,19 +217,13 @@ function(require, namespace, Backbone) {
 	*/
 	TrackedGame.Views.PlayerArea = Backbone.View.extend({
 		initialize: function() {
+			//TODO: Make the render bindings more specific.
+			//Can I bind to this.model.get('team_in_possession_ix') change to show_teamplayer?
+			//Can I bind to this.model.get('onfield_1') add or remove events to add or remove specific views?
 			this.model.bind("change", function() {this.render();}, this);
 			this.model.get('game').bind("change", function() {this.render();}, this);
 			this.model.get('onfield_1').bind("reset", function() {this.render();}, this);
 			this.model.get('onfield_2').bind("reset", function() {this.render();}, this);
-			//This is probably why performance is so bad when swapping players around on the substitution screen.
-			//Instead of re-rendering on every player swap, maybe I can just cause the substitution 'done' screen
-			//to fire a game.trigger('change') event.
-			/*
-			this.model.get('onfield_1').bind("add", function() {this.render();}, this);
-			this.model.get('onfield_1').bind("remove", function() {this.render();}, this);
-			this.model.get('onfield_2').bind("add", function() {this.render();}, this);
-			this.model.get('onfield_2').bind("remove", function() {this.render();}, this);
-			*/
 		},
 		//tracked_game(layout)<div .t_game>->GameAction<div .player_area>->PlayerArea
 		template: "trackedgame/player_area",
@@ -267,9 +277,9 @@ function(require, namespace, Backbone) {
 		serialize: function() {
 			return this.model.toJSON();
 		}
-		//ev.currentTarget.classList
-		//Since tapping a player button will have different context depending on what the last event was or what the last tap was...
+		//Since tapping a player button will have different action depending on the context (the last event)
 		//then we'll need access to the trackedgame object which is not easily available in this view.
+		//Thus player taps will be handled by the parent view: TeamPlayerArea
 	});
 	
 	
@@ -410,6 +420,8 @@ function(require, namespace, Backbone) {
 				//var this_player = old_tp_list.at(player_ix);
 				old_tp_list.remove(this_player);
 				new_tp_list.add(this_player);
+				
+				//Instead of calling this.render() it might be faster to remove/insert the views.
 				this.render();
 			}
 		}
