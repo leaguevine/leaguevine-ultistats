@@ -281,7 +281,10 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 	});
 	Team.Views.Edit = Backbone.View.extend({
 		template: "teams/edit",
-		render: function(layout) {return layout(this).render(this.model.toJSON());},
+		render: function(layout) {
+            app.api.d_token(); //Ensure that the user is logged in
+            return layout(this).render(this.model.toJSON());
+        },
 		initialize: function() {this.model.bind("change", function() {this.render();}, this);},
   		events: {
 			"click .save": "saveModel",

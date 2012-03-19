@@ -362,6 +362,7 @@ function(require, namespace, Backbone) {
 			//this.model.get('onfield_'+this.options.team_ix).bind("change", function() {this.render();}, this);
 		},
 		render: function(layout) {
+            app.api.d_token(); //Ensure that the user is logged in
 			var view = layout(this); //Get this view from the layout.
 			this.model.get('onfield_'+this.options.team_ix).each(function(tp) {
 				view.insert(".sub_on_field", new TrackedGame.Views.RosterItem({
