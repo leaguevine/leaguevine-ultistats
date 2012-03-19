@@ -32,6 +32,7 @@ function(require, namespace, Backbone) {
 			offfield_2: [],
 			team_in_possession_ix: 1,
 			player_in_possession_id: NaN,
+			current_state: 'default',
 			team_pulled_ix: NaN
 		},
 		toJSON: function() {//flatten the data so they are easy to read.
@@ -47,33 +48,33 @@ function(require, namespace, Backbone) {
 		player_tap: function(pl_id){
 			var GameEvent = require("modules/gameevent");
 			var d = new Date();//"2011-12-19T15:28:46.493Z"
-			time = d.getUTCFullYear() + '-' + (d.getUTCMonth() + 1) + '-' + d.getUTCDate() + 'T' + d.getUTCHours() + ':' + d.getUTCMinutes() + ':' + d.getUTCSeconds();
+			var time = d.getUTCFullYear() + '-' + (d.getUTCMonth() + 1) + '-' + d.getUTCDate() + 'T' + d.getUTCHours() + ':' + d.getUTCMinutes() + ':' + d.getUTCSeconds();
 			var gameid = this.get('game').get('id');
+			var this_event = new GameEvent.Model({time: time, game_id: gameid});
 			//pl_id is the tapped player. Might be NaN
-			//last_player_id might be NaN
-			var last_pl_id = this.get('player_in_possession_id');
+			var last_pl_id = this.get('player_in_possession_id');//last_player_id might be NaN
+			// The meaning of a player tap depends on the current state.
+			// https://github.com/leaguevine/leaguevine-ultistats/issues/7
+			switch (this.get('current_state')){//pickup, dropped, ded, scored, pulled, default
+				case 'pickup'://pickup event --> default
+					break;
+				case 'drop'://Drop event --> turnover --> pickup
+					break;
+				case 'd'://D event --> pickup
+					break;
+				case 'score'://score event --> pulled + substitution screen
+					break;
+				case 'pulled'://pull event --> turnover --> pickup
+					break;
+				default://pass event
+					break;
+			}
 			if (!last_pl_id && pl_id){
-				var this_event = new GameEvent.Model({
-					type: 10, 
-					time: time,
-					game_id: gameid, 
-					player_1_id: pl_id
-				});
+				this_event.set({type: 10, player_1_id: pl_id});
 			} else if (last_pl_id && !pl_id){
-				var this_event = new GameEvent.Model({
-					type: 20, 
-					time: time,
-					game_id: gameid, 
-					player_1_id: last_pl_id
-				});
+				this_event.set({type: 20, player_1_id: last_pl_id});
 			} else if (last_pl_id && pl_id){
-				var this_event = new GameEvent.Model({
-					type: 21, 
-					time: time,
-					game_id: gameid, 
-					player_1_id: last_pl_id,
-					player_2_id: pl_id
-				});
+				this_event.set({type: 21, player_1_id: last_pl_id, player_2_id: pl_id});
 			}
 			//save the event to the server.
 			this_event.save([], {
@@ -169,7 +170,6 @@ function(require, namespace, Backbone) {
 	Parent view for the game screen
 	*/
 	TrackedGame.Views.GameAction = Backbone.View.extend({
-		//DO NOT BIND RE-RENDER TO ANYTHING HERE!
 		template: "trackedgame/game_action",
 		render: function(layout) {
 			var view = layout(this);
@@ -201,15 +201,19 @@ function(require, namespace, Backbone) {
 	*/
 	TrackedGame.Views.PlayerArea = Backbone.View.extend({
 		initialize: function() {
-			//I want this (and its children) to re-render whenever any of the following change.
 			this.model.bind("change", function() {this.render();}, this);
 			this.model.get('game').bind("change", function() {this.render();}, this);
 			this.model.get('onfield_1').bind("reset", function() {this.render();}, this);
+			this.model.get('onfield_2').bind("reset", function() {this.render();}, this);
+			//This is probably why performance is so bad when swapping players around on the substitution screen.
+			//Instead of re-rendering on every player swap, maybe I can just cause the substitution 'done' screen
+			//to fire a game.trigger('change') event.
+			/*
 			this.model.get('onfield_1').bind("add", function() {this.render();}, this);
 			this.model.get('onfield_1').bind("remove", function() {this.render();}, this);
-			this.model.get('onfield_2').bind("reset", function() {this.render();}, this);
 			this.model.get('onfield_2').bind("add", function() {this.render();}, this);
 			this.model.get('onfield_2').bind("remove", function() {this.render();}, this);
+			*/
 		},
 		//tracked_game(layout)<div .t_game>->GameAction<div .player_area>->PlayerArea
 		template: "trackedgame/player_area",
@@ -229,7 +233,7 @@ function(require, namespace, Backbone) {
 		}
 	});
 	TrackedGame.Views.TeamPlayerArea = Backbone.View.extend({
-		//DO NOT BIND RE-RENDER TO ANYTHING HERE! Otherwise we will just insert buttons upon buttons.
+		//DO NOT BIND RE-RENDER TO ANYTHING HERE! Otherwise we will just insert buttons upon buttons. --actually this probably isn't true if we bind to 'reset'
 		template: "trackedgame/teamplayer_area",
 		render: function(layout) {
 			var view = layout(this);
@@ -387,6 +391,7 @@ function(require, namespace, Backbone) {
 			$('.sub_team_'+(3-this.options.team_ix)).show();
 		},
 		sub_done: function(ev){
+			this.model.trigger('change');
 			$('.sub_team_1').hide();
 			$('.sub_team_2').hide();
 			$('.t_game').show();
