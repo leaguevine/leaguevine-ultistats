@@ -30,10 +30,11 @@ function(require, namespace, Backbone) {
 			offfield_1: [],
 			onfield_2: [],
 			offfield_2: [],
+			current_state: 'default',
 			team_in_possession_ix: 1,
 			player_in_possession_id: NaN,
-			current_state: 'default',
-			team_pulled_ix: NaN
+			team_pulled_ix: NaN,
+			showing_alternate: -1//I seem to be having trouble with using a boolean or using 0 and 1. So use 1 and -1.
 		},
 		toJSON: function() {//flatten the data so they are easy to read.
 			var temp = _.clone(this.attributes);
@@ -54,8 +55,8 @@ function(require, namespace, Backbone) {
 			//pl_id is the tapped player. Might be NaN
 			var last_pl_id = this.get('player_in_possession_id');//last_player_id might be NaN
 			//team_ix is index of team that player is on. Might be NaN.
-			var team_id = this.get('game').get('team_'+team_in_possession_ix).id;
-			var other_team_id = this.get('game').get('team_'+(3-this.team_in_possession_ix)).id;
+			var team_id = this.get('game').get('team_'+this.get('team_in_possession_ix')).id;
+			var other_team_id = this.get('game').get('team_'+(3-this.get('team_in_possession_ix'))).id;
 			
 			// The meaning of a player tap depends on the current state.
 			// https://github.com/leaguevine/leaguevine-ultistats/issues/7
@@ -63,6 +64,7 @@ function(require, namespace, Backbone) {
 				case 'pickup'://pickup event(10) --> default
 					this_event.set({type: 10, player_1_id: pl_id, player_1_team_id: team_id});
 					this.set({player_in_possession_id: pl_id});
+					this.set('current_state','pulled');
 					break;
 				case 'drop'://Drop event --> turnover --> pickup
 					this_event.set({type: 33, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
@@ -99,11 +101,37 @@ function(require, namespace, Backbone) {
                     //TODO: Do something with the error. Maybe log the error and retry again later?
                 },
 				succes: function(model, response){
+					this.get('gameevents').add(model);//Add the event to the trackedgame.get('gameevents'). Will trigger a change in the last play display.
+					this.save();//save the trackedgame.
 				}
 			});
-			this.get('gameevents').add(model);//Add the event to the trackedgame.get('gameevents')
-			this.save();//save the trackedgame.
-			this.trigger("change");//Should trigger some re-renders.
+		},
+		score: function(){
+			console.log("TODO: score in model def.")
+		},
+		completion: function(){
+			console.log("TODO: completion in model def.")
+		},
+		throwaway: function() {
+			console.log("TODO: throwaway in model def.")
+		},
+		dropped_pass: function() {
+			console.log("TODO: dropped_pass in model def.")
+		},
+		defd_pass: function(){
+			console.log("TODO: defd_pass in model def.")
+		},
+		unknown_turn: function(){
+			console.log("TODO: unknown_turn in model def.")
+		},
+		timeout: function(){
+			console.log("TODO: timeout in model def.")
+		},
+		end_of_period: function(){
+			console.log("TODO: end_of_period in model def.")
+		},
+		injury: function(){
+			console.log("TODO: injury in model def.")
 		}
 	});
 	
@@ -130,7 +158,7 @@ function(require, namespace, Backbone) {
 			trackedgame.set('game',newGame, {silent:true});
 				
 			for (var ix=1;ix<3;ix++) {
-				trackedgame.set('onfield_'+ix, new TeamPlayer.Collection(trackedgame.get('onfield_'+ix)), {silent: true});
+				trackedgame.set('onfield_'+ix, new TeamPlayer.Collection(trackedgame.get('onfield_'+ix)), {silent: true});//Why is this silent?
 				trackedgame.set('offfield_'+ix, new TeamPlayer.Collection(trackedgame.get('offfield_'+ix)), {silent: true});
 			}
 			
@@ -152,11 +180,13 @@ function(require, namespace, Backbone) {
 			trackedgame.set('gameevents',
 				new GameEvent.Collection(trackedgame.get('gameevents'),{game_id: gameId}));
 			
-			console.log("TODO: figure out trackedgame.get('team_pulled_ix')");
+			console.log("TODO: If game is new, ask out who pulled to start");
+			console.log("TODO: If game is not new, hopefully the loaded model has everything we need.");
+			//It would be nice if we could figure out the game state entirely from the events.
 			
 			//This router might not get called again for a while if user stays on track-game screen.
 			myLayout.setViews({
-				".sub_team_1": new TrackedGame.Views.SubTeam({model: trackedgame, team_ix:1}),
+				".sub_team_1": new TrackedGame.Views.SubTeam({model: trackedgame, team_ix:1}),//have to pass the full model so we get onfield and offfield
 				".sub_team_2": new TrackedGame.Views.SubTeam({model: trackedgame, team_ix:2}),
 				".t_game": new TrackedGame.Views.GameAction({model: trackedgame})
 			});
@@ -191,7 +221,7 @@ function(require, namespace, Backbone) {
 			this.setViews({
 				".scoreboard": new TrackedGame.Views.Scoreboard({model: this.model}),
 				".player_area": new TrackedGame.Views.PlayerArea({model: this.model}),
-				".action_area": new TrackedGame.Views.ActionArea({model: this.model, showing_alternate: true})
+				".action_area": new TrackedGame.Views.ActionArea({model: this.model})
 			});
 			return view.render();
 		}
@@ -202,14 +232,21 @@ function(require, namespace, Backbone) {
 	*/
 	TrackedGame.Views.Scoreboard = Backbone.View.extend({
 		initialize: function() {
-			//I only want this to re-render when details about the game (score) change.
-			this.model.get('game').bind("change", function() {this.render();}, this);
-			//Can I bind to this.model.get('team_in_possession_ix') ?
+			this.model.get('game').bind("change", function() {this.render();}, this);//To update scores or teams
+			this.model.get('gameevents').bind("add", function() {this.render();}, this);//To update previous action
+			this.model.get('gameevents').bind("remove", function() {this.render();}, this);//To update previous action
+			this.model.bind("change:team_in_possession_ix", function() {this.render();}, this);//To highlight team in possession
+		},
+		cleanup: function() {
+			this.model.get('game').unbind("change");
+			this.model.get('gameevents').unbind("add");
+			this.model.get('gameevents').unbind("remove");
 		},
 		template: "trackedgame/scoreboard",
 		serialize: function() {
 			return this.model.toJSON();
 		}
+		//TODO: Replace serialize with a render function that makes a useful JSON out of team_in_possession, the last gameevent, team names and scores
 	});
 	
 	/*
@@ -217,61 +254,61 @@ function(require, namespace, Backbone) {
 	*/
 	TrackedGame.Views.PlayerArea = Backbone.View.extend({
 		initialize: function() {
-			//TODO: Make the render bindings more specific.
-			//Can I bind to this.model.get('team_in_possession_ix') change to show_teamplayer?
-			//Can I bind to this.model.get('onfield_1') add or remove events to add or remove specific views?
-			this.model.bind("change", function() {this.render();}, this);
-			this.model.get('game').bind("change", function() {this.render();}, this);
-			this.model.get('onfield_1').bind("reset", function() {this.render();}, this);
-			this.model.get('onfield_2').bind("reset", function() {this.render();}, this);
+			//It seems like rendering the subviews does not add player_buttons upon player_buttons
+			//Thus we can bind to the more specific views for player_buttons.
+			//However I have moved the action prompt from the subview to here, because the action prompt is not team-specific.
+			this.model.bind("change:current_state", function() {this.render();});//Update the action prompt.
+			this.model.bind("change:team_in_possession_ix", function() {this.show_teamplayer();});//Update which player buttons to display.
 		},
-		//tracked_game(layout)<div .t_game>->GameAction<div .player_area>->PlayerArea
 		template: "trackedgame/player_area",
 		render: function(layout) {
 			var view = layout(this);
 			this.setViews({
-				".player_area_1": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix:1}),
-				".player_area_2": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix:2}),
+				".player_area_1": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get('onfield_1'), model: this.model.get('game').get('team_1')}),
+				".player_area_2": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get('onfield_2'), model: this.model.get('game').get('team_2')})
 			});
 			return view.render().then(function(el) {
+				//TODO: Change the action prompt depending on the current state.
 				this.show_teamplayer();
 			});
 		},
 		show_teamplayer: function () {
 			this.$('.player_area_'+(3-this.model.get('team_in_possession_ix'))).hide();
 			this.$('.player_area_'+this.model.get('team_in_possession_ix')).show();
+		},
+		events: {
+			"click .button": "player_tap",
+		},
+		player_tap: function(ev){
+			this.model.player_tap(parseInt($(ev.target).parents('button').attr('id')));
 		}
 	});
 	TrackedGame.Views.TeamPlayerArea = Backbone.View.extend({
-		//DO NOT BIND RE-RENDER TO ANYTHING HERE! Otherwise we will just insert buttons upon buttons. --actually this probably isn't true if we bind to 'reset'
+		initialize: function() {
+			//Specific players should only be added or removed on the substitution screen.
+			//We don't need to update our player buttons on each add or remove, not until the sub screen is done. That will trigger a reset.
+			this.collection.bind("reset", function() {this.render();}, this);//Can't unbind because it is bound elsewhere too.
+		},
 		template: "trackedgame/teamplayer_area",
-		render: function(layout) {
+		render: function(layout) { 
 			var view = layout(this);
-			this.model.get('onfield_'+this.options.team_ix).each(function(player) {
+			this.collection.each(function(tp) {
 				view.insert("ul", new TrackedGame.Views.PlayerButton({
-					model: player
+					model: tp
 				}));
 			});
 			//insert unknown buttons for less than 8 players.
 			var TeamPlayer = require("modules/teamplayer");
-			for(var i=this.model.get('onfield_'+this.options.team_ix).length;i<8;i++){
+			for(var i=this.collection.length;i<8;i++){
 				view.insert("ul", new TrackedGame.Views.PlayerButton({
 					model: new TeamPlayer.Model({player: {id:"unknown",last_name:"unknown"}})
 				}));
 			}
-			return view.render({ team: this.model.get('game').get('team_'+this.options.team_ix) });
-		},
-		events: {
-			"click .button": "player_tap"
-		},
-		player_tap: function(ev){
-			this.model.player_tap(parseInt($(ev.target).parents('button').attr('id')));
-			console.log("TODO: Be clever about player taps");
+			return view.render({ team: this.model });
 		}
-		
 	});
 	TrackedGame.Views.PlayerButton = Backbone.View.extend({
-		//Can bind this teamplayer change to render... useful if player name/number changes. Why would it?
+		//Could bind this teamplayer change to render... useful if player name/number changes. Why would it?
 		template: "trackedgame/player_button",
 		tagName: "li",
 		serialize: function() {
@@ -287,14 +324,18 @@ function(require, namespace, Backbone) {
 	View for action buttons. ActionArea> (should this be nested?)
 	*/
 	TrackedGame.Views.ActionArea = Backbone.View.extend({
-		initialize: function() {
-			//This should re-render whenever ... ?
-			this.model.bind("change", function() {this.render();}, this);
+		initialize: function() {			
+			this.model.bind("change:player_in_possession_id", function() {this.render();}, this);//TODO: Show the Player name
+			this.model.bind("change:current_state", function() {this.render();}, this);//TODO: Disable some buttons depending on state.
+			this.model.bind("change:showing_alternate", this.show_action_buttons, this);//Which buttons are we showing?
 		},
+		cleanup: function() {
+			this.model.unbind("change:showing_alternate");
+  		},
 		template: "trackedgame/action_area",
 		events: {
 			"click .undo": "undo",
-			"click .misc": "misc",
+			"click .misc": "toggle_action_buttons",
 			"click .score": "score",
 			"click .completion": "completion",
 			"click .throwaway": "throwaway",
@@ -308,55 +349,40 @@ function(require, namespace, Backbone) {
 		undo: function(ev){
 			console.log("TODO: undo")
 		},
-		misc: function(ev){//toggle which buttons are being displayed.
-			if (this.options.showing_alternate) {
-				this.$('.alternate_action').hide();
-				this.$('.main_action').show();
-				this.options.showing_alternate=false;
-			}
-			else {
+		show_action_buttons: function(ev){//shows or hides buttons depending on this.model.get('showing_alternate')
+			if (this.model.get('showing_alternate')==1) {
 				this.$('.main_action').hide();
 				this.$('.alternate_action').show();
-				this.options.showing_alternate=true;
+			}
+			else {
+				this.$('.alternate_action').hide();
+				this.$('.main_action').show();
 			}
 		},
-		score: function(ev){
-			console.log("TODO: score")
+		toggle_action_buttons: function(ev){//toggle which buttons are being displayed.
+			this.model.set('showing_alternate',-1*this.model.get('showing_alternate'));//Changing this should trigger show_action_buttons.
 		},
-		completion: function(ev){
-			console.log("TODO: completion")
-		},
-		throwaway: function(ev){
-			console.log("TODO: throwaway")
-		},
-		dropped_pass: function(ev){
-			console.log("TODO: dropped_pass")
-		},
-		defd_pass: function(ev){
-			console.log("TODO: defd_pass")
-		},
-		unknown_turn: function(ev){
-			console.log("TODO: unknown_turn")
-		},
-		timeout: function(ev){
-			console.log("TODO: timeout")
-		},
-		end_of_period: function(ev){
-			console.log("TODO: end_of_period")
-		},
+		score: function(ev){this.model.score();},
+		completion: function(ev){this.model.completion();},
+		throwaway: function(ev){this.model.throwaway();},
+		dropped_pass: function(ev){this.model.dropped_pass();},
+		defd_pass: function(ev){this.model.defd_pass();},
+		unknown_turn: function(ev){this.model.unknown_turn();},
+		timeout: function(ev){this.model.timeout();},
+		end_of_period: function(ev){this.model.end_of_period();},
 		injury: function(ev){
-			console.log("TODO: injury")
-			//show the substitution screen for a team.
+			this.model.injury();
 			$('.t_game').hide();
 			$('.sub_team_1').show();
 			$('.sub_team_2').hide();
 		},
-		
 		render: function(layout) {
+			//TODO: Show the player name
+			//TODO: Disable some buttons depending on this.model.get('current_state');
 			var view = layout(this);
 			//return view.render();
 			return view.render().then(function(el) {
-				this.misc();
+				this.show_action_buttons();
 			});
 		}
 	});
@@ -368,62 +394,56 @@ function(require, namespace, Backbone) {
 	TrackedGame.Views.SubTeam = Backbone.View.extend({
 		template: "trackedgame/game_substitution",
 		initialize: function() {
-			//This should re-render whenever onfield, offfield, or game change.
-			this.model.get('game').bind("change", function() {this.render();}, this);
-			this.model.get('offfield_'+this.options.team_ix).bind("reset", function() {this.render();}, this);
-			//Is it possible for onfield to change without offfield changing? I don't think so.
-			//It is possible for the opposite to be true, e.g. on new game.
-			//this.model.get('onfield_'+this.options.team_ix).bind("change", function() {this.render();}, this);
+			//Bind to offfield reset for the first load. What happens if the game is fetched from localStorage and offfield is empty. Still trigger reset?
+			this.model.get('offfield_'+this.options.team_ix).bind("reset", function(){this.render();}, this);
+			this.model.get('offfield_'+this.options.team_ix).bind("remove", this.swap_collection, this);
+			this.model.get('onfield_'+this.options.team_ix).bind("remove", this.swap_collection, this);
+			
+			//There's no reason to expect the game to change (i.e. score or team names)
 		},
-		render: function(layout) {
-            app.api.d_token(); //Ensure that the user is logged in
-			var view = layout(this); //Get this view from the layout.
-			this.model.get('onfield_'+this.options.team_ix).each(function(tp) {
-				view.insert(".sub_on_field", new TrackedGame.Views.RosterItem({
-					model: tp
-				}));
-			});
-			this.model.get('offfield_'+this.options.team_ix).each(function(tp) {
-				view.insert(".sub_off_field", new TrackedGame.Views.RosterItem({
-					model: tp
-				}));
-			});
-			return view.render({ team: this.model.get('game').get('team_'+this.options.team_ix) });
-		},
+		cleanup: function() {
+    		this.model.get('offfield_'+this.options.team_ix).unbind("add");
+    		this.model.get('onfield_'+this.options.team_ix).unbind("add");
+    		this.model.get('offfield_'+this.options.team_ix).unbind("remove");
+    		this.model.get('onfield_'+this.options.team_ix).unbind("remove");
+    		this.model.get('offfield_'+this.options.team_ix).unbind("reset");
+  		},
 		events: {
 			"click .sub_next": "sub_next",
-			"click .sub_done": "sub_done",
-			"click .roster_player": "toggle_roster"
+			"click .sub_done": "sub_done"
 		},
 		sub_next: function(ev){
+			this.model.get('onfield_'+this.options.team_ix).trigger('reset');
 			//I would prefer to tighten the scope on this but I'm not sure how to access
-			//the parent element's class without searching the whole DOM.
+			//the other team's class without searching the whole DOM.
 			$('.sub_team_'+this.options.team_ix).hide();
 			$('.sub_team_'+(3-this.options.team_ix)).show();
 		},
 		sub_done: function(ev){
-			this.model.trigger('change');
 			$('.sub_team_1').hide();
 			$('.sub_team_2').hide();
 			$('.t_game').show();
 		},
-		toggle_roster: function(ev){			
-			var player_id = parseInt(ev.target.id);
-			var is_onfield = this.$(ev.target).parents('.roster').hasClass('sub_on_field');
-			var old_tp_list = is_onfield ? this.model.get('onfield_'+this.options.team_ix) : this.model.get('offfield_'+this.options.team_ix);
-			var new_tp_list = is_onfield ? this.model.get('offfield_'+this.options.team_ix) : this.model.get('onfield_'+this.options.team_ix);
-			if (is_onfield || new_tp_list.length<7){
-				var this_player = old_tp_list.find( function(tp) {
-					return tp.get('player_id')==player_id;
-				});
-				//var player_ix = _.pluck(old_tp_list.pluck("player"),"id").indexOf(player_id);
-				//var this_player = old_tp_list.at(player_ix);
-				old_tp_list.remove(this_player);
-				new_tp_list.add(this_player);
-				
-				//Instead of calling this.render() it might be faster to remove/insert the views.
-				this.render();
+		swap_collection: function(model, collection, options){
+			var new_model = model.clone();
+			if (collection==this.model.get('offfield_'+this.options.team_ix) && this.model.get('onfield_'+this.options.team_ix).length<7){//was offfield
+				this.model.get('onfield_'+this.options.team_ix).add(new_model);
+			} else {//was onfield
+				this.model.get('offfield_'+this.options.team_ix).add(new_model);
 			}
+			this.render();
+		},
+		render: function(layout) {
+			//https://github.com/tbranyen/backbone.layoutmanager/pull/47
+			app.api.d_token(); //Ensure that the user is logged in
+			var view = layout(this); //Get this view from the layout.
+			this.model.get('onfield_'+this.options.team_ix).each(function(tp) {
+				view.insert(".sub_on_field", new TrackedGame.Views.RosterItem({model: tp}));
+			});
+			this.model.get('offfield_'+this.options.team_ix).each(function(tp) {
+				view.insert(".sub_off_field", new TrackedGame.Views.RosterItem({model: tp}));
+			});
+			return view.render({ team: this.model.get('game').get('team_'+this.options.team_ix) });
 		}
 	});
 	TrackedGame.Views.RosterItem = Backbone.View.extend({
@@ -432,10 +452,14 @@ function(require, namespace, Backbone) {
 		tagName: "li",
 		serialize: function() {
 			return this.model.toJSON();
+		},
+		events: {
+			"click": "remove_me"
+		},
+		remove_me: function(ev) {
+			this.model.collection.remove(this.model);//remove the model from the collection
 		}
 	});
-	
-	
 	
 	return TrackedGame;
 });

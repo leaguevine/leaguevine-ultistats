@@ -59,8 +59,8 @@ function(namespace, $, Backbone, Leaguevine) {
 	$(function() {
 		// Define your master router on the application namespace and trigger all
 		// navigation from this instance.
-		app.router = new Router();
-		app.api = Leaguevine.API;
+		app.router = new Router(); //Necessary to catch default route.
+		app.api = Leaguevine.API; //This will be useful if we every use another API.
 
 		// Trigger the initial route and enable HTML5 History API support
 		Backbone.history.start({ pushState: false });
