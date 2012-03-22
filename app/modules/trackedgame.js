@@ -143,6 +143,9 @@ function(require, namespace, Backbone) {
 			"track/:gameId": "trackGame",
 		},
 		trackGame: function (gameId) {
+			app.api.d_token(); //Ensure that the user is logged in
+			
+			
 			var myLayout = app.router.useLayout("tracked_game");
 			//var Team = require("modules/team");
 			var Game = require("modules/game");
@@ -237,11 +240,6 @@ function(require, namespace, Backbone) {
 			this.model.get('gameevents').bind("remove", function() {this.render();}, this);//To update previous action
 			this.model.bind("change:team_in_possession_ix", function() {this.render();}, this);//To highlight team in possession
 		},
-		cleanup: function() {
-			this.model.get('game').unbind("change");
-			this.model.get('gameevents').unbind("add");
-			this.model.get('gameevents').unbind("remove");
-		},
 		template: "trackedgame/scoreboard",
 		serialize: function() {
 			return this.model.toJSON();
@@ -329,9 +327,6 @@ function(require, namespace, Backbone) {
 			this.model.bind("change:current_state", function() {this.render();}, this);//TODO: Disable some buttons depending on state.
 			this.model.bind("change:showing_alternate", this.show_action_buttons, this);//Which buttons are we showing?
 		},
-		cleanup: function() {
-			this.model.unbind("change:showing_alternate");
-  		},
 		template: "trackedgame/action_area",
 		events: {
 			"click .undo": "undo",
@@ -380,7 +375,6 @@ function(require, namespace, Backbone) {
 			//TODO: Show the player name
 			//TODO: Disable some buttons depending on this.model.get('current_state');
 			var view = layout(this);
-			//return view.render();
 			return view.render().then(function(el) {
 				this.show_action_buttons();
 			});
@@ -398,16 +392,9 @@ function(require, namespace, Backbone) {
 			this.model.get('offfield_'+this.options.team_ix).bind("reset", function(){this.render();}, this);
 			this.model.get('offfield_'+this.options.team_ix).bind("remove", this.swap_collection, this);
 			this.model.get('onfield_'+this.options.team_ix).bind("remove", this.swap_collection, this);
-			
 			//There's no reason to expect the game to change (i.e. score or team names)
 		},
-		cleanup: function() {
-    		this.model.get('offfield_'+this.options.team_ix).unbind("add");
-    		this.model.get('onfield_'+this.options.team_ix).unbind("add");
-    		this.model.get('offfield_'+this.options.team_ix).unbind("remove");
-    		this.model.get('onfield_'+this.options.team_ix).unbind("remove");
-    		this.model.get('offfield_'+this.options.team_ix).unbind("reset");
-  		},
+  		
 		events: {
 			"click .sub_next": "sub_next",
 			"click .sub_done": "sub_done"
@@ -424,26 +411,48 @@ function(require, namespace, Backbone) {
 			$('.sub_team_2').hide();
 			$('.t_game').show();
 		},
+		
 		swap_collection: function(model, collection, options){
+			var was_offfield = collection==this.model.get('offfield_'+this.options.team_ix);
 			var new_model = model.clone();
-			if (collection==this.model.get('offfield_'+this.options.team_ix) && this.model.get('onfield_'+this.options.team_ix).length<7){//was offfield
-				this.model.get('onfield_'+this.options.team_ix).add(new_model);
-			} else {//was onfield
+			if (was_offfield) {
+				//If onfield has < 7, add it, otherwise add it back to offield
+				if (this.model.get('onfield_'+this.options.team_ix).length<7){
+					this.model.get('onfield_'+this.options.team_ix).add(new_model);
+				} else {
+					this.model.get('offfield_'+this.options.team_ix).add(new_model);
+				}
+			} else {
 				this.model.get('offfield_'+this.options.team_ix).add(new_model);
 			}
-			this.render();
 		},
+		
 		render: function(layout) {
-			//https://github.com/tbranyen/backbone.layoutmanager/pull/47
-			app.api.d_token(); //Ensure that the user is logged in
 			var view = layout(this); //Get this view from the layout.
-			this.model.get('onfield_'+this.options.team_ix).each(function(tp) {
-				view.insert(".sub_on_field", new TrackedGame.Views.RosterItem({model: tp}));
-			});
-			this.model.get('offfield_'+this.options.team_ix).each(function(tp) {
-				view.insert(".sub_off_field", new TrackedGame.Views.RosterItem({model: tp}));
+			this.setViews({
+				".sub_on_field_area": new TrackedGame.Views.RosterList({collection: this.model.get('onfield_'+this.options.team_ix)}),
+				".sub_off_field_area": new TrackedGame.Views.RosterList({collection: this.model.get('offfield_'+this.options.team_ix)})
 			});
 			return view.render({ team: this.model.get('game').get('team_'+this.options.team_ix) });
+		}
+	});
+	TrackedGame.Views.RosterList = Backbone.View.extend({
+		initialize: function() {
+			this.collection.bind("add", this.add_view, this);//This isn't getting triggered when the collection is added to in the parent view.
+		},
+		template: "trackedgame/ul",
+		add_view: function (model, collection, options){
+			//I would love to simply add the views individually but this does not work currently with layoutmanager.
+			//https://github.com/tbranyen/backbone.layoutmanager/pull/47
+			//this.view("ul", new TrackedGame.Views.RosterItem({model: model}), true);
+			this.render();
+		},
+		render: function(layout){
+			var view = layout(this);
+			this.collection.each(function(tp) {//for each team in the collection.
+				view.insert("ul", new TrackedGame.Views.RosterItem({model: tp}));
+			});
+			return view.render();
 		}
 	});
 	TrackedGame.Views.RosterItem = Backbone.View.extend({
@@ -458,6 +467,7 @@ function(require, namespace, Backbone) {
 		},
 		remove_me: function(ev) {
 			this.model.collection.remove(this.model);//remove the model from the collection
+			this.remove();//remove the view.
 		}
 	});
 	
