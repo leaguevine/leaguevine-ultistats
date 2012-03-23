@@ -64,23 +64,23 @@ function(require, namespace, Backbone) {
 			// The meaning of a player tap depends on the current state.
 			// https://github.com/leaguevine/leaguevine-ultistats/issues/7
 			switch (this.get('current_state')){//pickup, dropped, ded, scored, pulled, default
-				case 'pickup'://pickup event(10) --> default
+				case 'picked up'://pickup event(10) --> default
 					this_event.set({type: 10, player_1_id: pl_id, player_1_team_id: team_id});
 					this.set({player_in_possession_id: pl_id});
-					this.set('current_state','receiving');
+					this.set('current_state','received');
 					break;
-				case 'drop'://Drop event --> turnover --> pickup
+				case 'dropped'://Drop event --> turnover --> pickup
 					this_event.set({type: 33, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
 					this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
 					this.set({player_in_possession_id: NaN});
-					this.set('current_state','pickup');
+					this.set('current_state','picked up');
 					break;
-				case 'd'://D event --> pickup
+				case 'blocked'://D event --> pickup
 					this_event.set({type: 34, player_1_id: last_pl_id, player_3_id: pl_id, player_1_team_id: other_team_id, player_3_team_id: team_id});
 					this.set({player_in_possession_id: NaN});
-					this.set('current_state','pickup');
+					this.set('current_state','picked up');
 					break;
-				case 'score'://score event --> pulled + substitution screen
+				case 'scored'://score event --> pulled + substitution screen
 					this_event.set({type: 22, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
 					this.set({player_in_possession_id: NaN});
 					this.set('current_state','pulled');
@@ -90,61 +90,72 @@ function(require, namespace, Backbone) {
 					this_event.set({type: 1, player_1_id: last_pl_id, player_1_team_id: team_id});
 					this.set({player_in_possession_id: NaN});
 					this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
-					this.set('current_state','pickup');
+					this.set('current_state','picked up');
 					break;
-				case 'receiving':
-					this_event.set({type: 21, player_1_id: last_pl_id, player_2_id: pl_id});
+				case 'received':
+					this_event.set({type: 21, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
 					this.set({player_in_possession_id: pl_id});
 					//neither team nor state change.
 					break;
 				default://pass event.
 			}
 			//save the event to the server.
-			this.save_event(this_event);
+			this.save_event(this_event, this);
 		},
 		save_event: function(event) {
+			var trackedgame=this;
 			event.save([], {
 				headers: {"Authorization": "bearer " + app.api.d_token()},
+                success: function(model, response, xhr){
+					trackedgame.get('gameevents').add(model);//Add the event to the trackedgame.get('gameevents'). Will trigger a change in the last play display.
+					trackedgame.save();//save the trackedgame.
+				},
                 error: function(originalModel, resp, options) {
                     //TODO: Do something with the error. Maybe log the error and retry again later?
-                },
-				succes: function(model, response){
-					this.get('gameevents').add(model);//Add the event to the trackedgame.get('gameevents'). Will trigger a change in the last play display.
-					this.save();//save the trackedgame.
-				}
+                }
 			});
 		},
-		//Untouched throwaway, unknown turn, stall, timeout are all events
 		//Score, Dropped pass, D'ed pass, injury all require a player tap which will handle the event creation.
 		score: function(){
-			this.set('current_state','score');
+			this.set('current_state','scored');
 		},
 		completion: function(){
-			this.set('current_state','receiving');
+			this.set('current_state','received');
 		},
 		dropped_pass: function() {
-			this.set('current_state','drop');
+			this.set('current_state','dropped');
 		},
 		defd_pass: function(){
 			this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
-			this.set('current_state','d');
+			this.set('current_state','blocked');
 		},
-		injury: function(){
-			console.log("TODO: injury in model def.")
-		},
+		//Untouched throwaway, unknown turn, stall, timeout are all events
 		throwaway: function() {
-			console.log("TODO: throwaway in model def.")
-			
 			var this_event = this.create_event();
-			//Fill in event details
+			var last_pl_id = this.get('player_in_possession_id');
+			var team_id = this.get('game').get('team_'+this.get('team_in_possession_ix')).id;
+			this_event.set({type: 32, player_1_id: last_pl_id, player_1_team_id: team_id});
+			this.set({player_in_possession_id: NaN});
+			this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
+			this.set('current_state','picked up');
 			this.save_event(this_event);
 		},
 		unknown_turn: function(){
-			console.log("TODO: unknown_turn in model def.")
-			
 			var this_event = this.create_event();
-			//Fill in event details
+			//Does an unknown turnover require a player_id ?
+			//this_event.set({type: 30, player_1_id: last_pl_id, player_1_team_id: team_id});
+			this_event.set({type: 30, player_1_team_id: team_id});
+			this.set({player_in_possession_id: NaN});
+			this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
+			this.set('current_state','picked up');
 			this.save_event(this_event);
+		},
+		stall: function(){
+			console.log("TODO: stall")
+		},
+		//TODO: game management events.
+		injury: function(){
+			console.log("TODO: injury in model def.")
 		},
 		timeout: function(){
 			console.log("TODO: timeout in model def.")
@@ -176,6 +187,7 @@ function(require, namespace, Backbone) {
 			var GameEvent = require("modules/gameevent");
 			
 			var trackedgame = new TrackedGame.Model({id: gameId});
+			trackedgame.id=gameId;
 			trackedgame.fetch(); //localStorage
 			
 			//We want the child objects to be converted to the proper model types.
@@ -199,7 +211,7 @@ function(require, namespace, Backbone) {
 					}
 					trackedgame.get('offfield_'+ix).fetch();
 				}
-				if (trackedgame.get('gameevents').length==0){
+				if (!trackedgame.get('team_pulled_ix')){
 					//Alert to ask which team is pulling to start.
 					//TODO: Replace this with a nice view.
 					var pulled_team_1=confirm("Press OK if " + trackedgame.get('game').get('team_1').name + " is pulling to start the game.");
@@ -213,11 +225,11 @@ function(require, namespace, Backbone) {
 			//but they must be made into a collection of game events.
 			trackedgame.set('gameevents',
 				new GameEvent.Collection(trackedgame.get('gameevents'),{game_id: gameId}));
-			console.log("TODO: If game is new, ask out who pulled to start");
-			console.log("TODO: If game is not new, hopefully the loaded model has everything we need.");
+			
 			//TODO: It would be nice if we could figure out the game state entirely from the events,
 			//then we wouldn't have to persist anything about the game to localStorage.
 			//I'll work on that after WebSQL is implemented.
+			//In the meantime assume that the saved state of the trackedGame is the most recent.
 			
 			//This router might not get called again for a while if user stays on track-game screen.
 			myLayout.setViews({
@@ -229,14 +241,14 @@ function(require, namespace, Backbone) {
 			//myLayout.render(function(el) {$("#main").html(el);});
 			myLayout.render(function(el) {
 				$("#main").html(el);
-				$('.sub_team_1').hide();
+				//$('.sub_team_1').hide();
 				$('.sub_team_2').hide();
 				$('.t_game').hide();
-				if (trackedgame.get('gameevents').length>0) {
+				/*if (trackedgame.get('gameevents').length>0) {
 					$('.t_game').show();
 				} else {
 					$('.sub_team_1').show();
-				}
+				}*/
 			});
 		},
 	});
@@ -277,6 +289,7 @@ function(require, namespace, Backbone) {
 			return this.model.toJSON();
 		}
 		//TODO: Replace serialize with a render function that makes a useful JSON out of team_in_possession, the last gameevent, team names and scores
+		//so that we may populate the scoreboard with this information.
 	});
 	
 	/*
@@ -284,7 +297,7 @@ function(require, namespace, Backbone) {
 	*/
 	TrackedGame.Views.PlayerArea = Backbone.View.extend({
 		initialize: function() {
-			//However I have moved the action prompt from the subview to here, because the action prompt is not team-specific.
+			//I have moved the action prompt from the subview to here, because the action prompt is not team-specific.
 			this.model.bind("change:current_state", function() {this.render();}, this);//Update the action prompt.
 			this.model.bind("change:team_in_possession_ix", function() {this.show_teamplayer();}, this);//Update which player buttons to display.
 		},
@@ -314,7 +327,7 @@ function(require, namespace, Backbone) {
 		initialize: function() {
 			//Specific players should only be added or removed on the substitution screen.
 			//We don't need to update our player buttons on each add or remove, not until the sub screen is done. That will trigger a reset.
-			this.collection.bind("reset", function() {this.render();}, this);//Can't unbind because it is bound elsewhere too.
+			this.collection.bind("reset", function() {this.render();}, this);
 		},
 		template: "trackedgame/teamplayer_area",
 		render: function(layout) { 
@@ -342,7 +355,7 @@ function(require, namespace, Backbone) {
 		serialize: function() {
 			return this.model.toJSON();
 		}
-		//Since tapping a player button will have different action depending on the context (the last event)
+		//Since tapping a player button will have different action depending on the current_state
 		//then we'll need access to the trackedgame object which is not easily available in this view.
 		//Thus player taps will be handled by the parent view: TeamPlayerArea
 	});
@@ -422,7 +435,7 @@ function(require, namespace, Backbone) {
 			this.model.get('offfield_'+this.options.team_ix).bind("reset", function(){this.render();}, this);
 			this.model.get('offfield_'+this.options.team_ix).bind("remove", this.swap_collection, this);
 			this.model.get('onfield_'+this.options.team_ix).bind("remove", this.swap_collection, this);
-			//There's no reason to expect the game to change (i.e. score or team names)
+			//There's no reason to expect the game to change (i.e. score or team names) while doing a substitution.
 		},
   		
 		events: {
@@ -473,18 +486,21 @@ function(require, namespace, Backbone) {
 			//Maybe 8 times makes sense if the collection reset triggers the parent to render.
 			this.collection.bind("add", this.add_view, this);
 		},
-		template: "trackedgame/ul",
+		//template: "trackedgame/ul",
+		tagName: "ul",
 		add_view: function (model, collection, options){
 			//I would love to simply add the views individually but this does not work currently with layoutmanager.
 			//https://github.com/tbranyen/backbone.layoutmanager/pull/47
 			//this.view("ul", new TrackedGame.Views.RosterItem({model: model}), true);
+			//This callback is being triggered twice for every press... I'm not sure why.
 			this.render();
 		},
 		render: function(layout){
 			var view = layout(this);
 			this.$el.empty()
 			this.collection.each(function(tp) {//for each team in the collection.
-				view.insert("ul", new TrackedGame.Views.RosterItem({model: tp}));
+				//view.insert("ul", new TrackedGame.Views.RosterItem({model: tp}));
+				view.insert(new TrackedGame.Views.RosterItem({model: tp}));
 			});
 			return view.render();
 		}
