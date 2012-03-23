@@ -450,6 +450,7 @@ function(require, namespace, Backbone) {
 			$('.sub_team_'+(3-this.options.team_ix)).show();
 		},
 		sub_done: function(ev){
+			this.model.get('onfield_'+this.options.team_ix).trigger('reset');
 			$('.sub_team_1').hide();
 			$('.sub_team_2').hide();
 			$('.t_game').show();
