@@ -118,6 +118,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		className: "tournaments-wrapper",
 		render: function(layout) {
 			var view = layout(this);
+			this.$el.empty()
 			this.collection.each(function(tournament) {
 				view.insert("ul", new Tournament.Views.Item({ model: tournament}));
 			});

@@ -82,6 +82,7 @@ function(require, namespace, Backbone, Leaguevine) {
 		className: "events-wrapper",
 		render: function(layout) {
 			var view = layout(this);
+			this.$el.empty()
 			this.collection.each(function(gameevent) {
 				view.insert("ul", new Event.Views.Item({
 					model: gameevent

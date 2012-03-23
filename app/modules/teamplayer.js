@@ -86,6 +86,7 @@ function(require, namespace, Backbone, Leaguevine) {
 		className: "players-wrapper",
 		render: function(layout) {
 			var view = layout(this);
+			this.$el.empty()
 			this.collection.each(function(teamplayer) {
 				view.insert("ul", new TeamPlayer.Views.Player({
 					model: teamplayer

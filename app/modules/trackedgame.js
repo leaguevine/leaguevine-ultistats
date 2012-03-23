@@ -290,6 +290,7 @@ function(require, namespace, Backbone) {
 		template: "trackedgame/teamplayer_area",
 		render: function(layout) { 
 			var view = layout(this);
+			this.$el.empty()
 			this.collection.each(function(tp) {
 				view.insert("ul", new TrackedGame.Views.PlayerButton({
 					model: tp
@@ -438,7 +439,10 @@ function(require, namespace, Backbone) {
 	});
 	TrackedGame.Views.RosterList = Backbone.View.extend({
 		initialize: function() {
-			this.collection.bind("add", this.add_view, this);//This isn't getting triggered when the collection is added to in the parent view.
+			//This initialize function is being called many times upon page load.
+			//4 times makes sense, twice for each team.
+			//Maybe 8 times makes sense if the collection reset triggers the parent to render.
+			this.collection.bind("add", this.add_view, this);
 		},
 		template: "trackedgame/ul",
 		add_view: function (model, collection, options){
@@ -449,6 +453,7 @@ function(require, namespace, Backbone) {
 		},
 		render: function(layout){
 			var view = layout(this);
+			this.$el.empty()
 			this.collection.each(function(tp) {//for each team in the collection.
 				view.insert("ul", new TrackedGame.Views.RosterItem({model: tp}));
 			});
