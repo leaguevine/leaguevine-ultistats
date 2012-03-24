@@ -189,7 +189,11 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			this.setViews({
 				".team_list_area": new Team.Views.List( {collection: this.collection})
 			});
-			return view.render().then(function(el) {
+			return view.render({
+                            right_btn_class: "",
+                            right_btn_txt: "New team",
+                            right_btn_href: "#newteam",
+                            }).then(function(el) {
 				$('.team_list_area').html(el);
 			});
        },
