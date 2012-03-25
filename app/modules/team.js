@@ -9,11 +9,12 @@ define([
   "modules/leaguevine",
   "modules/navigation",
   "modules/title",
+  "modules/search",
   "modules/teamplayer",
   "modules/game"
 ],
 
-function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
+function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 	var app = namespace.app;
 	var Team = namespace.module();
 	
@@ -94,13 +95,15 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
 			//var teams = new Team.Collection();//No defaults?
 			teams.fetch();
-			
+
+			var Search = require("modules/search");
 			// Prepare the layout/view(s)
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
 			myLayout.view(".navbar", new Navigation.Views.Navbar({}));
 			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Teams", right_btn_href: "#newteam", right_btn_class: "add"}));
-			myLayout.view(".content", new Team.Views.SearchableList({collection: teams}));//pass the List view a collection of (fetched) teams.
+			myLayout.view(".content", new Search.Views.SearchableList({collection: teams, CollectionClass: Team.Collection, ViewsListClass: Team.Views.List, right_btn_class: "",
+                            right_btn_txt: "Create", right_btn_href: "#newteam"})); //pass the List view a collection of (fetched) teams.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
 		showTeam: function (teamId) {
