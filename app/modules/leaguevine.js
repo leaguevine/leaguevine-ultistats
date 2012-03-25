@@ -51,7 +51,7 @@ function(namespace, Backbone) {
                 _.extend(this,stored_api);
             }
             if (!this.token) {
-                window.location = this.base + "&client_id=" + this.client_id + "&redirect_uri=" + this.redirect_uri;
+                window.location.replace(this.base + "&client_id=" + this.client_id + "&redirect_uri=" + this.redirect_uri);
             }
             else {
                 return this.token;
