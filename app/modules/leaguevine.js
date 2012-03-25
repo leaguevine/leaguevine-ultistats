@@ -52,6 +52,7 @@ function(namespace, Backbone) {
             }
             if (!this.token) {
                 window.location.href = this.base + "&client_id=" + this.client_id + "&redirect_uri=" + this.redirect_uri;
+                return false;
             }
             else {
                 return this.token;
