@@ -40,6 +40,22 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 	Tournament.Collection = Backbone.Collection.extend({
 		model: Tournament.Model,
 		urlRoot: Leaguevine.API.root + "tournaments",
+                url: function(models) {
+                    var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
+                    url += '/?' 
+                    if ( models && models.length ) {
+                        url += 'tournament_ids=' + JSON.stringify(models.pluck('id')) + '&';
+                    }
+                    if (this.name) {
+                        url += 'name=' + this.name + '&';
+                    }           
+                    if (this.season_id) {
+                        url += 'season_id=' + this.season_id + '&';
+                    }
+                    url += 'limit=30&';
+                    url += 'order_by=[name, -season_id]';
+                    return url;
+                },
 		comparator: function(tournament) {
 		  return tournament.get("name").toLowerCase();
 		},
@@ -50,6 +66,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 		initialize: function(models, options) {
 			if (options) {
         		this.season_id = options.season_id;
+			this.name = options.name;
     		}
 		}
 	});
