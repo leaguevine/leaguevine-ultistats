@@ -9,11 +9,11 @@ define([
   "modules/leaguevine",
   "modules/navigation",
   "modules/title",
-  
+  "modules/search",  
   "modules/tournteam",
   "modules/game"
 ],
-function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
+function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 	var app = namespace.app;
 	var Tournament = namespace.module();
 	
@@ -63,11 +63,14 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			// Prepare the data.
 			tournaments = new Tournament.Collection([],{season_id: Leaguevine.API.season_id});
 			tournaments.fetch();
-			
+
+			var Search = require("modules/search");
 			var myLayout = app.router.useLayout("nav_content");
 			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newtournament", name: "New"}));
 			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Tournaments"}));
-			myLayout.view(".content", new Tournament.Views.List ({collection: tournaments}));
+			//myLayout.view(".content", new Tournament.Views.List ({collection: tournaments}));
+			myLayout.view(".content", new Search.Views.SearchableList({collection: tournaments, CollectionClass: Tournament.Collection, ViewsListClass: Tournament.Views.List,
+                            right_btn_class: "", right_btn_txt: "Create", right_btn_href: "#newtournament", search_object_name: "tournament"}));
 			myLayout.render(function(el) {$("#main").html(el);});
 		},
 		showTournament: function (tournamentId) {
