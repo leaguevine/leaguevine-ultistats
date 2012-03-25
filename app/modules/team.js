@@ -103,7 +103,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 			myLayout.view(".navbar", new Navigation.Views.Navbar({}));
 			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Teams", right_btn_href: "#newteam", right_btn_class: "add"}));
 			myLayout.view(".content", new Search.Views.SearchableList({collection: teams, CollectionClass: Team.Collection, ViewsListClass: Team.Views.List, right_btn_class: "",
-                            right_btn_txt: "Create", right_btn_href: "#newteam"})); //pass the List view a collection of (fetched) teams.
+                            right_btn_txt: "Create", right_btn_href: "#newteam", search_object_name: "team"})); //pass the List view a collection of (fetched) teams.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
 		showTeam: function (teamId) {

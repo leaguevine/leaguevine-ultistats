@@ -17,6 +17,7 @@ function(namespace, Backbone) {
          *          collection - Collection of models
          *          CollectionClass - the Collection class (e.g. Team.Collection)
          *          ViewsListClass - the Views.List class (e.g. Team.Views.List)
+         *          search_object_name - type of object being searched
          *          right_btn_href - link for right button
          *          right_btn_txt - text of right button
          *          right_btn_class - additional class for right button
@@ -50,6 +51,7 @@ function(namespace, Backbone) {
             });
 
             return view.render({
+                search_object_name: this.search_object_name,
                 right_btn_class: this.right_btn_class,
                 right_btn_txt: this.right_btn_txt,
                 right_btn_href: this.right_btn_href,
@@ -60,6 +62,7 @@ function(namespace, Backbone) {
 	initialize: function() {
             this.CollectionClass = this.options.CollectionClass;
             this.ViewsListClass = this.options.ViewsListClass;
+            this.search_object_name = this.options.search_object_name;
             this.right_btn_class = this.options.right_btn_class;
             this.right_btn_txt = this.options.right_btn_txt;
             this.right_btn_href = this.options.right_btn_href;
