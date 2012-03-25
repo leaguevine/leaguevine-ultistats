@@ -162,48 +162,6 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 	//
 	// VIEWS
 	//
-    Team.Views.SearchableList = Backbone.View.extend({
-    	//Our team collection is this.collection
-        template: "teams/searchable_list",
-        events: {
-            "keyup #team_search": "filterTeams"
-        },
-        filterTeams: function(ev){//If a user types something into the search box, filter on the string
-            var search_string = ev.currentTarget.value;
-            var my_collection=this.collection;
-            my_collection.name=search_string;
-            //Create a new collection for fetching
-            var search_results = new Team.Collection([],{name: search_string});
-			search_results.fetch({//Fetch the new collection
-				success: function (collection, response){//When it returns, add it to our current collection.
-					//returned models with identical properties will have different cids, thus _.union does not discriminate.
-					var models = _.reject(collection.models, function(model){
-						return my_collection.pluck("id").indexOf(model.get("id")) != -1
-					});
-					my_collection.reset(_.union(my_collection.models, models));
-				}
-			});
-			//my_collection.reset(my_collection.models);//I hope the name attribute passes through.
-			my_collection.trigger('reset');
-        },
-		render: function(layout) {
-            var view = layout(this); //Get this view from the layout.
-            var temp_collection = {};
-			this.setViews({
-				".team_list_area": new Team.Views.List( {collection: this.collection})
-			});
-			return view.render({
-                            right_btn_class: "",
-                            right_btn_txt: "New team",
-                            right_btn_href: "#newteam",
-                            }).then(function(el) {
-				$('.team_list_area').html(el);
-			});
-       },
-       initialize: function() {
-       		this.search_string = "";
-		}
-    });
 	Team.Views.List = Backbone.View.extend({
 		template: "teams/list",
 		className: "teams-wrapper",
