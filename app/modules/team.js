@@ -72,6 +72,15 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 		},
 		initialize: function(models, options) {
 			if (options) {
+				//When a collection/model is instantiated with a second argument
+				//then that argument is passed in as options
+				//However, some other functions check for the existence of certain options
+				//but the parameter 'options' itself might not exist, so the check results in an undefined error
+				//i.e. this.options.var_name gives an error if this.options does not exist.
+				//So instead we set our options to be higher-level parameters here and 
+				//then check for the existence of these higher-level parameters.
+				//i.e. this.var_name returns undefined but does not return an error if this model/collection was not instantiated with these options.
+				//Note that this might also be true for views though thus far we seem to always instantiate them with their required options.
         		this.season_id = options.season_id;
         		this.name = options.name;
     		}
@@ -96,7 +105,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 			//var teams = new Team.Collection();//No defaults?
 			teams.fetch();
 
-			var Search = require("modules/search");
+			//var Search = require("modules/search"); If that module is an argument to this module's function then it does not need to be required again.
 			// Prepare the layout/view(s)
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
