@@ -25,7 +25,7 @@ function(require, namespace, Backbone, Leaguevine) {
 		//TODO: override URL to /team_players/team_id/player_id/
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += '/?'
+			url += '/?';
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Model.prototype.parse(resp);
@@ -44,7 +44,7 @@ function(require, namespace, Backbone, Leaguevine) {
 		urlRoot: Leaguevine.API.root + "team_players",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += '/?'
+			url += '/?';
 			if (this.team_id) {
 				url += 'team_ids=%5B' + this.team_id + '%5D&';
 			} else if (this.models && this.models.length) {
@@ -86,7 +86,7 @@ function(require, namespace, Backbone, Leaguevine) {
 		className: "players-wrapper",
 		render: function(layout) {
 			var view = layout(this);
-			this.$el.empty()
+			this.$el.empty();
 			this.collection.each(function(teamplayer) {
 				view.insert("ul", new TeamPlayer.Views.Player({
 					model: teamplayer

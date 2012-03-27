@@ -42,7 +42,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 		urlRoot: Leaguevine.API.root + "tournaments",
         url: function(models) {
             var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-            url += '/?' 
+            url += '/?'; 
             if ( models && models.length ) {
                 url += 'tournament_ids=' + JSON.stringify(models.pluck('id')) + '&';
             }
