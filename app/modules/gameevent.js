@@ -23,7 +23,8 @@ function(require, namespace, Backbone, Leaguevine) {
 			player_3_id: NaN,
 			player_1_team_id: NaN,
 			player_2_team_id: NaN,
-			player_3_team_id: NaN
+			player_3_team_id: NaN,
+			int_1: NaN
 		},
 		urlRoot: Leaguevine.API.root + "events",
 		parse: function(resp, xhr) {
@@ -31,7 +32,7 @@ function(require, namespace, Backbone, Leaguevine) {
 			return resp;
 		},
 		toJSON: function() {
-			//TODO: Remove attributes that are not stored (events)
+			//TODO: Remove attributes that are not stored
 			var temp = _.clone(this.attributes);
 			var keys = _.keys(temp);
 			_.each(keys, function(key){

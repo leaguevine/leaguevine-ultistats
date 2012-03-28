@@ -34,6 +34,7 @@ function(require, namespace, Backbone) {
 			team_in_possession_ix: 1,
 			player_in_possession_id: NaN,
 			team_pulled_ix: NaN,
+			injury_to: false,//Whether or not substitutions will be injury substitutions.
 			showing_alternate: -1//I seem to be having trouble with using a boolean or using 0 and 1. So use 1 and -1.
 		},
 		toJSON: function() {//flatten the data so they are easy to read.
@@ -53,55 +54,6 @@ function(require, namespace, Backbone) {
 			var gameid = this.get('game').get('id');
 			return new GameEvent.Model({time: time, game_id: gameid});
 		},
-		player_tap: function(pl_id){
-			var this_event = this.create_event();
-			//pl_id is the tapped player. Might be NaN
-			var last_pl_id = this.get('player_in_possession_id');//last_player_id might be NaN
-			//team_ix is index of team that player is on. Might be NaN.
-			var team_id = this.get('game').get('team_'+this.get('team_in_possession_ix')).id;
-			var other_team_id = this.get('game').get('team_'+(3-this.get('team_in_possession_ix'))).id;
-			
-			// The meaning of a player tap depends on the current state.
-			// https://github.com/leaguevine/leaguevine-ultistats/issues/7
-			switch (this.get('current_state')){//pickup, dropped, ded, scored, pulled, default
-				case 'picked up'://pickup event(10) --> default
-					this_event.set({type: 10, player_1_id: pl_id, player_1_team_id: team_id});
-					this.set({player_in_possession_id: pl_id});
-					this.set('current_state','received');
-					break;
-				case 'dropped'://Drop event --> turnover --> pickup
-					this_event.set({type: 33, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
-					this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
-					this.set({player_in_possession_id: NaN});
-					this.set('current_state','picked up');
-					break;
-				case 'blocked'://D event --> pickup
-					this_event.set({type: 34, player_1_id: last_pl_id, player_3_id: pl_id, player_1_team_id: other_team_id, player_3_team_id: team_id});
-					this.set({player_in_possession_id: NaN});
-					this.set('current_state','picked up');
-					break;
-				case 'scored'://score event --> pulled + substitution screen
-					this_event.set({type: 22, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
-					this.set({player_in_possession_id: NaN});
-					this.set('current_state','pulled');
-					//TODO: Show the substitution screen
-					break;
-				case 'pulled'://pull event --> turnover --> pickup
-					this_event.set({type: 1, player_1_id: last_pl_id, player_1_team_id: team_id});
-					this.set({player_in_possession_id: NaN});
-					this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
-					this.set('current_state','picked up');
-					break;
-				case 'received':
-					this_event.set({type: 21, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
-					this.set({player_in_possession_id: pl_id});
-					//neither team nor state change.
-					break;
-				default://pass event.
-			}
-			//save the event to the server.
-			this.save_event(this_event, this);
-		},
 		save_event: function(event) {
 			var trackedgame=this;
 			event.save([], {
@@ -115,7 +67,88 @@ function(require, namespace, Backbone) {
                 }
 			});
 		},
-		//Score, Dropped pass, D'ed pass, injury all require a player tap which will handle the event creation.
+		swap_player: function(model,collection,team_ix){
+			var was_offfield = collection==this.get('offfield_'+team_ix);
+			var team_id = this.get('game').get('team_'+team_ix).id;
+			var pl_id = model.get('player_id');
+			var new_model = model.clone();
+			var this_event = this.create_event();
+			var event_id = 80;
+			if (was_offfield) {
+				//If onfield has < 7, add it, otherwise add it back to offield
+				if (this.get('onfield_'+team_ix).length<7){
+					this.get('onfield_'+team_ix).add(new_model);
+				} else {
+					this.get('offfield_'+team_ix).add(new_model);
+				}
+			} else {
+				event_id=event_id+1;
+				this.get('offfield_'+team_ix).add(new_model);
+			}
+			if (this.get('injury_to')){event_id = event_id + 2;}
+			this_event.set({type: event_id, player_1_id: pl_id, player_1_team_id: team_id});
+			this.save_event(this_event);
+		},
+		player_tap: function(pl_id){
+			//pl_id is the tapped player. Might be NaN
+			var this_event = this.create_event();
+			var team_ix = this.get('team_in_possession_ix');
+			var last_pl_id = this.get('player_in_possession_id');//last_player_id might be NaN
+			//team_ix is index of team that player is on. Might be NaN.
+			var team_id = this.get('game').get('team_'+team_ix).id;
+			var other_team_id = this.get('game').get('team_'+(3-team_ix)).id;
+			
+			// The meaning of a player tap depends on the current state.
+			// https://github.com/leaguevine/leaguevine-ultistats/issues/7
+			switch (this.get('current_state')){//pickup, dropped, ded, scored, pulled, default
+				case 'picked up'://pickup event(10) --> default
+					this_event.set({type: 10, player_1_id: pl_id, player_1_team_id: team_id});
+					this.set({player_in_possession_id: pl_id});
+					this.set('current_state','received');
+					break;
+				case 'dropped'://Drop event --> turnover --> pickup
+					this_event.set({type: 33, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
+					this.set('team_in_possession_ix',3-team_ix);
+					this.set({player_in_possession_id: NaN});
+					this.set('current_state','picked up');
+					break;
+				case 'blocked'://D event --> pickup
+					this_event.set({type: 34, player_1_id: last_pl_id, player_3_id: pl_id, player_1_team_id: other_team_id, player_3_team_id: team_id});
+					this.set({player_in_possession_id: NaN});
+					this.set('current_state','picked up');
+					break;
+				case 'scored'://score event --> pulled + substitution screen
+					this_event.set({type: 22, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
+					this.set({player_in_possession_id: NaN});
+					this.set('current_state','pulled');
+					//Update score
+					this.get('game').set('team_'+team_ix+'_score',this.get('game').get('team_'+team_ix+'_score')+1);
+					$('.t_game').hide();
+					$('.sub_team_1').show();
+					$('.sub_team_2').hide();
+					break;
+				case 'pulled'://pull event --> turnover --> pickup
+					this_event.set({type: 1, player_1_id: last_pl_id, player_1_team_id: team_id});
+					this.set({player_in_possession_id: NaN});
+					this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
+					this.set('current_state','picked up');
+					break;
+				case 'received':
+					this_event.set({type: 21, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
+					this.set({player_in_possession_id: pl_id});
+					//neither team nor state change.
+					break;
+				case 'marked'://stall event --> pickup
+					this_event.set({type: 51, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: other_team_id, player_2_team_id: team_id});
+					this.set({player_in_possession_id: NaN});
+					this.set('current_state','picked up');
+					break;
+				default://pass event.
+			}
+			//save the event to the server.
+			this.save_event(this_event, this);//TODO: DO I need to pass 'this' ?
+		},
+		//Score, Dropped pass, D'ed pass, stall all require a player tap which will handle the event creation.
 		score: function(){
 			this.set('current_state','scored');
 		},
@@ -129,7 +162,11 @@ function(require, namespace, Backbone) {
 			this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
 			this.set('current_state','blocked');
 		},
-		//Untouched throwaway, unknown turn, stall, timeout are all events
+		stall: function(){
+			this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
+			this.set('current_state','marked');
+		},
+		//Untouched throwaway, unknown turn, injury, timeout are all events
 		throwaway: function() {
 			var this_event = this.create_event();
 			var last_pl_id = this.get('player_in_possession_id');
@@ -142,6 +179,7 @@ function(require, namespace, Backbone) {
 		},
 		unknown_turn: function(){
 			var this_event = this.create_event();
+			var team_id = this.get('game').get('team_'+this.get('team_in_possession_ix')).id;
 			//Does an unknown turnover require a player_id ?
 			//this_event.set({type: 30, player_1_id: last_pl_id, player_1_team_id: team_id});
 			this_event.set({type: 30, player_1_team_id: team_id});
@@ -150,18 +188,20 @@ function(require, namespace, Backbone) {
 			this.set('current_state','picked up');
 			this.save_event(this_event);
 		},
-		stall: function(){
-			console.log("TODO: stall")
-		},
-		//TODO: game management events.
 		injury: function(){
-			console.log("TODO: injury in model def.")
+			$('.t_game').hide();
+			$('.sub_team_1').show();
+			$('.sub_team_2').hide();
+			var this_event = this.create_event();
+			var team_id = this.get('game').get('team_'+this.get('team_in_possession_ix')).id;
+			this_event.set({type: 92, int_1: team_id});//TODO: This assumes the team calling timeout was the one in possession.
+			this.save_event(this_event);
+			this.set('injury_to',true);
 		},
 		timeout: function(){
-			console.log("TODO: timeout in model def.")
-			
 			var this_event = this.create_event();
-			//Fill in event details
+			var team_id = this.get('game').get('team_'+this.get('team_in_possession_ix')).id;
+			this_event.set({type: 91, int_1: team_id});
 			this.save_event(this_event);
 		},
 		end_of_period: function(){
@@ -217,6 +257,8 @@ function(require, namespace, Backbone) {
 					var pulled_team_1=confirm("Press OK if " + trackedgame.get('game').get('team_1').name + " is pulling to start the game.");
 					trackedgame.set('team_pulled_ix', pulled_team_1 ? 1 : 2);
 					trackedgame.set('team_in_possession_ix', trackedgame.get('team_pulled_ix'));
+					trackedgame.get('game').set('team_1_score',0);
+					trackedgame.get('game').set('team_2_score',0);
 					trackedgame.set('current_state','pulled',{silent: true});
 				}
 			}});
@@ -228,6 +270,7 @@ function(require, namespace, Backbone) {
 			
 			//TODO: It would be nice if we could figure out the game state entirely from the events,
 			//then we wouldn't have to persist anything about the game to localStorage.
+			//This also makes undoing an event much easier (just delete the event and re-bootstrap)
 			//I'll work on that after WebSQL is implemented.
 			//In the meantime assume that the saved state of the trackedGame is the most recent.
 			
@@ -241,14 +284,14 @@ function(require, namespace, Backbone) {
 			//myLayout.render(function(el) {$("#main").html(el);});
 			myLayout.render(function(el) {
 				$("#main").html(el);
-				//$('.sub_team_1').hide();
-				$('.sub_team_2').hide();
 				$('.t_game').hide();
-				/*if (trackedgame.get('gameevents').length>0) {
-					$('.t_game').show();
-				} else {
+				$('.sub_team_1').hide();
+				$('.sub_team_2').hide();
+				if (trackedgame.get('current_state')=='pulled' || trackedgame.get('injury_to')){
 					$('.sub_team_1').show();
-				}*/
+				} else {
+					$('.t_game').show();
+				}
 			});
 		},
 	});
@@ -342,7 +385,7 @@ function(require, namespace, Backbone) {
 			var TeamPlayer = require("modules/teamplayer");
 			for(var i=this.collection.length;i<8;i++){
 				view.insert("ul", new TrackedGame.Views.PlayerButton({
-					model: new TeamPlayer.Model({player: {id:"unknown",last_name:"unknown"}})
+					model: new TeamPlayer.Model({player: {id:NaN, last_name:"unknown"}})
 				}));
 			}
 			return view.render({ team: this.model });
@@ -382,10 +425,11 @@ function(require, namespace, Backbone) {
 			"click .unknown_turn": "unknown_turn",
 			"click .timeout": "timeout",
 			"click .end_of_period": "end_of_period",
-			"click .injury": "injury"
+			"click .injury": "injury",
+			"click .stall": "stall"
 		},
 		undo: function(ev){
-			console.log("TODO: undo")
+			console.log("TODO: undo after WebSQL")
 		},
 		show_action_buttons: function(ev){//shows or hides buttons depending on this.model.get('showing_alternate')
 			if (this.model.get('showing_alternate')==1) {
@@ -408,12 +452,8 @@ function(require, namespace, Backbone) {
 		unknown_turn: function(ev){this.model.unknown_turn();},
 		timeout: function(ev){this.model.timeout();},
 		end_of_period: function(ev){this.model.end_of_period();},
-		injury: function(ev){
-			this.model.injury();
-			$('.t_game').hide();
-			$('.sub_team_1').show();
-			$('.sub_team_2').hide();
-		},
+		injury: function(ev){this.model.injury();},
+		stall: function(ev){this.model.stall();},
 		render: function(layout) {
 			//TODO: Show the player name
 			//TODO: Disable some buttons depending on this.model.get('current_state');
@@ -433,11 +473,12 @@ function(require, namespace, Backbone) {
 		initialize: function() {
 			//Bind to offfield reset for the first load. What happens if the game is fetched from localStorage and offfield is empty. Still trigger reset?
 			this.model.get('offfield_'+this.options.team_ix).bind("reset", function(){this.render();}, this);
+			//Tapping a player removes them from their collection
+			//Removing them from their collection triggers a swap from their old collection to their new collection
 			this.model.get('offfield_'+this.options.team_ix).bind("remove", this.swap_collection, this);
 			this.model.get('onfield_'+this.options.team_ix).bind("remove", this.swap_collection, this);
 			//There's no reason to expect the game to change (i.e. score or team names) while doing a substitution.
 		},
-  		
 		events: {
 			"click .sub_next": "sub_next",
 			"click .sub_done": "sub_done"
@@ -454,23 +495,13 @@ function(require, namespace, Backbone) {
 			$('.sub_team_1').hide();
 			$('.sub_team_2').hide();
 			$('.t_game').show();
+			this.model.trigger('change:showing_alternate');
+			//^Hack to get the action buttons to show when a game is loaded but no one is subbed.
+			this.model.set('injury_to',false);
 		},
-		
 		swap_collection: function(model, collection, options){
-			var was_offfield = collection==this.model.get('offfield_'+this.options.team_ix);
-			var new_model = model.clone();
-			if (was_offfield) {
-				//If onfield has < 7, add it, otherwise add it back to offield
-				if (this.model.get('onfield_'+this.options.team_ix).length<7){
-					this.model.get('onfield_'+this.options.team_ix).add(new_model);
-				} else {
-					this.model.get('offfield_'+this.options.team_ix).add(new_model);
-				}
-			} else {
-				this.model.get('offfield_'+this.options.team_ix).add(new_model);
-			}
+			this.model.swap_player(model,collection,this.options.team_ix);
 		},
-		
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
 			this.setViews({
@@ -486,6 +517,7 @@ function(require, namespace, Backbone) {
 			//4 times makes sense, twice for each team.
 			//Maybe 8 times makes sense if the collection reset triggers the parent to render.
 			this.collection.bind("add", this.add_view, this);
+			//Swapping players from one collection to the other triggers add_view
 		},
 		//template: "trackedgame/ul",
 		tagName: "ul",
