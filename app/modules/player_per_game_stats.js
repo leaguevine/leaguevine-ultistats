@@ -105,6 +105,7 @@ function(require, namespace, Backbone, Leaguevine) {
          */
 		template: "playerstats/boxscore",
 		className: "playerstats-boxscore-wrapper",
+        serialize: function() {debugger; return this.options.game.toJSON();},
 		render: function(layout) {
 			var view = layout(this);
 			this.$el.empty();
@@ -116,10 +117,10 @@ function(require, namespace, Backbone, Leaguevine) {
 
                 // Check which team's boxscore the stat line should be appended to
                 if (playerstats.get('team_id') == team_1_id) {
-                    view.insert("table#player-per-game-stats-1", stat_line);
+                    view.insert("table#player_per_game_stats_1", stat_line);
                 }
                 else if (playerstats.get('team_id') == team_2_id) {
-                    view.insert("table#player-per-game-stats-2", stat_line);
+                    view.insert("table#player_per_game_stats_2", stat_line);
                 }
 			});
 			return view.render();
@@ -132,7 +133,7 @@ function(require, namespace, Backbone, Leaguevine) {
 	});
     PlayerPerGameStats.Views.PlayerStatsList = Backbone.LayoutManager.View.extend({
 		template: "playerstats/list",
-		className: "playersstats-list-wrapper",
+		className: "playersstats_list_wrapper",
 		render: function(layout) {
 			var view = layout(this);
 			this.$el.empty();

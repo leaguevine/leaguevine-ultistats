@@ -1,10 +1,13 @@
-<td>
+<td class="table_first_item">
     <%= player.first_name %> 
     <% if (player.nickname) { %>"<% } %><%= player.nickname %><% if (player.nickname) { %>"<% } %> 
     <%= player.last_name %>
 </td>
 <td>
     <%= passes_thrown %>/<%= completed_passes_thrown %>
+</td>
+<td>
+    <%= points_played %>
 </td>
 <td>
     <%= goals_thrown %>

@@ -90,6 +90,27 @@ a, a:hover, a:visited {
     color: #444e65;
 }
 
+/* ------------------- Tables ------------------- */
+
+tr:nth-child(even) {
+    background-color: #f0f0f0;
+}
+
+tr.column_headers {
+    border-bottom: 1px solid #767676;
+}
+
+th, td {
+    text-align: center;
+    padding: 3px;
+}
+
+    th.table_first_item,
+    td.table_first_item {
+        text-align: left;
+        padding-left: 10px;
+    }
+
 /* =============================================================================
    Page loading spinner
    ========================================================================== */
@@ -367,6 +388,31 @@ a.teams_list_item_link {
 .team_player_list_number {
     color: #767676;
 }
+
+/* =============================================================================
+   Stats
+   ========================================================================== */
+table.stats {
+    margin-top: 15px;
+    width: 100%;
+}
+
+    table.stats tr.team_name{
+        background-color: #5b80ab;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    table.stats tr.team_name td{
+        padding: 5px;
+    }
+        table.stats th{
+            background-color: #E2E5EB;
+            color: #505C77;
+            font-size: 11px;
+            font-weight: normal;
+        }
 
 /* =============================================================================
    Games
