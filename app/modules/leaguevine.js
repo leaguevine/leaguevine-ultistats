@@ -33,7 +33,7 @@ function(namespace, Backbone) {
 				_.extend(app.api,temp_obj); //Extend/overwrite our app.api with the key/value of the temp object.
 			});
 			localStorage.setItem('auth_object', JSON.stringify(app.api));
-			//TODO: After token is received, navigate to the most recent page.
+			//TODO: After token is received, navigate to the href saved below.
 			Backbone.history.navigate('teams', true);//After the token has been updated, navigate to some index site.
 		}
 	});
@@ -51,6 +51,7 @@ function(namespace, Backbone) {
                 _.extend(this,stored_api);
             }
             if (!this.token) {
+            	//TODO: Save the href.
                 window.location.href = this.base + "&client_id=" + this.client_id + "&redirect_uri=" + this.redirect_uri;
                 return false;
             }
