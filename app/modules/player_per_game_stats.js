@@ -18,12 +18,13 @@ function(require, namespace, Backbone, Leaguevine) {
 	//
 	PlayerPerGameStats.Model = Backbone.Model.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
-            game: {},
+            game: {id: ''},
             league: {},
-            player: {},
+            player: {id: ''},
             season: {},
-            team: {},
+            team: {id: ''},
             tournament: {},
+            player_id: "",
             callahans: "",
             completed_passes_thrown: "",
             completion_percent: "",
@@ -43,6 +44,8 @@ function(require, namespace, Backbone, Leaguevine) {
             throwaways: "",
             turnovers: "",
 		},
+        idAttribute: "player_id", // The unique identifier in a collection is a player. A player who is on both
+                                  // teams in the same game could cause problems here.
 		urlRoot: Leaguevine.API.root + "stats/ultimate/player_stats_per_game",
 		parse: function(resp, xhr) {
 			resp = Backbone.Model.prototype.parse(resp);
@@ -91,19 +94,50 @@ function(require, namespace, Backbone, Leaguevine) {
 	// VIEWS
 	//
 	PlayerPerGameStats.Views.PlayerStats = Backbone.View.extend({
-		template: "playerstats/playerstats",
-		tagName: "li",
+		template: "playerstats/per_game_stat_line",
+		tagName: "tr",
 		serialize: function() {return this.model.toJSON();}
 	});
+    PlayerPerGameStats.Views.BoxScore = Backbone.LayoutManager.View.extend({
+        /* Usage:
+         *     required arguments:
+         *          game - The game object you are rendering a box score for
+         */
+		template: "playerstats/boxscore",
+		className: "playerstats-boxscore-wrapper",
+		render: function(layout) {
+			var view = layout(this);
+			this.$el.empty();
+            var team_1_id = this.options.game.get('team_1_id');
+            var team_2_id = this.options.game.get('team_2_id');
+			this.collection.each(function(playerstats) {
+                // Render a single line of stats for a player
+                stat_line = new PlayerPerGameStats.Views.PlayerStats({model: playerstats});
+
+                // Check which team's boxscore the stat line should be appended to
+                if (playerstats.get('team_id') == team_1_id) {
+                    view.insert("table#player-per-game-stats-1", stat_line);
+                }
+                else if (playerstats.get('team_id') == team_2_id) {
+                    view.insert("table#player-per-game-stats-2", stat_line);
+                }
+			});
+			return view.render();
+		},
+		initialize: function() {
+			this.collection.bind("reset", function() {
+				this.render();
+			}, this);
+		},
+	});
     PlayerPerGameStats.Views.PlayerStatsList = Backbone.LayoutManager.View.extend({
-		template: "playerstats/playerstatslist",
-		className: "players-stats-wrapper",
+		template: "playerstats/list",
+		className: "playersstats-list-wrapper",
 		render: function(layout) {
 			var view = layout(this);
 			this.$el.empty();
 			this.collection.each(function(playerstats) {
-                //TODO: Check which team the player is on and append it to the appropriate list
-				view.insert("ul", new PlayerPerGameStats.Views.PlayerStats({
+				view.insert("table", new PlayerPerGameStats.Views.PlayerStats({
 					model: playerstats
 				}));
 			});
@@ -116,5 +150,5 @@ function(require, namespace, Backbone, Leaguevine) {
 		},
 	});
 
-
+    return PlayerPerGameStats;
 });

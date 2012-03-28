@@ -9,8 +9,9 @@ define([
   "modules/leaguevine",
   "modules/navigation",
   "modules/title",
+  "modules/player_per_game_stats",
 ],
-function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
+function(require, namespace, Backbone, Leaguevine, Navigation, Title, PlayerPerGameStats) {
 	var app = namespace.app;
 	var Game = namespace.module();
 	
@@ -121,12 +122,13 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
                }
             });
 
-			//TODO: Get some game stats.
+            var playerstats = new PlayerPerGameStats.Collection([],{game_ids: [gameId]});
+            playerstats.fetch();
 			
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({href: "#editgame/"+gameId, name: "Edit"}),
 				".detail": new Game.Views.Detail( {model: game}),
-				".list_children": new Game.Views.Multilist({model: game})//TODO: add stats					
+				".list_children": new Game.Views.Multilist({model: game, playerstats: playerstats})//TODO: Add Team stats
 			});
 			myLayout.view(".titlebar", new Game.Views.Titlebar({model: game}));
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
@@ -222,21 +224,16 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			$('.lplayer_stats').show();
             $('.list_children button').removeClass('is_active');
             $('button.bplayer_stats').addClass('is_active');
-			console.log("TODO: Show Player Stats")
 		},
 		render: function(layout) {
 			var view = layout(this);
-			/*this.setViews({
-				".players_list": new Player.Views.List( {collection: this.options.players} ),
-				".games_list": new Game.Views.List( {collection: this.options.games} )
-			});*/
+			this.setViews({
+				".lplayer_stats": new PlayerPerGameStats.Views.BoxScore( {collection: this.options.playerstats, game: this.model } ),
+			});
 			return view.render().then(function(el) {
-				$('.lplayer_stats').hide();
+				$('.lteam_stats').hide();
 			});
 		},
-		initialize: function() {
-			//this.options.stats.bind("reset", function() {this.render();}, this);
-		}
 	});
 	
 	return Game;// Required, return the module for AMD compliance
