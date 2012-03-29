@@ -105,7 +105,7 @@ function(require, namespace, Backbone, Leaguevine) {
          */
 		template: "playerstats/boxscore",
 		className: "playerstats-boxscore-wrapper",
-        serialize: function() {debugger; return this.options.game.toJSON();},
+        serialize: function() {return this.options.game.toJSON();},
 		render: function(layout) {
 			var view = layout(this);
 			this.$el.empty();
