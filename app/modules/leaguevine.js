@@ -21,7 +21,8 @@ function(namespace, Backbone) {
   	Leaguevine.Router = Backbone.Router.extend({
 		
 		routes: {
-			"access_:hash": "token_received"
+			"access_:hash": "token_received",
+            "error_description:hash": "login_error",
 		},
 		
 		token_received: function(hash) {//route matched by oauth/:hash
@@ -37,7 +38,11 @@ function(namespace, Backbone) {
 			localStorage.setItem('auth_object', JSON.stringify(app.api));
             window.location.href = '#' + localStorage.getItem('login_redirect');
             return false;
-		}
+		},
+        login_error: function(hash) {
+            Backbone.history.navigate('settings', true); //Redirect to the settings page where there is a prompt to log in again
+         },
+
 	});
     Leaguevine.router = new Leaguevine.Router();// INITIALIZE ROUTER
 
