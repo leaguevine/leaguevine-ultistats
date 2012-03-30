@@ -32,9 +32,11 @@ function(namespace, Backbone) {
 				temp_obj[pair[0]]=pair[1]; //Put the key and value into a temp object.
 				_.extend(app.api,temp_obj); //Extend/overwrite our app.api with the key/value of the temp object.
 			});
+
+			//After token is received, navigate to the href that was saved earlier
 			localStorage.setItem('auth_object', JSON.stringify(app.api));
-			//TODO: After token is received, navigate to the href saved below.
-			Backbone.history.navigate('teams', true);//After the token has been updated, navigate to some index site.
+            window.location.href = '#' + localStorage.getItem('login_redirect');
+            return false;
 		}
 	});
     Leaguevine.router = new Leaguevine.Router();// INITIALIZE ROUTER
@@ -51,7 +53,6 @@ function(namespace, Backbone) {
                 _.extend(this,stored_api);
             }
             if (!this.token) {
-                //TODO: Save the href.
                 this.login();
             }
             else {
@@ -62,6 +63,7 @@ function(namespace, Backbone) {
             return (localStorage.getItem('auth_object') != null)
         },
         login: function() {//Redirects a user to the login screen
+            localStorage.setItem('login_redirect', Backbone.history.fragment);
             window.location.href = this.base + "&client_id=" + this.client_id + "&redirect_uri=" + this.redirect_uri;
             return false;
         },
