@@ -119,7 +119,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 			//Prepare the data.
 			var team = new Team.Model({id: teamId});
 			
-            titlebarOptions = {title: team.get("name"), left_btn_href:"#teams", left_btn_class: "back", left_btn_txt: "Teams", right_btn_href: "#editteam/"+teamId, right_btn_txt: "Edit"};
+            var titlebarOptions = {title: team.get("name"), left_btn_href:"#teams", left_btn_class: "back", left_btn_txt: "Teams", right_btn_href: "#editteam/"+teamId, right_btn_txt: "Edit"};
 
             team.fetch({success: function (model, response) {
                 // After the team has been fetched, render the nav-bar with the team's fetched name
