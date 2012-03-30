@@ -32,7 +32,13 @@
 		save: function() {
 			localStorage.setItem(this.name, this.records.join(","));
 		},
-
+        safe_get: function(name) { // Fetches an item from local storage and returns an empty object if it doesn't exist
+            var obj = localStorage.getItem(name);
+            if (!obj) {
+                return '{}';
+            }
+            return obj;
+        },
 		create: function(model) {
 			if (!model.id) model.id = model.get('id');
 			localStorage.setItem(this.name+"-"+model.id, JSON.stringify(model));
@@ -50,12 +56,12 @@
 
 		// Retrieve a model from `this.data` by id.
 		find: function(model) {
-			return JSON.parse(localStorage.getItem(this.name+"-"+model.id));
+			return JSON.parse(this.safe_get(this.name+"-"+model.id));
 		},
 
 		// Return the array of all models currently in storage.
 		findAll: function() {
-			return _.map(this.records, function(id){return JSON.parse(localStorage.getItem(this.name+"-"+id));}, this);
+			return _.map(this.records, function(id){return JSON.parse(this.safe_get(this.name+"-"+id));}, this);
 		},
 
 		// Delete a model from `this.data`, returning it.
