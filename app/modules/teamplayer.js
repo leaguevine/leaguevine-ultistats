@@ -86,7 +86,9 @@ function(require, namespace, Backbone, Leaguevine) {
 		className: "players-wrapper",
 		render: function(layout) {
 			var view = layout(this);
-			this.$el.empty();
+			//this.$el.empty()
+			// call .cleanup() on all child views, and remove all appended views
+			view.cleanup();
 			this.collection.each(function(teamplayer) {
 				view.insert("ul", new TeamPlayer.Views.Player({
 					model: teamplayer
@@ -111,6 +113,9 @@ function(require, namespace, Backbone, Leaguevine) {
 		className: "teams-wrapper",
 		render: function(layout) {
 			var view = layout(this);
+			//this.$el.empty()
+			// call .cleanup() on all child views, and remove all appended views
+			view.cleanup();
 			this.collection.each(function(teamplayer) {
 				view.insert("ul", new TeamPlayer.Views.Team({
 					model: teamplayer

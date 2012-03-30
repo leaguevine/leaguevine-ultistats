@@ -68,6 +68,18 @@ function viewRender(root) {
       return root.view("", partial, true);
     },
 
+    // Ensure that existing views get cleaned up before re-render
+    cleanup: function() {
+      _.each(root.views, function(view, key) {
+        cleanViews(view);
+
+        // Remove references to existing views if they were appended
+        if (_.isArray(view)) {
+          root.views[key] = [];
+        }
+      });
+    },
+    
     render: function(context) {
       var template = root.template || options.template;
 

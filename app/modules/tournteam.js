@@ -93,6 +93,9 @@ function(require, namespace, Backbone, Leaguevine) {
 		className: "tournteams-wrapper",
 		render: function(layout) {
 			var view = layout(this);
+			//this.$el.empty()
+			// call .cleanup() on all child views, and remove all appended views
+			view.cleanup();
 			this.collection.each(function(team) {
 				view.insert("table", new TournTeam.Views.Team({
 					model: team

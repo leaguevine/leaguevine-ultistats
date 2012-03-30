@@ -108,7 +108,9 @@ function(require, namespace, Backbone, Leaguevine) {
         serialize: function() {return this.options.game.toJSON();},
 		render: function(layout) {
 			var view = layout(this);
-			this.$el.empty();
+			//this.$el.empty()
+			// call .cleanup() on all child views, and remove all appended views
+			view.cleanup();
             var team_1_id = this.options.game.get('team_1_id');
             var team_2_id = this.options.game.get('team_2_id');
 			this.collection.each(function(playerstats) {
@@ -136,7 +138,9 @@ function(require, namespace, Backbone, Leaguevine) {
 		className: "playersstats_list_wrapper",
 		render: function(layout) {
 			var view = layout(this);
-			this.$el.empty();
+			//this.$el.empty()
+			// call .cleanup() on all child views, and remove all appended views
+			view.cleanup();
 			this.collection.each(function(playerstats) {
 				view.insert("table", new PlayerPerGameStats.Views.PlayerStats({
 					model: playerstats

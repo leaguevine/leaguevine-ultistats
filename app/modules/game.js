@@ -180,7 +180,9 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, PlayerPerG
 		className: "games-wrapper",
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
-			this.$el.empty()
+			//this.$el.empty()
+			// call .cleanup() on all child views, and remove all appended views
+			view.cleanup();
 			this.collection.each(function(game) {//for each game in the collection.
 				view.insert("ul", new Game.Views.Item({//Inserts the game into the ul in the list template.
 					model: game//pass each game to a Item view instance.

@@ -83,7 +83,9 @@ function(require, namespace, Backbone, Leaguevine) {
 		className: "events-wrapper",
 		render: function(layout) {
 			var view = layout(this);
-			this.$el.empty()
+			//this.$el.empty()
+			// call .cleanup() on all child views, and remove all appended views
+			view.cleanup();
 			this.collection.each(function(gameevent) {
 				view.insert("ul", new Event.Views.Item({
 					model: gameevent

@@ -376,7 +376,9 @@ function(require, namespace, Backbone) {
 		template: "trackedgame/teamplayer_area",
 		render: function(layout) { 
 			var view = layout(this);
-			this.$el.empty()
+			//this.$el.empty()
+			// call .cleanup() on all child views, and remove all appended views
+			view.cleanup();
 			this.collection.each(function(tp) {
 				view.insert("ul", new TrackedGame.Views.PlayerButton({
 					model: tp
@@ -531,7 +533,9 @@ function(require, namespace, Backbone) {
 		},
 		render: function(layout){
 			var view = layout(this);
-			this.$el.empty()
+			//this.$el.empty()
+			// call .cleanup() on all child views, and remove all appended views
+			view.cleanup();
 			this.collection.each(function(tp) {//for each team in the collection.
 				//view.insert("ul", new TrackedGame.Views.RosterItem({model: tp}));
 				view.insert(new TrackedGame.Views.RosterItem({model: tp}));

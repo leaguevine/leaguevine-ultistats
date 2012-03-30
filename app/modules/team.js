@@ -177,7 +177,9 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
 			var filter_by = this.collection.name ? this.collection.name : "";
-			this.$el.empty()
+			//this.$el.empty()
+			// call .cleanup() on all child views, and remove all appended views
+			view.cleanup();
 			this.collection.each(function(team) {//for each team in the collection.
 				//Do collection filtering here
 				if (!filter_by || team.get("name").toLowerCase().indexOf(filter_by.toLowerCase()) != -1) {

@@ -137,7 +137,9 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		className: "players-wrapper",
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
-			this.$el.empty()
+			//this.$el.empty()
+			// call .cleanup() on all child views, and remove all appended views
+			view.cleanup();
 			this.collection.each(function(player) {//for each player in the collection.
 				view.insert("ul", new Player.Views.Item({//Inserts the player into the ul in the list template.
 					model: player//pass each player to a Item view instance.
