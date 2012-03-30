@@ -218,8 +218,9 @@ function(require, namespace, Backbone) {
 			"track/:gameId": "trackGame",
 		},
 		trackGame: function (gameId) {
-			app.api.d_token(); //Ensure that the user is logged in
-			
+            if (!app.api.is_logged_in()) {//Ensure that the user is logged in
+                app.api.login();
+            }
 			
 			var myLayout = app.router.useLayout("tracked_game");
 			//var Team = require("modules/team");
