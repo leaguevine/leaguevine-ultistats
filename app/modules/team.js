@@ -155,12 +155,12 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 			if (teamId) { //make the edit team page
 				var team = new Team.Model({id: teamId});
                 myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Edit", left_btn_href: "#teams/"+teamId, left_btn_class: "back", left_btn_txt: "Cancel"}));
+                team.fetch(); //Fetch this team instance
 			}
 			else { //make the add team page
-				var team = new Team.Model({season_id: app.api.season_id});//Do we need the season_id here?
+				var team = new Team.Model({});
                 myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Add a Team", left_btn_href: "#teams", left_btn_class: "back", left_btn_txt: "Cancel"}));
 			}
-			team.fetch();
 			myLayout.view(".navbar", new Navigation.Views.Navbar({}));
 			myLayout.view(".content", new Team.Views.Edit({model: team}));
 			myLayout.render(function(el) {$("#main").html(el);});
@@ -274,23 +274,37 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 					info:$("#info").val()
 				},
 				{
-					headers: { "Authorization": "bearer " + app.api.d_token() }
-					//error: function(){...} }//TODO: Add an error callback if not authorized.
+					headers: { "Authorization": "bearer " + app.api.d_token() },
+                    success: function(model, status, xhr) {
+                        Backbone.history.navigate('teams/'+model.get('id'), true); //Redirect to the team detail page
+                    },
+                    error: function() {
+                        //TODO: Handle the error by giving the user a message
+
+                        // For now, just redirect
+                        Backbone.history.navigate('teams', true);
+                    }
 				}
 			);
-			Backbone.history.navigate('teams', true);
-			
+            return false; //Disable the regular form submission
 		},
 		deleteModel: function(ev) {
 			this.model.destroy(
 				{
 					headers: { "Authorization": "bearer " + app.api.d_token() },
-					//error: function(model,respose){...}//TODO: Add an error callback to handle unauthorized delete requests.
+                    success: function() {
+                        Backbone.history.navigate('teams', true);
+                    },
+                    error: function() {
+                        //TODO: Handle the error by giving the user a message
+
+                        // For now, just redirect
+                        Backbone.history.navigate('teams', true);
+                    }
 				}
 			);
-			Backbone.history.navigate('teams', true);
+            return false; //Disable the regular form submission
 		}
 	});
 	return Team;// Required, return the module for AMD compliance
-	//exports.Team = Team;
 });
