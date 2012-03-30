@@ -780,7 +780,10 @@ span.button_line_2 {
    Settings 
    ========================================================================== */
 
-#settings_detail {
+.settings {
     padding: 15px;
+}
+
+#battery_usage_area {
     color: #767676;
 }

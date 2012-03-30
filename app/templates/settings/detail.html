@@ -1,4 +1,15 @@
-<div id="settings_detail">
+<% if (logged_in) { %>
+<div id="logout_area">
+    <h2>You are logged in</h2>
+    <button id="logout" href="#">Log out</button>
+</div>
+<% } else { %>
+<div id="logout_area">
+    <h2>Please log in</h2>
+    <button id="login" href="#">Log in</button>
+</div>
+<% } %>
+<div id="battery_usage_area">
     <h2>Set battery usage</h2>
     <p>Sorry, this feature is not available at this time.</p>
 </div>

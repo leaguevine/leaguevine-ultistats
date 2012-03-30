@@ -29,10 +29,24 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 
 	Settings.Views.Detail = Backbone.LayoutManager.View.extend({  	
 		template: "settings/detail",
+        className: "settings",
 		render: function(layout) {
-            // Render just a static template for now until we build a functional settings page
-			return layout(this).render();
+			return layout(this).render({
+                //logged_in is a boolean context variable to specify if a user is authenticated
+                logged_in: app.api.is_logged_in(),
+            });
 		},
+        events: {
+            "click button#login": "login",
+            "click button#logout": "logout",
+        },
+        login: function(ev){
+            app.api.login();
+            this.render();
+        },
+        logout: function(ev){
+            app.api.logout();
+            this.render();
+        }
 	});
-
 });

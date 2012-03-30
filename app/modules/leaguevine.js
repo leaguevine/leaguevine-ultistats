@@ -40,25 +40,35 @@ function(namespace, Backbone) {
     Leaguevine.router = new Leaguevine.Router();// INITIALIZE ROUTER
 
   	Leaguevine.API = {	
-            root: "http://api.playwithlv.com/v1/",
-            base: "http://playwithlv.com/oauth2/authorize/?response_type=token&scope=universal",
-            client_id: "5b830cb7c788b095c94732c8ca03cb",
-            redirect_uri: "http://localhost:8000/",
-            season_id: 20041,
-            d_token: function() {//Modules will reference this dynamic token			
+        root: "http://api.playwithlv.com/v1/",
+        base: "http://playwithlv.com/oauth2/authorize/?response_type=token&scope=universal",
+        client_id: "5b830cb7c788b095c94732c8ca03cb",
+        redirect_uri: "http://localhost:8000/",
+        season_id: 20041,
+        d_token: function() {//Modules will reference this dynamic token			
             if (!this.token) {
                 var stored_api = JSON.parse(localStorage.getItem('auth_object')); //Pull our token out of local storage if it exists.
                 _.extend(this,stored_api);
             }
             if (!this.token) {
-            	//TODO: Save the href.
-                window.location.href = this.base + "&client_id=" + this.client_id + "&redirect_uri=" + this.redirect_uri;
-                return false;
+                //TODO: Save the href.
+                this.login();
             }
             else {
                 return this.token;
             }
-        }
+        },
+        is_logged_in: function() {//Returns true if the user is logged in and false if not
+            return (localStorage.getItem('auth_object') != null)
+        },
+        login: function() {//Redirects a user to the login screen
+            window.location.href = this.base + "&client_id=" + this.client_id + "&redirect_uri=" + this.redirect_uri;
+            return false;
+        },
+        logout: function() {//Logs a user out by removing the locally stored token
+            localStorage.removeItem('auth_object');
+            this.token = undefined;
+        },
     };
 
     if (typeof localSettings != 'undefined' && 
