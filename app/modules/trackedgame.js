@@ -144,7 +144,6 @@ function(require, namespace, Backbone) {
 					this.set('current_state','picked up');
 					break;
 				default://pass event.
-                    this.set({player_in_possession_id: pl_id});
 			}
 			//save the event to the server.
 			this.save_event(this_event, this);//TODO: DO I need to pass 'this' ?
