@@ -397,14 +397,14 @@ table.stats {
     width: 100%;
 }
 
-    table.stats tr.team_name{
+    table.stats tr.table_name{
         background-color: #5b80ab;
         color: white;
         font-weight: bold;
         text-align: center;
     }
 
-    table.stats tr.team_name td{
+    table.stats tr.table_name td{
         padding: 5px;
     }
         table.stats th{
@@ -413,6 +413,10 @@ table.stats {
             font-size: 11px;
             font-weight: normal;
         }
+
+.lteam_stats {
+    display: none; /* This block is initially hidden */
+}
 
 /* =============================================================================
    Games

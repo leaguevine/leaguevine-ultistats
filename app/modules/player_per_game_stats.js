@@ -7,6 +7,7 @@ define([
 
   // Modules
   "modules/leaguevine",
+  "modules/stats",
 ],
 
 function(require, namespace, Backbone, Leaguevine) {
@@ -47,13 +48,6 @@ function(require, namespace, Backbone, Leaguevine) {
         idAttribute: "player_id", // The unique identifier in a collection is a player. A player who is on both
                                   // teams in the same game could cause problems here.
 		urlRoot: Leaguevine.API.root + "stats/ultimate/player_stats_per_game",
-		parse: function(resp, xhr) {
-			resp = Backbone.Model.prototype.parse(resp);
-			return resp;
-		},
-		toJSON: function() {
-			return _.clone(this.attributes);
-		}
 	});
 
 	//
@@ -101,6 +95,7 @@ function(require, namespace, Backbone, Leaguevine) {
     PlayerPerGameStats.Views.BoxScore = Backbone.LayoutManager.View.extend({
         /* Usage:
          *     required arguments:
+         *          collection - A collection of player stat lines
          *          game - The game object you are rendering a box score for
          */
 		template: "playerstats/boxscore",
@@ -135,7 +130,7 @@ function(require, namespace, Backbone, Leaguevine) {
 	});
     PlayerPerGameStats.Views.PlayerStatsList = Backbone.LayoutManager.View.extend({
 		template: "playerstats/list",
-		className: "playersstats_list_wrapper",
+		className: "stats_list_wrapper",
 		render: function(layout) {
 			var view = layout(this);
 			//this.$el.empty()

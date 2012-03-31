@@ -10,8 +10,9 @@ define([
   "modules/navigation",
   "modules/title",
   "modules/player_per_game_stats",
+  "modules/team_per_game_stats",
 ],
-function(require, namespace, Backbone, Leaguevine, Navigation, Title, PlayerPerGameStats) {
+function(require, namespace, Backbone, Leaguevine, Navigation, Title, PlayerPerGameStats, TeamPerGameStats) {
 	var app = namespace.app;
 	var Game = namespace.module();
 	
@@ -124,11 +125,18 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, PlayerPerG
 
             var playerstats = new PlayerPerGameStats.Collection([],{game_ids: [gameId]});
             playerstats.fetch();
+
+            var teamstats = new TeamPerGameStats.Collection([],{game_ids: [gameId]});
+            teamstats.fetch();
 			
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({href: "#editgame/"+gameId, name: "Edit"}),
 				".detail": new Game.Views.Detail( {model: game}),
-				".list_children": new Game.Views.Multilist({model: game, playerstats: playerstats})//TODO: Add Team stats
+				".list_children": new Game.Views.Multilist({
+                    model: game, 
+                    playerstats: playerstats,
+                    teamstats: teamstats
+                })
 			});
 			myLayout.view(".titlebar", new Game.Views.Titlebar({model: game}));
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
@@ -219,7 +227,6 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, PlayerPerG
 			$('.lteam_stats').show();
             $('.list_children button').removeClass('is_active');
             $('button.bteam_stats').addClass('is_active');
-			console.log("TODO: Show Team Stats")
 		},
 		showPlayerStats: function(ev){
 			$('.lteam_stats').hide();
@@ -231,11 +238,15 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, PlayerPerG
 			var view = layout(this);
 			this.setViews({
 				".lplayer_stats": new PlayerPerGameStats.Views.BoxScore( {collection: this.options.playerstats, game: this.model } ),
+				".lteam_stats": new TeamPerGameStats.Views.BoxScore( {collection: this.options.teamstats} ),
 			});
-			return view.render().then(function(el) {
-				$('.lteam_stats').hide();
-			});
-		},
+			return view.render();
+        },
+		initialize: function() {
+    		this.model.bind("reset", function() {
+      			this.render();
+    		}, this);
+  		}
 	});
 	
 	return Game;// Required, return the module for AMD compliance
