@@ -447,6 +447,23 @@ function(require, namespace, Backbone) {
 		toggle_action_buttons: function(ev){//toggle which buttons are being displayed.
 			this.model.set('showing_alternate',-1*this.model.get('showing_alternate'));//Changing this should trigger show_action_buttons.
 		},
+        show_player_name: function(ev){
+            //Get the currently viewed player_id
+            var player_id = this.model.get('player_in_possession_id');            
+
+            var player_name = "unknown";
+            if (player_id) {
+                //Look through the collection of onfield players to find the player matching this ID
+                var players = this.model.get('onfield_1').models.concat(this.model.get('onfield_2').models);
+                for (i=0; i<players.length; i++){
+                    if (players[i].get('player_id') == player_id){
+                        player_name = players[i].get('player').last_name;
+                    }
+                }
+            }
+            //Update the player name that is shown
+            this.$('.action_prompt_player').html(player_name)
+        },
 		score: function(ev){this.model.score();},
 		completion: function(ev){this.model.completion();},
 		throwaway: function(ev){this.model.throwaway();},
@@ -458,11 +475,11 @@ function(require, namespace, Backbone) {
 		injury: function(ev){this.model.injury();},
 		stall: function(ev){this.model.stall();},
 		render: function(layout) {
-			//TODO: Show the player name
 			//TODO: Disable some buttons depending on this.model.get('current_state');
 			var view = layout(this);
 			return view.render().then(function(el) {
 				this.show_action_buttons();
+                this.show_player_name();
 			});
 		}
 	});
