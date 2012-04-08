@@ -676,7 +676,8 @@ table.stats {
     }
         .track .offense_teamname p{
             color: #767676;
-            font-size: 10px;
+            font-weight: bold;
+            font-size: 14px;
         }
 
 span.button_line_1,
