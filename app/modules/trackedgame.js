@@ -67,6 +67,15 @@ function(require, namespace, Backbone) {
                 }
 			});
 		},
+        current_state_strings: { //An object that maps the current event state to a readable string
+            received: "Completed pass to:",
+            picked_up: "Who picked up?",
+            pulled: "Who pulled?",
+            marked: "Who was marking?",
+            scored: "Who caught the goal?",
+            dropped: "Who dropped the disc?",
+            blocked: "Who got the D?",
+       },
 		swap_player: function(model,collection,team_ix){
 			var was_offfield = collection==this.get('offfield_'+team_ix);
 			var team_id = this.get('game').get('team_'+team_ix).id;
@@ -101,7 +110,7 @@ function(require, namespace, Backbone) {
 			// The meaning of a player tap depends on the current state.
 			// https://github.com/leaguevine/leaguevine-ultistats/issues/7
 			switch (this.get('current_state')){//pickup, dropped, ded, scored, pulled, default
-				case 'picked up'://pickup event(10) --> default
+				case 'picked_up'://pickup event(10) --> default
 					this_event.set({type: 10, player_1_id: pl_id, player_1_team_id: team_id});
 					this.set({player_in_possession_id: pl_id});
 					this.set('current_state','received');
@@ -110,12 +119,12 @@ function(require, namespace, Backbone) {
 					this_event.set({type: 33, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
 					this.set('team_in_possession_ix',3-team_ix);
 					this.set({player_in_possession_id: NaN});
-					this.set('current_state','picked up');
+					this.set('current_state','picked_up');
 					break;
 				case 'blocked'://D event --> pickup
 					this_event.set({type: 34, player_1_id: last_pl_id, player_3_id: pl_id, player_1_team_id: other_team_id, player_3_team_id: team_id});
 					this.set({player_in_possession_id: NaN});
-					this.set('current_state','picked up');
+					this.set('current_state','picked_up');
 					break;
 				case 'scored'://score event --> pulled + substitution screen
 					this_event.set({type: 22, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
@@ -131,7 +140,7 @@ function(require, namespace, Backbone) {
 					this_event.set({type: 1, player_1_id: last_pl_id, player_1_team_id: team_id});
 					this.set({player_in_possession_id: NaN});
 					this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
-					this.set('current_state','picked up');
+					this.set('current_state','picked_up');
 					break;
 				case 'received':
 					this_event.set({type: 21, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
@@ -141,7 +150,7 @@ function(require, namespace, Backbone) {
 				case 'marked'://stall event --> pickup
 					this_event.set({type: 51, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: other_team_id, player_2_team_id: team_id});
 					this.set({player_in_possession_id: NaN});
-					this.set('current_state','picked up');
+					this.set('current_state','picked_up');
 					break;
 				default://pass event.
 			}
@@ -174,7 +183,7 @@ function(require, namespace, Backbone) {
 			this_event.set({type: 32, player_1_id: last_pl_id, player_1_team_id: team_id});
 			this.set({player_in_possession_id: NaN});
 			this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
-			this.set('current_state','picked up');
+			this.set('current_state','picked_up');
 			this.save_event(this_event);
 		},
 		unknown_turn: function(){
@@ -185,7 +194,7 @@ function(require, namespace, Backbone) {
 			this_event.set({type: 30, player_1_team_id: team_id});
 			this.set({player_in_possession_id: NaN});
 			this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
-			this.set('current_state','picked up');
+			this.set('current_state','picked_up');
 			this.save_event(this_event);
 		},
 		injury: function(){
@@ -352,7 +361,7 @@ function(require, namespace, Backbone) {
 				".player_area_1": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get('onfield_1'), model: this.model.get('game').get('team_1')}),
 				".player_area_2": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get('onfield_2'), model: this.model.get('game').get('team_2')})
 			});
-			return view.render({current_state: this.model.get('current_state')}).then(function(el) {
+			return view.render({player_prompt: this.model.current_state_strings[this.model.get('current_state')]}).then(function(el) {
 				this.show_teamplayer();
 			});
 		},
