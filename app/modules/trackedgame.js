@@ -415,7 +415,7 @@ function(require, namespace, Backbone) {
 			"click .button": "player_tap",
 		},
 		player_tap: function(ev){
-            var button = $(ev.target).parents('button');
+            var button = $(ev.target).parents('button').andSelf();
             var player_id = parseInt(button.attr('id'));
             var player_name = button.find('.player_name').html();
 			this.model.player_tap(player_id, player_name);
