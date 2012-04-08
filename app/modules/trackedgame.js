@@ -30,6 +30,7 @@ function(require, namespace, Backbone) {
 			offfield_1: [],
 			onfield_2: [],
 			offfield_2: [],
+            previous_state: 'blank',
 			current_state: 'pulled',
 			team_in_possession_ix: 1,
 			player_in_possession_id: NaN,
@@ -67,7 +68,7 @@ function(require, namespace, Backbone) {
                 }
 			});
 		},
-        current_state_strings: { //An object that maps the current event state to a readable string
+        player_prompt_strings: { //Maps the current event state to a readable string
             received: "Completed pass to:",
             picked_up: "Who picked up?",
             pulled: "Who pulled?",
@@ -75,7 +76,21 @@ function(require, namespace, Backbone) {
             scored: "Who caught the goal?",
             dropped: "Who dropped the disc?",
             blocked: "Who got the D?",
-       },
+        },
+        previous_action_strings: { //Maps the current event state to a previous action
+            blank: "",
+            received: "caught a pass",
+            picked_up: "picked up the disc",
+            pulled: "pulled",
+            marked: "got a marking D",
+            scored: "threw a goal",
+            dropped: "dropped the disc",
+            blocked: "got a D",
+            throwaway: "threw the disc away",
+            unknown_turn: "turnover",
+        },
+        //The previous_action types that should not associate a player with them when being displayed
+        previous_action_omit_player: ['blank', 'unknown_turn'], 
 		swap_player: function(model,collection,team_ix){
 			var was_offfield = collection==this.get('offfield_'+team_ix);
 			var team_id = this.get('game').get('team_'+team_ix).id;
@@ -98,8 +113,25 @@ function(require, namespace, Backbone) {
 			this_event.set({type: event_id, player_1_id: pl_id, player_1_team_id: team_id});
 			this.save_event(this_event);
 		},
-		player_tap: function(pl_id){
+        set_current_state: function(current_state, previous_state) { 
+            // This should get called every time an action happens on the field
+            // Arguments:
+            //      current_state - The state you are changing to.
+            //      previous_state - (optional) The state you are coming from. If omitted, it defaults to 
+            //                       what current_state previously was.
+            //                       This should be one of the keys in "previous_action_strings"
+            if (previous_state) {
+                this.set('previous_state', previous_state);
+            }
+            else {
+                this.set('previous_state',this.get('current_state'));
+            }
+            this.set('current_state',current_state);
+        },
+		player_tap: function(pl_id, pl_name){
 			//pl_id is the tapped player. Might be NaN
+            //pl_name is the text on the button of the tapped player.
+            this.set('player_in_possession_name', pl_name);
 			var this_event = this.create_event();
 			var team_ix = this.get('team_in_possession_ix');
 			var last_pl_id = this.get('player_in_possession_id');//last_player_id might be NaN
@@ -113,23 +145,23 @@ function(require, namespace, Backbone) {
 				case 'picked_up'://pickup event(10) --> default
 					this_event.set({type: 10, player_1_id: pl_id, player_1_team_id: team_id});
 					this.set({player_in_possession_id: pl_id});
-					this.set('current_state','received');
+					this.set_current_state('received');
 					break;
 				case 'dropped'://Drop event --> turnover --> pickup
 					this_event.set({type: 33, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
 					this.set('team_in_possession_ix',3-team_ix);
 					this.set({player_in_possession_id: NaN});
-					this.set('current_state','picked_up');
+					this.set_current_state('picked_up');
 					break;
 				case 'blocked'://D event --> pickup
 					this_event.set({type: 34, player_1_id: last_pl_id, player_3_id: pl_id, player_1_team_id: other_team_id, player_3_team_id: team_id});
 					this.set({player_in_possession_id: NaN});
-					this.set('current_state','picked_up');
+					this.set_current_state('picked_up');
 					break;
 				case 'scored'://score event --> pulled + substitution screen
 					this_event.set({type: 22, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
 					this.set({player_in_possession_id: NaN});
-					this.set('current_state','pulled');
+					this.set_current_state('pulled');
 					//Update score
 					this.get('game').set('team_'+team_ix+'_score',this.get('game').get('team_'+team_ix+'_score')+1);
 					$('.t_game').hide();
@@ -140,17 +172,18 @@ function(require, namespace, Backbone) {
 					this_event.set({type: 1, player_1_id: last_pl_id, player_1_team_id: team_id});
 					this.set({player_in_possession_id: NaN});
 					this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
-					this.set('current_state','picked_up');
+					this.set_current_state('picked_up');
 					break;
 				case 'received':
 					this_event.set({type: 21, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: team_id, player_2_team_id: team_id});
 					this.set({player_in_possession_id: pl_id});
+					this.set_current_state('received'); //Call this method for consistency, ensuring all switch statements do this
 					//neither team nor state change.
 					break;
 				case 'marked'://stall event --> pickup
 					this_event.set({type: 51, player_1_id: last_pl_id, player_2_id: pl_id, player_1_team_id: other_team_id, player_2_team_id: team_id});
 					this.set({player_in_possession_id: NaN});
-					this.set('current_state','picked_up');
+					this.set_current_state('picked_up');
 					break;
 				default://pass event.
 			}
@@ -159,21 +192,21 @@ function(require, namespace, Backbone) {
 		},
 		//Score, Dropped pass, D'ed pass, stall all require a player tap which will handle the event creation.
 		score: function(){
-			this.set('current_state','scored');
+			this.set_current_state('scored');
 		},
 		completion: function(){
-			this.set('current_state','received');
+			this.set_current_state('received');
 		},
 		dropped_pass: function() {
-			this.set('current_state','dropped');
+			this.set_current_state('dropped');
 		},
 		defd_pass: function(){
 			this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
-			this.set('current_state','blocked');
+			this.set_current_state('blocked');
 		},
 		stall: function(){
 			this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
-			this.set('current_state','marked');
+			this.set_current_state('marked');
 		},
 		//Untouched throwaway, unknown turn, injury, timeout are all events
 		throwaway: function() {
@@ -183,18 +216,17 @@ function(require, namespace, Backbone) {
 			this_event.set({type: 32, player_1_id: last_pl_id, player_1_team_id: team_id});
 			this.set({player_in_possession_id: NaN});
 			this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
-			this.set('current_state','picked_up');
+			this.set_current_state('picked_up', 'throwaway');
 			this.save_event(this_event);
 		},
 		unknown_turn: function(){
 			var this_event = this.create_event();
 			var team_id = this.get('game').get('team_'+this.get('team_in_possession_ix')).id;
-			//Does an unknown turnover require a player_id ?
-			//this_event.set({type: 30, player_1_id: last_pl_id, player_1_team_id: team_id});
+            //An unknown turnover does not require a player ID, as it is attributed to the team and not a player
 			this_event.set({type: 30, player_1_team_id: team_id});
 			this.set({player_in_possession_id: NaN});
 			this.set('team_in_possession_ix',3-this.get('team_in_possession_ix'));
-			this.set('current_state','picked_up');
+			this.set_current_state('picked_up', 'unknown_turn');
 			this.save_event(this_event);
 		},
 		injury: function(){
@@ -333,16 +365,26 @@ function(require, namespace, Backbone) {
 	TrackedGame.Views.Scoreboard = Backbone.View.extend({
 		initialize: function() {
 			this.model.get('game').bind("change", function() {this.render();}, this);//To update scores or teams
-			this.model.get('gameevents').bind("add", function() {this.render();}, this);//To update previous action
-			this.model.get('gameevents').bind("remove", function() {this.render();}, this);//To update previous action
+			this.model.bind("change:player_in_possession_name", function() {this.show_previous_action();}, this);//To update the previous action
+			this.model.bind("change:previous_state", function() {this.show_previous_action();}, this);//To update the previous action
 			this.model.bind("change:team_in_possession_ix", function() {this.render();}, this);//To highlight team in possession
 		},
 		template: "trackedgame/scoreboard",
 		serialize: function() {
 			return this.model.toJSON();
-		}
-		//TODO: Replace serialize with a render function that makes a useful JSON out of team_in_possession, the last gameevent, team names and scores
-		//so that we may populate the scoreboard with this information.
+		},
+        show_previous_action: function(ev){
+            // Use the current state to get a string for the previous action
+            var player_name = this.model.get('player_in_possession_name');
+            var previous_state = this.model.get('previous_state');
+            if (_.include(this.model.previous_action_omit_player, previous_state)) {
+                player_name = "";
+            }
+            var previous_action = this.model.previous_action_strings[previous_state]
+
+            // Display the previous action 
+            this.$('.last_action').html(player_name + ' ' +  previous_action);
+        },
 	});
 	
 	/*
@@ -361,7 +403,7 @@ function(require, namespace, Backbone) {
 				".player_area_1": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get('onfield_1'), model: this.model.get('game').get('team_1')}),
 				".player_area_2": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get('onfield_2'), model: this.model.get('game').get('team_2')})
 			});
-			return view.render({player_prompt: this.model.current_state_strings[this.model.get('current_state')]}).then(function(el) {
+			return view.render({player_prompt: this.model.player_prompt_strings[this.model.get('current_state')]}).then(function(el) {
 				this.show_teamplayer();
 			});
 		},
@@ -373,7 +415,10 @@ function(require, namespace, Backbone) {
 			"click .button": "player_tap",
 		},
 		player_tap: function(ev){
-			this.model.player_tap(parseInt($(ev.target).parents('button').attr('id')));
+            var button = $(ev.target).parents('button');
+            var player_id = parseInt(button.attr('id'));
+            var player_name = button.find('.player_name').html();
+			this.model.player_tap(player_id, player_name);
 		}
 	});
 	TrackedGame.Views.TeamPlayerArea = Backbone.View.extend({
@@ -421,7 +466,7 @@ function(require, namespace, Backbone) {
 	*/
 	TrackedGame.Views.ActionArea = Backbone.View.extend({
 		initialize: function() {			
-			this.model.bind("change:player_in_possession_id", function() {this.render();}, this);//TODO: Show the Player name
+			this.model.bind("change:player_in_possession_id", function() {this.render();}, this);
 			this.model.bind("change:current_state", function() {this.render();}, this);//TODO: Disable some buttons depending on state.
 			this.model.bind("change:showing_alternate", this.show_action_buttons, this);//Which buttons are we showing?
 		},
@@ -457,21 +502,8 @@ function(require, namespace, Backbone) {
 			this.model.set('showing_alternate',-1*this.model.get('showing_alternate'));//Changing this should trigger show_action_buttons.
 		},
         show_player_name: function(ev){
-            //Get the currently viewed player_id
-            var player_id = this.model.get('player_in_possession_id');            
-
-            var player_name = "unknown";
-            if (player_id) {
-                //Look through the collection of onfield players to find the player matching this ID
-                var players = this.model.get('onfield_1').models.concat(this.model.get('onfield_2').models);
-                for (i=0; i<players.length; i++){
-                    if (players[i].get('player_id') == player_id){
-                        player_name = players[i].get('player').last_name;
-                    }
-                }
-            }
-            //Update the player name that is shown
-            this.$('.action_prompt_player').html(player_name)
+            //Update the player name that is shown above the action buttons
+            this.$('.action_prompt_player').html(this.model.get('player_in_possession_name'));
         },
 		score: function(ev){this.model.score();},
 		completion: function(ev){this.model.completion();},
