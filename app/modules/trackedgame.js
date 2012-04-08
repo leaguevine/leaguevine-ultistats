@@ -89,6 +89,25 @@ function(require, namespace, Backbone) {
             throwaway: "threw the disc away",
             unknown_turn: "turnover",
         },
+        setButtonHeight: function() { 
+             //Dynamically calculates and sets the button height for all buttons in the 
+             //game tracking screen (not the substitution screen)
+            
+             // Get the browser height
+             // Taken from here: http://bugs.jquery.com/ticket/6724
+             var browser_height = window.innerHeight ? window.innerHeight : $(window).height();
+
+             // Save some space for the text and space between buttons
+             var non_button_height = 200;
+             
+             // Divide the rest of the height between 5 rows of buttons
+             var button_height = Math.floor((browser_height - non_button_height)/5);
+             $('.t_game button').css({'height': button_height});
+
+             // Make the score button larger than the rest
+             var score_height = button_height + 30;
+             $('button.score').css({'height': score_height});
+        },
         //The previous_action types that should not associate a player with them when being displayed
         previous_action_omit_player: ['blank', 'unknown_turn'], 
 		swap_player: function(model,collection,team_ix){
@@ -322,7 +341,7 @@ function(require, namespace, Backbone) {
 				".sub_team_2": new TrackedGame.Views.SubTeam({model: trackedgame, team_ix:2}),
 				".t_game": new TrackedGame.Views.GameAction({model: trackedgame})
 			});
-			
+		    var callback = trackedgame.setButtonHeight;
 			//myLayout.render(function(el) {$("#main").html(el);});
 			myLayout.render(function(el) {
 				$("#main").html(el);
@@ -334,7 +353,14 @@ function(require, namespace, Backbone) {
 				} else {
 					$('.t_game').show();
 				}
-			});
+			}).then(function() {
+                // Unbind any other bindings to the browser height
+                $(window).unbind('resize'); //Is there a better way to do this besides binding globally?
+                $(window).bind('resize', function() {
+                    callback();
+                });
+                callback();
+            });
 		},
 	});
 	TrackedGame.router = new TrackedGame.Router();// INITIALIZE ROUTER
@@ -355,7 +381,7 @@ function(require, namespace, Backbone) {
 				".player_area": new TrackedGame.Views.PlayerArea({model: this.model}),
 				".action_area": new TrackedGame.Views.ActionArea({model: this.model})
 			});
-			return view.render();
+			return view.render().then(function() {this.model.setButtonHeight();});
 		}
 	});
 	
@@ -400,8 +426,8 @@ function(require, namespace, Backbone) {
 		render: function(layout) {
 			var view = layout(this);
 			this.setViews({
-				".player_area_1": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get('onfield_1'), model: this.model.get('game').get('team_1')}),
-				".player_area_2": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get('onfield_2'), model: this.model.get('game').get('team_2')})
+				".player_area_1": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get('onfield_1'), model: this.model.get('game').get('team_1'), tracked_game: this.model}),
+				".player_area_2": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get('onfield_2'), model: this.model.get('game').get('team_2'), tracked_game: this.model})
 			});
 			return view.render({player_prompt: this.model.player_prompt_strings[this.model.get('current_state')]}).then(function(el) {
 				this.show_teamplayer();
@@ -425,7 +451,7 @@ function(require, namespace, Backbone) {
 		initialize: function() {
 			//Specific players should only be added or removed on the substitution screen.
 			//We don't need to update our player buttons on each add or remove, not until the sub screen is done. That will trigger a reset.
-			this.collection.bind("reset", function() {this.render();}, this);
+			this.collection.bind("reset", function() {this.render().then(function(el) {this.options.tracked_game.setButtonHeight();})}, this);
 		},
 		template: "trackedgame/teamplayer_area",
 		render: function(layout) { 
@@ -521,6 +547,7 @@ function(require, namespace, Backbone) {
 			return view.render().then(function(el) {
 				this.show_action_buttons();
                 this.show_player_name();
+                this.model.setButtonHeight();
 			});
 		}
 	});

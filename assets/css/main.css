@@ -68,7 +68,7 @@ button {
     border: 1px solid #767676;
     font-size: 14px;
     font-weight: bold;
-    height: 35px;
+    min-height: 35px;
     margin-top: 8px;
     width: 100%;
     -moz-border-radius: 8px;
