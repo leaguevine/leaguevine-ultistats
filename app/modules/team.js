@@ -192,9 +192,9 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 		},
 		initialize: function() {
 			this.collection.bind("reset", function() { 
-                if (Backbone.history.fragment == "teams") {
+                //if (Backbone.history.fragment == "teams") {  //Comment out for now, so that Team.Views.List can be used with Game.Views.Edit
                     this.render();
-                }
+                //}
             }, this);
 		}
 	});

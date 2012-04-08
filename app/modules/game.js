@@ -8,11 +8,13 @@ define([
   // Modules
   "modules/leaguevine",
   "modules/navigation",
+  "modules/search",
+  "modules/team",
   "modules/title",
   "modules/player_per_game_stats",
   "modules/team_per_game_stats",
 ],
-function(require, namespace, Backbone, Leaguevine, Navigation, Title, PlayerPerGameStats, TeamPerGameStats) {
+function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Title, PlayerPerGameStats, TeamPerGameStats) {
 	var app = namespace.app;
 	var Game = namespace.module();
 	
@@ -99,7 +101,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, PlayerPerG
 	Game.Router = Backbone.Router.extend({
 		routes : {
 			"games": "findGames", //List all games.
-			"games/:gameId": "showGame" //Show detail for one game.
+			"games/:gameId": "showGame", //Show detail for one game.
+                        "newgame": "editGame" 
 		},
 		findGames: function () {
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
@@ -140,7 +143,22 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, PlayerPerG
 			});
 			myLayout.view(".titlebar", new Game.Views.Titlebar({model: game}));
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
-		}
+		},
+        editGame: function(gameId) {
+            var myLayout = app.router.useLayout("nav_content");
+
+            if (gameId) { //edit existing game
+
+            }
+            else { //create new game
+                var game = new Game.Model({});
+                myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Create a Game"}));
+            }
+
+            myLayout.view(".navbar", new Navigation.Views.Navbar({}));
+            myLayout.view(".content", new Game.Views.Edit({}));
+            myLayout.render(function(el) {$("#main").html(el);});
+        }
 	});
 	Game.router = new Game.Router();// INITIALIZE ROUTER
 
@@ -258,6 +276,26 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, PlayerPerG
     		}, this);
   		}
 	});
+        Game.Views.Edit = Backbone.View.extend({
+            template: "games/edit",
+            render: function(layout) {
+                var view = layout(this);
+                var Team = require("modules/team");
+                var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
+                teams.fetch();
+                this.setViews({
+                    ".team_search_list": new Search.Views.SearchableList({collection: teams, CollectionClass: Team.Collection, ViewsListClass: Team.Views.List, right_btn_class: "",
+                        right_btn_txt: "Create", right_btn_href: "#newteam", search_object_name: "team"})
+                });
+
+                return view.render();
+            }
+          /*  initialize: function() {
+                
+
+            } */
+
+        });
 	
 	return Game;// Required, return the module for AMD compliance
 });
