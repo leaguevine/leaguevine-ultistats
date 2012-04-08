@@ -214,7 +214,17 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, PlayerPerG
     		this.model.bind("change", function() {
       			this.render();
     		}, this);
-  		}
+  		},
+        checkPermission: function() {
+            // If the user is not logged in, redirect to login and disable the page transition
+            if (!app.api.is_logged_in()) {
+                app.api.login();
+                return false;
+            }
+         },
+		events: {
+			"click button.btrack_game": "checkPermission",
+        }
 	});
 	Game.Views.Multilist = Backbone.View.extend({
 		template: "games/multilist",
