@@ -11,7 +11,7 @@
         <span><%= start_time_string %></span>
     </div>
     <div class="game_tournament">
-        <span><%= tournament.name %></span>
+        <span><% if (tournament) { %><%= tournament.name %><% } %></span>
     </div>
     <div>
         <form action="#track/<%= id %>">
