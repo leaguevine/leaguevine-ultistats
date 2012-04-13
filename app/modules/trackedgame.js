@@ -117,20 +117,24 @@ function(require, namespace, Backbone) {
 			var new_model = model.clone();
 			var this_event = this.create_event();
 			var event_id = 80;
+            var event_needs_saving = true;
 			if (was_offfield) {
 				//If onfield has < 7, add it, otherwise add it back to offield
 				if (this.get('onfield_'+team_ix).length<7){
 					this.get('onfield_'+team_ix).add(new_model);
 				} else {
 					this.get('offfield_'+team_ix).add(new_model);
+                    event_needs_saving = false;
 				}
 			} else {
 				event_id=event_id+1;
 				this.get('offfield_'+team_ix).add(new_model);
 			}
 			if (this.get('injury_to')){event_id = event_id + 2;}
-			this_event.set({type: event_id, player_1_id: pl_id, player_1_team_id: team_id});
-			this.save_event(this_event);
+            if (event_needs_saving) {
+                this_event.set({type: event_id, player_1_id: pl_id, player_1_team_id: team_id});
+                this.save_event(this_event);
+            }
 		},
         set_current_state: function(current_state, previous_state) { 
             // This should get called every time an action happens on the field
