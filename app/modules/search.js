@@ -72,7 +72,7 @@ function(namespace, Backbone) {
             var view = layout(this);
             var temp_collection = {};
             this.setViews({
-                ".object_list_area": new this.options.ViewsListClass({collection: this.collection})
+                ".object_list_area": new this.options.ViewsListClass({collection: this.collection, tap_method: this.options.tap_method})
             });
             return view.render({
                 search_object_name: this.options.search_object_name,

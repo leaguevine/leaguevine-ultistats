@@ -102,7 +102,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 		routes : {
 			"games": "findGames", //List all games.
 			"games/:gameId": "showGame", //Show detail for one game.
-                        "newgame": "editGame" 
+                        "newgame/:teamId": "editGame",
+                        "editgame/:gameId": "editGame"
 		},
 		findGames: function () {
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
@@ -144,19 +145,19 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 			myLayout.view(".titlebar", new Game.Views.Titlebar({model: game}));
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
-        editGame: function(gameId) {
+        editGame: function(teamId, gameId) {
             var myLayout = app.router.useLayout("nav_content");
 
             if (gameId) { //edit existing game
 
             }
-            else { //create new game
+            else if (teamId) { //create new game
                 var game = new Game.Model({});
                 myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Create a Game"}));
+                myLayout.view(".content", new Game.Views.Edit({teamId: teamId}));
             }
 
             myLayout.view(".navbar", new Navigation.Views.Navbar({}));
-            myLayout.view(".content", new Game.Views.Edit({}));
             myLayout.render(function(el) {$("#main").html(el);});
         }
 	});
@@ -283,12 +284,35 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
                 var Team = require("modules/team");
                 var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
                 teams.fetch();
+                var team1;
+                if (this.options.teamId) {
+                    team1 = new Team.Model({id: this.options.teamId});
+                    team1.fetch({
+                        success: function (model, response) {
+                         /*   view.render({
+                                team1: team1.toJSON().name,
+                                team2: "Select opponent:"
+                            }); */
+                        }
+                    });
+                }
+
                 this.setViews({
                     ".team_search_list": new Search.Views.SearchableList({collection: teams, CollectionClass: Team.Collection, ViewsListClass: Team.Views.List, right_btn_class: "",
-                        right_btn_txt: "Create", right_btn_href: "#newteam", search_object_name: "team"})
+                        right_btn_txt: "Create", right_btn_href: "#newteam", search_object_name: "team",
+                        tap_method: function() {
+                            return view.render({
+                                team1: team1.toJSON().name,
+                                team2: this.model.get('name')
+                            });
+                        }
+                    })
                 });
 
-                return view.render();
+                return view.render({
+                    team1: team1.toJSON().name,
+                    team2: "Select opponent:"
+                });
             }
           /*  initialize: function() {
                 

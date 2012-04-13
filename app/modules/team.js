@@ -177,6 +177,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
 			var filter_by = this.collection.name ? this.collection.name : "";
+                        var tap_method = this.options.tap_method;
 			//this.$el.empty()
 			// call .cleanup() on all child views, and remove all appended views
 			view.cleanup();
@@ -184,7 +185,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 				//Do collection filtering here
 				if (!filter_by || team.get("name").toLowerCase().indexOf(filter_by.toLowerCase()) != -1) {
 					view.insert("ul", new Team.Views.Item({//Inserts the team into the ul in the list template.
-						model: team//pass each team to a Item view instance.
+						model: team, //pass each team to a Item view instance.
+                                                tap_method: tap_method //passing on tap_method from caller
 					}));
 				}
 			});
@@ -200,6 +202,9 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 	});
 	Team.Views.Item = Backbone.View.extend({
 		template: "teams/item",
+                events: {
+                    "click": "team_tap_method"
+                },
 		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul by the list's render function.
 		serialize: function() {
             // Add a couple attributes to the team for displaying
@@ -211,11 +216,27 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
                 team.league_name = team.season.league.name;
             }
             return team
-        } //render looks for this to manipulate model before passing to the template.
+        }, //render looks for this to manipulate model before passing to the template.
+            initialize: function() {
+                if (this.options.tap_method) {
+                    this.team_tap_method = this.options.tap_method;
+                }
+                else {
+                    this.team_tap_method = function() {
+                        Backbone.history.navigate('teams/'+this.model.get('id'), true);
+                    }
+                }
+            }
 	});
 	Team.Views.Detail = Backbone.View.extend({
 		//We were passed a model on creation by Team.Router.showTeam(), so we have this.model  	
 		template: "teams/detail",
+                events: {
+                    "click .bcreategame": "createGame"
+                },
+                createGame: function(ev) {
+                    Backbone.history.navigate('newgame/'+this.model.get('id'), true);
+                },
 		serialize: function() {return this.model.toJSON();},
 		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
 	});
