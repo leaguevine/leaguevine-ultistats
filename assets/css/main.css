@@ -782,6 +782,7 @@ span.button_line_2 {
 
 /* ------------------ Standings --------------------- */
 #tournament_standings {
+    width: 100%;
     margin: 15px;
     font-size: 14px;
 }
@@ -792,6 +793,10 @@ span.button_line_2 {
 
 #tournament_standings tr {
     height: 25px;
+}
+
+#tournament_standings td {
+    text-align: left;
 }
 
 /* =============================================================================
