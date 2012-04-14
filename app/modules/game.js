@@ -287,7 +287,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
             saveGame: function(ev) {
                 this.model.save(
                     {
-                        start_time: "2012-01-23T13:15:00-06:00",
+                        start_time: $('#start_time').val(),
                         team_1_id: this.team1.id,
                         team_2_id: this.team2.id
                     },
@@ -338,7 +338,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
                             edit_view.team2 = this.model.toJSON();
                             return view.render({
                                 team1: edit_view.team1.name,
-                                team2: edit_view.team2.name
+                                team2: edit_view.team2.name,
+                                start_time: null
                             });
                         }
                     })
@@ -346,7 +347,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 
                 return view.render({
                     team1: null,
-                    team2: "Select opponent:"
+                    team2: "Select opponent:",
+                    start_time: null
                 });
             },
        /*     initialize: function() {
