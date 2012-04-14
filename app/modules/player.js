@@ -21,7 +21,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 	//
 	Player.Model = Backbone.Model.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
-			id: "", //Needed for template
+			//id: "", //Needed for template
 			age: "",
 			birth_date: "",
 			first_name: "",

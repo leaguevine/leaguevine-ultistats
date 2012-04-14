@@ -24,7 +24,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 	//
 	Team.Model = Backbone.Model.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
-			id: "",//id is used as href in template so we need default.
+			//id: "",//id is used as href in template so we need default.
 			name: "",
 			info: "",
 			season: {},

@@ -21,9 +21,11 @@ function(require, namespace, Backbone, Leaguevine) {
 		defaults: {// Include defaults for any attribute that will be rendered.
             game: {id: ""},
             league: {},
-            player: {id: ""},
+            //player: {id: ""},
+            player: {},
             season: {},
-            team: {id: ""},
+            //team: {id: ""},
+            team: {},
             tournament: {},
             player_id: "",
             callahans: "",

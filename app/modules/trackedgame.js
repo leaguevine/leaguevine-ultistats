@@ -331,12 +331,14 @@ function(require, namespace, Backbone) {
 			var GameEvent = require("modules/gameevent");
 			
 			var trackedgame = new TrackedGame.Model({id: gameId});
-			trackedgame.id = gameId;
 			trackedgame.fetch(); //localStorage. localStorage requests are synchronous.
 			
 			//We want the child objects to be converted to the proper model types.
 			var newGame = new Game.Model(trackedgame.get("game"));
-			if (!trackedgame.get("game").id) {newGame.id = gameId;}
+			if (!trackedgame.get("game").id) {
+				//newGame.id = gameId;
+				newGame.set(idAttribute,gameId); //This should be equivalent to the above line but somehow it isn't.
+			}
 			trackedgame.set("game",newGame, {silent:true});
 				
 			for (var ix=1;ix<3;ix++) {
@@ -356,6 +358,7 @@ function(require, namespace, Backbone) {
 					if (trackedgame.get("offfield_"+ix).length==0) {
 						_.extend(trackedgame.get("offfield_"+ix),{team_id: model.get("team_"+ix+"_id")});
 					}
+					trackedgame.get("onfield_"+ix).fetch();
 					trackedgame.get("offfield_"+ix).fetch();
 				}
 				if (trackedgame.get("is_over")) {

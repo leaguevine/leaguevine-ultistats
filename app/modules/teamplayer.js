@@ -20,7 +20,8 @@ function(require, namespace, Backbone, Leaguevine) {
 		defaults: {
 			number: "",
 			team: {},
-			player: {id: "", last_name: ""}
+			//player: {id: "", last_name: ""}
+			player: {last_name: "", first_name: ""}
 		},
 		urlRoot: Leaguevine.API.root + "team_players",
 		//TODO: override URL to /team_players/team_id/player_id/

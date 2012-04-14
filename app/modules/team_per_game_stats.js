@@ -19,10 +19,12 @@ function(require, namespace, Backbone, Leaguevine, Stats) {
 	//
 	TeamPerGameStats.Model = Stats.BaseModel.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
-            game: {id: ""},
+            //game: {id: ""},
+            game: {},
             league: {},
             season: {},
-            team: {id: ""},
+            //team: {id: ""},
+            team: {},
             tournament: {},
             team_id: "",
             callahans: "",
