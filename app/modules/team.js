@@ -50,18 +50,18 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 		urlRoot: Leaguevine.API.root + "teams",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += '/?';
+			url += "/?";
 			if ( models && models.length ) {
-				url += 'team_ids=' + JSON.stringify(models.pluck('id')) + '&';
+				url += "team_ids=" + JSON.stringify(models.pluck("id")) + "&";
 			}
             if (this.name) {
-                url += 'name=' + this.name + '&';
+                url += "name=" + this.name + "&";
             }
 			if (this.season_id) {
-				url += 'season_id=' + this.season_id + '&';
+				url += "season_id=" + this.season_id + "&";
 			}
-			url += 'limit=30&';
-            url += 'order_by=%5Bname,-season_id%5D&';
+			url += "limit=30&";
+            url += "order_by=%5Bname,-season_id%5D&";
 			return url;
 		},
 		comparator: function(team) {// Define how items in the collection will be sorted.
@@ -76,7 +76,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 				//When a collection/model is instantiated with a second argument
 				//then that argument is passed in as options
 				//However, some other functions check for the existence of certain options
-				//but the parameter 'options' itself might not exist, so the check results in an undefined error
+				//but the parameter "options" itself might not exist, so the check results in an undefined error
 				//i.e. this.options.var_name gives an error if this.options does not exist.
 				//So instead we set our options to be higher-level parameters here and 
 				//then check for the existence of these higher-level parameters.
@@ -132,14 +132,14 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
             });
 
 			var TeamPlayer = require("modules/teamplayer");
-			var teamplayers = new TeamPlayer.Collection([],{team_id: team.get('id')});
+			var teamplayers = new TeamPlayer.Collection([],{team_id: team.get("id")});
 			teamplayers.fetch();
-			//team.set('teamplayers', teamplayers);
+			//team.set("teamplayers", teamplayers);
 			
 			var Game = require("modules/game");
-			var games = new Game.Collection([],{team_1_id: team.get('id')});
+			var games = new Game.Collection([],{team_1_id: team.get("id")});
 			games.fetch();
-			//team.set('games', games);
+			//team.set("games", games);
 			
 			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
 			myLayout.setViews({
@@ -210,8 +210,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 		serialize: function() {
             // Add a couple attributes to the team for displaying
             var team = this.model.toJSON();
-            team.season_name = '';
-            team.league_name = '';
+            team.season_name = "";
+            team.league_name = "";
             if (team.season != null) {
                 team.season_name = team.season.name;
                 team.league_name = team.season.league.name;
@@ -224,7 +224,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
                 }
                 else {
                     this.team_tap_method = function() {
-                        Backbone.history.navigate('teams/'+this.model.get('id'), true);
+                        Backbone.history.navigate("teams/"+this.model.get("id"), true);
                     }
                 }
             }
@@ -236,7 +236,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
                     "click .bcreategame": "createGame"
                 },
                 createGame: function(ev) {
-                    Backbone.history.navigate('newgame/'+this.model.get('id'), true);
+                    Backbone.history.navigate("newgame/"+this.model.get("id"), true);
                 },
 		serialize: function() {return this.model.toJSON();},
 		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
@@ -248,16 +248,16 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 			"click .bgames": "showGames"
 		},
 		showPlayers: function(ev){
-			$('.lgames').hide();
-			$('.lplayers').show();
-            $('.list_children button').removeClass('is_active');
-            $('button.bplayers').addClass('is_active');
+			$(".lgames").hide();
+			$(".lplayers").show();
+            $(".list_children button").removeClass("is_active");
+            $("button.bplayers").addClass("is_active");
 		},
 		showGames: function(ev){
-			$('.lplayers').hide();
-			$('.lgames').show();
-            $('.list_children button').removeClass('is_active');
-            $('button.bgames').addClass('is_active');
+			$(".lplayers").hide();
+			$(".lgames").show();
+            $(".list_children button").removeClass("is_active");
+            $("button.bgames").addClass("is_active");
 		},
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
@@ -270,7 +270,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 			return view.render().then(function(el) {
 				//I'd rather the render function only do this once, instead of everytime the data are reset
 				//But it might turn out to be a non-issue.
-				$('.lplayers').hide();
+				$(".lplayers").hide();
 			});
 		},
 		initialize: function() {
@@ -298,13 +298,13 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 				{
 					headers: { "Authorization": "bearer " + app.api.d_token() },
                     success: function(model, status, xhr) {
-                        Backbone.history.navigate('teams/'+model.get('id'), true); //Redirect to the team detail page
+                        Backbone.history.navigate("teams/"+model.get("id"), true); //Redirect to the team detail page
                     },
                     error: function() {
                         //TODO: Handle the error by giving the user a message
 
                         // For now, just redirect
-                        Backbone.history.navigate('teams', true);
+                        Backbone.history.navigate("teams", true);
                     }
 				}
 			);
@@ -315,13 +315,13 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 				{
 					headers: { "Authorization": "bearer " + app.api.d_token() },
                     success: function() {
-                        Backbone.history.navigate('teams', true);
+                        Backbone.history.navigate("teams", true);
                     },
                     error: function() {
                         //TODO: Handle the error by giving the user a message
 
                         // For now, just redirect
-                        Backbone.history.navigate('teams', true);
+                        Backbone.history.navigate("teams", true);
                     }
 				}
 			);

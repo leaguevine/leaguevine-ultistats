@@ -19,11 +19,11 @@ function(require, namespace, Backbone, Leaguevine) {
 	//
 	PlayerPerGameStats.Model = Backbone.Model.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
-            game: {id: ''},
+            game: {id: ""},
             league: {},
-            player: {id: ''},
+            player: {id: ""},
             season: {},
-            team: {id: ''},
+            team: {id: ""},
             tournament: {},
             player_id: "",
             callahans: "",
@@ -58,15 +58,15 @@ function(require, namespace, Backbone, Leaguevine) {
 		urlRoot: Leaguevine.API.root + "stats/ultimate/player_stats_per_game",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += '/?';
+			url += "/?";
             if (this.game_ids) {
-                url += 'game_ids=[' + this.game_ids + ']&';
+                url += "game_ids=[" + this.game_ids + "]&";
             }
             if (this.player_ids) {
-                url += 'player_ids[' + this.player_ids + ']&';
+                url += "player_ids[" + this.player_ids + "]&";
             }
-			url += 'limit=30&';
-            url += 'order_by=[-points_played, -goals_caught, -goals_thrown]';
+			url += "limit=30&";
+            url += "order_by=[-points_played, -goals_caught, -goals_thrown]";
 			return url;
 		},
 		comparator: function(stat_line) {// Define how items in the collection will be sorted.
@@ -106,17 +106,17 @@ function(require, namespace, Backbone, Leaguevine) {
 			//this.$el.empty()
 			// call .cleanup() on all child views, and remove all appended views
 			view.cleanup();
-            var team_1_id = this.options.game.get('team_1_id');
-            var team_2_id = this.options.game.get('team_2_id');
+            var team_1_id = this.options.game.get("team_1_id");
+            var team_2_id = this.options.game.get("team_2_id");
 			this.collection.each(function(playerstats) {
                 // Render a single line of stats for a player
                 stat_line = new PlayerPerGameStats.Views.PlayerStats({model: playerstats});
 
                 // Check which team's boxscore the stat line should be appended to
-                if (playerstats.get('team_id') == team_1_id) {
+                if (playerstats.get("team_id") == team_1_id) {
                     view.insert("table#player_per_game_stats_1", stat_line);
                 }
-                else if (playerstats.get('team_id') == team_2_id) {
+                else if (playerstats.get("team_id") == team_2_id) {
                     view.insert("table#player_per_game_stats_2", stat_line);
                 }
 			});

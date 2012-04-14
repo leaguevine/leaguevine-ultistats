@@ -48,7 +48,7 @@ function(namespace, Backbone) {
             var search_string = ev.currentTarget.value;
             my_collection.name = search_string;
 
-            //When we fetch a collection, upon its return the collection 'reset' is triggered.
+            //When we fetch a collection, upon its return the collection "reset" is triggered.
             //However, we cannot fetch our original collection because this will cause (error-generating) duplicates.
             //Thus we make a new collection then merge new results.
             var search_results = new this.options.CollectionClass([],{name: search_string});
@@ -67,7 +67,7 @@ function(namespace, Backbone) {
                 }
             });
             //Trigger a reset immediately so the collection is curated immediately.
-            my_collection.trigger('reset');
+            my_collection.trigger("reset");
         },
         render: function(layout) {
             var view = layout(this);
@@ -81,7 +81,7 @@ function(namespace, Backbone) {
                 right_btn_txt: this.options.right_btn_txt,
                 right_btn_href: this.options.right_btn_href,
             })/*.then(function(el) {
-                $('.object_list_area').html(el);
+                $(".object_list_area").html(el);
                 //This should only be necessary for views that have no template, no setViews, or other view setting mechanism
                 //In this case it is probably causing a (slow) double-render
             })*/;

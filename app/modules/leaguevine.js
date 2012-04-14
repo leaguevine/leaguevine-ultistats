@@ -36,12 +36,12 @@ function(namespace, Backbone) {
 			});
 
 			//After token is received, navigate to the href that was saved earlier
-			localStorage.setItem('auth_object', JSON.stringify(app.api));
-            window.location.href = '#' + localStorage.getItem('login_redirect');
+			localStorage.setItem("auth_object", JSON.stringify(app.api));
+            window.location.href = "#" + localStorage.getItem("login_redirect");
             return false;
 		},
         login_error: function(hash) {
-            Backbone.history.navigate('settings', true); //Redirect to the settings page where there is a prompt to log in again
+            Backbone.history.navigate("settings", true); //Redirect to the settings page where there is a prompt to log in again
          },
 
 	});
@@ -55,7 +55,7 @@ function(namespace, Backbone) {
         season_id: 20041,
         d_token: function() {//Modules will reference this dynamic token			
             if (!this.token) {
-                var stored_api = JSON.parse(localStorage.getItem('auth_object')); //Pull our token out of local storage if it exists.
+                var stored_api = JSON.parse(localStorage.getItem("auth_object")); //Pull our token out of local storage if it exists.
                 _.extend(this,stored_api);
             }
             if (!this.token) {
@@ -66,22 +66,22 @@ function(namespace, Backbone) {
             }
         },
         is_logged_in: function() {//Returns true if the user is logged in and false if not
-            return (localStorage.getItem('auth_object') != null)
+            return (localStorage.getItem("auth_object") != null)
         },
         login: function() {//Redirects a user to the login screen
-            localStorage.setItem('login_redirect', Backbone.history.fragment);
+            localStorage.setItem("login_redirect", Backbone.history.fragment);
             window.location.href = this.base + "&client_id=" + this.client_id + "&redirect_uri=" + this.redirect_uri;
             return false;
         },
         logout: function() {//Logs a user out by removing the locally stored token
-            localStorage.removeItem('auth_object');
+            localStorage.removeItem("auth_object");
             this.token = undefined;
         },
     };
 
-    if (typeof localSettings != 'undefined' && 
-        typeof localSettings.Leaguevine != 'undefined' && 
-        typeof localSettings.Leaguevine.API != 'undefined') {
+    if (typeof localSettings != "undefined" && 
+        typeof localSettings.Leaguevine != "undefined" && 
+        typeof localSettings.Leaguevine.API != "undefined") {
         _.extend(Leaguevine.API, localSettings.Leaguevine.API);
     }
 		

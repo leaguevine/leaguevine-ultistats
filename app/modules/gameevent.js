@@ -40,7 +40,7 @@ function(require, namespace, Backbone, Leaguevine) {
 				if (!temp[key]) {this.unset(key);}
 			}, this);
             var date = new Date(); //The time now
-            this.set('time', date.toJSON().substring(0, 19) + "+00:00"); //The current time in ISO Format
+            this.set("time", date.toJSON().substring(0, 19) + "+00:00"); //The current time in ISO Format
 			return _.clone(this.attributes);
 		}
 	});
@@ -49,9 +49,9 @@ function(require, namespace, Backbone, Leaguevine) {
 		urlRoot: Leaguevine.API.root + "events",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += '/?'
+			url += "/?"
 			if (this.game_id) {
-				url += 'game_ids=%5B' + this.game_id + '%5D&';
+				url += "game_ids=%5B" + this.game_id + "%5D&";
 			}
 			return url.substr(0,url.length-1);
 		},

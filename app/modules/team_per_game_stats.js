@@ -19,10 +19,10 @@ function(require, namespace, Backbone, Leaguevine, Stats) {
 	//
 	TeamPerGameStats.Model = Stats.BaseModel.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
-            game: {id: ''},
+            game: {id: ""},
             league: {},
             season: {},
-            team: {id: ''},
+            team: {id: ""},
             tournament: {},
             team_id: "",
             callahans: "",
@@ -70,15 +70,15 @@ function(require, namespace, Backbone, Leaguevine, Stats) {
 		urlRoot: Leaguevine.API.root + "stats/ultimate/team_stats_per_game",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += '/?';
+			url += "/?";
             if (this.team_ids) {
-                url += 'team_ids=[' + this.team_ids + ']&';
+                url += "team_ids=[" + this.team_ids + "]&";
             }
             if (this.game_ids) {
-                url += 'game_ids=[' + this.game_ids + ']&';
+                url += "game_ids=[" + this.game_ids + "]&";
             }
-			url += 'limit=30&';
-            url += 'order_by=[-game_id]';
+			url += "limit=30&";
+            url += "order_by=[-game_id]";
 			return url;
 		},
 		comparator: function(stat_line) {// Define how items in the collection will be sorted.

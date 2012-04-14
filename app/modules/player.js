@@ -105,9 +105,9 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
             });
 			
 			var TeamPlayer = require("modules/teamplayer");
-			teamplayers = new TeamPlayer.Collection([],{player_id: player.get('id')});
+			teamplayers = new TeamPlayer.Collection([],{player_id: player.get("id")});
 			teamplayers.fetch();
-			//player.set('teamplayers', teamplayers);
+			//player.set("teamplayers", teamplayers);
 			
 			//TODO: Get some player stats and add them to Multilist
 			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
@@ -174,7 +174,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			"click .bteams": "showTeams"
 		},
 		showTeams: function(ev){
-			$('.lteams').show();
+			$(".lteams").show();
 		},
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.

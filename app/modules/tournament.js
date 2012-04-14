@@ -20,10 +20,10 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 	
 	Tournament.Model = Backbone.Model.extend({
 		defaults: {
-			name: '',
-			start_date: '',
-			end_date: '',
-			info: '',
+			name: "",
+			start_date: "",
+			end_date: "",
+			info: "",
 			season: {},
 			tournteams: {},
 			games: {}
@@ -43,18 +43,18 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 		urlRoot: Leaguevine.API.root + "tournaments",
         url: function(models) {
             var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-            url += '/?'; 
+            url += "/?"; 
             if ( models && models.length ) {
-                url += 'tournament_ids=' + JSON.stringify(models.pluck('id')) + '&';
+                url += "tournament_ids=" + JSON.stringify(models.pluck("id")) + "&";
             }
             if (this.name) {
-                url += 'name=' + this.name + '&';
+                url += "name=" + this.name + "&";
             }           
             if (this.season_id) {
-                url += 'season_id=' + this.season_id + '&';
+                url += "season_id=" + this.season_id + "&";
             }
-            url += 'limit=30&';
-            url += 'order_by=%5Bname,-season_id%5D&';
+            url += "limit=30&";
+            url += "order_by=%5Bname,-season_id%5D&";
             return url;
         },
 		comparator: function(tournament) {
@@ -107,11 +107,11 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
             });
 
 			var TournTeam = require("modules/tournteam");
-			var tournteams = new TournTeam.Collection([],{tournament_id: tournament.get('id')});
+			var tournteams = new TournTeam.Collection([],{tournament_id: tournament.get("id")});
 			tournteams.fetch();
 			
 			var Game = require("modules/game");
-			var games = new Game.Collection([],{tournament_id: tournament.get('id')});
+			var games = new Game.Collection([],{tournament_id: tournament.get("id")});
 			games.fetch();
 			
 			var myLayout = app.router.useLayout("nav_detail_list");
@@ -161,8 +161,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 		render: function(layout) {
             var tournament = this.model.toJSON();
             // Create a human-readable date for this tournament
-            tournament.start_date_string = '';
-            if (tournament.start_date != '') {
+            tournament.start_date_string = "";
+            if (tournament.start_date != "") {
                 var start_date = new Date(tournament.start_date);
                 tournament.start_date_string = start_date.toLocaleDateString();
             }
@@ -185,41 +185,41 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
             */
 		},
         showGames: function(ev){
-			$('.lbrackets').hide();
-			$('.lpools').hide();
-			$('.lstandings').hide();
-            $('.lgames').show();
-            $('.list_children button').removeClass('is_active');
-            $('button.bgames').addClass('is_active');
+			$(".lbrackets").hide();
+			$(".lpools").hide();
+			$(".lstandings").hide();
+            $(".lgames").show();
+            $(".list_children button").removeClass("is_active");
+            $("button.bgames").addClass("is_active");
         },
 		showStandings: function(ev){
-			$('.lbrackets').hide();
-			$('.lpools').hide();
-			$('.lgames').hide();
-			$('.lstandings').show();
-            $('.list_children button').removeClass('is_active');
-            $('button.bstandings').addClass('is_active');
+			$(".lbrackets").hide();
+			$(".lpools").hide();
+			$(".lgames").hide();
+			$(".lstandings").show();
+            $(".list_children button").removeClass("is_active");
+            $("button.bstandings").addClass("is_active");
 			//console.log("TODO: Show Standings");
 		},
         /* 
         // Don't show these yet. To enable showing pools and brackets, we 
         // need to return lists of pools and brackets instead of games, and then style these.
 		showPools: function(ev){
-			$('.lstandings').hide();
-			$('.lbrackets').hide();
-			$('.lgames').hide();
-			$('.lpools').show();
-            $('.list_children button').removeClass('is_active');
-            $('button.bpools').addClass('is_active');
+			$(".lstandings").hide();
+			$(".lbrackets").hide();
+			$(".lgames").hide();
+			$(".lpools").show();
+            $(".list_children button").removeClass("is_active");
+            $("button.bpools").addClass("is_active");
 			//console.log("TODO: Show Pools");
 		},
 		showBrackets: function(ev){
-			$('.lstandings').hide();
-			$('.lpools').hide();
-			$('.lgames').hide();
-			$('.lbrackets').show();
-            $('.list_children button').removeClass('is_active');
-            $('button.bbrackets').addClass('is_active');
+			$(".lstandings").hide();
+			$(".lpools").hide();
+			$(".lgames").hide();
+			$(".lbrackets").show();
+            $(".list_children button").removeClass("is_active");
+            $("button.bbrackets").addClass("is_active");
 			//console.log("TODO: Show Brackets")
 		},
         */
@@ -237,10 +237,10 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 			});
 			return view.render().then(function(el) {
                 /*
-				$('.lpools').hide();
-				$('.lbrackets').hide();
+				$(".lpools").hide();
+				$(".lbrackets").hide();
                 */
-				$('.lstandings').hide();
+				$(".lstandings").hide();
 			});
 		},
 		initialize: function() {

@@ -14,9 +14,9 @@ function(namespace, Backbone, Leaguevine) {
 	
 	Season.Model = Backbone.Model.extend({
 		defaults: {
-			name: '',
-			start_date: '',
-			end_date: '',
+			name: "",
+			start_date: "",
+			end_date: "",
 			teams: {}//one-to-many
 		},
 		urlRoot: Leaguevine.API.root + "seasons",

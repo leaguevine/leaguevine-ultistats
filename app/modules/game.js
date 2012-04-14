@@ -50,8 +50,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
                 var tz_minutes_offset = new Date().getTimezoneOffset() //The offset in minutes from GMT/UTC
                 var start_time = new Date(start_time_utc.getTime() + (tz_minutes_offset * 60 * 1000)); //Start time using user's system clock
                 var minutes = start_time.getMinutes();
-                if (minutes < 10) {minutes = '0' + minutes;} //Make the minutes field two digits
-                game.start_time_string = start_time.getHours() + ':' + minutes + ' ' + start_time.toLocaleDateString();
+                if (minutes < 10) {minutes = "0" + minutes;} //Make the minutes field two digits
+                game.start_time_string = start_time.getHours() + ":" + minutes + " " + start_time.toLocaleDateString();
             }
 
             return game
@@ -66,22 +66,22 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 		urlRoot: Leaguevine.API.root + "games",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += '/?'
+			url += "/?"
 			if ( models && models.length ) {
-				url += 'game_ids=' + JSON.stringify(models.pluck('id')) + '&';
+				url += "game_ids=" + JSON.stringify(models.pluck("id")) + "&";
 			}
 			if (this.season_id) {
-				url += 'season_id=' + this.season_id + '&';
+				url += "season_id=" + this.season_id + "&";
 			}
 			if (this.tournament_id) {
-				url += 'tournament_id=' + this.tournament_id + '&';
+				url += "tournament_id=" + this.tournament_id + "&";
 			}
 			if (this.team_1_id || this.team_2_id) {
-				url += 'team_ids=%5B';
+				url += "team_ids=%5B";
 				if (this.team_1_id){url += this.team_1_id;}
-				if (this.team_1_id && this.team_2_id){url += ',';}
+				if (this.team_1_id && this.team_2_id){url += ",";}
 				if (this.team_2_id){url += this.team_2_id;}
-				url += '%5D&';
+				url += "%5D&";
 			}
 			return url.substr(0,url.length-1);
 		},
@@ -176,7 +176,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
         template: "layouts/div", //Use an empty template for rendering since it's just a wrapper around Title.Views.Titlebar
         render: function(layout) { //Render the title for the game depending on if it is in a tournament or not
             var view = layout(this);
-            var tournamentId = this.model.get('tournament_id');
+            var tournamentId = this.model.get("tournament_id");
             var left_btn_href = "#games";
             var left_btn_txt = "Games";
             if (tournamentId != null) {
@@ -253,16 +253,16 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 			"click .bplayer_stats": "showPlayerStats",
 		},
 		showTeamStats: function(ev){
-			$('.lplayer_stats').hide();
-			$('.lteam_stats').show();
-            $('.list_children button').removeClass('is_active');
-            $('button.bteam_stats').addClass('is_active');
+			$(".lplayer_stats").hide();
+			$(".lteam_stats").show();
+            $(".list_children button").removeClass("is_active");
+            $("button.bteam_stats").addClass("is_active");
 		},
 		showPlayerStats: function(ev){
-			$('.lteam_stats').hide();
-			$('.lplayer_stats').show();
-            $('.list_children button').removeClass('is_active');
-            $('button.bplayer_stats').addClass('is_active');
+			$(".lteam_stats").hide();
+			$(".lplayer_stats").show();
+            $(".list_children button").removeClass("is_active");
+            $("button.bplayer_stats").addClass("is_active");
 		},
 		render: function(layout) {
 			var view = layout(this);
@@ -287,17 +287,17 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
             saveGame: function(ev) {
                 this.model.save(
                     {
-                        start_time: $('#start_time').val(),
+                        start_time: $("#start_time").val(),
                         team_1_id: this.team1.id,
                         team_2_id: this.team2.id
                     },
                     {
                         headers: { "Authorization": "bearer " + app.api.d_token() },
                         success: function(model, status, xhr) {
-                            Backbone.history.navigate('games/'+model.get('id'), true);
+                            Backbone.history.navigate("games/"+model.get("id"), true);
                         },
                         error: function() {
-                            Backbone.history.navigate('teams', true);
+                            Backbone.history.navigate("teams", true);
                         }
                     }
                 );

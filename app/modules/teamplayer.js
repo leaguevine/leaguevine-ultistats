@@ -20,13 +20,13 @@ function(require, namespace, Backbone, Leaguevine) {
 		defaults: {
 			number: "",
 			team: {},
-			player: {id: '', last_name: ''}
+			player: {id: "", last_name: ""}
 		},
 		urlRoot: Leaguevine.API.root + "team_players",
 		//TODO: override URL to /team_players/team_id/player_id/
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += '/?';
+			url += "/?";
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Model.prototype.parse(resp);
@@ -45,22 +45,22 @@ function(require, namespace, Backbone, Leaguevine) {
 		urlRoot: Leaguevine.API.root + "team_players",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += '/?';
+			url += "/?";
 			if (this.team_id) {
-				url += 'team_ids=%5B' + this.team_id + '%5D&';
+				url += "team_ids=%5B" + this.team_id + "%5D&";
 			} else if (this.models && this.models.length) {
-				url += 'team_ids=%5B' + this.models[0].get('team').id + '%5D&';
+				url += "team_ids=%5B" + this.models[0].get("team").id + "%5D&";
 			}
 			//If we already have a list of players, 
-			if (this.player_id) {url += 'player_ids=%5B' + this.player_id + '%5D&';}
+			if (this.player_id) {url += "player_ids=%5B" + this.player_id + "%5D&";}
 			else if (this.models && this.models.length) {
-				url += 'player_ids=%5B';
+				url += "player_ids=%5B";
 				_.each(this.models, function(tp) {
-					url = url + tp.get('player').id + ','
+					url = url + tp.get("player").id + ","
 				});
-				url = url.substr(0,url.length-1) + '%5D&';
+				url = url.substr(0,url.length-1) + "%5D&";
 			}
-            url += 'limit=50&'; //Make sure we grab all of the players. Omitting this defaults to 20 players
+            url += "limit=50&"; //Make sure we grab all of the players. Omitting this defaults to 20 players
 			return url.substr(0,url.length-1);
 		},
 		comparator: function(teamplayer) {// Define how items in the collection will be sorted.

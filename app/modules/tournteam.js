@@ -24,9 +24,9 @@ function(require, namespace, Backbone, Leaguevine) {
 		url: function(models) {
 			var url = this.urlRoot;
 			if (this.tournament) {url+=this.tournament.id}
-			url+='/';
+			url+="/";
 			if (this.team) {url+=this.team.id}
-			url+='/';
+			url+="/";
 			return url;
 		},
 		parse: function(resp, xhr) {
@@ -42,12 +42,12 @@ function(require, namespace, Backbone, Leaguevine) {
 		urlRoot: Leaguevine.API.root + "tournament_teams",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += '/?'
+			url += "/?"
 			if (this.team_id) {
-				url += 'team_ids=%5B' + this.team_id + '%5D&';
+				url += "team_ids=%5B" + this.team_id + "%5D&";
 			}
 			if (this.tournament_id) {
-				url += 'tournament_ids=%5B' + this.tournament_id + '%5D&';
+				url += "tournament_ids=%5B" + this.tournament_id + "%5D&";
 			}
 			return url.substr(0,url.length-1);
 		},
@@ -84,7 +84,7 @@ function(require, namespace, Backbone, Leaguevine) {
 		tagName: "tr",
         serialize: function() {
             tournteam = this.model.toJSON();
-            tournteam.team = this.model.get('team').toJSON(); //Expand the team on the model as well
+            tournteam.team = this.model.get("team").toJSON(); //Expand the team on the model as well
             return tournteam;
         }
 	});

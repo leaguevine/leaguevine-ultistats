@@ -32,13 +32,13 @@ function(namespace, Backbone) {
 	    	var view = layout(this);
 
             // Set some defaults for the buttons. All button parameters are optional
-            if (typeof this.options.left_btn_class == "undefined" && typeof this.options.left_btn_txt == "undefined") {this.options.left_btn_class = 'disabled'}
-            if (typeof this.options.left_btn_href == "undefined") {this.options.left_btn_href = ''}
-            if (typeof this.options.left_btn_txt == "undefined") {this.options.left_btn_txt = ''}
-            if (typeof this.options.right_btn_class == "undefined" && typeof this.options.right_btn_txt == "undefined") {this.options.right_btn_class = 'disabled'}
-            if (typeof this.options.right_btn_href == "undefined") {this.options.right_btn_href = ''}
-            if (typeof this.options.right_btn_txt == "undefined") {this.options.right_btn_txt = ''}
-	    	return view.render({href: '',
+            if (typeof this.options.left_btn_class == "undefined" && typeof this.options.left_btn_txt == "undefined") {this.options.left_btn_class = "disabled"}
+            if (typeof this.options.left_btn_href == "undefined") {this.options.left_btn_href = ""}
+            if (typeof this.options.left_btn_txt == "undefined") {this.options.left_btn_txt = ""}
+            if (typeof this.options.right_btn_class == "undefined" && typeof this.options.right_btn_txt == "undefined") {this.options.right_btn_class = "disabled"}
+            if (typeof this.options.right_btn_href == "undefined") {this.options.right_btn_href = ""}
+            if (typeof this.options.right_btn_txt == "undefined") {this.options.right_btn_txt = ""}
+	    	return view.render({href: "",
                                 title: this.options.title,
                                 left_btn_href: this.options.left_btn_href,
                                 left_btn_txt: this.options.left_btn_txt,
