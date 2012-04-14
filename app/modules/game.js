@@ -155,7 +155,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
             else if (teamId) { //create new game
                 var game = new Game.Model({});
                 myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Create a Game"}));
-                myLayout.view(".content", new Game.Views.Edit({teamId: teamId}));
+                myLayout.view(".content", new Game.Views.Edit({model: game, teamId: teamId}));
             }
 
             myLayout.view(".navbar", new Navigation.Views.Navbar({}));
@@ -280,16 +280,48 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 	});
         Game.Views.Edit = Backbone.View.extend({
             template: "games/edit",
+            events: {
+                "click .save": "saveGame",
+                "click .delete": "deleteGame"
+            },
+            saveGame: function(ev) {
+                this.model.save(
+                    {
+                        start_time: "2012-01-23T13:15:00-06:00",
+                        team_1_id: this.team1.id,
+                        team_2_id: this.team2.id
+                    },
+                    {
+                        headers: { "Authorization": "bearer " + app.api.d_token() },
+                        success: function(model, status, xhr) {
+                            Backbone.history.navigate('games/'+model.get('id'), true);
+                        },
+                        error: function() {
+                            Backbone.history.navigate('teams', true);
+                        }
+                    }
+                );
+                return false;
+            },
+            deleteGame: function(ev) {
+
+
+            },
             render: function(layout) {
                 var view = layout(this);
                 var Team = require("modules/team");
                 var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
                 teams.fetch();
-                var team1;
+                var edit_view = this;
                 if (this.options.teamId) {
-                    team1 = new Team.Model({id: this.options.teamId});
-                    team1.fetch({
+                    var team = new Team.Model({id: this.options.teamId});
+                    team.fetch({
                         success: function (model, response) {
+                            edit_view.team1 = model.toJSON();
+                         /*   view.render({
+                                team1: edit_view.team1.name,
+                                team2: "Select opponent:"
+                            }); */
                          /*   view.render({
                                 team1: team1.toJSON().name,
                                 team2: "Select opponent:"
@@ -302,21 +334,22 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
                     ".team_search_list": new Search.Views.SearchableList({collection: teams, CollectionClass: Team.Collection, ViewsListClass: Team.Views.List, right_btn_class: "",
                         right_btn_txt: "Create", right_btn_href: "#newteam", search_object_name: "team",
                         tap_method: function() {
+                            //edit_view.team_1 = team1.toJSON();
+                            edit_view.team2 = this.model.toJSON();
                             return view.render({
-                                team1: team1.toJSON().name,
-                                team2: this.model.get('name')
+                                team1: edit_view.team1.name,
+                                team2: edit_view.team2.name
                             });
                         }
                     })
                 });
 
                 return view.render({
-                    team1: team1.toJSON().name,
+                    team1: null,
                     team2: "Select opponent:"
                 });
-            }
-          /*  initialize: function() {
-                
+            },
+       /*     initialize: function() {
 
             } */
 
