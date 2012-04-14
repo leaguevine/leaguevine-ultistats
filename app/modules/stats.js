@@ -10,6 +10,7 @@ define([
 ],
 
 function(require, namespace, Backbone, Leaguevine) {
+    "use strict";
 	var app = namespace.app;
 	var Stats = namespace.module();
 

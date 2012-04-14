@@ -15,6 +15,7 @@ define([
   "modules/team_per_game_stats",
 ],
 function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Title, PlayerPerGameStats, TeamPerGameStats) {
+    "use strict";
 	var app = namespace.app;
 	var Game = namespace.module();
 	

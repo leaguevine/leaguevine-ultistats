@@ -14,6 +14,7 @@ define([
   "modules/game"
 ],
 function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
+    "use strict";
 	var app = namespace.app;
 	var Tournament = namespace.module();
 	
@@ -78,7 +79,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 		},
 		listTournaments: function () {
 			// Prepare the data.
-			tournaments = new Tournament.Collection([],{season_id: Leaguevine.API.season_id});
+			var tournaments = new Tournament.Collection([],{season_id: Leaguevine.API.season_id});
 			tournaments.fetch();
 
 			//var Search = require("modules/search"); //If that module is an argument to this module's function then it does not need to be required again.

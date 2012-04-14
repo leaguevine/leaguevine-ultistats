@@ -8,6 +8,7 @@ define([
   "use!plugins/backbone.layoutmanager"
 ],
 function(namespace, Backbone) {
+    "use strict";
 	var app = namespace.app;
 	var Title = namespace.module();
 	

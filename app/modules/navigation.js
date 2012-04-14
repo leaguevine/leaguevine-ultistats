@@ -8,6 +8,7 @@ define([
   "use!plugins/backbone.layoutmanager"
 ],
 function(namespace, Backbone, Game) {
+    "use strict";
 	var app = namespace.app;
 	var Navigation = namespace.module();
 

@@ -10,6 +10,7 @@ define([
 ],
 
 function(require, namespace, Backbone, Leaguevine) {
+    "use strict";
 	var app = namespace.app;
 	var GameEvent = namespace.module();
 	GameEvent.Model = Backbone.Model.extend({

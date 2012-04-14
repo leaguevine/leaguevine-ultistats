@@ -12,6 +12,7 @@ define([
   "modules/teamplayer"
 ],
 function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
+    "use strict";
 	var app = namespace.app;
 	var Player = namespace.module();
 	

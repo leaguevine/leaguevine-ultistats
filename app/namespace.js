@@ -11,7 +11,7 @@ define([
 ],
 
 function($, _, Backbone) {
-  // Put application wide code here
+    "use strict";
   
   Backbone.LayoutManager.configure({
 	

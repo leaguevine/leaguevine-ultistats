@@ -20,6 +20,7 @@ require([
  * once everything has finished loading.
  */
 function(namespace, $, Backbone, Leaguevine) {
+    "use strict";
 	
 	var app = namespace.app; //Shorthanded app namespace.
 

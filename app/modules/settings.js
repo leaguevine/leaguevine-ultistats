@@ -11,6 +11,7 @@ define([
   "modules/title",
 ],
 function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
+    "use strict";
 	var app = namespace.app;
 	var Settings = namespace.module();
 	Settings.Router = Backbone.Router.extend({

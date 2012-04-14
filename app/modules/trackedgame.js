@@ -17,6 +17,7 @@ This module is an interface for tracking game action.
 It has some data that is not persisted to the server.
 */
 function(require, namespace, Backbone) {
+    "use strict";
 	var app = namespace.app;
 	var TrackedGame = namespace.module();
 	

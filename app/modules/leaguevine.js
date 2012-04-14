@@ -13,6 +13,7 @@ function(namespace, Backbone) {
 	/*
 	 * This module defines the API properties.
 	 */
+    "use strict";
     var app = namespace.app;
 
   	// Create a new module
