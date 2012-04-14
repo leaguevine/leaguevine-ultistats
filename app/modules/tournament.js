@@ -91,8 +91,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 			myLayout.render(function(el) {$("#main").html(el);});
 		},
 		showTournament: function (tournamentId) {
-            tournament = new Tournament.Model({id: tournamentId});
-            titlebarOptions = {title: tournament.get("name"), 
+            var tournament = new Tournament.Model({id: tournamentId});
+            var titlebarOptions = {title: tournament.get("name"), 
                                left_btn_href:"#tournaments", 
                                left_btn_class:"back", 
                                left_btn_txt:"Tournaments"};
@@ -106,11 +106,11 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
             });
 
 			var TournTeam = require("modules/tournteam");
-			tournteams = new TournTeam.Collection([],{tournament_id: tournament.get('id')});
+			var tournteams = new TournTeam.Collection([],{tournament_id: tournament.get('id')});
 			tournteams.fetch();
 			
 			var Game = require("modules/game");
-			games = new Game.Collection([],{tournament_id: tournament.get('id')});
+			var games = new Game.Collection([],{tournament_id: tournament.get('id')});
 			games.fetch();
 			
 			var myLayout = app.router.useLayout("nav_detail_list");
@@ -158,11 +158,11 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 	Tournament.Views.Detail = Backbone.View.extend({  	
 		template: "tournaments/detail",
 		render: function(layout) {
-            tournament = this.model.toJSON();
+            var tournament = this.model.toJSON();
             // Create a human-readable date for this tournament
             tournament.start_date_string = '';
             if (tournament.start_date != '') {
-                start_date = new Date(tournament.start_date);
+                var start_date = new Date(tournament.start_date);
                 tournament.start_date_string = start_date.toLocaleDateString();
             }
             return layout(this).render(tournament);

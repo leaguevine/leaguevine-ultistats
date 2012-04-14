@@ -44,11 +44,11 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
             // TODO: Put this function in namespace?
             game.start_time_string = "";
             if (game.start_time != "" ){ //parse the start time and make it human-readable
-                arr = game.start_time.split(/[- :T]/);
-                start_time_utc = new Date(arr[0], arr[1]-1, arr[2], arr[3], arr[4]); //Parse the ISOformat start time
-                tz_minutes_offset = new Date().getTimezoneOffset() //The offset in minutes from GMT/UTC
-                start_time = new Date(start_time_utc.getTime() + (tz_minutes_offset * 60 * 1000)); //Start time using user's system clock
-                minutes = start_time.getMinutes();
+                var arr = game.start_time.split(/[- :T]/);
+                var start_time_utc = new Date(arr[0], arr[1]-1, arr[2], arr[3], arr[4]); //Parse the ISOformat start time
+                var tz_minutes_offset = new Date().getTimezoneOffset() //The offset in minutes from GMT/UTC
+                var start_time = new Date(start_time_utc.getTime() + (tz_minutes_offset * 60 * 1000)); //Start time using user's system clock
+                var minutes = start_time.getMinutes();
                 if (minutes < 10) {minutes = '0' + minutes;} //Make the minutes field two digits
                 game.start_time_string = start_time.getHours() + ':' + minutes + ' ' + start_time.toLocaleDateString();
             }
@@ -116,7 +116,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 		showGame: function (gameId) {
 			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
 			//Prepare the data.
-			game = new Game.Model({id: gameId});
+			var game = new Game.Model({id: gameId});
 			game.fetch({
 				success: function (model, response) {
                     // After the game has been fetched, render the nav-bar so the back button says tournament
@@ -226,7 +226,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 	Game.Views.Detail = Backbone.LayoutManager.View.extend({  	
 		template: "games/detail",
 		render: function(layout) {
-            game = this.model.toJSON();
+            var game = this.model.toJSON();
 			return layout(this).render(game);
 		},
 		initialize: function() {
