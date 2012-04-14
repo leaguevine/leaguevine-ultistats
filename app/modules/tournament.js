@@ -54,7 +54,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
                 url += 'season_id=' + this.season_id + '&';
             }
             url += 'limit=30&';
-            url += 'order_by=[name, -season_id]';
+            url += 'order_by=%5Bname,-season_id%5D&';
             return url;
         },
 		comparator: function(tournament) {
