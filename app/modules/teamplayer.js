@@ -60,6 +60,7 @@ function(require, namespace, Backbone, Leaguevine) {
 				});
 				url = url.substr(0,url.length-1) + '%5D&';
 			}
+            url += 'limit=50&'; //Make sure we grab all of the players. Omitting this defaults to 20 players
 			return url.substr(0,url.length-1);
 		},
 		comparator: function(teamplayer) {// Define how items in the collection will be sorted.
