@@ -337,7 +337,7 @@ function(require, namespace, Backbone) {
 			var newGame = new Game.Model(trackedgame.get("game"));
 			if (!trackedgame.get("game").id) {
 				//newGame.id = gameId;
-				newGame.set(idAttribute,gameId); //This should be equivalent to the above line but somehow it isn't.
+				newGame.set('id',gameId); //This should be equivalent to the above line but somehow it isn't.
 			}
 			trackedgame.set("game",newGame, {silent:true});
 				

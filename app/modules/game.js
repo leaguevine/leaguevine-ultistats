@@ -21,7 +21,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 	
 	Game.Model = Backbone.Model.extend({
 		defaults: {
-			//id: "",
+			id: "",
 			team_1_score: "",
 			team_2_score: "",
 			start_time: "",
