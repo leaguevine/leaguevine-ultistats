@@ -6,6 +6,18 @@
  * Add or override Backbone.js functionality, for compatibility with django-tastypie.
  */
 (function( undefined ) {
+	// Backbone.noConflict support. Save local copy of Backbone object.
+	var Backbone = window.Backbone;
+
+	Backbone.Tastypie = {
+		doGetOnEmptyPostResponse: true,
+		doGetOnEmptyPutResponse: false,
+		apiKey: {
+			username: '',
+			key: ''
+		}
+	};
+
 	/**
 	 * Override Backbone's sync function, to do a GET upon receiving a HTTP CREATED.
 	 * This requires 2 requests to do a create, so you may want to use some other method in production.
@@ -13,7 +25,15 @@
 	 */
 	Backbone.oldSync = Backbone.sync;
 	Backbone.sync = function( method, model, options ) {
-		if ( method === 'create' ) {
+
+		if ( Backbone.Tastypie.apiKey && Backbone.Tastypie.apiKey.username.length ) {
+			options.headers = _.extend( {
+				'Authorization': 'ApiKey ' + Backbone.Tastypie.apiKey.username + ':' + Backbone.Tastypie.apiKey.key
+			}, options.headers );
+		}
+
+		if ( ( method === 'create' && Backbone.Tastypie.doGetOnEmptyPostResponse ) ||
+			( method === 'update' && Backbone.Tastypie.doGetOnEmptyPutResponse ) ) {
 			var dfd = new $.Deferred();
 			
 			// Set up 'success' handling
@@ -21,8 +41,8 @@
 			options.success = function( resp, status, xhr ) {
 				// If create is successful but doesn't return a response, fire an extra GET.
 				// Otherwise, resolve the deferred (which triggers the original 'success' callbacks).
-				if ( xhr.status === 201 && !resp ) { // 201 CREATED; response null or empty.
-					var location = xhr.getResponseHeader( 'Location' );
+				if ( !resp && ( xhr.status === 201 || xhr.status === 202 || xhr.status === 204 ) ) { // 201 CREATED, 202 ACCEPTED or 204 NO CONTENT; response null or empty.
+					var location = xhr.getResponseHeader( 'Location' ) || model.id;
 					return $.ajax( {
 						   url: location,
 						   success: dfd.resolve,
@@ -40,7 +60,7 @@
 				dfd.rejectWith( options.context || options, [ xhr, status, resp ] );
 			};
 			
-			// Make the request, make it accessibly by assigning it to the 'request' property on the deferred 
+			// Make the request, make it accessibly by assigning it to the 'request' property on the deferred
 			dfd.request = Backbone.oldSync( method, model, options );
 			return dfd;
 		}
@@ -48,11 +68,11 @@
 		return Backbone.oldSync( method, model, options );
 	};
 
-	Backbone.Model.prototype.idAttribute = 'resource_uri';
+	//Backbone.Model.prototype.idAttribute = 'resource_uri';
 	
 	Backbone.Model.prototype.url = function() {
 		// Use the id if possible
-		var url = this.id;
+		var url = this.attributes && this.get("resource_uri");
 		
 		// If there's no idAttribute, use the 'urlRoot'. Fallback to try to have the collection construct a url.
 		// Explicitly add the 'id' attribute if the model has one.
@@ -61,7 +81,7 @@
 			url = url || this.collection && ( _.isFunction( this.collection.url ) ? this.collection.url() : this.collection.url );
 
 			if ( url && this.has( 'id' ) ) {
-				url = addSlash( url ) + this.get( 'id' );
+				url = addSlash( url ) + this.id;
 			}
 		}
 
@@ -102,13 +122,7 @@
 				});
 			url += 'set/' + ids.join( ';' ) + '/';
 		}
-		else {// if there are no models, then request a collection filtering on related...
-			//TODO: Find a way to search for related HasOne's, but for now specify the season.
-			if (this.season) {
-				url += '?'
-				url += 'season_id=' + this.season.get('id')
-			}
-		}
+		
 		return url || null;
 	};
 

@@ -33,9 +33,11 @@ function(require, namespace, Backbone) {
 			offfield_2: [],
             previous_state: 'blank',
 			current_state: 'pulled',
-			team_in_possession_ix: 1,
+			is_over: false,
+			period_number: NaN,
+			team_pulled_to_start_ix: NaN,
+			team_in_possession_ix: NaN,
 			player_in_possession_id: NaN,
-			team_pulled_ix: NaN,
 			injury_to: false,//Whether or not substitutions will be injury substitutions.
 			showing_alternate: -1//I seem to be having trouble with using a boolean or using 0 and 1. So use 1 and -1.
 		},
@@ -53,7 +55,7 @@ function(require, namespace, Backbone) {
 			var GameEvent = require("modules/gameevent");
 			var d = new Date();//"2011-12-19T15:28:46.493Z"
 			var time = d.getUTCFullYear() + '-' + (d.getUTCMonth() + 1) + '-' + d.getUTCDate() + 'T' + d.getUTCHours() + ':' + d.getUTCMinutes() + ':' + d.getUTCSeconds();
-			var gameid = this.get('game').get('id');
+			var gameid = this.get('game').id;
 			return new GameEvent.Model({time: time, game_id: gameid});
 		},
 		save_event: function(event) {
@@ -269,8 +271,43 @@ function(require, namespace, Backbone) {
 			this_event.set({type: 91, int_1: team_id});
 			this.save_event(this_event);
 		},
-		end_of_period: function(){
-			console.log("TODO: end_of_period in model def.")
+		end_period: function(){
+			//the End Period button should be disabled if we are in an injury_to... but I will check for the state anywyay.
+			if (this.get("current_state")=="pulled" && !this.get("injury_to")) {
+				var ev_type = 94;
+				var last_per_num = this.get("period_number");
+				//The following line COULD be used for specific end of period types,
+				//except that non AUDL games would have "end of first" events instead of half-time events.
+				//if (last_per_num <=3){ev_type = ev_type + last_per_num;}
+				this.set("period_number", last_per_num+1);
+				this.start_period_pull();
+				
+				var this_event = this.create_event();
+				this_event.set({type: ev_type});
+				this.save_event(this_event);
+			} 
+		},
+		start_period_pull: function(){
+			//This function is called at the beginning of a period (including the first) to determine which team has the disc.
+			var per_num = this.get("period_number");
+			if ( per_num==1 ){
+				//Alert to ask which team is pulling to start.
+				//TODO: Replace this with a nice view or style the alert.
+				var pulled_team_1=confirm("Press OK if " + this.get('game').get('team_1').name + " is pulling to start the game.");
+				this.set('team_pulled_to_start_ix', pulled_team_1 ? 1 : 2);
+			}
+			//Determine who should be pulling disc.
+			//If the period number is odd, then the team now pulling is the team that pulled to start the game.
+			var tip_ix = per_num%2==1 ? this.get("team_pulled_to_start_ix") : 3-this.get("team_pulled_to_start_ix");
+			this.set("team_in_possession_ix", tip_ix)
+		},
+		game_over: function(){
+			var this_event = this.create_event();
+			this_event.set({type: 98});
+			this.save_event(this_event);
+			this.set("is_over",true);
+			this.save();//save the trackedgame.
+			Backbone.history.navigate('games/'+this.get("game").id, true);
 		}
 	});
 	
@@ -284,6 +321,7 @@ function(require, namespace, Backbone) {
 		trackGame: function (gameId) {
             if (!app.api.is_logged_in()) {//Ensure that the user is logged in
                 app.api.login();
+                return;
             }
 			
 			var myLayout = app.router.useLayout("tracked_game");
@@ -293,18 +331,21 @@ function(require, namespace, Backbone) {
 			var GameEvent = require("modules/gameevent");
 			
 			var trackedgame = new TrackedGame.Model({id: gameId});
-			trackedgame.id=gameId;
-			trackedgame.fetch(); //localStorage
+			trackedgame.id = gameId;
+			trackedgame.fetch(); //localStorage. localStorage requests are synchronous.
 			
 			//We want the child objects to be converted to the proper model types.
 			var newGame = new Game.Model(trackedgame.get('game'));
-			if (!trackedgame.get('game').id) {newGame.set('id',gameId);}
+			if (!trackedgame.get('game').id) {newGame.id = gameId;}
 			trackedgame.set('game',newGame, {silent:true});
 				
 			for (var ix=1;ix<3;ix++) {
 				trackedgame.set('onfield_'+ix, new TeamPlayer.Collection(trackedgame.get('onfield_'+ix)), {silent: true});//Why is this silent?
 				trackedgame.set('offfield_'+ix, new TeamPlayer.Collection(trackedgame.get('offfield_'+ix)), {silent: true});
 			}
+			
+			trackedgame.set('gameevents',
+				new GameEvent.Collection(trackedgame.get('gameevents'),{game_id: gameId}));
 			
 			//We want the child objects to be fresh. This is easy for game (just fetch), but we can't fetch onfield or offfield immediately because we need team_id, which isn't available until after game has returned.
 			trackedgame.get('game').fetch({success: function(model, response) {
@@ -317,30 +358,49 @@ function(require, namespace, Backbone) {
 					}
 					trackedgame.get('offfield_'+ix).fetch();
 				}
-				if (!trackedgame.get('team_pulled_ix')){
-					//Alert to ask which team is pulling to start.
-					//TODO: Replace this with a nice view.
-					var pulled_team_1=confirm("Press OK if " + trackedgame.get('game').get('team_1').name + " is pulling to start the game.");
-					trackedgame.set('team_pulled_ix', pulled_team_1 ? 1 : 2);
-					trackedgame.set('team_in_possession_ix', trackedgame.get('team_pulled_ix'));
+				if (trackedgame.get("is_over")) {
+					//var undo_over = confirm("You previously marked this game as over. Press OK to resume taking stats.");
+					var undo_over = true;
+					if (undo_over){
+						var events = trackedgame.get("gameevents");
+						var last_event = events.at(events.length-1);
+						if (last_event.get("type")==98) {
+							//TODO: save and destroy should automatically add headers. This can be done in tastypie plugin.
+							last_event.destroy([], {
+								headers: {"Authorization": "bearer " + app.api.d_token()},
+								success: function(model, response, xhr){
+									trackedgame.set("is_over",false);
+									//trackedgame.save();
+									//We could save the fact that we set is_over to false...
+									//but the game will be saved as soon as ANY other button is pressed.
+									//If the user unsets game over, then exists this screen without tapping anything
+									//assume they didn't want to unset game over.
+								},
+				                error: function(originalModel, resp, options) {
+				                    Backbone.history.navigate('games/'+trackedgame.get("game").id, true);
+				                }
+			             	});
+						}
+					} else {
+						Backbone.history.navigate('games/'+trackedgame.get("game").id, true);
+					}
+				}
+				if (isNaN(trackedgame.get('period_number'))){//Game has not yet started. Set it up now.
 					trackedgame.get('game').set('team_1_score',0);
 					trackedgame.get('game').set('team_2_score',0);
-					trackedgame.set('current_state','pulled',{silent: true});
+					trackedgame.set("period_number", 1);
+					//trackedgame.set_current_state("pulled");
+					trackedgame.set('current_state','pulled',{silent: true});//Nothing is bound to change:pulled so I'm not sure why this is silent.
+					trackedgame.start_period_pull();
 				}
 			}});
 			
-			//Events should have been loaded from localStorage if they exist,
-			//but they must be made into a collection of game events.
-			trackedgame.set('gameevents',
-				new GameEvent.Collection(trackedgame.get('gameevents'),{game_id: gameId}));
-			
 			//TODO: It would be nice if we could figure out the game state entirely from the events,
-			//then we wouldn't have to persist anything about the game to localStorage.
+			//then we wouldn't have to persist anything about trackedgame to localStorage.
 			//This also makes undoing an event much easier (just delete the event and re-bootstrap)
 			//I'll work on that after WebSQL is implemented.
-			//In the meantime assume that the saved state of the trackedGame is the most recent.
+			//In the meantime assume that the saved state of the trackedgame is the most recent.
 			
-			//This router might not get called again for a while if user stays on track-game screen.
 			myLayout.setViews({
 				".sub_team_1": new TrackedGame.Views.SubTeam({model: trackedgame, team_ix:1}),//have to pass the full model so we get onfield and offfield
 				".sub_team_2": new TrackedGame.Views.SubTeam({model: trackedgame, team_ix:2}),
@@ -369,6 +429,25 @@ function(require, namespace, Backbone) {
 		},
 	});
 	TrackedGame.router = new TrackedGame.Router();// INITIALIZE ROUTER
+	
+	/*
+	 * TrackedGame page view hierarchy:
+	 * 
+	 * sub_team_1 = SubTeam
+	 *   - sub_on_field_area = RosterList
+	 *     - many RosterItem
+	 *   - sub_off_field_area = RosterList
+	 *     - many RosterItem
+	 * sub_team_2 = SubTeam. Same as above.
+	 * t_game = GameAction
+	 *   - scoreboard = Scoreboard
+	 *   - player_area = PlayerArea
+	 *     - player_area_1 = TeamPlayerArea
+	 *       - many PlayerButton
+	 *     - player_area_2 = TeamPlayerArea
+	 *       - many PlayerButton
+	 *   - action_area = ActionArea
+	 */
   	
 	//
 	// VIEWS
@@ -512,7 +591,7 @@ function(require, namespace, Backbone) {
 			"click .defd_pass": "defd_pass",
 			"click .unknown_turn": "unknown_turn",
 			"click .timeout": "timeout",
-			"click .end_of_period": "end_of_period",
+			//"click .end_of_period": "end_of_period",
 			"click .injury": "injury",
 			"click .stall": "stall"
 		},
@@ -543,7 +622,7 @@ function(require, namespace, Backbone) {
 		defd_pass: function(ev){this.model.defd_pass();},
 		unknown_turn: function(ev){this.model.unknown_turn();},
 		timeout: function(ev){this.model.timeout();},
-		end_of_period: function(ev){this.model.end_of_period();},
+		//end_of_period: function(ev){this.model.end_of_period();},
 		injury: function(ev){this.model.injury();},
 		stall: function(ev){this.model.stall();},
 		render: function(layout) {
@@ -566,6 +645,7 @@ function(require, namespace, Backbone) {
 		initialize: function() {
 			//Bind to offfield reset for the first load. What happens if the game is fetched from localStorage and offfield is empty. Still trigger reset?
 			this.model.get('offfield_'+this.options.team_ix).bind("reset", function(){this.render();}, this);
+			this.model.bind("change:period_number", function(){this.render();}, this);
 			//Tapping a player removes them from their collection
 			//Removing them from their collection triggers a swap from their old collection to their new collection
 			this.model.get('offfield_'+this.options.team_ix).bind("remove", this.swap_collection, this);
@@ -574,7 +654,9 @@ function(require, namespace, Backbone) {
 		},
 		events: {
 			"click .sub_next": "sub_next",
-			"click .sub_done": "sub_done"
+			"click .sub_done": "sub_done",
+			"click .end_period": "end_period",//TODO: The button should be disabled if we are in an injury_to
+			"click .game_over": "game_over",
 		},
 		sub_next: function(ev){
 			this.model.get('onfield_'+this.options.team_ix).trigger('reset');
@@ -592,6 +674,8 @@ function(require, namespace, Backbone) {
 			//^Hack to get the action buttons to show when a game is loaded but no one is subbed.
 			this.model.set('injury_to',false);
 		},
+		end_period: function(ev) {this.model.end_period();},
+		game_over: function(ev){this.model.game_over();},
 		swap_collection: function(model, collection, options){
 			this.model.swap_player(model,collection,this.options.team_ix);
 		},
@@ -601,7 +685,7 @@ function(require, namespace, Backbone) {
 				".sub_on_field_area": new TrackedGame.Views.RosterList({collection: this.model.get('onfield_'+this.options.team_ix)}),
 				".sub_off_field_area": new TrackedGame.Views.RosterList({collection: this.model.get('offfield_'+this.options.team_ix)})
 			});
-			return view.render({ team: this.model.get('game').get('team_'+this.options.team_ix) });
+			return view.render({ team: this.model.get('game').get('team_'+this.options.team_ix), per_num: this.model.get("period_number") });
 		}
 	});
 	TrackedGame.Views.RosterList = Backbone.View.extend({
