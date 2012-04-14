@@ -53,6 +53,9 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
                 if (minutes < 10) {minutes = "0" + minutes;} //Make the minutes field two digits
                 game.start_time_string = start_time.getHours() + ":" + minutes + " " + start_time.toLocaleDateString();
             }
+            
+            if (_.isFunction(this.get("team_1").get)) {game.team_1 = this.get("team_1").toJSON();}
+            if (_.isFunction(this.get("team_2").get)) {game.team_2 = this.get("team_2").toJSON();}
 
             return game
 		},
@@ -103,8 +106,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 		routes : {
 			"games": "findGames", //List all games.
 			"games/:gameId": "showGame", //Show detail for one game.
-                        "newgame/:teamId": "editGame",
-                        "editgame/:gameId": "editGame"
+            "newgame/:teamId": "editGame",
+     //                   "editgame/:gameId": "editGame"
 		},
 		findGames: function () {
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
@@ -149,15 +152,21 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
         editGame: function(teamId, gameId) {
             var myLayout = app.router.useLayout("nav_content");
 
-            if (gameId) { //edit existing game
+            /*if (gameId) { //edit existing game
 
             }
-            else if (teamId) { //create new game
-                var game = new Game.Model({});
+            else*/ if (teamId) { //create new game
+            	var Team = require("modules/team");
+            	var this_team = new Team.Model({id: teamId});
+            	this_team.fetch();
+            	var placeholder_team = new Team.Model({name: "Select opponent from list below:"});
+            	var this_game = new Game.Model({team_1_id: teamId, team_1: this_team, team_2: placeholder_team});
+            	//this_game.fetch(); Game is not persisted yet so it cannot be fetched.
+                var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
+                teams.fetch();
                 myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Create a Game"}));
-                myLayout.view(".content", new Game.Views.Edit({model: game, teamId: teamId}));
+                myLayout.view(".content", new Game.Views.Edit({model: this_game, teams: teams}));
             }
-
             myLayout.view(".navbar", new Navigation.Views.Navbar({}));
             myLayout.render(function(el) {$("#main").html(el);});
         }
@@ -195,6 +204,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
             return view.render(function(el) {});
         },
 		initialize: function() {
+			//TODO: Shouldn't this be this.model.bind ?
     		this.bind("change", function() {
       			this.render();
     		}, this);
@@ -278,84 +288,59 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
     		}, this);
   		}
 	});
-        Game.Views.Edit = Backbone.View.extend({
-            template: "games/edit",
-            events: {
-                "click .save": "saveGame",
-                "click .delete": "deleteGame"
-            },
-            saveGame: function(ev) {
-                this.model.save(
-                    {
-                        start_time: $("#start_time").val(),
-                        team_1_id: this.team1.id,
-                        team_2_id: this.team2.id
-                    },
-                    {
-                        headers: { "Authorization": "bearer " + app.api.d_token() },
-                        success: function(model, status, xhr) {
-                            Backbone.history.navigate("games/"+model.get("id"), true);
-                        },
-                        error: function() {
-                            Backbone.history.navigate("teams", true);
-                        }
-                    }
-                );
-                return false;
-            },
-            deleteGame: function(ev) {
-
-
-            },
-            render: function(layout) {
-                var view = layout(this);
-                var Team = require("modules/team");
-                var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
-                teams.fetch();
-                var edit_view = this;
-                if (this.options.teamId) {
-                    var team = new Team.Model({id: this.options.teamId});
-                    team.fetch({
-                        success: function (model, response) {
-                            edit_view.team1 = model.toJSON();
-                         /*   view.render({
-                                team1: edit_view.team1.name,
-                                team2: "Select opponent:"
-                            }); */
-                         /*   view.render({
-                                team1: team1.toJSON().name,
-                                team2: "Select opponent:"
-                            }); */
-                        }
-                    });
-                }
-
-                this.setViews({
-                    ".team_search_list": new Search.Views.SearchableList({collection: teams, CollectionClass: Team.Collection, ViewsListClass: Team.Views.List, right_btn_class: "",
-                        right_btn_txt: "Create", right_btn_href: "#newteam", search_object_name: "team",
-                        tap_method: function() {
-                            //edit_view.team_1 = team1.toJSON();
-                            edit_view.team2 = this.model.toJSON();
-                            return view.render({
-                                team1: edit_view.team1.name,
-                                team2: edit_view.team2.name,
-                                start_time: null
-                            });
-                        }
-                    })
-                });
-
-                return view.render({
-                    team1: null,
-                    team2: "Select opponent:",
-                    start_time: null
-                });
-            },
-       /*     initialize: function() {
-
-            } */
-
-        });
 	
+    Game.Views.Edit = Backbone.View.extend({
+        template: "games/edit",
+        render: function(layout) {
+            var view = layout(this);
+            var edit_view = this;
+            var Team = require("modules/team");
+            this.setViews({
+            	".edit_area": new Game.Views.EditArea({model: this.model}),
+                ".team_search_list": new Search.Views.SearchableList({
+                	collection: this.options.teams, CollectionClass: Team.Collection, ViewsListClass: Team.Views.List, right_btn_class: "",
+                    right_btn_txt: "Create", right_btn_href: "#newteam", search_object_name: "team",
+                    tap_method: function() {
+                    	edit_view.model.set("team_2",this.model);//check the context here.
+                    }
+                })
+            });
+            return view.render();
+        }
+    });
+	Game.Views.EditArea = Backbone.View.extend({
+		initialize: function() {
+			//We need to re-render whenever the game's team_1 or team_2 changes.
+			this.model.get("team_1").bind("change", function() {this.render();},this);
+			this.model.get("team_2").bind("change", function() {this.render();},this);
+			this.model.bind("change", function() {this.render();}, this);
+			
+		},
+		template: "games/edit_area",
+		events: {
+			"click .save": "saveGame",
+			"click .delete": "deleteGame"
+		},
+		saveGame: function(ev) {
+			this.model.save(
+				{
+					start_time: $("#start_time").val(),
+				},
+				{
+					headers: { "Authorization": "bearer " + app.api.d_token() },
+                    success: function(model, status, xhr) {
+                        Backbone.history.navigate("games/"+model.get("id"), true);
+                    },
+                    error: function() {
+                        Backbone.history.navigate("teams", true);
+                    }
+				}
+			);
+		},
+		deleteGame: function(ev) {},
+		serialize: function() {
+			return this.model.toJSON();
+		}
+	});
 	return Game;// Required, return the module for AMD compliance
 });
