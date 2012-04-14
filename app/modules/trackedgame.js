@@ -336,8 +336,8 @@ function(require, namespace, Backbone) {
 			//We want the child objects to be converted to the proper model types.
 			var newGame = new Game.Model(trackedgame.get("game"));
 			if (!trackedgame.get("game").id) {
-				//newGame.id = gameId;
-				newGame.set(idAttribute,gameId); //This should be equivalent to the above line but somehow it isn't.
+                newGame.set(newGame.idAttribute,gameId); //Set idAttribute instead of id because of the way the 
+                                                         //backbone-tastypie module interacts with the id attribute
 			}
 			trackedgame.set("game",newGame, {silent:true});
 				
