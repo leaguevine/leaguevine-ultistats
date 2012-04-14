@@ -65,7 +65,13 @@ function(require, namespace, Backbone, Leaguevine) {
 			return url.substr(0,url.length-1);
 		},
 		comparator: function(teamplayer) {// Define how items in the collection will be sorted.
-		  return teamplayer.get("number");
+		  //return teamplayer.get("number");
+		  var temp_player = teamplayer.get("player");
+		  if (_.isFunction(temp_player.get)) {
+		  	return temp_player.get("last_name").toLowerCase() + temp_player.get("first_name").toLowerCase();
+		  } else {
+		  	return temp_player.last_name.toLowerCase() + temp_player.first_name.toLowerCase();
+		  }
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Collection.prototype.parse(resp);

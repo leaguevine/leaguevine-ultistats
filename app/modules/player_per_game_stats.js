@@ -72,7 +72,7 @@ function(require, namespace, Backbone, Leaguevine) {
 			return url;
 		},
 		comparator: function(stat_line) {// Define how items in the collection will be sorted.
-            return stat_line.get("points_played");
+            return 1-stat_line.get("points_played");
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Collection.prototype.parse(resp);

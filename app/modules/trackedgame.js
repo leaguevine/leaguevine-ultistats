@@ -342,8 +342,8 @@ function(require, namespace, Backbone) {
 			trackedgame.set("game",newGame, {silent:true});
 				
 			for (var ix=1;ix<3;ix++) {
-				trackedgame.set("onfield_"+ix, new TeamPlayer.Collection(trackedgame.get("onfield_"+ix)), {silent: true});//Why is this silent?
-				trackedgame.set("offfield_"+ix, new TeamPlayer.Collection(trackedgame.get("offfield_"+ix)), {silent: true});
+				trackedgame.set("onfield_"+ix, new TeamPlayer.Collection(trackedgame.get("onfield_"+ix)));//Made not-silent so models would be properly rendered.
+				trackedgame.set("offfield_"+ix, new TeamPlayer.Collection(trackedgame.get("offfield_"+ix)));
 			}
 			
 			trackedgame.set("gameevents",
@@ -358,7 +358,6 @@ function(require, namespace, Backbone) {
 					if (trackedgame.get("offfield_"+ix).length==0) {
 						_.extend(trackedgame.get("offfield_"+ix),{team_id: model.get("team_"+ix+"_id")});
 					}
-					trackedgame.get("onfield_"+ix).fetch();
 					trackedgame.get("offfield_"+ix).fetch();
 				}
 				if (trackedgame.get("is_over")) {

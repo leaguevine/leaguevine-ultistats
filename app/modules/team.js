@@ -65,7 +65,9 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 			return url;
 		},
 		comparator: function(team) {// Define how items in the collection will be sorted.
-            return team.get("name").toLowerCase();
+			var temp = team.toJSON();
+			if (temp.season.name) {return temp.name.toLowerCase() + temp.season.name.toLowerCase();}
+            else {return temp.name.toLowerCase();}
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Collection.prototype.parse(resp);
