@@ -79,15 +79,16 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
-			myLayout.view(".navbar", new Player.Views.Nav ());//TODO: Make the navbar more dynamic.
+			myLayout.view(".navbar", new Navigation.Views.Navbar());
+            myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Players"}));
 			myLayout.view(".content", new Player.Views.List ({collection: app.players}));//pass the List view a collection of (fetched) players.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
 		showPlayer: function (playerId) {
 			//Prepare the data.
-			player = new Player.Model({id: playerId});
+			var player = new Player.Model({id: playerId});
 
-            titlebarOptions = {
+            var titlebarOptions = {
                 title: player.get("first_name")+" "+player.get("last_name"), 
                 left_btn_href:"#players", 
                 left_btn_class: "back", 
@@ -105,7 +106,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
             });
 			
 			var TeamPlayer = require("modules/teamplayer");
-			teamplayers = new TeamPlayer.Collection([],{player_id: player.get("id")});
+			var teamplayers = new TeamPlayer.Collection([],{player_id: player.get("id")});
 			teamplayers.fetch();
 			//player.set("teamplayers", teamplayers);
 			
@@ -125,13 +126,14 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 	//
 	// VIEWS
 	//
-	Player.Views.Nav = Backbone.View.extend({//TODO: More!
-		template: "navbar/navbar"
-	});
 	Player.Views.Item = Backbone.View.extend({
 		template: "players/item",
 		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul.
-		serialize: function() {return this.model.toJSON();} //render looks for this to manipulate model before passing to the template.
+		serialize: function() {
+            var player = this.model.toJSON();
+            player.number = ''; //Set the player's number to be blank because numbers are specific to a player's team
+            return player;
+        } //render looks for this to manipulate model before passing to the template.
 	});
 	Player.Views.List = Backbone.LayoutManager.View.extend({
 		template: "players/list",
@@ -146,6 +148,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 					model: player//pass each player to a Item view instance.
 				}));
 			});
+            //Add a button at the end of the list that creates more items
+            view.insert("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
 			return view.render({ count: this.collection.length });
 		},
 		initialize: function() {

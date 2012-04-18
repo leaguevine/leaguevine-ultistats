@@ -226,6 +226,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 					model: game//pass each game to a Item view instance.
 				}));
 			});
+            //Add a button at the end of the list that creates more items
+            view.insert("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
 			return view.render({ count: this.collection.length });
 		},
 		initialize: function() {
