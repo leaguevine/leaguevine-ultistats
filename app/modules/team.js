@@ -189,10 +189,12 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 				if (!filter_by || team.get("name").toLowerCase().indexOf(filter_by.toLowerCase()) != -1) {
 					view.insert("ul", new Team.Views.Item({//Inserts the team into the ul in the list template.
 						model: team, //pass each team to a Item view instance.
-                                                tap_method: tap_method //passing on tap_method from caller
+                        tap_method: tap_method //passing on tap_method from caller
 					}));
 				}
 			});
+            //Add a button at the end of the list that creates more items
+            view.insert("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
 			return view.render({ count: this.collection.length });
 		},
 		initialize: function() {

@@ -27,7 +27,6 @@ ul.obj-list {
         padding-right: 5px;
         padding-bottom: 10px;
         padding-top: 10px;
-        width: 100%;
         color: black;
         background: url(../img/icons/right_arrow_grey.png) 95% 50% no-repeat;
     }
@@ -35,6 +34,7 @@ ul.obj-list {
         ul.obj-list li a:hover{
             background-color: #c3c3c3;
             color: black;
+            cursor: pointer;
         }
 
         ul.obj-list li a:visited{
@@ -110,6 +110,20 @@ th, td {
         text-align: left;
         padding-left: 10px;
     }
+
+/* =============================================================================
+   Load more items
+   ========================================================================== */
+#more-items {
+    background-image: none;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px 0px;
+}
+
+.more-items-loading-txt {
+    display: none;
+}
 
 /* =============================================================================
    Page loading spinner

@@ -146,6 +146,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 					view.insert("ul", new Tournament.Views.Item({ model: tournament}));
 				}
 			});
+            //Add a button at the end of the list that creates more items
+            view.insert("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
 			return view.render({ count: this.collection.length });
 		},
 		initialize: function() {

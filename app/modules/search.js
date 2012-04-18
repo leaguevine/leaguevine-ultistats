@@ -4,10 +4,13 @@ define([
   // Libs
   "use!backbone",
 
+  // Modules
+  "modules/leaguevine",
+
   // Plugins
   "use!plugins/backbone.layoutmanager"
 ],
-function(namespace, Backbone) {
+function(namespace, Backbone, Leaguevine) {
     "use strict";
     var app = namespace.app;
     var Search = namespace.module();
@@ -54,16 +57,7 @@ function(namespace, Backbone) {
             var search_results = new this.options.CollectionClass([],{name: search_string});
             search_results.fetch({
                 success: function(collection, response) {
-                    var models = _.reject(collection.models, function(model) {
-                        return my_collection.pluck("id").indexOf(model.get("id")) != -1
-                    });
-                    //models consists of new results only.
-                    //So we union the two collections to create our more comprehensive collection.
-                    //Union does not trigger anything, so we do the union via a .reset
-                    //.reset also makes sure the instances in our collection are Backbone.Models and not simple JS objects.
-                    my_collection.reset(_.union(my_collection.models, models));
-                    //However, this won't trigger a reset until the fetch has returned.
-                    //The user wants the results curated immediately.
+                    Leaguevine.Utils.concat_collections(my_collection, collection);
                 }
             });
             //Trigger a reset immediately so the collection is curated immediately.
