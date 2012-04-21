@@ -271,6 +271,11 @@ function(require, namespace, Backbone) {
 			this_event.set({type: 91, int_1: team_id});
 			this.save_event(this_event);
 		},
+		substitution: function(){
+			$(".t_game").hide();
+			$(".sub_team_1").show();
+			$(".sub_team_2").hide();
+		},
 		end_period: function(){
 			//the End Period button should be disabled if we are in an injury_to... but I will check for the state anywyay.
 			if (this.get("current_state")=="pulled" && !this.get("injury_to")) {
@@ -598,6 +603,7 @@ function(require, namespace, Backbone) {
 			"click .defd_pass": "defd_pass",
 			"click .unknown_turn": "unknown_turn",
 			"click .timeout": "timeout",
+            "click .substitution": "substitution",
 			//"click .end_of_period": "end_of_period",
 			"click .injury": "injury",
 			"click .stall": "stall"
@@ -629,6 +635,7 @@ function(require, namespace, Backbone) {
 		defd_pass: function(ev){this.model.defd_pass();},
 		unknown_turn: function(ev){this.model.unknown_turn();},
 		timeout: function(ev){this.model.timeout();},
+		substitution: function(ev){this.model.substitution();},
 		//end_of_period: function(ev){this.model.end_of_period();},
 		injury: function(ev){this.model.injury();},
 		stall: function(ev){this.model.stall();},
