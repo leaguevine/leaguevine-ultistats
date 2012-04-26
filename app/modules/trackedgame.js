@@ -91,6 +91,7 @@ function(require, namespace, Backbone) {
             blocked: "got a D",
             throwaway: "threw the disc away",
             unknown_turn: "turnover",
+            timeout: "timeout",
         },
         setButtonHeight: function() { 
              //Dynamically calculates and sets the button height for all buttons in the 
@@ -112,7 +113,7 @@ function(require, namespace, Backbone) {
              $("button.score").css({"height": score_height});
         },
         //The previous_action types that should not associate a player with them when being displayed
-        previous_action_omit_player: ["blank", "unknown_turn"], 
+        previous_action_omit_player: ["blank", "unknown_turn", "timeout"], 
 		swap_player: function(model,collection,team_ix){
 			var was_offfield = collection==this.get("offfield_"+team_ix);
 			var team_id = this.get("game").get("team_"+team_ix).id;
@@ -269,6 +270,7 @@ function(require, namespace, Backbone) {
 			var this_event = this.create_event();
 			var team_id = this.get("game").get("team_"+this.get("team_in_possession_ix")).id;
 			this_event.set({type: 91, int_1: team_id});
+                        this.set_current_state("picked_up", "timeout");
 			this.save_event(this_event);
 		},
 		substitution: function(){
