@@ -196,7 +196,7 @@ function(require, namespace, Backbone) {
 					$(".sub_team_2").hide();
 					break;
 				case "pulled"://pull event --> turnover --> pickup
-					this_event.set({type: 1, player_1_id: last_pl_id, player_1_team_id: team_id});
+					this_event.set({type: 1, player_1_id: pl_id, player_1_team_id: team_id});
 					this.set({player_in_possession_id: NaN});
 					this.set("team_in_possession_ix",3-this.get("team_in_possession_ix"));
 					this.set_current_state("picked_up");
