@@ -673,6 +673,7 @@ function(require, namespace, Backbone) {
 			"click .sub_done": "sub_done",
 			"click .end_period": "end_period",//TODO: The button should be disabled if we are in an injury_to or if !pulled
 			"click .game_over": "game_over",
+                        "click .roster_remove_all": "remove_all_onfield",
 		},
 		sub_next: function(ev){
 			this.model.get("onfield_"+this.options.team_ix).trigger("reset");
@@ -695,10 +696,15 @@ function(require, namespace, Backbone) {
 		swap_collection: function(model, collection, options){
 			this.model.swap_player(model,collection,this.options.team_ix);
 		},
+                remove_all_onfield: function(ev) {
+                    var onfield = this.model.get("onfield_"+this.options.team_ix);
+                    onfield.remove(onfield.models);
+                    this.render();
+                },
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
 			this.setViews({
-				".sub_on_field_area": new TrackedGame.Views.RosterList({collection: this.model.get("onfield_"+this.options.team_ix)}),
+				".sub_on_field_area": new TrackedGame.Views.RosterList({collection: this.model.get("onfield_"+this.options.team_ix), remove_all_button: true}),
 				".sub_off_field_area": new TrackedGame.Views.RosterList({collection: this.model.get("offfield_"+this.options.team_ix)})
 			});
 			return view.render({ team: this.model.get("game").get("team_"+this.options.team_ix), per_num: this.model.get("period_number") });
@@ -730,6 +736,9 @@ function(require, namespace, Backbone) {
 				//view.insert("ul", new TrackedGame.Views.RosterItem({model: tp}));
 				view.insert(new TrackedGame.Views.RosterItem({model: tp}));
 			});
+                        if (this.options.remove_all_button) {
+                            view.insert(new TrackedGame.Views.RosterItemRemoveAll({}));
+                        }
 			return view.render();
 		}
 	});
@@ -748,6 +757,10 @@ function(require, namespace, Backbone) {
 			this.remove();//remove the view.
 		}
 	});
-	
+        TrackedGame.Views.RosterItemRemoveAll = Backbone.View.extend({
+            template: "trackedgame/roster_item_remove_all",
+            tagName: "li"
+        });
+
 	return TrackedGame;
 });
