@@ -556,12 +556,21 @@ table.stats {
         border-bottom: 1px solid #c3c3c3;
     }
 
+
+.extra_actions,
 .player_area {
     clear: both;
-    margin-top: 35px;
     width: 60%;
-    border: 1px solid #c3c3c3;
     float: right;
+}
+
+.extra_actions {
+    margin-top: 15px;
+}
+
+.player_area {
+    margin-top: 35px;
+    border: 1px solid #c3c3c3;
 }
 
 .alternate_action,
@@ -574,14 +583,6 @@ table.stats {
 
 .alternate_action {
     display: none;
-}
-
-.extra_actions {
-    clear: both;
-    float: right;
-    padding: 15px 5px;
-    text-align: right;
-    width: 100%; 
 }
 
 .track {
@@ -627,10 +628,12 @@ table.stats {
             float: middle;
             text-align: center;
         }
+
         .track .player_buttons li:nth-of-type(odd) button{
             float: left;
             margin-left: 5px;
         }
+
         .track .player_buttons li:nth-of-type(even) button{
             float: right;
             margin-right: 5px;
@@ -684,11 +687,19 @@ table.stats {
         }
 
         .track .extra_actions button {
-            width: 29%;
+            display: block;
+            width: 45%;
         }
 
-            .track .extra_actions button.undo {
+            .track button.misc{
+                float: left;
+                margin-left: 5px;
+            }
+
+            .track button.undo {
                 color: #750808;
+                float: right;
+                margin-right: 5px;
             }
 
     .track .offense_teamname {
