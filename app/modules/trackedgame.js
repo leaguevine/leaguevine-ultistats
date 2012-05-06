@@ -61,7 +61,6 @@ function(require, namespace, Backbone) {
 		save_event: function(event) {
 			var trackedgame=this;
 			event.save([], {
-				headers: {"Authorization": "bearer " + app.api.d_token()},
                 success: function(model, response, xhr){
 					trackedgame.get("gameevents").add(model);//Add the event to the trackedgame.get("gameevents"). Will trigger a change in the last play display.
 					trackedgame.save();//save the trackedgame.
@@ -356,6 +355,7 @@ function(require, namespace, Backbone) {
 			trackedgame.set("gameevents",
 				new GameEvent.Collection(trackedgame.get("gameevents"),{game_id: gameId}));
 			
+			//TODO: I need to move the success callback's methods to a separate function and call it with $when(trackedgame.get("game").then(get the onfield and offield)
 			//We want the child objects to be fresh. This is easy for game (just fetch), but we can"t fetch onfield or offfield immediately because we need team_id, which isn"t available until after game has returned.
 			trackedgame.get("game").fetch({success: function(model, response) {
 				for(var ix=1;ix<3;ix++) {
@@ -374,9 +374,7 @@ function(require, namespace, Backbone) {
 						var events = trackedgame.get("gameevents");
 						var last_event = events.at(events.length-1);
 						if (last_event.get("type")==98) {
-							//TODO: save and destroy should automatically add headers. This can be done in tastypie plugin.
 							last_event.destroy({
-								headers: {"Authorization": "bearer " + app.api.d_token()},
 								success: function(model, response, xhr){
 									trackedgame.set("is_over",false);
 									//trackedgame.save();
@@ -388,8 +386,6 @@ function(require, namespace, Backbone) {
 				                error: function(originalModel, resp, options) {
 				                	if (resp.status == 410) {trackedgame.set("is_over",false);}
 				                	else {//^ event is already deleted. Below could be anything.
-				                		//We don't really want the following to trigger when the queue is processed...
-				                		//So we should probably check to see if we are on the tracked game page before we decide to do the following.
 				                		Backbone.history.navigate("games/"+trackedgame.get("game").id, true);
 				                	}
 				                }

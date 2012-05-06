@@ -8,14 +8,9 @@
 (function( undefined ) {
 	// Backbone.noConflict support. Save local copy of Backbone object.
 	var Backbone = window.Backbone;
-
 	Backbone.Tastypie = {
 		doGetOnEmptyPostResponse: true,
 		doGetOnEmptyPutResponse: false,
-		apiKey: {
-			username: '',
-			key: ''
-		}
 	};
 
 	/**
@@ -26,10 +21,10 @@
 	Backbone.oldSync = Backbone.sync;
 	Backbone.sync = function( method, model, options ) {
 
-		if ( Backbone.Tastypie.apiKey && Backbone.Tastypie.apiKey.username.length ) {
-			options.headers = _.extend( {
-				'Authorization': 'ApiKey ' + Backbone.Tastypie.apiKey.username + ':' + Backbone.Tastypie.apiKey.key
-			}, options.headers );
+		if (method === 'create' || method === 'update' || method == 'delete'){
+			options.headers = _.extend({
+				'Authorization': 'bearer ' + Backbone.API.d_token()
+			}, options.headers);
 		}
 
 		if ( ( method === 'create' && Backbone.Tastypie.doGetOnEmptyPostResponse ) ||

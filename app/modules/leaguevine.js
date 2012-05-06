@@ -139,6 +139,8 @@ function(namespace, Backbone) {
         typeof localSettings.Leaguevine.API != "undefined") {
         _.extend(Leaguevine.API, localSettings.Leaguevine.API);
     }
+    
+    Backbone.API = Leaguevine.API;
 		
 	return Leaguevine;
 });
