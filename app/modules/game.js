@@ -54,8 +54,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
                 game.start_time_string = start_time.getHours() + ":" + minutes + " " + start_time.toLocaleDateString();
             }
             
-            if (_.isFunction(this.get("team_1").get)) {game.team_1 = this.get("team_1").toJSON();}
-            if (_.isFunction(this.get("team_2").get)) {game.team_2 = this.get("team_2").toJSON();}
+            if (this.get("team_1") != null && _.isFunction(this.get("team_1").get)) {game.team_1 = this.get("team_1").toJSON();}
+            if (this.get("team_2") != null && _.isFunction(this.get("team_2").get)) {game.team_2 = this.get("team_2").toJSON();}
 
             return game
 		},
