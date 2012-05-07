@@ -97,6 +97,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
                 right_btn_txt: "Edit"
             };
 
+			//TODO: Don't use the success callback.
 			player.fetch({success: function() { // Re-render the titlebar with the player's name
                 var myLayout = app.router.useLayout("div");
                 titlebarOptions.title = player.get("first_name")+" "+player.get("last_name");

@@ -123,7 +123,10 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 			var team = new Team.Model({id: teamId});
 			
             var titlebarOptions = {title: team.get("name"), left_btn_href:"#teams", left_btn_class: "back", left_btn_txt: "Teams", right_btn_href: "#editteam/"+teamId, right_btn_txt: "Edit"};
-
+            
+			//It is possible that someone will get a link to a team's page, and thus they will not have the team in the local db before this router is called.
+			//The subsequent AJAX request will not trigger this callback. Thus the team's name information will never make it to the title bar.
+			//Instead we need the titlebar to accept a model, not a string, and bind the titlebar's view to model's "change".
             team.fetch({success: function (model, response) {
                 // After the team has been fetched, render the nav-bar with the team's fetched name
                 var myLayout = app.router.useLayout("div");
@@ -152,7 +155,11 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
-		editTeam: function (teamId) {			
+		editTeam: function (teamId) {
+			if (!app.api.is_logged_in()) {//Ensure that the user is logged in
+                app.api.login();
+                return;
+            }
 			var myLayout = app.router.useLayout("nav_content");
 			//If we have teamId, then we are editing. If not, then we are creating a new team.
 			if (teamId) { //make the edit team page
@@ -285,7 +292,6 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 	Team.Views.Edit = Backbone.View.extend({
 		template: "teams/edit",
 		render: function(layout) {
-            app.api.d_token(); //Ensure that the user is logged in
             return layout(this).render(this.model.toJSON());
         },
 		initialize: function() {this.model.bind("change", function() {this.render();}, this);},
@@ -300,7 +306,6 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 					info:$("#info").val()
 				},
 				{
-					headers: { "Authorization": "bearer " + app.api.d_token() },
                     success: function(model, status, xhr) {
                         Backbone.history.navigate("teams/"+model.get("id"), true); //Redirect to the team detail page
                     },
@@ -317,7 +322,6 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 		deleteModel: function(ev) {
 			this.model.destroy(
 				{
-					headers: { "Authorization": "bearer " + app.api.d_token() },
                     success: function() {
                         Backbone.history.navigate("teams", true);
                     },

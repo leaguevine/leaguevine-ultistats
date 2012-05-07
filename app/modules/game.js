@@ -121,6 +121,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
 			//Prepare the data.
 			var game = new Game.Model({id: gameId});
+			
+			//TODO: Don't use the success callback. Rendering of the back button should be handled by the titlebar.
 			game.fetch({
 				success: function (model, response) {
                     // After the game has been fetched, render the nav-bar so the back button says tournament
@@ -150,6 +152,11 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
         editGame: function(teamId, gameId) {
+        	if (!app.api.is_logged_in()) {//Ensure that the user is logged in
+                app.api.login();
+                return;
+            }
+            
             var myLayout = app.router.useLayout("nav_content");
 
             /*if (gameId) { //edit existing game
@@ -329,7 +336,6 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 					start_time: $("#start_time").val(),
 				},
 				{
-					headers: { "Authorization": "bearer " + app.api.d_token() },
                     success: function(model, status, xhr) {
                         Backbone.history.navigate("games/"+model.get("id"), true);
                     },

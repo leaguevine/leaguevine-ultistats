@@ -97,6 +97,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
                                left_btn_href:"#tournaments", 
                                left_btn_class:"back", 
                                left_btn_txt:"Tournaments"};
+                               
+           //TODO: Use the titlebar's view binding to do the following
             tournament.fetch({success: function (model, response) {
                 // After the tournament has been fetched, render the nav-bar with the tournament's fetched name
                 var myLayout = app.router.useLayout("div");
