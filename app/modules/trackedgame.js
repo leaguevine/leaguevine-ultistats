@@ -150,8 +150,6 @@ function(require, namespace, Backbone) {
 		
 		player_tap: function(pl_id){//pl_id is the tapped player. Might be NaN
 			var this_event = this.create_event();
-			//var current_state = this.get("current_state");
-			
 			//Set the event's type based on the current state.
 			var state_meta = this.game_states[this.get("current_state")];
 			var event_type = state_meta["player_tap_event_type"];
@@ -598,15 +596,15 @@ function(require, namespace, Backbone) {
 			"click .misc": "toggle_action_buttons",
 			"click .score": this.model.update_state("scoring"),
 			"click .completion": this.model.update_state("receiving"),
-			"click .throwaway": this.model.throwaway(),
 			"click .dropped_pass": this.model.update_state("dropping"),
 			"click .defd_pass": this.model.update_state("blocking"),
-			"click .unknown_turn": this.model.unknown_turn(),
-			"click .timeout": this.model.timeout(),
-            "click .substitution": this.model.substitution(),//TODO: Toggle screen visibility only.
+			"click .stall": this.model.update_state("stalling"),
+			"click .throwaway": this.model.immediate_event(32),
+			"click .unknown_turn": this.model.immediate_event(30),
+			"click .timeout": this.model.immediate_event(91),
+			"click .injury": this.model.immediate_event(92),
 			//"click .end_of_period": this.model.end_of_period(),
-			"click .injury": this.model.injury(),
-			"click .stall": this.model.update_state("stalling")
+			"click .substitution": this.model.substitution(),//TODO: Toggle screen visibility only.
 		},
 		
 		show_action_buttons: function(ev){//shows or hides buttons depending on this.model.get("showing_alternate")
