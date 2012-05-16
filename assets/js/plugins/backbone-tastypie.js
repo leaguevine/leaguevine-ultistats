@@ -75,7 +75,7 @@
 			url = this.urlRoot;
 			url = url || this.collection && ( _.isFunction( this.collection.url ) ? this.collection.url() : this.collection.url );
 
-			if ( url && this.has( 'id' ) ) {
+			if ( url && _.has(this,"id")) {
 				url = addSlash( url ) + this.id;
 			}
 		}
@@ -96,12 +96,12 @@
 	 * Return 'data.objects' if it exists.
 	 * If present, the 'data.meta' object is assigned to the 'collection.meta' var.
 	 */
-	Backbone.Collection.prototype.parse = function( data ) {
-		if ( data && data.meta ) {
-			this.meta = data.meta;
+	Backbone.Collection.prototype.parse = function( resp, xhr ) {
+		if ( resp && resp.meta ) {
+			this.meta = resp.meta;
 		}
 		
-		return data && data.objects;
+		return resp.objects || resp;
 	};
 	
 	Backbone.Collection.prototype.url = function( models ) {
