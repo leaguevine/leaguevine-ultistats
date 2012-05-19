@@ -661,14 +661,22 @@ function(require, namespace, Backbone) {
 				}
 				if (lpix==1 || npix==1){
 					var pl1 = _.find(players, function(pl_obj){return pl_obj.id == last_event.get("player_1_id");});
-					playtext = pl1.first_name[0] + ". " + pl1.last_name + " ";
+                    if (pl1 != undefined) {
+                        playtext = pl1.first_name[0] + ". " + pl1.last_name + " ";
+                    } else {
+                        playtext = "Unknown ";
+                    }
 				}
 				
 				playtext += event_meta["play_string"];
 				
 				if (npix>1){
 					var pl2 = _.find(players, function(pl_obj){return pl_obj.id == last_event.get("player_" + npix + "_id");});
-					playtext = playtext + " " + pl2.first_name[0] + ". " + pl2.last_name + ".";
+                    var pl2_name = 'Unknown';
+                    if (pl2 != undefined){
+                        pl2_name = pl2.first_name[0] + ". " + pl2.last_name;
+                    }
+					playtext = playtext + " " + pl2_name + ".";
 				}
 			}
 			return view.render({playtext: playtext});
