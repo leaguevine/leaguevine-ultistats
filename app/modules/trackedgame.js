@@ -21,6 +21,7 @@ define([
  * -enable/disable buttons depending on state
  * -Player model needs a function that returns its formatted name from its attributes.
  */
+
 /*
 This module is an interface for tracking game action.
 It has some data that is not persisted to the server.
@@ -28,7 +29,7 @@ It has some data that is not persisted to the server.
 There are basically 3 types of buttons.
 1. Buttons that create an event
 	-player-action buttons
-	-immediate-event buttons
+	-immediate-event buttons (e.g., throwaway)
 	-player substitution buttons
 2. Buttons that temporarily change the game state
 3. Buttons that change what is visible on the screen but do not modify any data
@@ -39,8 +40,12 @@ The basic workflow for event buttons is as follows:
 1. create an event.
 2. Using the type of button pressed and the current game state, set the event type, player ids and team ids.
 3. $.when(save).then(add event to stack of events); this triggers
-4. 
+4. event_added: makes sure trackedgame's attributes are set properly. Then it saves trackedgame.
+5. Setting the attributes causes a re-render of the UI elements that reflect the state (e.g., play-by-play, player prompt)
+
+A button that temporarily changes the game state does just that. It is not saved.
 */
+
 function(require, namespace, Backbone) {
     "use strict";
 	var app = namespace.app;
@@ -392,14 +397,6 @@ function(require, namespace, Backbone) {
 				}
 			}
 			
-			if (isNaN(trackedgame.get("period_number"))){//Game has not yet started. Set it up now.
-				//trackedgame.get("game").set("team_1_score",0);
-				//trackedgame.get("game").set("team_2_score",0);
-				trackedgame.set("period_number", 1);
-				trackedgame.set("current_state","pulling");
-				trackedgame.start_period_pull();
-			}
-			
 			/*
 			 * Trackedgame has many child objects.
 			 * These need to be the proper model types.
@@ -431,6 +428,14 @@ function(require, namespace, Backbone) {
 					//only fetch onfield if we've previously tracked this game and we have onfield players.
 					if (trackedgame.get("onfield_"+ix).length>0) {trackedgame.get("onfield_"+ix).fetch();}
 				}
+				
+				if (isNaN(trackedgame.get("period_number"))){//Game has not yet started. Set it up now.
+					//trackedgame.get("game").set("team_1_score",0);
+					//trackedgame.get("game").set("team_2_score",0);
+					trackedgame.set("period_number", 1);
+					trackedgame.set("current_state","pulling");
+					trackedgame.start_period_pull();
+				}
 			});
 			
 			//.gameevents
@@ -442,14 +447,13 @@ function(require, namespace, Backbone) {
 			 * MODEL BINDINGS.
 			 */
 			trackedgame.bind("change:current_state",trackedgame.update_state,trackedgame);
-			trackedgame.bind("change: is_over", trackedgame.save);
+			trackedgame.bind("change:is_over",trackedgame.save);
 			for (var ix=1;ix<3;ix++) {//Setup offfield or onfield with data from localStorage (or empty)
 				trackedgame.get("offfield_"+ix).bind("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
 				trackedgame.get("onfield_"+ix).bind("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
 			}
 			trackedgame.get("gameevents").bind("add",trackedgame.event_added,trackedgame);
 			trackedgame.get("gameevents").bind("remove",trackedgame.event_removed,trackedgame);
-    		//trackedgame.get("gameevents").bind("add remove",trackedgame.save,trackedgame);
 	
 			myLayout.setViews({
 				//SubTeam views require the full trackedgame model because
