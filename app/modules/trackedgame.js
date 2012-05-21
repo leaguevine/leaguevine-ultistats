@@ -320,6 +320,16 @@ function(require, namespace, Backbone) {
 				this.set("current_state",event_meta["next_state"]);
 				this.set("player_in_possession_id",event_meta["next_state"] == "receiving" ? model.get("player_" + event_meta["next_player_as"] + "_id"): NaN);
 			}
+			
+			//Hack for score.
+			if (model.get("type")== 22){
+				var game_model = this.get("game");
+				var team_score_string = "team_" + team_ix + "_score";
+				var last_score = game_model.get(team_score_string);
+				var new_score = last_score == "" ? 1 : last_score + 1;
+				game_model.set(team_score_string,new_score);
+			}
+			
 			this.save();
 		},
 		
