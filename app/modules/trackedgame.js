@@ -244,9 +244,9 @@ function(require, namespace, Backbone) {
 		game_over: function(){
 			var this_event = this.create_event();
 			this_event.set({type: 98});
-			this.save_event(this_event);
-			this.set("is_over",true);
-			this.save();//save the trackedgame.
+			$.when(this.save_event(this_event)).then( function() {
+				this.set("is_over",true);//Will trigger a trackedgame save.
+			});
 			Backbone.history.navigate("games/"+this.get("game").id, true);
 		},
 		
@@ -277,16 +277,8 @@ function(require, namespace, Backbone) {
 		},
 		
 		save_event: function(event) {
-			var trackedgame=this;
-			event.save([], {
-                success: function(model, response, xhr){//Not necessary to get rid of success callback because trackedgame is localStorage only.
-					trackedgame.get("gameevents").add(model);//Add the event to the trackedgame.get("gameevents"). Will trigger a change in the play-by-play.
-					trackedgame.save();//save the trackedgame.
-				},
-                error: function(originalModel, resp, options) {
-                    //TODO: Do something with the error. Maybe log the error and retry again later?
-                }
-			});
+			//var trackedgame=this;
+			$.when(event.save()).then(this.get("gameevents").add(event));//This should trigger the trackedgame.save
 		},
 		
 		substitution: function(){
@@ -329,7 +321,7 @@ function(require, namespace, Backbone) {
 				this.set("team_in_possession_ix",3-this.get("team_in_possession_ix"));
 			}
 			
-			this.set("current_state",remaining_event_meta["next_state"]);
+			this.set("current_state",remaining_event_meta["next_state"]);//Will trigger a trackedgame.save
 		}
 	});
 	
@@ -372,7 +364,6 @@ function(require, namespace, Backbone) {
 			
 			trackedgame.set("gameevents",
 				new GameEvent.Collection(trackedgame.get("gameevents"),{game_id: gameId}));
-			trackedgame.get("gameevents").bind("remove",trackedgame.event_removed,trackedgame);
 			
 			//We want the child objects to be fresh. This is easy for game (just fetch), 
 			//but we can"t fetch onfield or offfield immediately because we need team_id, 
@@ -457,6 +448,13 @@ function(require, namespace, Backbone) {
                 });
                 callback();
             });
+            
+            //Changing any of the trackedgame's attributes or its collection of events should trigger it to save. 
+        	trackedgame.get("gameevents").bind("remove", this.event_removed, trackedgame);
+    		trackedgame.get("gameevents").bind("add remove", function() {
+        		this.save();
+    		},trackedgame);
+    		trackedgame.bind("change: is_over", trackedgame.save);//All other attribute changes are associated with event creation.
 		},
 	});
 	TrackedGame.router = new TrackedGame.Router();// INITIALIZE ROUTER
