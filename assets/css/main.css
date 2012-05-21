@@ -539,7 +539,7 @@ table.stats {
 .last_action_label {
     clear: both;
     text-align: center;
-    margin-top 5px;
+    margin-top: 5px;
     font-size: 10px;
     color: #767676;
 }

@@ -67,6 +67,7 @@ function(require, namespace, Backbone) {
 			team_in_possession_ix: NaN,
 			player_in_possession_id: NaN,
 			injury_to: false,//Whether or not substitutions will be injury substitutions.
+			visible_screen: 2,
 			showing_alternate: -1//I seem to be having trouble with using a boolean or using 0 and 1. So use 1 and -1.
 		},
 		toJSON: function() {//flatten the data so they are easy to read.
@@ -78,6 +79,19 @@ function(require, namespace, Backbone) {
 			temp.offfield_2 = this.get("offfield_2").toJSON();
 			temp.gameevents = this.get("gameevents").toJSON();
 			return temp;
+		},
+		
+		screens_list: [{b_class: ".sub_team_1", b_string: "Roster Screen"}, {b_class: ".sub_team_2", b_string: "Next Roster Screen"}, {b_class: ".t_game", b_string: "Action Screen"}],
+		rotate_visibility: function() {
+			var n_screens = this.screens_list.length;
+			var sc_ix = this.get("visible_screen");
+			this.set("visible_screen", sc_ix==n_screens-1 ? 0 : sc_ix + 1);
+			this.toggle_screens();
+		},
+		toggle_screens: function(){
+			var n_screens = this.screens_list.length;
+			for (var ix=0;ix<n_screens;ix++) {$(this.screens_list[ix].b_class).hide();}
+			$(this.screens_list[this.get("visible_screen")].b_class).show();
 		},
 		
 		setButtonHeight: function() { 
@@ -219,9 +233,7 @@ function(require, namespace, Backbone) {
 			this.save_event(this_event, this);//TODO: DO I need to pass "this" ?
 			
 			if (event_meta["toggle_screen"]){
-				$(".t_game").hide();
-				$(".sub_team_1").show();
-				$(".sub_team_2").hide();
+				
 			}
 		},
 		
@@ -337,9 +349,7 @@ function(require, namespace, Backbone) {
 		},
 		
 		substitution: function(){
-			$(".t_game").hide();
-			$(".sub_team_1").show();
-			$(".sub_team_2").hide();
+			
 		},
 		
 		start_period_pull: function(){
@@ -461,20 +471,13 @@ function(require, namespace, Backbone) {
 				".sub_team_1": new TrackedGame.Views.SubTeam({onfield: trackedgame.get("onfield_"+1), offfield: trackedgame.get("offfield_"+1), team: trackedgame.get("game").get("team_1")}),
 				".sub_team_2": new TrackedGame.Views.SubTeam({onfield: trackedgame.get("onfield_"+2), offfield: trackedgame.get("offfield_"+2), team: trackedgame.get("game").get("team_2")}),
 				//Game action of course requires the full trackedgame.
-				".t_game": new TrackedGame.Views.GameAction({model: trackedgame})
+				".t_game": new TrackedGame.Views.GameAction({model: trackedgame}),
+				".rotate_screen": new TrackedGame.Views.RotateButton({model: trackedgame})
 			});
 		    var callback = trackedgame.setButtonHeight;
 			//myLayout.render(function(el) {$("#main").html(el);});
 			myLayout.render(function(el) {
 				$("#main").html(el);
-				$(".t_game").hide();
-				$(".sub_team_1").hide();
-				$(".sub_team_2").hide();
-				if (trackedgame.get("current_state")=="pulling" || trackedgame.get("injury_to")){
-					$(".sub_team_1").show();
-				} else {
-					$(".t_game").show();
-				}
 			}).then(function() {
                 // Unbind any other bindings to the browser height
                 $(window).unbind("resize"); //Is there a better way to do this besides binding globally?
@@ -482,6 +485,8 @@ function(require, namespace, Backbone) {
                     callback();
                 });
                 callback();
+                
+                trackedgame.toggle_screens();
             });
 		},
 	});
@@ -506,6 +511,7 @@ function(require, namespace, Backbone) {
 	 *     - player_area_2 = TeamPlayerArea
 	 *       - many PlayerButton
 	 *   - action_area = ActionArea
+	 * rotate_button = RotateButton
 	 */
   	
 	//
@@ -527,16 +533,11 @@ function(require, namespace, Backbone) {
 			this.options.onfield.trigger("reset");
 			//I would prefer to tighten the scope on this but I"m not sure how to access
 			//the other team"s class without searching the whole DOM.
-			//$(".sub_team_"+this.options.team_ix).hide();
-			//$(".sub_team_"+(3-this.options.team_ix)).show();
-			$(".sub_team_1").hide();
-			$(".sub_team_2").show();
+			
 		},
 		sub_done: function(ev){
 			this.options.onfield.trigger("reset");
-			$(".sub_team_1").hide();
-			$(".sub_team_2").hide();
-			$(".t_game").show();
+			
 			//this.model.trigger("change:showing_alternate");
 			//^Hack to get the action buttons to show when a game is loaded but no one is subbed.
 			//this.model.set("injury_to",false);
@@ -851,6 +852,25 @@ function(require, namespace, Backbone) {
 		injury: function(){this.model.immediate_event(92);},
 		end_of_period: function(){this.model.end_of_period();},
 		substitution: function(){this.model.substitution();}
+	});
+	
+	TrackedGame.Views.RotateButton = Backbone.View.extend({
+		template: "trackedgame/rotate_button",
+		initialize: function() {			
+			this.model.bind("change:visible_screen", function() {this.render();}, this);
+		},
+		render: function(layout) {
+			var view = layout(this);
+			var n_screens = this.model.screens_list.length;
+			var sc_ix = this.model.get("visible_screen");
+			var next_screen_text = "";
+			sc_ix = sc_ix == n_screens-1 ? 0 : sc_ix + 1;
+			return view.render({next_screen: this.model.screens_list[sc_ix].b_string});
+		},
+		events: {
+			"click .rotate": "rotate_screen"
+		},
+		rotate_screen: function(){this.model.rotate_visibility();}
 	});
 
 	return TrackedGame;
