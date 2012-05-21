@@ -16,8 +16,7 @@ define([
 /*
  * Chad's TODO list:
  * -Fix the "PLAYER" Throws a: prompt
- * -Put the end period button on the action screen (maybe misc, instead of Substitution)
- * -Use a signle (persistent) button to rotate through game/sub1/sub2. Maybe in the bottom right corner like a page turn?
+ * -Use a single (persistent) button to rotate through game/sub1/sub2. Maybe in the bottom right corner like a page turn?
  * -enable/disable buttons depending on state
  * -Player model needs a function that returns its formatted name from its attributes.
  */
@@ -522,9 +521,7 @@ function(require, namespace, Backbone) {
 		events: {
 			"click .sub_next": "sub_next",
 			"click .sub_done": "sub_done",
-			"click .end_period": "end_period",
 			"click .game_over": "game_over",
-            //"click .roster_remove_all": "remove_all_onfield",
 		},
 
 		sub_next: function(ev){
@@ -545,7 +542,7 @@ function(require, namespace, Backbone) {
 			//^Hack to get the action buttons to show when a game is loaded but no one is subbed.
 			//this.model.set("injury_to",false);
 		},
-		end_period: function(ev) {this.model.end_period();},
+		
 		game_over: function(ev){this.model.game_over();},
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
@@ -559,7 +556,7 @@ function(require, namespace, Backbone) {
 	TrackedGame.Views.RosterList = Backbone.View.extend({
 		initialize: function() {
 			this.collection.bind("reset", function(){this.render();}, this);
-			this.collection.bind("add", function(){this.add_roster_item();}, this);
+			this.collection.bind("add", this.add_roster_item, this);
 		},
 		tagName: "ul",
 		//add_roster_item: function (model, collection, options){
@@ -591,7 +588,6 @@ function(require, namespace, Backbone) {
 		},
 	});
 	TrackedGame.Views.RosterItem = Backbone.View.extend({
-		//Can bind this teamplayer change to render... useful if player name/number changes. Why would it?
 		template: "trackedgame/roster_item",
 		tagName: "li",
 		serialize: function() {
@@ -795,13 +791,12 @@ function(require, namespace, Backbone) {
 	TrackedGame.Views.ActionArea = Backbone.View.extend({
 		template: "trackedgame/action_area",
 		initialize: function() {			
-			this.model.bind("change:player_in_possession_id", function() {this.render();}, this);
-			this.model.bind("change:current_state", function() {this.render();}, this);
+			this.model.bind("change:player_in_possession_id change:current_state change:period_number", function() {this.render();}, this);
 			this.model.bind("change:showing_alternate", this.show_action_buttons, this);//Which buttons are we showing?
 		},
 		render: function(layout) {
 			var view = layout(this);
-			return view.render().then(function(el) {
+			return view.render({per_num: this.model.get("period_number")}).then(function(el) {
 				this.show_action_buttons();
                 this.show_player_name();
                 this.model.setButtonHeight();
