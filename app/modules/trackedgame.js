@@ -348,10 +348,6 @@ function(require, namespace, Backbone) {
 			this.save();
 		},
 		
-		substitution: function(){
-			
-		},
-		
 		start_period_pull: function(){
 			//This function is called at the beginning of a period (including the first) to determine which team has the disc.
 			var per_num = this.get("period_number");
@@ -524,25 +520,8 @@ function(require, namespace, Backbone) {
 	TrackedGame.Views.SubTeam = Backbone.View.extend({
 		template: "trackedgame/game_substitution",
 		events: {
-			"click .sub_next": "sub_next",
-			"click .sub_done": "sub_done",
 			"click .game_over": "game_over",
 		},
-
-		sub_next: function(ev){
-			this.options.onfield.trigger("reset");
-			//I would prefer to tighten the scope on this but I"m not sure how to access
-			//the other team"s class without searching the whole DOM.
-			
-		},
-		sub_done: function(ev){
-			this.options.onfield.trigger("reset");
-			
-			//this.model.trigger("change:showing_alternate");
-			//^Hack to get the action buttons to show when a game is loaded but no one is subbed.
-			//this.model.set("injury_to",false);
-		},
-		
 		game_over: function(ev){this.model.game_over();},
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
@@ -550,7 +529,7 @@ function(require, namespace, Backbone) {
 				".sub_on_field_area": new TrackedGame.Views.RosterList({collection: this.options.onfield, remove_all_button: true}),
 				".sub_off_field_area": new TrackedGame.Views.RosterList({collection: this.options.offfield})
 			});
-			return view.render({ team: this.options.team, per_num: 1});
+			return view.render({ team: this.options.team});
 		}
 	});
 	TrackedGame.Views.RosterList = Backbone.View.extend({
@@ -797,16 +776,24 @@ function(require, namespace, Backbone) {
 		render: function(layout) {
 			var view = layout(this);
 			var pl_string = "";
+			var ac_string = "";
 			var pl_id = this.model.get("player_in_possession_id");
 			var team_ix = this.model.get("team_in_possession_ix");
 			if (pl_id){
 				var pl_model = _.find(this.model.get("onfield_" + team_ix).pluck("player"), function(pl_obj){return pl_obj.id == pl_id;});
-                if (pl_model != undefined) {pl_string = pl_model.first_name[0] + ". " + pl_model.last_name + " ";}
+                if (pl_model != undefined) {
+                	pl_string = pl_model.first_name[0] + ". " + pl_model.last_name + " ";
+                	ac_string = "throws a:";
+                }
 			}
-			return view.render({player_string: pl_string, per_num: this.model.get("period_number")}).then(function(el) {
-				this.show_action_buttons();
-                this.show_player_name();
-                this.model.setButtonHeight();
+			return view.render({
+					player_string: pl_string,
+					action_string: ac_string,
+					per_num: this.model.get("period_number"),
+				}).then(function(el) {
+					this.show_action_buttons();
+	                this.show_player_name();
+	                this.model.setButtonHeight();
 			});
 		},
 		show_action_buttons: function(ev){//shows or hides buttons depending on this.model.get("showing_alternate")
@@ -838,7 +825,6 @@ function(require, namespace, Backbone) {
 			"click .timeout": "timeout",
 			"click .injury": "injury",
 			"click .end_of_period": "end_of_period",
-			"click .substitution": "substitution",
 		},
 		undo: function(){this.model.undo();},
 		score: function(){this.model.set("current_state","scoring");},
@@ -851,7 +837,6 @@ function(require, namespace, Backbone) {
 		timeout: function(){this.model.immediate_event(91);},
 		injury: function(){this.model.immediate_event(92);},
 		end_of_period: function(){this.model.end_of_period();},
-		substitution: function(){this.model.substitution();}
 	});
 	
 	TrackedGame.Views.RotateButton = Backbone.View.extend({
