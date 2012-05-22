@@ -67,7 +67,7 @@ function(require, namespace, Backbone) {
 			team_in_possession_ix: NaN,
 			player_in_possession_id: NaN,
 			injury_to: false,//Whether or not substitutions will be injury substitutions.
-			visible_screen: 2,
+			visible_screen: 0,
 			showing_alternate: -1//I seem to be having trouble with using a boolean or using 0 and 1. So use 1 and -1.
 		},
 		toJSON: function() {//flatten the data so they are easy to read.
@@ -745,7 +745,7 @@ function(require, namespace, Backbone) {
 		initialize: function() {
 			//Specific players should only be added or removed on the substitution screen.
 			//We don"t need to update our player buttons on each add or remove, not until the sub screen is done. That will trigger a reset.
-			this.collection.bind("reset", function() {this.render().then(function(el) {this.options.trackedgame.setButtonHeight();})}, this);
+			this.collection.bind("add", function() {this.render().then(function(el) {this.options.trackedgame.setButtonHeight();})}, this);
 		},
 		render: function(layout) { 
 			var view = layout(this);
