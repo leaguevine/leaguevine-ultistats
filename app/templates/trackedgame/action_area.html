@@ -1,10 +1,10 @@
 <div class="buttons main_action">
     <div id="throw_prompt" class="action_prompt">
         <div class="action_prompt_player">
-            PLAYER
+            <%= player_string %>
         </div>
         <div class="action_prompt_action">
-            Throws a:
+            <%= action_string %>
         </div>
     </div>
     <button class="button completion">Complete Pass</button>
@@ -27,12 +27,8 @@
     -->
 	<button class="button injury">Injury</button>
 	<button class="button timeout">Timeout</button>
-	<button class="button substitution">Substitution</button>
+	<button class="button end_of_period">End of Period <%= per_num %></button>
 </div>
 <div class="buttons extra_actions">
     <button class="button misc">Misc</button>
-    <button class="button undo">
-        <span class="button_line_1">Undo</span> 
-        <span class="button_line_2">(coming soon)</span>
-    </button>
 </div>
