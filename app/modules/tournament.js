@@ -11,7 +11,9 @@ define([
   "modules/title",
   "modules/search",  
   "modules/tournteam",
-  "modules/game"
+  "modules/game",
+  
+  "use!plugins/backbone.websqlajax",
 ],
 function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
     "use strict";
@@ -35,11 +37,15 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 		},
 		toJSON: function() {//get rid of tournteams
 			return _.clone(this.attributes);
-		}
+		},
+		sync: Backbone.WebSQLAjaxSync,
+		store: new Backbone.WebSQLStore("tournament"),
 	});
 	
 	Tournament.Collection = Backbone.Collection.extend({
 		model: Tournament.Model,
+		sync: Backbone.WebSQLAjaxSync,
+		store: new Backbone.WebSQLStore("tournament"),
 		urlRoot: Leaguevine.API.root + "tournaments",
         url: function(models) {
             var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
@@ -84,29 +90,18 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 
 			//var Search = require("modules/search"); //If that module is an argument to this module's function then it does not need to be required again.
 			var myLayout = app.router.useLayout("nav_content");
-			myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newtournament", name: "New"}));
-			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Tournaments"}));
+			//myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newtournament", name: "New"}));
+			myLayout.view(".navbar", new Navigation.Views.Navbar());
+			myLayout.view(".titlebar", new Title.Views.Titlebar({model_class: "tournament", level: "list"}));
 			//myLayout.view(".content", new Tournament.Views.List ({collection: tournaments}));
-			myLayout.view(".content", new Search.Views.SearchableList({collection: tournaments, CollectionClass: Tournament.Collection, ViewsListClass: Tournament.Views.List,
-                            right_btn_class: "", right_btn_txt: "Create", right_btn_href: "#newtournament", search_object_name: "tournament"}));
+			//myLayout.view(".content", new Search.Views.SearchableList({collection: tournaments, CollectionClass: Tournament.Collection, ViewsListClass: Tournament.Views.List,
+            //                right_btn_class: "", right_btn_txt: "Create", right_btn_href: "#newtournament", search_object_name: "tournament"}));
+            myLayout.view(".content", new Search.Views.SearchableList({collection: tournaments, CollectionClass: Tournament.Collection, ViewsListClass: Tournament.Views.List, search_object_name: "tournament"}));
 			myLayout.render(function(el) {$("#main").html(el);});
 		},
 		showTournament: function (tournamentId) {
             var tournament = new Tournament.Model({id: tournamentId});
-            var titlebarOptions = {title: tournament.get("name"), 
-                               left_btn_href:"#tournaments", 
-                               left_btn_class:"back", 
-                               left_btn_txt:"Tournaments"};
-                               
-           //TODO: Use the titlebar's view binding to do the following
-            tournament.fetch({success: function (model, response) {
-                // After the tournament has been fetched, render the nav-bar with the tournament's fetched name
-                var myLayout = app.router.useLayout("div");
-                titlebarOptions.title = model.get("name");
-                myLayout.view("div", new Title.Views.Titlebar(titlebarOptions));
-                myLayout.render(function(el) {$(".titlebar").html(el)});
-                }
-            });
+            tournament.fetch();
 
 			var TournTeam = require("modules/tournteam");
 			var tournteams = new TournTeam.Collection([],{tournament_id: tournament.get("id")});
@@ -118,19 +113,17 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 			
 			var myLayout = app.router.useLayout("nav_detail_list");
 			myLayout.setViews({
-				".navbar": new Navigation.Views.Navbar({href: "#edittournament/"+tournamentId, name: "Edit"}),
+				//".navbar": new Navigation.Views.Navbar({href: "#edittournament/"+tournamentId, name: "Edit"}),
+				".navbar": new Navigation.Views.Navbar(),
+				".titlebar": new Title.Views.Titlebar({model_class: "tournament", level: "show", model: tournament}),
 				".detail": new Tournament.Views.Detail( {model: tournament}),
 				".list_children": new Tournament.Views.Multilist({ games: games, tournteams: tournteams }),					
-				".titlebar": new Title.Views.Titlebar(titlebarOptions)
 			});
 			myLayout.render(function(el) {$("#main").html(el);});
 		}
 	});
 	Tournament.router = new Tournament.Router();// INITIALIZE ROUTER
-	
-	Tournament.Views.Nav = Backbone.View.extend({
-		template: "navbar/navbar"
-	});
+
 	Tournament.Views.Item = Backbone.View.extend({
 		template: "tournaments/item",
 		tagName: "li",

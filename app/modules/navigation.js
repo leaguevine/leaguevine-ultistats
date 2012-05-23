@@ -25,8 +25,8 @@ function(namespace, Backbone, Game) {
 	Navigation.Views.Navbar = Backbone.View.extend({
     	template: "navbar/navbar",
     	//className: "navbar-wrapper",
-    	href: "",
-    	name: "",
+    	//href: "",
+    	//name: "",
         currently_viewed: "",
 	    render: function(layout) {
 	    	var view = layout(this);
@@ -57,8 +57,8 @@ function(namespace, Backbone, Game) {
             }
         
 	    	return view.render({
-                href: this.options.href, 
-                name: this.options.name, 
+                //href: this.options.href, 
+                //name: this.options.name, 
                 tournaments_class: tournaments_class,
                 teams_class: teams_class,
                 games_class: games_class,

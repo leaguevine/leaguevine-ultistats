@@ -22,9 +22,9 @@ function(namespace, Backbone, Leaguevine) {
          *          CollectionClass - the Collection class (e.g. Team.Collection)
          *          ViewsListClass - the Views.List class (e.g. Team.Views.List)
          *          search_object_name - type of object being searched
-         *          right_btn_href - link for right button
-         *          right_btn_txt - text of right button
-         *          right_btn_class - additional class for right button
+         *          Xright_btn_href - link for right button
+         *          Xright_btn_txt - text of right button
+         *          Xright_btn_class - additional class for right button
          * 	e.g.	myLayout.view(".content", new Search.Views.SearchableList({
          * 				collection: teams, CollectionClass: Team.Collection, 
          * 				ViewsListClass: Team.Views.List, right_btn_class: "",
@@ -45,6 +45,7 @@ function(namespace, Backbone, Leaguevine) {
         events: {
             "keyup #object_search": "filterObjects"
         },
+        search_results: _.extend({}, Backbone.Events),
         filterObjects: function(ev) {
             //var my_collection = this.options.collection;//collection is special in that it is not passed to options.
             var my_collection = this.collection; //Create a local closure so we can access this variable in the success callback.
@@ -54,35 +55,37 @@ function(namespace, Backbone, Leaguevine) {
             //When we fetch a collection, upon its return the collection "reset" is triggered.
             //However, we cannot fetch our original collection because this will cause (error-generating) duplicates.
             //Thus we make a new collection then merge new results.
-            var search_results = new this.options.CollectionClass([],{name: search_string});
-            search_results.fetch({
-                success: function(collection, response) {
-                    Leaguevine.Utils.concat_collections(my_collection, collection);
-                }
-            });
-            //Trigger a reset immediately so the collection is curated immediately.
+            this.search_results.reset();
+            this.search_results.name = search_string;
+            this.search_results.fetch();
+            //Trigger a reset immediately so the already-present data are curated immediately.
             my_collection.trigger("reset");
         },
         render: function(layout) {
             var view = layout(this);
-            var temp_collection = {};
+            //var temp_collection = {};
+            //Leaguevine.Utils.concat_collections(this.collection, this.search_results);
             this.setViews({
                 ".object_list_area": new this.options.ViewsListClass({collection: this.collection, tap_method: this.options.tap_method})
             });
             return view.render({
                 search_object_name: this.options.search_object_name,
-                right_btn_class: this.options.right_btn_class,
+                /*right_btn_class: this.options.right_btn_class,
                 right_btn_txt: this.options.right_btn_txt,
-                right_btn_href: this.options.right_btn_href,
+                right_btn_href: this.options.right_btn_href,*/
             })/*.then(function(el) {
                 $(".object_list_area").html(el);
                 //This should only be necessary for views that have no template, no setViews, or other view setting mechanism
                 //In this case it is probably causing a (slow) double-render
             })*/;
-        }/*,
+        },
 		initialize: function() {
-			//We could bind to reset here to re-render this whole thing.
-			//Instead we bind to reset in the module's .Views.List
+			this.search_results = new this.options.CollectionClass();
+			this.search_results.bind("reset", function() {
+			 	Leaguevine.Utils.concat_collections(this.collection, this.search_results);
+		 	}, this)
+			/*We could bind to reset here to re-render this whole thing.
+			Instead we bind to reset in the module's .Views.List
 			
 			It is not necessary to take this.options and set them as higher level
 			variables because we are assuming that we are always passing in these
@@ -97,7 +100,8 @@ function(namespace, Backbone, Leaguevine) {
             this.right_btn_class = this.options.right_btn_class;
             this.right_btn_txt = this.options.right_btn_txt;
             this.right_btn_href = this.options.right_btn_href;
-        }*/
+            */
+        }
     });
     
     return Search;// Required, return the module for AMD compliance

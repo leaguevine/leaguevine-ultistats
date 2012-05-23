@@ -6,7 +6,7 @@ define([
   "use!backbone",
 
   // Modules
-  "modules/leaguevine"
+  "modules/leaguevine",
 ],
 function(require, namespace, Backbone, Leaguevine) {
     "use strict";
@@ -93,6 +93,13 @@ function(require, namespace, Backbone, Leaguevine) {
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Collection.prototype.parse(resp);
+			/*var _this = this;
+			if (this.team_id){resp = _.filter(resp, function(obj){
+				return obj.team_id == _this.team_id;
+			});}
+			if (this.player_id){resp = _.filter(resp, function(obj){
+				return obj.player_id == _this.player_id;
+			});}*/
 			return resp;
 		},
 		initialize: function(models, options) {

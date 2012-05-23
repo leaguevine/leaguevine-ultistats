@@ -9,7 +9,9 @@ define([
   "modules/leaguevine",
   "modules/navigation",
   "modules/title",
-  "modules/teamplayer"
+  "modules/teamplayer",
+  
+  "use!plugins/backbone.websqlajax",
 ],
 function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
     "use strict";
@@ -31,6 +33,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			weight: "",
 			teamplayers: {}//used to get to teams
 		},
+		sync: Backbone.WebSQLAjaxSync,
+		store: new Backbone.WebSQLStore("player"),
 		urlRoot: Leaguevine.API.root + "players",
 		parse: function(resp, xhr) {
 			resp = Backbone.Model.prototype.parse(resp);
@@ -47,6 +51,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 	//
 	Player.Collection = Backbone.Collection.extend({
 		model: Player.Model,
+		sync: Backbone.WebSQLAjaxSync,
+		store: new Backbone.WebSQLStore("player"),
 		comparator: function(player) {// Define how items in the collection will be sorted.
 		  return player.get("last_name").toLowerCase();
 		},
@@ -80,7 +86,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
 			myLayout.view(".navbar", new Navigation.Views.Navbar());
-            myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Players"}));
+            myLayout.view(".titlebar", new Title.Views.Titlebar({model_class: "player", level: "list"}));
 			myLayout.view(".content", new Player.Views.List ({collection: app.players}));//pass the List view a collection of (fetched) players.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
@@ -88,23 +94,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			//Prepare the data.
 			var player = new Player.Model({id: playerId});
 
-            var titlebarOptions = {
-                title: player.get("first_name")+" "+player.get("last_name"), 
-                left_btn_href:"#players", 
-                left_btn_class: "back", 
-                left_btn_txt: "Players", 
-                right_btn_href: "#editplayer/"+playerId, 
-                right_btn_txt: "Edit"
-            };
-
-			//TODO: Don't use the success callback.
-			player.fetch({success: function() { // Re-render the titlebar with the player's name
-                var myLayout = app.router.useLayout("div");
-                titlebarOptions.title = player.get("first_name")+" "+player.get("last_name");
-                myLayout.view("div", new Title.Views.Titlebar(titlebarOptions));
-                myLayout.render(function(el) {$(".titlebar").html(el)});
-                }
-            });
+			player.fetch();
 			
 			var TeamPlayer = require("modules/teamplayer");
 			var teamplayers = new TeamPlayer.Collection([],{player_id: player.get("id")});
@@ -115,9 +105,9 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({href: "#editplayer/"+playerId, name: "Edit"}),
+				".titlebar": new Title.Views.Titlebar({model_class: "player", level: "show", model: player}),
 				".detail": new Player.Views.Detail( {model: player}),
 				".list_children": new Player.Views.Multilist({ teamplayers: teamplayers}),
-                ".titlebar": new Title.Views.Titlebar(titlebarOptions)
 			});
 			myLayout.render(function(el) {$("#main").html(el);});
 		}

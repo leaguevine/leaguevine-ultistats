@@ -4,14 +4,16 @@ define([
 
   // Libs
   "use!backbone",
-
+  
   // Modules
   "modules/leaguevine",
   "modules/navigation",
   "modules/title",
   "modules/search",
   "modules/teamplayer",
-  "modules/game"
+  "modules/game",
+  
+  "use!plugins/backbone.websqlajax",
 ],
 
 function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
@@ -39,7 +41,10 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 		toJSON: function() {
 			//TODO: Remove attributes that are not stored (teamplayers, games)
 			return _.clone(this.attributes);
-		}
+		},
+		sync: Backbone.WebSQLAjaxSync,
+		store: new Backbone.WebSQLStore("team"),
+		associations: {"season_id": "season"},
 	});
   
 	//
@@ -47,6 +52,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 	//
 	Team.Collection = Backbone.Collection.extend({
 		model: Team.Model,
+		sync: Backbone.WebSQLAjaxSync,
+		store: new Backbone.WebSQLStore("team"),
 		urlRoot: Leaguevine.API.root + "teams",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
@@ -64,14 +71,12 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
             url += "order_by=%5Bname,-season_id%5D&";
 			return url;
 		},
+		//TODO: I should override parse if I want to filter team's returned from DB. e.g. this would be useful for
+		//filtering results shown on the "Teams" page if a season is already set. Setting the season in "Settings" comes first.
 		comparator: function(team) {// Define how items in the collection will be sorted.
 			var team_obj = team.toJSON();
 			if (team_obj.season && team_obj.season.name) {return team_obj.name.toLowerCase() + team_obj.season.name.toLowerCase();}
             else {return team_obj.name.toLowerCase();}
-		},
-		parse: function(resp, xhr) {
-			resp = Backbone.Collection.prototype.parse(resp);
-			return resp;
 		},
 		initialize: function(models, options) {
 			if (options) {
@@ -113,7 +118,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
 			myLayout.view(".navbar", new Navigation.Views.Navbar({}));
-			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Teams", right_btn_href: "#newteam", right_btn_class: "add"}));
+			//myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Teams", right_btn_href: "#newteam", right_btn_class: "add"}));
+			myLayout.view(".titlebar", new Title.Views.Titlebar({model_class: "team", level: "list"}));
 			myLayout.view(".content", new Search.Views.SearchableList({collection: teams, CollectionClass: Team.Collection, ViewsListClass: Team.Views.List, right_btn_class: "",
                             right_btn_txt: "Create", right_btn_href: "#newteam", search_object_name: "team"})); //pass the List view a collection of (fetched) teams.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
@@ -122,19 +128,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 			//Prepare the data.
 			var team = new Team.Model({id: teamId});
 			
-            var titlebarOptions = {title: team.get("name"), left_btn_href:"#teams", left_btn_class: "back", left_btn_txt: "Teams", right_btn_href: "#editteam/"+teamId, right_btn_txt: "Edit"};
-            
-			//It is possible that someone will get a link to a team's page, and thus they will not have the team in the local db before this router is called.
-			//The subsequent AJAX request will not trigger this callback. Thus the team's name information will never make it to the title bar.
-			//Instead we need the titlebar to accept a model, not a string, and bind the titlebar's view to model's "change".
-            team.fetch({success: function (model, response) {
-                // After the team has been fetched, render the nav-bar with the team's fetched name
-                var myLayout = app.router.useLayout("div");
-                titlebarOptions.title = team.get("name");
-                myLayout.view("div", new Title.Views.Titlebar(titlebarOptions));
-                myLayout.render(function(el) {$(".titlebar").html(el)});
-                }
-            });
+            team.fetch();
 
 			var TeamPlayer = require("modules/teamplayer");
 			var teamplayers = new TeamPlayer.Collection([],{team_id: team.get("id")});
@@ -151,7 +145,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 				".navbar": new Navigation.Views.Navbar({}),
 				".detail": new Team.Views.Detail( {model: team}),
 				".list_children": new Team.Views.Multilist({ teamplayers: teamplayers, games: games}), 
-                ".titlebar": new Title.Views.Titlebar(titlebarOptions)
+                ".titlebar": new Title.Views.Titlebar({model_class: "team", level: "show", model: team})
 			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
@@ -164,14 +158,13 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 			//If we have teamId, then we are editing. If not, then we are creating a new team.
 			if (teamId) { //make the edit team page
 				var team = new Team.Model({id: teamId});
-                myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Edit", left_btn_href: "#teams/"+teamId, left_btn_class: "back", left_btn_txt: "Cancel"}));
                 team.fetch(); //Fetch this team instance
 			}
 			else { //make the add team page
 				var team = new Team.Model({});
-                myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Add a Team", left_btn_href: "#teams", left_btn_class: "back", left_btn_txt: "Cancel"}));
 			}
 			myLayout.view(".navbar", new Navigation.Views.Navbar({}));
+			myLayout.view(".titlebar", new Title.Views.Titlebar({model_class: "team", level: "edit", model: team}));
 			myLayout.view(".content", new Team.Views.Edit({model: team}));
 			myLayout.render(function(el) {$("#main").html(el);});
 		}

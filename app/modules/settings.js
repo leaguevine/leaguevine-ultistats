@@ -83,7 +83,7 @@ function(require, namespace, Backbone, Navigation, Title) {
         	});
 			var myLayout = app.router.useLayout("nav_content");
 			myLayout.view(".navbar", new Navigation.Views.Navbar({}));
-			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Settings"}));
+			myLayout.view(".titlebar", new Title.Views.Titlebar({model_class: "setting", level: "list"}));
 			myLayout.view(".content", new Settings.Views.List({collection: settings}));
             myLayout.render(function(el) {$("#main").html(el);});
         }

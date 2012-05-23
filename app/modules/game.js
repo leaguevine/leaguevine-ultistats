@@ -13,6 +13,8 @@ define([
   "modules/title",
   "modules/player_per_game_stats",
   "modules/team_per_game_stats",
+  
+  "use!plugins/backbone.websqlajax",
 ],
 function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Title, PlayerPerGameStats, TeamPerGameStats) {
     "use strict";
@@ -32,6 +34,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 			//pool, swiss_round, bracket
             
 		},
+		sync: Backbone.WebSQLAjaxSync,
+		store: new Backbone.WebSQLStore("game"),
 		urlRoot: Leaguevine.API.root + "games",
 		parse: function(resp, xhr) {
 			resp = Backbone.Model.prototype.parse(resp);
@@ -63,6 +67,8 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 	
 	Game.Collection = Backbone.Collection.extend({
 		model: Game.Model,
+		sync: Backbone.WebSQLAjaxSync,
+		store: new Backbone.WebSQLStore("game"),
 		comparator: function(game) {// Define how items in the collection will be sorted.
 		  return game.get("start_time");
 		},
@@ -90,6 +96,17 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Collection.prototype.parse(resp);
+			var _this = this;
+			//If we have criteria to filter by, reject resp objects that do not meet the criteria.
+			if (this.team_1_id){resp = _.filter(resp, function(obj){
+				return obj.team_1_id == _this.team_1_id || obj.team_2_id == _this.team_1_id;
+			});}
+			if (this.team_2_id){resp = _.filter(resp, function(obj){
+				return obj.team_2_id == _this.team_2_id || obj.team_1_id == _this.team_2_id;
+			});}
+			if (this.tournament_id){resp = _.filter(resp, function(obj){
+				return obj.tournament_id == _this.tournament_id;
+			});}
 			return resp;
 		},
 		initialize: function(models, options) {
@@ -113,7 +130,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
 			myLayout.view(".navbar", new Navigation.Views.Navbar());
-			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Games"}));
+			myLayout.view(".titlebar", new Title.Views.Titlebar({model_class: "game", level: "list"}));
 			myLayout.view(".content", new Game.Views.Find());
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
@@ -122,16 +139,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 			//Prepare the data.
 			var game = new Game.Model({id: gameId});
 			
-			//TODO: Don't use the success callback. Rendering of the back button should be handled by the titlebar.
-			game.fetch({
-				success: function (model, response) {
-                    // After the game has been fetched, render the nav-bar so the back button says tournament
-                    // if the game is part of a tournament
-                    var myLayout = app.router.useLayout("div");
-                    myLayout.view("div", new Game.Views.Titlebar({model: model}));
-                    myLayout.render(function(el) {$(".titlebar").html(el)});
-               }
-            });
+			game.fetch();
 
             var playerstats = new PlayerPerGameStats.Collection([],{game_ids: [gameId]});
             playerstats.fetch();
@@ -141,6 +149,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 			
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({href: "#editgame/"+gameId, name: "Edit"}),
+				".titlebar": new Title.Views.Titlebar({model_class: "game", level: "show", model: game}),
 				".detail": new Game.Views.Detail( {model: game}),
 				".list_children": new Game.Views.Multilist({
                     model: game, 
@@ -148,7 +157,6 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
                     teamstats: teamstats
                 })
 			});
-			myLayout.view(".titlebar", new Game.Views.Titlebar({model: game}));
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
         editGame: function(teamId, gameId) {
@@ -171,7 +179,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
             	//this_game.fetch(); Game is not persisted yet so it cannot be fetched.
                 var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
                 teams.fetch();
-                myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Create a Game"}));
+                myLayout.view(".titlebar", new Title.Views.Titlebar({model_class: "game", level: "edit", model: this_game}));
                 myLayout.view(".content", new Game.Views.Edit({model: this_game, teams: teams}));
             }
             myLayout.view(".navbar", new Navigation.Views.Navbar({}));
@@ -188,35 +196,6 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul.
 		serialize: function() {return this.model.toJSON();} //render looks for this to manipulate model before passing to the template.
 	});
-	Game.Views.Titlebar = Backbone.View.extend({
-        template: "layouts/div", //Use an empty template for rendering since it's just a wrapper around Title.Views.Titlebar
-        render: function(layout) { //Render the title for the game depending on if it is in a tournament or not
-            var view = layout(this);
-            var tournamentId = this.model.get("tournament_id");
-            var left_btn_href = "#games";
-            var left_btn_txt = "Games";
-            if (tournamentId != null) {
-                //Set the back button to point to this game's tournament if it is part of a tournament
-                left_btn_href = "#tournaments/" + tournamentId;
-                left_btn_txt = "Tournament";
-            }
-            this.setViews(
-                {"div": new Title.Views.Titlebar({
-                    title: "Game", 
-                    left_btn_href: left_btn_href, 
-                    left_btn_class: "back", 
-                    left_btn_txt: left_btn_txt
-                })
-            });
-            return view.render(function(el) {});
-        },
-		initialize: function() {
-			//TODO: Shouldn't this be this.model.bind ?
-    		this.bind("change", function() {
-      			this.render();
-    		}, this);
-  		}
-    });
     Game.Views.Find = Backbone.View.extend({
         template: "games/find"
     });

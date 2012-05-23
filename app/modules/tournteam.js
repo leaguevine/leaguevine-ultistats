@@ -8,7 +8,7 @@ define([
   // Modules
   "modules/leaguevine",
   "modules/tournament",
-  "modules/team"
+  "modules/team",
 ],
 function(require, namespace, Backbone, Leaguevine) {
 	var app = namespace.app;
@@ -56,6 +56,15 @@ function(require, namespace, Backbone, Leaguevine) {
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Collection.prototype.parse(resp);
+			/*
+			var _this = this;
+			if (this.team_id){resp = _.filter(resp, function(obj){
+				return obj.team_id == _this.team_id;
+			});}
+			if (this.tournament_id){resp = _.filter(resp, function(obj){
+				return obj.tournament_id == _this.tournament_id;
+			});}*/
+			
 			var Team = require("modules/team");
 			if (Team){
 			output = _.map(resp, function (obj) {

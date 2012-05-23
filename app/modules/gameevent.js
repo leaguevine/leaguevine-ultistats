@@ -6,7 +6,9 @@ define([
   "use!backbone",
 
   // Modules
-  "modules/leaguevine"
+  "modules/leaguevine",
+  
+  "use!plugins/backbone.websqlajax",
 ],
 
 function(require, namespace, Backbone, Leaguevine) {
@@ -27,6 +29,8 @@ function(require, namespace, Backbone, Leaguevine) {
 			player_3_team_id: NaN,
 			int_1: NaN
 		},
+		sync: Backbone.WebSQLAjaxSync,
+		store: new Backbone.WebSQLStore("gameevent"),
 		urlRoot: Leaguevine.API.root + "events",
 		parse: function(resp, xhr) {
 			resp = Backbone.Model.prototype.parse(resp);
@@ -46,6 +50,8 @@ function(require, namespace, Backbone, Leaguevine) {
 	});
 	GameEvent.Collection = Backbone.Collection.extend({
 		model: GameEvent.Model,
+		sync: Backbone.WebSQLAjaxSync,
+		store: new Backbone.WebSQLStore("gameevent"),
 		urlRoot: Leaguevine.API.root + "events",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
@@ -57,7 +63,10 @@ function(require, namespace, Backbone, Leaguevine) {
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Collection.prototype.parse(resp);
-			//I don't know what these will look like yet.
+			var _this = this;
+			if (this.game_id){resp = _.filter(resp, function(obj){
+				return obj.game_id == _this.game_id;
+			});}
 			return resp;
 		},
 		initialize: function(models, options) {
