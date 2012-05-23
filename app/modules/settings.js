@@ -6,11 +6,12 @@ define([
   "use!backbone",
 
   // Modules
-  "modules/leaguevine",
   "modules/navigation",
   "modules/title",
+  
+  "use!plugins/backbone.localStorage"
 ],
-function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
+function(require, namespace, Backbone, Navigation, Title) {
     "use strict";
 	var app = namespace.app;
 	var Settings = namespace.module();
@@ -18,17 +19,18 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 	Settings.MySettings = [
 		{
 			"order": 1,
-			"name": "Log In",
+			"name": "Online Status",
 			"type": "Toggle Button",
-			"value": false,
-			"toggle_prompt_tf": ["Log Out","Log In"],
+			"value": function() {return app.api.is_logged_in();},
+			//"value": false,
+			"toggle_prompt_ft": ["Logged Out","Logged In"],
 		},
 		{
 			"order": 2,
 			"name": "Sort players by:",
-			"type": "Dropdown",
-			"value": 0,
-			"list_items":["jersey","full name","first name","nick name","last name"]
+			"type": "Select",
+			"value": "full name",
+			"option_list":["jersey","full name","first name","nick name","last name"]
 		},
 		{
 			"order": 3,
@@ -40,6 +42,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 	
 	Settings.Model = Backbone.Model.extend({
 		sync: Backbone.localSync,
+		idAttribute: "name",
 		localStorage: new Backbone.LocalStore("settings"),
 		defaults: {
 			"order": -1,
@@ -47,8 +50,17 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			"type": "Widget Type",
 			"value": true,
 			"list_items":[],
-			"toggle_prompt_tf":[],}
-		//TODO: search by name
+			"toggle_prompt_ft":[],},
+		toggle: function(){//Method used by toggle buttons
+			//Hack for login
+			if (this.get("name") == "Online Status"){
+				if (this.get("value")()){app.api.logout();}
+				else {app.api.login();}
+			} else {
+				this.set("value",!this.get("value"));
+				this.save();
+			}
+		}
 	});
 	
 	Settings.Collection = Backbone.Collection.extend({
@@ -65,13 +77,13 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			"settings": "showSettings", 
 		},
         showSettings: function () {
-        	settings = new Settings.Collection();
-			settings.fetch();
-			//TODO: Combine Settings.MySettings and overwrite with those fetched from localStorage
-			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
+        	var settings = new Settings.Collection(Settings.MySettings);
+        	_.each(settings.models, function(setting){
+        		setting.fetch();
+        	});
+			var myLayout = app.router.useLayout("nav_content");
 			myLayout.view(".navbar", new Navigation.Views.Navbar({}));
 			myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Settings"}));
-			//myLayout.view(".content", new Settings.Views.Detail());
 			myLayout.view(".content", new Settings.Views.List({collection: settings}));
             myLayout.render(function(el) {$("#main").html(el);});
         }
@@ -79,7 +91,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 	Settings.router = new Settings.Router();// INITIALIZE ROUTER
 
 	Settings.Views.List = Backbone.LayoutManager.View.extend({
-		tag: "form",
+		template: "settings/list",
 		initialize: function() {
 			this.collection.bind("reset", function() {
 				this.render();
@@ -87,39 +99,63 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 		},
 		render: function(layout){
 			var view = layout(this);
-			_.each(this.collection, function(setting){
+			_.each(this.collection.models, function(setting){
 				switch (setting.get("type")){
 				case "Toggle Button":
-					view.insert("form", new Settings.Views.ToggleButton({model: setting}));
+					view.insert("ul", new Settings.Views.ToggleButton({model: setting}));
 					break;
-				case "Dropdown":
+				case "Select":
+					view.insert("ul", new Settings.Views.Select({model: setting}));
 					break;
 				case "Scale":
 					break; 
 				}
 			});
+			return view.render();
 		},
 	});
 	
 	Settings.Views.ToggleButton = Backbone.LayoutManager.View.extend({  	
 		template: "settings/toggleButton",
+		tagName: "li",
 		render: function(layout) {
-			return layout(this).render({
-                //logged_in is a boolean context variable to specify if a user is authenticated
-                logged_in: app.api.is_logged_in(),
-            });
+			var value = _.isFunction(this.model.get("value")) ? this.model.get("value")() : this.model.get("value");
+			var prompt_ix = value ? 1 : 0;
+			var btn = {"prompt": this.model.get("name"), "text": this.model.get("toggle_prompt_ft")[prompt_ix]};
+			return layout(this).render({"btn": btn});
 		},
         events: {
-            "click button#login": "login",
-            "click button#logout": "logout",
+            "click button": "toggle"
         },
-        login: function(ev){
-            app.api.login();
-            this.render();
-        },
-        logout: function(ev){
-            app.api.logout();
-            this.render();
-        }
+        toggle: function() {
+        	this.model.toggle();
+        	this.render();
+    	}
+	});
+	
+	Settings.Views.Select = Backbone.LayoutManager.View.extend({
+		template: "settings/select",
+		tagName: "li",
+		render: function(layout) {
+			var view = layout(this);
+			/*_.each(this.model.get("option_list"), function(option_item){
+				view.insert("select", new Settings.Views.SelectOption({option_text: option_item}));
+			});*/
+			return view.render({prompt: this.model.get("name")}).then(function(){
+				var opt_html = "";
+				_.each(this.model.get("option_list"), function(option_item){
+					opt_html += '<option value="' + option_item + '">' + option_item + '</option>';
+				});
+				this.$el.children()[1].innerHTML = opt_html;
+				this.$el.children()[1].value = this.model.get("value");
+			});
+		},
+		events: {
+			"change": "select_changed"
+		},
+		select_changed: function(ev){
+			this.model.set("value",ev.target.value);
+			this.model.save();
+		}
 	});
 });

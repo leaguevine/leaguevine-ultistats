@@ -65,13 +65,29 @@ function(require, namespace, Backbone, Leaguevine) {
 			return url.substr(0,url.length-1);
 		},
 		comparator: function(teamplayer) {// Define how items in the collection will be sorted.
-		  //return teamplayer.get("number");
-		  var temp_player = teamplayer.get("player");
-		  if (_.isFunction(temp_player.get)) {
-		  	return temp_player.get("last_name").toLowerCase() + temp_player.get("first_name").toLowerCase();
-		  } else {
-		  	return temp_player.last_name.toLowerCase() + temp_player.first_name.toLowerCase();
-		  }
+			//Build an object containing different string representations.
+			var temp_player = teamplayer.get("player");
+			var this_obj = {"number": teamplayer.get("number")};
+			if (_.isFunction(temp_player.get)) {//If this is a proper model.
+				_.extend(this_obj,{
+					"first_name": temp_player.get("first_name").toLowerCase(),
+					 "last_name": temp_player.get("last_name").toLowerCase(),
+					 "nick_name": temp_player.get("nickname").toLowerCase(),
+					 "full_name": temp_player.get("first_name").toLowerCase()[0] + temp_player.get("last_name").toLowerCase()
+				});
+			} else {//If this is a JSON object.
+				_.extend(this_obj,{
+					"first_name": temp_player.first_name.toLowerCase(),
+					 "last_name": temp_player.last_name.toLowerCase(),
+					 "nick_name": temp_player.nickname.toLowerCase(),
+					 "full_name": temp_player.first_name.toLowerCase()[0] + temp_player.last_name.toLowerCase()
+				});
+			}
+			var sort_setting = JSON.parse(localStorage.getItem("settings-Sort players by:"));
+			if (sort_setting.value == "nick name"){return this_obj.nick_name;}
+			else if (sort_setting.value == "jersey"){return this_obj.number;}
+			else if (sort_setting.value == "last name"){return this_obj.last_name;}
+			else {return this_obj.full_name;}
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Collection.prototype.parse(resp);
