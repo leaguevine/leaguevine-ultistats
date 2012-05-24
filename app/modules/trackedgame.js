@@ -15,7 +15,8 @@ define([
 
 /*
  * Chad's TODO list:
- * -Use a single (persistent) button to rotate through game/sub1/sub2. Maybe in the bottom right corner like a page turn?
+ * -Choosing who pulled requires team names, thus needs to be a view that is re-rendered when game is .sync'd.
+ * -First event generates an error
  * -enable/disable buttons depending on state
  * -Player model needs a function that returns its formatted name from its attributes.
  */
@@ -191,7 +192,7 @@ function(require, namespace, Backbone) {
 			
 			//Determine how pl_id should be used.
 			var team_ix = this.get("team_in_possession_ix");
-			var team_id = this.get("game").get("team_"+team_ix).id;
+			var team_id = this.get("game").get("team_"+team_ix+"_id");
 			if (_.has(event_meta,"next_player_as")){	
 				this_event.set("player_"+event_meta["next_player_as"]+"_id",pl_id);
 				this_event.set("player_"+event_meta["next_player_as"]+"_team_id",team_id);
@@ -230,11 +231,8 @@ function(require, namespace, Backbone) {
 			}
 			
 			//save the event to the server.
-			this.save_event(this_event, this);//TODO: DO I need to pass "this" ?
+			this.save_event(this_event, this);
 			
-			if (event_meta["toggle_screen"]){
-				
-			}
 		},
 		
 		end_period: function(){
@@ -314,27 +312,22 @@ function(require, namespace, Backbone) {
 		event_removed: function(model, collection, options){
 			//This is triggered when an event is successfully removed from the data store and then the events stack.
 			var last_event_meta = this.events_meta[model.get("type")];
-			var event_coll = this.get("gameevents");
-			var remaining_event = event_coll.at(event_coll.length-1);
-			var remaining_event_meta = this.events_meta[remaining_event.get("type")];
-
+			
 			if (last_event_meta.is_turnover){
 				this.set("team_in_possession_ix",3-this.get("team_in_possession_ix"));
 			}
 			
-			this.set("current_state",remaining_event_meta["next_state"]);
-			this.save();
+			var event_coll = this.get("gameevents");
+			var remaining_event = event_coll.at(event_coll.length-1);
+			this.state_for_event(remaining_event);
 		},
 		
 		event_added: function(model, collection, options){
 			//Triggered when an event is successfully added to the stack.
 			var team_ix = this.get("team_in_possession_ix");
 			var event_meta = this.events_meta[model.get("type")];
+			
 			this.set("team_in_possession_ix",event_meta["is_turnover"] ? 3-team_ix : team_ix);
-			if (_.has(event_meta,"next_state")){
-				this.set("current_state",event_meta["next_state"]);
-				this.set("player_in_possession_id",event_meta["next_state"] == "receiving" ? model.get("player_" + event_meta["next_player_as"] + "_id"): NaN);
-			}
 			
 			//Hack for score.
 			if (model.get("type")== 22){
@@ -343,6 +336,22 @@ function(require, namespace, Backbone) {
 				var last_score = game_model.get(team_score_string);
 				var new_score = last_score == "" ? 1 : last_score + 1;
 				game_model.set(team_score_string,new_score);
+			}
+			
+			if (event_meta["toggle_screen"]){
+				this.rotate_visibility();
+			}
+			
+			this.state_for_event(model);
+		},
+		
+		state_for_event: function(event){
+			var team_ix = this.get("team_in_possession_ix");
+			var event_meta = this.events_meta[event.get("type")];
+			
+			if (_.has(event_meta,"next_state")){
+				this.set("current_state",event_meta["next_state"]);
+				this.set("player_in_possession_id",event_meta["next_state"] == "receiving" ? event.get("player_" + event_meta["next_player_as"] + "_id"): NaN);
 			}
 			
 			this.save();
@@ -401,6 +410,15 @@ function(require, namespace, Backbone) {
 				}
 			}
 			
+			//If we don't have a period number then assume it is the first and we are pulling to start.
+			if (isNaN(trackedgame.get("period_number"))){//Game has not yet started. Set it up now.
+				trackedgame.set("period_number", 1);
+				trackedgame.set("current_state","pulling");
+				//TODO: some updateable screen where we can switch who pulled to start. Requires server to return data.
+				trackedgame.set("team_pulled_to_start_ix",1);
+				trackedgame.set("team_in_possession_ix",1);
+			}
+			
 			/*
 			 * Trackedgame has many child objects.
 			 * These need to be the proper model types.
@@ -413,34 +431,16 @@ function(require, namespace, Backbone) {
 				newGame.id = gameId;
 			}
 			trackedgame.set("game", newGame, {silent:true});
-			//Game will be fetched below.
+			trackedgame.get("game").fetch();
+			//Game also has team_1 and team_2 objects that are not Backbone Models but could be.
 			
 			//.onfield and .offfield
 			for (var ix=1;ix<3;ix++) {//Setup offfield or onfield with data from localStorage (or empty)
 				trackedgame.set("offfield_"+ix, new TeamPlayer.Collection(trackedgame.get("offfield_"+ix)));
 				trackedgame.set("onfield_"+ix, new TeamPlayer.Collection(trackedgame.get("onfield_"+ix)));
 			}
-			//.offfield and onfield require team_id before they can be fetched.//TODO: Is there anyway for offfield to know its team id before game is fetched?
-
-			//fetch .game and then .offfield and maybe .onfield
-			$.when(trackedgame.get("game").fetch()).then(function(){
-				var game = trackedgame.get("game");
-				for (var ix=1;ix<3;ix++) {
-					_.extend(trackedgame.get("onfield_"+ix),{team_id: game.get("team_"+ix+"_id")});
-					_.extend(trackedgame.get("offfield_"+ix),{team_id: game.get("team_"+ix+"_id")});
-					trackedgame.get("offfield_"+ix).fetch();//always fetch offfield
-					//only fetch onfield if we've previously tracked this game and we have onfield players.
-					if (trackedgame.get("onfield_"+ix).length>0) {trackedgame.get("onfield_"+ix).fetch();}
-				}
-				
-				if (isNaN(trackedgame.get("period_number"))){//Game has not yet started. Set it up now.
-					//trackedgame.get("game").set("team_1_score",0);
-					//trackedgame.get("game").set("team_2_score",0);
-					trackedgame.set("period_number", 1);
-					trackedgame.set("current_state","pulling");
-					trackedgame.start_period_pull();
-				}
-			});
+			//.offfield and onfield require team_id before they can be fetched. See bindings below.
+			//TODO: Is there anyway for offfield to know its team id before game is fetched?
 			
 			//.gameevents
 			trackedgame.set("gameevents",
@@ -452,20 +452,39 @@ function(require, namespace, Backbone) {
 			 */
 			trackedgame.bind("change:current_state",trackedgame.update_state,trackedgame);
 			trackedgame.bind("change:is_over",trackedgame.save);
-			for (var ix=1;ix<3;ix++) {//Setup offfield or onfield with data from localStorage (or empty)
-				trackedgame.get("offfield_"+ix).bind("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
-				trackedgame.get("onfield_"+ix).bind("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
-			}
 			trackedgame.get("gameevents").bind("add",trackedgame.event_added,trackedgame);
 			trackedgame.get("gameevents").bind("remove",trackedgame.event_removed,trackedgame);
+			
+			
+			//I can't seem to setup the onfield and offfield fetches properly with loops so I will write it out manually.
+			var game = trackedgame.get("game");
+			game.bind("change:team_1_id", function(){
+				var onf = trackedgame.get("onfield_1");
+				var offf = trackedgame.get("offfield_1");
+				var team_id = game.get("team_1_id");
+				_.extend(onf,{team_id: team_id});
+				_.extend(offf,{team_id: team_id});
+				offf.fetch();
+				if (onf.length>0){onf.fetch();}
+			});
+			trackedgame.get("offfield_1").bind("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
+			trackedgame.get("onfield_1").bind("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
+			
+			game.bind("change:team_1_id", function(){
+				var onf = trackedgame.get("onfield_2");
+				var offf = trackedgame.get("offfield_2");
+				var team_id = game.get("team_2_id");
+				_.extend(onf,{team_id: team_id});
+				_.extend(offf,{team_id: team_id});
+				offf.fetch();
+				if (onf.length>0){onf.fetch();}
+			});
+			trackedgame.get("offfield_2").bind("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
+			trackedgame.get("onfield_2").bind("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
 	
 			myLayout.setViews({
-				//SubTeam views require the full trackedgame model because
-				//creating the event to swap players is best done at trackedgame model-level functions.
-				//".sub_team_1": new TrackedGame.Views.SubTeam({model: trackedgame, team_ix:1}),
-				//".sub_team_2": new TrackedGame.Views.SubTeam({model: trackedgame, team_ix:2}),
-				".sub_team_1": new TrackedGame.Views.SubTeam({onfield: trackedgame.get("onfield_"+1), offfield: trackedgame.get("offfield_"+1), team: trackedgame.get("game").get("team_1")}),
-				".sub_team_2": new TrackedGame.Views.SubTeam({onfield: trackedgame.get("onfield_"+2), offfield: trackedgame.get("offfield_"+2), team: trackedgame.get("game").get("team_2")}),
+				".sub_team_1": new TrackedGame.Views.SubTeam({onfield: trackedgame.get("onfield_"+1), offfield: trackedgame.get("offfield_"+1), game: trackedgame.get("game"), team_ix: 1}),
+				".sub_team_2": new TrackedGame.Views.SubTeam({onfield: trackedgame.get("onfield_"+2), offfield: trackedgame.get("offfield_"+2), game: trackedgame.get("game"), team_ix: 2}),
 				//Game action of course requires the full trackedgame.
 				".t_game": new TrackedGame.Views.GameAction({model: trackedgame}),
 				".rotate_screen": new TrackedGame.Views.RotateButton({model: trackedgame})
@@ -518,6 +537,9 @@ function(require, namespace, Backbone) {
 	Parent view for the substitution screen. The layout has 2 of these.
 	*/
 	TrackedGame.Views.SubTeam = Backbone.View.extend({
+		initialize: function(){
+			this.options.game.bind("reset", function(){this.render();},this);
+		},
 		template: "trackedgame/game_substitution",
 		events: {
 			"click .game_over": "game_over",
@@ -529,12 +551,14 @@ function(require, namespace, Backbone) {
 				".sub_on_field_area": new TrackedGame.Views.RosterList({collection: this.options.onfield, remove_all_button: true}),
 				".sub_off_field_area": new TrackedGame.Views.RosterList({collection: this.options.offfield})
 			});
-			return view.render({ team: this.options.team});
+			return view.render({ team: this.options.game.get("team_"+this.options.team_ix)});
 		}
 	});
 	TrackedGame.Views.RosterList = Backbone.View.extend({
 		initialize: function() {
-			this.collection.bind("reset", function(){this.render();}, this);
+			this.collection.bind("reset", function(){
+				this.render();
+			}, this);
 			this.collection.bind("add", this.add_roster_item, this);
 		},
 		tagName: "ul",
@@ -703,8 +727,11 @@ function(require, namespace, Backbone) {
 		render: function(layout) {
 			var view = layout(this);
 			this.setViews({
-				".player_area_1": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get("onfield_1"), model: this.model.get("game").get("team_1"), trackedgame: this.model}),
-				".player_area_2": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get("onfield_2"), model: this.model.get("game").get("team_2"), trackedgame: this.model})
+				//Need to pass the full trackedgame to the children views because we need to bind to its attributes that are not yet backbone model's'
+				".player_area_1": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix: 1}),
+				".player_area_2": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix: 2}),
+				//".player_area_1": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get("onfield_1"), model: this.model.get("game").get("team_1"), trackedgame: this.model}),
+				//".player_area_2": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get("onfield_2"), model: this.model.get("game").get("team_2"), trackedgame: this.model})
 			});
 			return view.render({
 				//player_prompt: this.model.player_prompt_strings[this.model.get("current_state")]
@@ -719,12 +746,15 @@ function(require, namespace, Backbone) {
 		}
 	});
 	TrackedGame.Views.TeamPlayerArea = Backbone.View.extend({
-		//this.model is the team, this.collection is onfield, this.options.trackedgame is trackedgame.
+		//this.model = trackedgame; this.options.team_ix = 1 or 2
 		template: "trackedgame/teamplayer_area",
 		initialize: function() {
 			//Specific players should only be added or removed on the substitution screen.
-			//We don"t need to update our player buttons on each add or remove, not until the sub screen is done. That will trigger a reset.
-			this.collection.bind("add", function() {this.render().then(function(el) {this.options.trackedgame.setButtonHeight();})}, this);
+			var ix = this.options.team_ix;
+			this.onf = this.model.get("onfield_"+ix);
+			this.onf.bind("add", function() {this.render().then(function(el) {this.model.setButtonHeight();})}, this);
+			//team is not a Backbone.Model yet. 
+			this.model.get("game").bind("change:team_"+this.options.team_ix,function(){this.render();}, this);//Team name will update when returned from db.
 		},
 		render: function(layout) { 
 			var view = layout(this);
@@ -732,20 +762,21 @@ function(require, namespace, Backbone) {
 			//this.$el.empty()
 			// call .cleanup() on all child views, and remove all appended views
 			view.cleanup();
-			this.collection.each(function(tp) {
+			this.onf.each(function(tp) {
 				view.insert("ul", new TrackedGame.Views.PlayerButton({
-					model: tp, trackedgame: _this.options.trackedgame
+					model: tp, trackedgame: _this.model
 				}));
 			});
 			//insert unknown buttons for less than 8 players.
 			var TeamPlayer = require("modules/teamplayer");
-			for(var i=this.collection.length;i<8;i++){
+			for(var i=this.onf.length;i<8;i++){
 				view.insert("ul", new TrackedGame.Views.PlayerButton({
 					model: new TeamPlayer.Model({player: {id:NaN, last_name:"unknown"}}),
-					trackedgame: _this.options.trackedgame
+					trackedgame: _this.model
 				}));
 			}
-			return view.render({ team: this.model });
+			var team = this.model.get("game").get("team_"+this.options.team_ix);
+			return view.render({ team: team });
 		}
 	});
 	TrackedGame.Views.PlayerButton = Backbone.View.extend({
