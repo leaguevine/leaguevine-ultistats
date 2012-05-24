@@ -414,9 +414,6 @@ function(require, namespace, Backbone) {
 			if (isNaN(trackedgame.get("period_number"))){//Game has not yet started. Set it up now.
 				trackedgame.set("period_number", 1);
 				trackedgame.set("current_state","pulling");
-				//TODO: some updateable screen where we can switch who pulled to start. Requires server to return data.
-				trackedgame.set("team_pulled_to_start_ix",1);
-				trackedgame.set("team_in_possession_ix",1);
 			}
 			
 			/*
@@ -456,8 +453,14 @@ function(require, namespace, Backbone) {
 			trackedgame.get("gameevents").bind("remove",trackedgame.event_removed,trackedgame);
 			
 			
-			//I can't seem to setup the onfield and offfield fetches properly with loops so I will write it out manually.
 			var game = trackedgame.get("game");
+			game.bind("change:team_1", function(){
+				if (game.get("team_1").name && !trackedgame.get("team_pulled_to_start_ix")){
+					trackedgame.start_period_pull();
+				}
+			});
+			
+			//I can't seem to setup the onfield and offfield fetches properly with loops so I will write it out manually.
 			game.bind("change:team_1_id", function(){
 				var onf = trackedgame.get("onfield_1");
 				var offf = trackedgame.get("offfield_1");
@@ -470,7 +473,7 @@ function(require, namespace, Backbone) {
 			trackedgame.get("offfield_1").bind("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
 			trackedgame.get("onfield_1").bind("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
 			
-			game.bind("change:team_1_id", function(){
+			game.bind("change:team_2_id", function(){
 				var onf = trackedgame.get("onfield_2");
 				var offf = trackedgame.get("offfield_2");
 				var team_id = game.get("team_2_id");
