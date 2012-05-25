@@ -15,8 +15,7 @@ define([
 
 /*
  * Chad's TODO list:
- * -Choosing who pulled requires team names, thus needs to be a view that is re-rendered when game is .sync'd.
- * -First event generates an error
+ * -Pressing back into game from trackedgame fails to load the titlebar.
  * -enable/disable buttons depending on state
  * -Player model needs a function that returns its formatted name from its attributes.
  */

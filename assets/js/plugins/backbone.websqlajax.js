@@ -285,7 +285,7 @@
 		},
 		request: function(callback) {
 			var _this = this;
-			return (callback()).complete(function() {
+			return (callback()).then(function() {
 				return _this.requestNext();
 			});
 		},

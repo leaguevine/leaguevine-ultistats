@@ -75,7 +75,7 @@
 			url = this.urlRoot;
 			url = url || this.collection && ( _.isFunction( this.collection.url ) ? this.collection.url() : this.collection.url );
 
-			if ( url && _.has(this,"id")) {
+			if ( url && _.has(this,"id") && this.id != undefined) {
 				url = addSlash( url ) + this.id;
 			}
 		}
