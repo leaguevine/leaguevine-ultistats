@@ -93,11 +93,10 @@ function(namespace, Backbone) {
     		}
     		if (my_level === "show" && my_class === "game"){
     			rbc = "disabled"; //We do not hav a way to edit games.
-    			lbc = "disabled"; //We do not have a generic list of games.
     			if (this.model.get("tournament_id")){
     				lbh = "#tournaments/" + this.model.get("tournament_id");
-	    			lbt = "Tournament";
-    			}
+	    			lbt = this.model.get("tournament").name ? this.model.get("tournament").name : "Tournament";
+    			} else {lbc = "disabled";}//We do not have a generic list of games.
     		}
 	    	
 	    	return view.render({href: "",

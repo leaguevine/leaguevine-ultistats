@@ -15,8 +15,6 @@ define([
 
 /*
  * Chad's TODO list:
- * -Play-by-play not showing latest play after first load?
- * -Pressing back into game from trackedgame fails to load the titlebar.
  * -enable/disable buttons depending on state
  * -Player model needs a function that returns its formatted name from its attributes.
  */
