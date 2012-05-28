@@ -74,7 +74,7 @@
 		
 		//Before we send the SQL statement and the above callbacks, we need to clean up the model.
 		//The model's .id might be a local_id if it was created locally, we need to make sure it exists only as model.get("local_id")
-		if (!model.models && model.id && !model.has("local_id") && model.id.indexOf("local_id") ==0){model.set("local_id",model.id);}
+		if (!model.models && model.id && !model.has("local_id") && _.isString(model.id) && model.id.indexOf("local_id") ==0){model.set("local_id",model.id);}
 		if (model.id && model.id==model.get("local_id")) {model.unset(model.idAttribute, {silent: true});}
 		
 		//Send out the SQL request.

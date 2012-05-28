@@ -75,7 +75,8 @@ function(require, namespace, Backbone, Leaguevine) {
     		}
 		},
 		comparator: function(gameevent) {// Define how items in the collection will be sorted.
-		  return gameevent.get("ordinal_number");
+		  //return gameevent.get("ordinal_number");
+		  return gameevent.get("time");
 		}
 	});
   
