@@ -2,7 +2,7 @@
    General 
    ========================================================================== */
 #main {
-    min-height: 480px;
+    min-height: 411px; /* Optimized for iOS */
 }
 
 /* ------------------- Lists ------------------- */
@@ -569,7 +569,7 @@ table.stats {
 }
 
 .player_area {
-    margin-top: 35px;
+    margin-top: 10px;
     border: 1px solid #c3c3c3;
 }
 
@@ -588,9 +588,8 @@ table.stats {
 .track {
     height: 100%;
     display: block;
-    position: absolute;
+    position: relative;
     height:auto;
-    bottom:0;
     top:0;
     left:0;
     right:0;
@@ -700,6 +699,7 @@ table.stats {
                 color: #750808;
                 float: right;
                 margin-right: 5px;
+                margin-bottom: 10px;
             }
 
     .track .offense_teamname {
@@ -713,6 +713,10 @@ table.stats {
             font-weight: bold;
             font-size: 14px;
         }
+
+    .rotate_screen button.rotate{
+        margin-bottom: 10px;
+    }
 
 span.button_line_1,
 span.button_line_2 {
@@ -747,6 +751,12 @@ span.button_line_2 {
 
 #score_prompt {
     margin-top: 15px;
+}
+
+.sub_team_1,
+.sub_team_2,
+.t_game {
+    z-index: 5;
 }
 
 /* ----------------------- Substitutions ----------------- */

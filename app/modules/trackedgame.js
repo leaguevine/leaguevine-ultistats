@@ -92,6 +92,7 @@ function(require, namespace, Backbone) {
 			var n_screens = this.screens_list.length;
 			for (var ix=0;ix<n_screens;ix++) {$(this.screens_list[ix].b_class).hide();}
 			$(this.screens_list[this.get("visible_screen")].b_class).show();
+            window.scrollTo(0, 5000); //Scroll to the bottom where the toggle button is
 		},
 		
 		setButtonHeight: function() { 
@@ -102,8 +103,8 @@ function(require, namespace, Backbone) {
              // Taken from here: http://bugs.jquery.com/ticket/6724
              var browser_height = window.innerHeight ? window.innerHeight : $(window).height();
 
-             // Save some space for the text and space between buttons
-             var non_button_height = 200;
+             // Save some space for the text, space between buttons, and the rotate button
+             var non_button_height = 240;
              
              // Divide the rest of the height between 5 rows of buttons
              var button_height = Math.floor((browser_height - non_button_height)/5);
@@ -708,11 +709,6 @@ function(require, namespace, Backbone) {
 			}
 			return view.render({playtext: playtext});
 		},
-		events: {
-        	"click .undo": "undo",
-        },
-		//events_helpers
-		undo: function(){this.model.undo();},
 	});
 	
 	/*
@@ -858,6 +854,7 @@ function(require, namespace, Backbone) {
 			"click .timeout": "timeout",
 			"click .injury": "injury",
 			"click .end_of_period": "end_of_period",
+        	"click .undo": "undo",
 		},
 		undo: function(){this.model.undo();},
 		score: function(){this.model.set("current_state","scoring");},
