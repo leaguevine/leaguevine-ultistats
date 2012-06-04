@@ -67,7 +67,7 @@ function(namespace, $, Backbone, Leaguevine) {
 		Backbone.history.start({ pushState: false });
 	});
 
-/*    window.applicationCache.addEventListener('updateready', function(e) {
+    window.applicationCache.addEventListener('updateready', function(e) {
         if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
             // Browser downloaded a new app cache.
             // Swap it in and reload the page to get the new code.
@@ -80,7 +80,6 @@ function(namespace, $, Backbone, Leaguevine) {
             // Manifest didn't changed. Nothing new to load.
         }
     }, false);
-*/
 
   // All navigation that is relative should be passed through the navigate
   // method, to be processed by the router.  If the link has a data-bypass
@@ -93,7 +92,7 @@ function(namespace, $, Backbone, Leaguevine) {
         // TODO: If this is not localhost, only check to see if the cache is updated at most once an hour
         // Check to see if the cache has been updated. The request is done in the background and is not blocking
 
-        //window.applicationCache.update(); 
+        window.applicationCache.update(); 
          
 		// Ensure the protocol is not part of URL, meaning its relative.
 		if (href && href.slice(0, protocol.length) !== protocol &&

@@ -46,12 +46,21 @@ task.registerTask("server", "Run development server.", function(prop) {
 // ============================================================================
 // HELPERS
 // ============================================================================
+function endsWith(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}
 
 task.registerHelper("server", function(options) {
   // Require libraries
   var fs = require("fs");
   var express = require("express");
   var site = express.createServer();
+
+  // Serve up the cache manifest
+  site.get("/ultistats.appcache", function(req, res){
+    res.header("Content-Type", "text/cache-manifest");
+    res.sendfile('./ultistats.appcache');
+  });
 
   // Map static folders
   Object.keys(options.folders).sort().reverse().forEach(function(key) {
@@ -62,7 +71,14 @@ task.registerHelper("server", function(options) {
   if (typeof options.files == "object") {
     Object.keys(options.files).sort().reverse().forEach(function(key) {
       site.get("/" + key, function(req, res) {
-        return res.sendfile(options.files[key]);
+        var filePath = options.files[key];
+        if endsWith(filePath, '.js') {
+          res.header("Content-Type", "text/javascript");
+        }
+        else if endsWith(filePath, '.css') {
+          res.header("Content-Type", "text/css");
+        }
+        return res.sendfile(filePath);
       });
     });
   }
