@@ -1,20 +1,19 @@
 define([
   "require",
-  "namespace",
+  "app",
 
   // Libs
-  "use!backbone",
+  "backbone",
 
   // Modules
   "modules/navigation",
   "modules/title",
   
-  "use!plugins/backbone.localStorage"
+  "plugins/backbone.localStorage"
 ],
-function(require, namespace, Backbone, Navigation, Title) {
-    "use strict";
-	var app = namespace.app;
-	var Settings = namespace.module();
+function(require, app, Backbone, Navigation, Title) {
+    
+	var Settings = app.module();
 	
 	Settings.MySettings = [
 		{
@@ -90,7 +89,7 @@ function(require, namespace, Backbone, Navigation, Title) {
     });
 	Settings.router = new Settings.Router();// INITIALIZE ROUTER
 
-	Settings.Views.List = Backbone.LayoutManager.View.extend({
+	Settings.Views.List = Backbone.View.extend({
 		template: "settings/list",
 		initialize: function() {
 			this.collection.bind("reset", function() {
@@ -102,20 +101,20 @@ function(require, namespace, Backbone, Navigation, Title) {
 			_.each(this.collection.models, function(setting){
 				switch (setting.get("type")){
 				case "Toggle Button":
-					view.insert("ul", new Settings.Views.ToggleButton({model: setting}));
+					this.insertView("ul", new Settings.Views.ToggleButton({model: setting}));
 					break;
 				case "Select":
-					view.insert("ul", new Settings.Views.Select({model: setting}));
+					this.insertView("ul", new Settings.Views.Select({model: setting}));
 					break;
 				case "Scale":
 					break; 
 				}
-			});
+			}, this);
 			return view.render();
 		},
 	});
 	
-	Settings.Views.ToggleButton = Backbone.LayoutManager.View.extend({  	
+	Settings.Views.ToggleButton = Backbone.View.extend({  	
 		template: "settings/toggleButton",
 		tagName: "li",
 		render: function(layout) {
@@ -133,7 +132,7 @@ function(require, namespace, Backbone, Navigation, Title) {
     	}
 	});
 	
-	Settings.Views.Select = Backbone.LayoutManager.View.extend({
+	Settings.Views.Select = Backbone.View.extend({
 		template: "settings/select",
 		tagName: "li",
 		render: function(layout) {

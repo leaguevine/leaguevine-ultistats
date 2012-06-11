@@ -1,0 +1,18 @@
+# Remove the trailing slash from routes
+DirectorySlash Off
+
+# Enable the RewriteEngine
+RewriteEngine on
+
+# Map resources to release distribution
+RewriteRule ^app/(.*)$ dist/release/$1 [NC,L]
+RewriteRule ^assets/js/libs/(.*)$ dist/release/$1 [NC,L]
+RewriteRule ^assets/css/(.*)$ dist/release/$1 [NC,L]
+
+# These conditions ensure that the file does not exist and that the current
+# request URI is not the index.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !index
+
+# Redirect remaining requests to the index.html file
+RewriteRule (.*) index.html [NC,L]

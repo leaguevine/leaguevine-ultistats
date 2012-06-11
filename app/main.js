@@ -1,15 +1,27 @@
 require([
-	"namespace",
+	"app",
 
 	// Libs
 	"jquery",
-	"use!backbone",//depends on underscore so _ is loaded too
+	"backbone",
 
-	// Modules - Only need Leaguevine and modules with Routers
+	//Do we need all modules or only those with routers or that are not required by other modules?
 	"modules/leaguevine",
-	"modules/settings",
+	"modules/title",
+	"modules/navigation",
+	"modules/search",
+	"modules/settings",	
+	"modules/season",
+	"modules/teamplayer",
+	"modules/player",
+	"modules/tournteam",
+	"modules/stats",
+	"modules/player_per_game_stats",
+	"modules/team_per_game_stats",
 	"modules/team",
+	"modules/game",
 	"modules/tournament",
+	"modules/gameevent",
 	"modules/trackedgame",
 ],
 /*
@@ -19,39 +31,44 @@ require([
  * but in this case we are defining the jQuery ready function which will execute
  * once everything has finished loading.
  */
-function(namespace, $, Backbone, Leaguevine) {
-    "use strict";
-	
-	var app = namespace.app; //Shorthanded app namespace.
-
-	/*
-	 * Loading modules also instantiate their routers.
-	 * There is also a top-level router here that matches ""
-	 * TODO: "" matches index, index should execute settings or a scoreboard instead of teams.
-	 */
-
+function(app, $, Backbone, Leaguevine) {
+    
 	 // Defining the application router, you can attach sub routers here.
 	var Router = Backbone.Router.extend({
-		
-		//Ask tbranyen why this is app.router.useLayout(name) instead of app.useLayout(name)
-		//the context (this) is only used for storing currentLayout so theoretically this function
-		//could go anywhere.
-		useLayout: function(name) {// Super-simple layout swapping and reusing
-			var currentLayout = this.currentLayout;
-	        // If there is an existing layout and its the current one, return it.
-	        if (currentLayout && currentLayout.options.template == name) { return currentLayout;}
-	        // Create the new layout and set it as current.
-	        this.currentLayout = new Backbone.LayoutManager({template: name});
-	        return this.currentLayout;
-	    },
-		
+		//Routes are defined in sub modules.
 		routes: {
 			"": "index",
 		},
 		
 		index: function () {
 			Backbone.history.navigate('teams', true); // Only works if I have a route to match teams
-		}
+		},
+		
+		// Shortcut for building a url.
+	    go: function() {
+			return this.navigate(_.toArray(arguments).join("/"), true);
+	    },
+		
+		useLayout: function(name) {
+			// If already using this Layout, then don't re-inject into the DOM.
+			if (this.layout) {
+				return this.layout;
+			}
+		
+			// Create a new Layout.
+			this.layout = new Backbone.Layout({
+				template: name,
+				className: "layout " + name,
+				id: "layout"
+			});
+		
+			// Insert into the DOM.
+			$("#main").html(this.layout.el);
+			
+			// Render the layout.
+			this.layout.render();
+			return this.layout;
+		},
 	});	
 
 	// Treat the jQuery ready function as the entry point to the application.
@@ -66,7 +83,7 @@ function(namespace, $, Backbone, Leaguevine) {
 		// Trigger the initial route and enable HTML5 History API support
 		Backbone.history.start({ pushState: false });
 	});
-
+/*
     window.applicationCache.addEventListener('updateready', function(e) {
         if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
             // Browser downloaded a new app cache.
@@ -80,7 +97,7 @@ function(namespace, $, Backbone, Leaguevine) {
             // Manifest didn't changed. Nothing new to load.
         }
     }, false);
-
+*/
   // All navigation that is relative should be passed through the navigate
   // method, to be processed by the router.  If the link has a data-bypass
   // attribute, bypass the delegation completely.
@@ -92,7 +109,7 @@ function(namespace, $, Backbone, Leaguevine) {
         // TODO: If this is not localhost, only check to see if the cache is updated at most once an hour
         // Check to see if the cache has been updated. The request is done in the background and is not blocking
 
-        window.applicationCache.update(); 
+//        window.applicationCache.update(); 
          
 		// Ensure the protocol is not part of URL, meaning its relative.
 		if (href && href.slice(0, protocol.length) !== protocol &&

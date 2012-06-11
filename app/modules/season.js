@@ -1,16 +1,16 @@
 define([
-  "namespace",
+  "app",
 
   // Libs
-  "use!backbone",
+  "backbone",
 
   // Modules
   "modules/leaguevine"
 	
 ],
-function(namespace, Backbone, Leaguevine) {
-	var app = namespace.app;
-	var Season = namespace.module();
+function(app, Backbone, Leaguevine) {
+	
+	var Season = app.module();
 	
 	Season.Model = Backbone.Model.extend({
 		defaults: {

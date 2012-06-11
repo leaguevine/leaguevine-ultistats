@@ -1,16 +1,15 @@
 define([
-  "namespace",
+  "app",
 
   // Libs
-  "use!backbone",
+  "backbone",
 
   // Plugins
-  "use!plugins/backbone.layoutmanager"
+  "plugins/backbone.layoutmanager"
 ],
-function(namespace, Backbone, Game) {
-    "use strict";
-	var app = namespace.app;
-	var Navigation = namespace.module();
+function(app, Backbone, Game) {
+    
+	var Navigation = app.module();
 
     //Initialize the URLs for the navigation buttons
     //We remember the last page viewed within each sub-navigation so subsequent clicks on that

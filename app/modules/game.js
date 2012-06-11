@@ -1,9 +1,9 @@
 define([
   "require",
-  "namespace",
+  "app",
 
   // Libs
-  "use!backbone",
+  "backbone",
 
   // Modules
   "modules/leaguevine",
@@ -14,12 +14,11 @@ define([
   "modules/player_per_game_stats",
   "modules/team_per_game_stats",
   
-  "use!plugins/backbone.websqlajax",
+  "plugins/backbone.websqlajax",
 ],
-function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Title, PlayerPerGameStats, TeamPerGameStats) {
-    "use strict";
-	var app = namespace.app;
-	var Game = namespace.module();
+function(require, app, Backbone, Leaguevine, Navigation, Search, Team, Title, PlayerPerGameStats, TeamPerGameStats) {
+	
+	var Game = app.module();
 	
 	Game.Model = Backbone.Model.extend({
 		defaults: {
@@ -129,9 +128,11 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 		findGames: function () {
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
-			myLayout.view(".navbar", new Navigation.Views.Navbar());
-			myLayout.view(".titlebar", new Title.Views.Titlebar({model_class: "game", level: "list"}));
-			myLayout.view(".content", new Game.Views.Find());
+			myLayout.setViews({
+				".navbar": new Navigation.Views.Navbar(),
+				".titlebar": new Title.Views.Titlebar({model_class: "game", level: "list"}),
+				".content": new Game.Views.Find()
+			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
 		showGame: function (gameId) {
@@ -199,21 +200,21 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
     Game.Views.Find = Backbone.View.extend({
         template: "games/find"
     });
-	Game.Views.List = Backbone.LayoutManager.View.extend({
+	Game.Views.List = Backbone.View.extend({
 		template: "games/list",
 		className: "games-wrapper",
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
 			//this.$el.empty()
 			// call .cleanup() on all child views, and remove all appended views
-			view.cleanup();
+			//view.cleanup();
 			this.collection.each(function(game) {//for each game in the collection.
-				view.insert("ul", new Game.Views.Item({//Inserts the game into the ul in the list template.
+				this.insertView("ul", new Game.Views.Item({//Inserts the game into the ul in the list template.
 					model: game//pass each game to a Item view instance.
 				}));
-			});
+			}, this);
             //Add a button at the end of the list that creates more items
-            view.insert("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
+            this.insertView("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
 			return view.render({ count: this.collection.length });
 		},
 		initialize: function() {
@@ -222,7 +223,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Search, Team, Tit
 			}, this);
 		},
 	});
-	Game.Views.Detail = Backbone.LayoutManager.View.extend({  	
+	Game.Views.Detail = Backbone.View.extend({  	
 		template: "games/detail",
 		render: function(layout) {
             var game = this.model.toJSON();

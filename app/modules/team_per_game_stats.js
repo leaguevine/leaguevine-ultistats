@@ -1,18 +1,18 @@
 define([
   "require",
-  "namespace",
+  "app",
 
   // Libs
-  "use!backbone",
+  "backbone",
 
   // Modules
   "modules/leaguevine",
   "modules/stats",
 ],
 
-function(require, namespace, Backbone, Leaguevine, Stats) {
-	var app = namespace.app;
-	var TeamPerGameStats = namespace.module();
+function(require, app, Backbone, Leaguevine, Stats) {
+	
+	var TeamPerGameStats = app.module();
 	
 	//
 	// MODEL
@@ -106,7 +106,7 @@ function(require, namespace, Backbone, Leaguevine, Stats) {
 		tagName: "tr",
 		serialize: function() {return this.model.toJSON();}
 	});
-    TeamPerGameStats.Views.BoxScore = Backbone.LayoutManager.View.extend({
+    TeamPerGameStats.Views.BoxScore = Backbone.View.extend({
         /* Usage:
          *     required arguments:
          *          collection - A collection of team stat lines
@@ -116,12 +116,12 @@ function(require, namespace, Backbone, Leaguevine, Stats) {
 		render: function(layout) {
 			var view = layout(this);
 			// call .cleanup() on all child views, and remove all appended views
-			view.cleanup();
+			// view.cleanup();
 			this.collection.each(function(teamstats) {
                 // Render a single line of stats for a team
                 stat_line = new TeamPerGameStats.Views.TeamStats({model: teamstats});
-                view.insert("table#team_per_game_stats", stat_line);
-			});
+                this.insertView("table#team_per_game_stats", stat_line);
+			}, this);
 			return view.render();
 		},
 		initialize: function() {

@@ -1,18 +1,18 @@
 define([
   "require",
-  "namespace",
+  "app",
 
   // Libs
-  "use!backbone",
+  "backbone",
 
   // Modules
   "modules/leaguevine",
   "modules/stats",
 ],
 
-function(require, namespace, Backbone, Leaguevine) {
-	var app = namespace.app;
-	var PlayerPerGameStats = namespace.module();
+function(require, app, Backbone, Leaguevine) {
+	
+	var PlayerPerGameStats = app.module();
 	
 	//
 	// MODEL
@@ -94,7 +94,7 @@ function(require, namespace, Backbone, Leaguevine) {
 		tagName: "tr",
 		serialize: function() {return this.model.toJSON();}
 	});
-    PlayerPerGameStats.Views.BoxScore = Backbone.LayoutManager.View.extend({
+    PlayerPerGameStats.Views.BoxScore = Backbone.View.extend({
         /* Usage:
          *     required arguments:
          *          collection - A collection of player stat lines
@@ -107,7 +107,7 @@ function(require, namespace, Backbone, Leaguevine) {
 			var view = layout(this);
 			//this.$el.empty()
 			// call .cleanup() on all child views, and remove all appended views
-			view.cleanup();
+			// view.cleanup();
             var team_1_id = this.options.game.get("team_1_id");
             var team_2_id = this.options.game.get("team_2_id");
 			this.collection.each(function(playerstats) {
@@ -116,12 +116,12 @@ function(require, namespace, Backbone, Leaguevine) {
 
                 // Check which team's boxscore the stat line should be appended to
                 if (playerstats.get("team_id") == team_1_id) {
-                    view.insert("table#player_per_game_stats_1", stat_line);
+                    this.insertView("table#player_per_game_stats_1", stat_line);
                 }
                 else if (playerstats.get("team_id") == team_2_id) {
-                    view.insert("table#player_per_game_stats_2", stat_line);
+                    this.insertView("table#player_per_game_stats_2", stat_line);
                 }
-			});
+			}, this);
 			return view.render();
 		},
 		initialize: function() {
@@ -130,7 +130,7 @@ function(require, namespace, Backbone, Leaguevine) {
 			}, this);
 		},
 	});
-    PlayerPerGameStats.Views.PlayerStatsList = Backbone.LayoutManager.View.extend({
+    PlayerPerGameStats.Views.PlayerStatsList = Backbone.View.extend({
 		template: "playerstats/list",
 		className: "stats_list_wrapper",
 		render: function(layout) {
@@ -139,10 +139,10 @@ function(require, namespace, Backbone, Leaguevine) {
 			// call .cleanup() on all child views, and remove all appended views
 			view.cleanup();
 			this.collection.each(function(playerstats) {
-				view.insert("table", new PlayerPerGameStats.Views.PlayerStats({
+				this.insertView("table", new PlayerPerGameStats.Views.PlayerStats({
 					model: playerstats
 				}));
-			});
+			}, this);
 			return view.render();
 		},
 		initialize: function() {

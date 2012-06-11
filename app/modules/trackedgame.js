@@ -1,16 +1,16 @@
 define([
 	"require",
-  "namespace",
+  "app",
 
   // Libs
-  "use!backbone",
+  "backbone",
 
   // Modules  
   "modules/game",
   "modules/player",
   "modules/gameevent",
   
-  "use!plugins/backbone.localStorage"
+  "plugins/backbone.localStorage"
 ],
 
 /*
@@ -43,10 +43,9 @@ The basic workflow for event buttons is as follows:
 A button that temporarily changes the game state does just that. It is not saved.
 */
 
-function(require, namespace, Backbone) {
-    "use strict";
-	var app = namespace.app;
-	var TrackedGame = namespace.module();
+function(require, app, Backbone) {
+    
+	var TrackedGame = app.module();
 	
 	TrackedGame.Model = Backbone.Model.extend({
 		sync: Backbone.localSync,
@@ -577,10 +576,10 @@ function(require, namespace, Backbone) {
 			//this.$el.empty()
 			view.cleanup();// call .cleanup() on all child views, and remove all appended views
 			this.collection.each(function(tp) {//for each teamplayer in the collection.
-				view.insert(new TrackedGame.Views.RosterItem({model: tp}));
-			});
+				this.insertView(new TrackedGame.Views.RosterItem({model: tp}));
+			}, this);
             if (this.options.remove_all_button) {
-                view.insert(new TrackedGame.Views.RosterItemRemoveAll({}));
+                this.insertView(new TrackedGame.Views.RosterItemRemoveAll({}));
             }
 			return view.render();
 		},
@@ -760,10 +759,10 @@ function(require, namespace, Backbone) {
 			// call .cleanup() on all child views, and remove all appended views
 			view.cleanup();
 			this.onf.each(function(tp) {
-				view.insert("ul", new TrackedGame.Views.PlayerButton({
+				this.insertView("ul", new TrackedGame.Views.PlayerButton({
 					model: tp, trackedgame: _this.model
 				}));
-			});
+			}, this);
 			//insert unknown buttons for less than 8 players.
 			var TeamPlayer = require("modules/teamplayer");
 			for(var i=this.onf.length;i<8;i++){

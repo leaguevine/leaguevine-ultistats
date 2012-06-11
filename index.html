@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="en" manifest="ultistats.appcache">
+<!DOCTYPE html>
+<html lang="en"><!-- manifest="ultistats.appcache"-->
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -8,19 +8,17 @@
 
   <title>Leaguevine Ultistats</title>
 
-  <!-- HTML5 Mobile Boilerplate -->
-  <link rel="stylesheet" href="assets/css/style.css">
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="assets/css/main.css">
-  <!-- Optional local settings specific to the installation's environment -->
+  <!-- Application styles -->
+  <link rel="stylesheet" href="/assets/css/index.css">
 </head>
 
 <body>
   <!-- Main container -->
   <div role="main" id="main"></div>
   <div id="page_loading_area"><img src="assets/img/ajax-loader.gif" /></div>
-  <!-- Application source -->
+  <!-- Optional local settings specific to the installation's environment -->
   <script type="text/javascript" src="assets/js/plugins/localSettings.js"></script>
+  <!-- Application source -->
   <script data-main="app/config" src="assets/js/libs/require.js"></script>
 </body>
 </html>

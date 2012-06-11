@@ -1,18 +1,18 @@
 define([
 	"require",
-  "namespace",
+  "app",
 
   // Libs
-  "use!backbone",
+  "backbone",
 
   // Modules
   "modules/leaguevine",
   "modules/tournament",
   "modules/team",
 ],
-function(require, namespace, Backbone, Leaguevine) {
-	var app = namespace.app;
-	var TournTeam = namespace.module();
+function(require, app, Backbone, Leaguevine) {
+	
+	var TournTeam = app.module();
 	TournTeam.Model = Backbone.Model.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
 			final_standing: "",
@@ -104,12 +104,12 @@ function(require, namespace, Backbone, Leaguevine) {
 			var view = layout(this);
 			//this.$el.empty()
 			// call .cleanup() on all child views, and remove all appended views
-			view.cleanup();
+			//view.cleanup();
 			this.collection.each(function(team) {
-				view.insert("table", new TournTeam.Views.Team({
+				this.insertView("table", new TournTeam.Views.Team({
 					model: team
 				}));
-			});
+			}, this);
 			return view.render({ count: this.collection.length });
 		},
 		initialize: function() {

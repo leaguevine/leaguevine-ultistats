@@ -1,16 +1,15 @@
 define([
-  "namespace",
+  "app",
 
   // Libs
-  "use!backbone",
+  "backbone",
 
   // Plugins
-  "use!plugins/backbone.layoutmanager"
+  "plugins/backbone.layoutmanager"
 ],
-function(namespace, Backbone) {
-    "use strict";
-	var app = namespace.app;
-	var Title = namespace.module();
+function(app, Backbone) {
+    
+	var Title = app.module();
 	
 	Title.Views.Titlebar = Backbone.View.extend({
         /* Usage:

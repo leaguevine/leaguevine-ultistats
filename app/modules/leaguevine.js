@@ -1,23 +1,21 @@
 define([
-  "namespace",
+  "app",
 
   // Libs
-  "use!backbone"
+  "backbone"
 
   // Modules
 
   // Plugins
 ],
 
-function(namespace, Backbone) {
+function(app, Backbone) {
 	/*
 	 * This module defines the API properties.
 	 */
-    "use strict";
-    var app = namespace.app;
 
   	// Create a new module
-  	var Leaguevine = namespace.module();
+  	var Leaguevine = app.module();
 
     Leaguevine.Utils = new Object();
     Leaguevine.Utils.concat_collections = function(c1, c2) {

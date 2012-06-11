@@ -1,17 +1,16 @@
 define([
 	"require",
-  "namespace",
+  "app",
 
   // Libs
-  "use!backbone",
+  "backbone",
 
   // Modules
   "modules/leaguevine",
 ],
-function(require, namespace, Backbone, Leaguevine) {
-    "use strict";
-	var app = namespace.app;
-	var TeamPlayer = namespace.module();
+function(require, app, Backbone, Leaguevine) {
+    
+	var TeamPlayer = app.module();
 	
 	//
 	// MODEL
@@ -115,19 +114,19 @@ function(require, namespace, Backbone, Leaguevine) {
 		tagName: "li",
 		serialize: function() {return this.model.toJSON();}
 	});
-	TeamPlayer.Views.PlayerList = Backbone.LayoutManager.View.extend({
+	TeamPlayer.Views.PlayerList = Backbone.View.extend({
 		template: "teamplayers/playerlist",
 		className: "players-wrapper",
 		render: function(layout) {
 			var view = layout(this);
 			//this.$el.empty()
 			// call .cleanup() on all child views, and remove all appended views
-			view.cleanup();
+			//view.cleanup();
 			this.collection.each(function(teamplayer) {
-				view.insert("ul", new TeamPlayer.Views.Player({
+				this.insertView("ul", new TeamPlayer.Views.Player({
 					model: teamplayer
 				}));
-			});
+			}, this);
 			return view.render();
 		},
 		initialize: function() {
@@ -142,7 +141,7 @@ function(require, namespace, Backbone, Leaguevine) {
 		tagName: "li",
 		serialize: function() {return this.model.toJSON();}
 	});
-	TeamPlayer.Views.TeamList = Backbone.LayoutManager.View.extend({
+	TeamPlayer.Views.TeamList = Backbone.View.extend({
 		template: "teamplayers/playerlist",
 		className: "teams-wrapper",
 		render: function(layout) {
@@ -151,10 +150,10 @@ function(require, namespace, Backbone, Leaguevine) {
 			// call .cleanup() on all child views, and remove all appended views
 			view.cleanup();
 			this.collection.each(function(teamplayer) {
-				view.insert("ul", new TeamPlayer.Views.Team({
+				this.insertView("ul", new TeamPlayer.Views.Team({
 					model: teamplayer
 				}));
-			});
+			}, this);
 			return view.render();
 		},
 		initialize: function() {

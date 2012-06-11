@@ -1,9 +1,9 @@
 define([
 	"require",
-  "namespace",
+  "app",
 
   // Libs
-  "use!backbone",
+  "backbone",
   
   // Modules
   "modules/leaguevine",
@@ -11,12 +11,11 @@ define([
   "modules/title",
   "modules/teamplayer",
   
-  "use!plugins/backbone.websqlajax",
+  "plugins/backbone.websqlajax",
 ],
-function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
-    "use strict";
-	var app = namespace.app;
-	var Player = namespace.module();
+function(require, app, Backbone, Leaguevine, Navigation, Title) {
+    
+	var Player = app.module();
 	
 	//
 	// MODEL
@@ -126,7 +125,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
             return player;
         } //render looks for this to manipulate model before passing to the template.
 	});
-	Player.Views.List = Backbone.LayoutManager.View.extend({
+	Player.Views.List = Backbone.View.extend({
 		template: "players/list",
 		className: "players-wrapper",
 		render: function(layout) {
@@ -135,12 +134,12 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			// call .cleanup() on all child views, and remove all appended views
 			view.cleanup();
 			this.collection.each(function(player) {//for each player in the collection.
-				view.insert("ul", new Player.Views.Item({//Inserts the player into the ul in the list template.
+				this.insertView("ul", new Player.Views.Item({//Inserts the player into the ul in the list template.
 					model: player//pass each player to a Item view instance.
 				}));
-			});
+			}, this);
             //Add a button at the end of the list that creates more items
-            view.insert("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
+            this.insertView("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
 			return view.render({ count: this.collection.length });
 		},
 		initialize: function() {
@@ -149,7 +148,7 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title) {
 			}, this);
 		},
 	});
-	Player.Views.Detail = Backbone.LayoutManager.View.extend({  	
+	Player.Views.Detail = Backbone.View.extend({  	
 		template: "players/detail",
 		//We were passed a model on creation, so we have this.model
 		render: function(layout) {

@@ -1,18 +1,17 @@
 define([
   "require",
-  "namespace",
+  "app",
 
   // Libs
-  "use!backbone",
+  "backbone",
 
   // Modules
   "modules/leaguevine",
 ],
 
-function(require, namespace, Backbone, Leaguevine) {
-    "use strict";
-	var app = namespace.app;
-	var Stats = namespace.module();
+function(require, app, Backbone, Leaguevine) {
+    
+	var Stats = app.module();
 
 	Stats.BaseModel = Backbone.Model.extend({
 		parse: function(resp, xhr) {

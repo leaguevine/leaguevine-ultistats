@@ -10,44 +10,31 @@ require.config({
 
 		// Libraries
 		jquery: "../assets/js/libs/jquery",
-		underscore: "../assets/js/libs/underscore",
+		lodash: "../assets/js/libs/lodash",
 		backbone: "../assets/js/libs/backbone",
-	
-		// 'use.js' for loading non-AMD
-		use: "../assets/js/plugins/use" //https://github.com/tbranyen/use.js
 	},
 
-	use: { //Define configuration for each non-AMD script.
-		//Module's require defines these with (e.g.) use!underscore
-		underscore: {//If something use!underscore, it'll have access to _
-			attach: "_"
-		},
+	shim: {
 		
-		backbone: {//If something use!backbone, it'll have access to Backbone
-			deps: ["use!underscore", "jquery"],
-			attach: function(_, $) {
-				return Backbone;
-			}
+		backbone: {
+			deps: ["lodash", "jquery"],
+			exports: "Backbone"
 		},
     
-		"plugins/backbone.layoutmanager": {//extends Backbone, probably will not be called.
-			deps: ["use!backbone"]
+		"plugins/backbone.layoutmanager": {
+			deps: ["backbone"]
 		},
 
 		"plugins/backbone.localStorage": {
-			deps: ["use!backbone"]
-		},
-		
-		"plugins/jquery.ba-throttle-debounce": {
-			deps: ["jquery"]
+			deps: ["backbone"]
 		},
 		
 		"plugins/backbone-tastypie": {
-			deps: ["use!backbone"]
+			deps: ["backbone"]
 		},
 		
 		"plugins/backbone-relational": {
-			deps: ["use!backbone", "use!plugins/backbone-tastypie"]
+			deps: ["backbone", "plugins/backbone-tastypie"]
 		},
 		
 		"plugins/spinner": {
@@ -55,7 +42,7 @@ require.config({
 		},
 		
 		"plugins/backbone.websqlajax": {
-			deps: ["use!backbone"]
+			deps: ["backbone"]
 		}
 	}
 });

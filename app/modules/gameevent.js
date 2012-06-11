@@ -1,20 +1,19 @@
 define([
 	"require",
-  "namespace",
+  "app",
 
   // Libs
-  "use!backbone",
+  "backbone",
 
   // Modules
   "modules/leaguevine",
   
-  "use!plugins/backbone.websqlajax",
+  "plugins/backbone.websqlajax",
 ],
 
-function(require, namespace, Backbone, Leaguevine) {
-    "use strict";
-	var app = namespace.app;
-	var GameEvent = namespace.module();
+function(require, app, Backbone, Leaguevine) {
+
+	var GameEvent = app.module();
 	GameEvent.Model = Backbone.Model.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
 			type: NaN,//Need to set a dict somewhere, probably in Leaguevine.API
@@ -98,10 +97,10 @@ function(require, namespace, Backbone, Leaguevine) {
 			// call .cleanup() on all child views, and remove all appended views
 			view.cleanup();
 			this.collection.each(function(gameevent) {
-				view.insert("ul", new Event.Views.Item({
+				this.insertView("ul", new Event.Views.Item({
 					model: gameevent
 				}));
-			});
+			}, this);
 			return view.render();
 		},
 		initialize: function() {

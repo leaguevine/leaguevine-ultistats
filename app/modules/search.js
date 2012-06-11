@@ -1,19 +1,18 @@
 define([
-  "namespace",
+  "app",
 
   // Libs
-  "use!backbone",
+  "backbone",
 
   // Modules
   "modules/leaguevine",
 
   // Plugins
-  "use!plugins/backbone.layoutmanager"
+  "plugins/backbone.layoutmanager"
 ],
-function(namespace, Backbone, Leaguevine) {
-    "use strict";
-    var app = namespace.app;
-    var Search = namespace.module();
+function(app, Backbone, Leaguevine) {
+    
+    var Search = app.module();
 	
     Search.Views.SearchableList = Backbone.View.extend({
         /* Usage:

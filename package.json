@@ -1,0 +1,36 @@
+{
+  "name": "bbb",
+  "description": "Backbone Boilerplate",
+  "version": "0.1.2",
+  "homepage": "https://github.com/tbranyen/bbb",
+  "author": {
+    "name": "Tim Branyen (@tbranyen)",
+    "email": "tim@tabdeveloper.com",
+    "url": "http://tbranyen.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tbranyen/bbb.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tbranyen/bbb/issues"
+  },
+  "dependencies": {
+    "grunt": "0.3.9",
+    "grunt-contrib": "0.0.5",
+    "requirejs": "2.0.1",
+    "express": "2.5.9"
+  },
+  "devDependencies": {
+    "grunt": "~0.3.0"
+  },
+  "keywords": [],
+  "engines": {
+    "node": "~0.6"
+  },
+  "main": "grunt.js",
+  "bin": "bin/bbb",
+  "scripts": {
+    "test": "grunt test"
+  }
+}

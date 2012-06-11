@@ -1,9 +1,8 @@
 define([
-  "require",
-  "namespace",
+  "app",
 
   // Libs
-  "use!backbone",
+  "backbone",
   
   // Modules
   "modules/leaguevine",
@@ -13,13 +12,12 @@ define([
   "modules/teamplayer",
   "modules/game",
   
-  "use!plugins/backbone.websqlajax",
+  "plugins/backbone.websqlajax",
 ],
 
-function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
-    "use strict";
-	var app = namespace.app;
-	var Team = namespace.module();
+function(app, Backbone, Leaguevine, Navigation, Title, Search) {
+
+	var Team = app.module();
 	
 	//
 	// MODEL
@@ -117,11 +115,17 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 			// Prepare the layout/view(s)
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
-			myLayout.view(".navbar", new Navigation.Views.Navbar({}));
-			//myLayout.view(".titlebar", new Title.Views.Titlebar({title: "Teams", right_btn_href: "#newteam", right_btn_class: "add"}));
-			myLayout.view(".titlebar", new Title.Views.Titlebar({model_class: "team", level: "list"}));
-			myLayout.view(".content", new Search.Views.SearchableList({collection: teams, CollectionClass: Team.Collection, ViewsListClass: Team.Views.List, right_btn_class: "",
-                            right_btn_txt: "Create", right_btn_href: "#newteam", search_object_name: "team"})); //pass the List view a collection of (fetched) teams.
+			myLayout.setViews({
+				".navbar": new Navigation.Views.Navbar({}),
+				".titlebar": new Title.Views.Titlebar({model_class: "team", level: "list"}),
+				".content": new Search.Views.SearchableList({
+					collection: teams, 
+					CollectionClass: Team.Collection, 
+					ViewsListClass: Team.Views.List, 
+					right_btn_class: "", right_btn_txt: "Create", right_btn_href: "#newteam",
+					search_object_name: "team"
+				})
+			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
 		showTeam: function (teamId) {
@@ -183,18 +187,18 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
                         var tap_method = this.options.tap_method;
 			//this.$el.empty()
 			// call .cleanup() on all child views, and remove all appended views
-			view.cleanup();
+			//view.cleanup();
 			this.collection.each(function(team) {//for each team in the collection.
 				//Do collection filtering here
 				if (!filter_by || team.get("name").toLowerCase().indexOf(filter_by.toLowerCase()) != -1) {
-					view.insert("ul", new Team.Views.Item({//Inserts the team into the ul in the list template.
+					this.insertView("ul", new Team.Views.Item({//Inserts the team into the ul in the list template.
 						model: team, //pass each team to a Item view instance.
                         tap_method: tap_method //passing on tap_method from caller
 					}));
 				}
-			});
+			}, this);
             //Add a button at the end of the list that creates more items
-            view.insert("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
+            this.insertView("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
 			return view.render({ count: this.collection.length });
 		},
 		initialize: function() {
@@ -207,9 +211,9 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
 	});
 	Team.Views.Item = Backbone.View.extend({
 		template: "teams/item",
-                events: {
-                    "click": "team_tap_method"
-                },
+        events: {
+            "click": "team_tap_method"
+        },
 		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul by the list's render function.
 		serialize: function() {
             // Add a couple attributes to the team for displaying
@@ -221,17 +225,17 @@ function(require, namespace, Backbone, Leaguevine, Navigation, Title, Search) {
                 team.league_name = team.season.league.name;
             }
             return team
-        }, //render looks for this to manipulate model before passing to the template.
-            initialize: function() {
-                if (this.options.tap_method) {
-                    this.team_tap_method = this.options.tap_method;
-                }
-                else {
-                    this.team_tap_method = function() {
-                        Backbone.history.navigate("teams/"+this.model.get("id"), true);
-                    }
+    	}, //render looks for this to manipulate model before passing to the template.
+        initialize: function() {
+            if (this.options.tap_method) {
+                this.team_tap_method = this.options.tap_method;
+            }
+            else {
+                this.team_tap_method = function() {
+                    Backbone.history.navigate("teams/"+this.model.get("id"), true);
                 }
             }
+        }
 	});
 	Team.Views.Detail = Backbone.View.extend({
 		//We were passed a model on creation by Team.Router.showTeam(), so we have this.model  	
