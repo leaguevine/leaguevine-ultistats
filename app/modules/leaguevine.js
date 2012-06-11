@@ -104,7 +104,7 @@ function(app, Backbone) {
         root: "http://api.playwithlv.com/v1/",
         base: "http://playwithlv.com/oauth2/authorize/?response_type=token&scope=universal",
         client_id: "5b830cb7c788b095c94732c8ca03cb",
-        redirect_uri: "http://localhost:8000/",
+        redirect_uri: "http://ultistats.localhost/",
         season_id: 20041,
         d_token: function() {//Modules will reference this dynamic token			
             if (!this.token) {

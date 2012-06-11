@@ -574,7 +574,7 @@ function(require, app, Backbone) {
 		render: function(layout){
 			var view = layout(this);
 			//this.$el.empty()
-			view.cleanup();// call .cleanup() on all child views, and remove all appended views
+			//view.cleanup();// call .cleanup() on all child views, and remove all appended views
 			this.collection.each(function(tp) {//for each teamplayer in the collection.
 				this.insertView(new TrackedGame.Views.RosterItem({model: tp}));
 			}, this);
@@ -757,7 +757,7 @@ function(require, app, Backbone) {
 			var _this = this;
 			//this.$el.empty()
 			// call .cleanup() on all child views, and remove all appended views
-			view.cleanup();
+			//view.cleanup();
 			this.onf.each(function(tp) {
 				this.insertView("ul", new TrackedGame.Views.PlayerButton({
 					model: tp, trackedgame: _this.model
@@ -766,7 +766,7 @@ function(require, app, Backbone) {
 			//insert unknown buttons for less than 8 players.
 			var TeamPlayer = require("modules/teamplayer");
 			for(var i=this.onf.length;i<8;i++){
-				view.insert("ul", new TrackedGame.Views.PlayerButton({
+				this.insertView("ul", new TrackedGame.Views.PlayerButton({
 					model: new TeamPlayer.Model({player: {id:NaN, last_name:"unknown"}}),
 					trackedgame: _this.model
 				}));
