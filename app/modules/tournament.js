@@ -8,14 +8,12 @@ define([
   // Modules
   "modules/leaguevine",
   "modules/navigation",
-  "modules/title",
-  "modules/search",  
   "modules/tournteam",
   "modules/game",
   
   "plugins/backbone.websqlajax",
 ],
-function(require, app, Backbone, Leaguevine, Navigation, Title, Search) {
+function(require, app, Backbone, Leaguevine, Navigation) {
     
 	var Tournament = app.module();
 	
@@ -88,11 +86,11 @@ function(require, app, Backbone, Leaguevine, Navigation, Title, Search) {
 			tournaments.fetch();
 
 			//var Search = require("modules/search"); //If that module is an argument to this module's function then it does not need to be required again.
-			var myLayout = app.router.useLayout("nav_content");
+			var myLayout = app.router.useLayout("main");
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar(),
-				".titlebar": new Title.Views.Titlebar({model_class: "tournament", level: "list"}),
-				".content": new Search.Views.SearchableList({collection: tournaments, CollectionClass: Tournament.Collection, ViewsListClass: Tournament.Views.List, search_object_name: "tournament"})
+				".titlebar": new Navigation.Views.Titlebar({model_class: "tournament", level: "list"}),
+				".content_1": new Navigation.Views.SearchableList({collection: tournaments, CollectionClass: Tournament.Collection, ViewsListClass: Tournament.Views.List, search_object_name: "tournament"})
 			});
 			//myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newtournament", name: "New"}));
 			//myLayout.view(".content", new Tournament.Views.List ({collection: tournaments}));
@@ -116,7 +114,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Title, Search) {
 			myLayout.setViews({
 				//".navbar": new Navigation.Views.Navbar({href: "#edittournament/"+tournamentId, name: "Edit"}),
 				".navbar": new Navigation.Views.Navbar(),
-				".titlebar": new Title.Views.Titlebar({model_class: "tournament", level: "show", model: tournament}),
+				".titlebar": new Navigation.Views.Titlebar({model_class: "tournament", level: "show", model: tournament}),
 				".detail": new Tournament.Views.Detail( {model: tournament}),
 				".list_children": new Tournament.Views.Multilist({ games: games, tournteams: tournteams }),					
 			});

@@ -8,15 +8,13 @@ define([
   // Modules
   "modules/leaguevine",
   "modules/navigation",
-  "modules/search",
   "modules/team",
-  "modules/title",
   "modules/player_per_game_stats",
   "modules/team_per_game_stats",
   
   "plugins/backbone.websqlajax",
 ],
-function(require, app, Backbone, Leaguevine, Navigation, Search, Team, Title, PlayerPerGameStats, TeamPerGameStats) {
+function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStats, TeamPerGameStats) {
 	
 	var Game = app.module();
 	
@@ -130,7 +128,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Search, Team, Title, Pl
 			// Layout from cache might have different views set. Let's (re-)set them now.
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar(),
-				".titlebar": new Title.Views.Titlebar({model_class: "game", level: "list"}),
+				".titlebar": new Navigation.Views.Titlebar({model_class: "game", level: "list"}),
 				".content": new Game.Views.Find()
 			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
@@ -150,7 +148,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Search, Team, Title, Pl
 			
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({href: "#editgame/"+gameId, name: "Edit"}),
-				".titlebar": new Title.Views.Titlebar({model_class: "game", level: "show", model: game}),
+				".titlebar": new Navigation.Views.Titlebar({model_class: "game", level: "show", model: game}),
 				".detail": new Game.Views.Detail( {model: game}),
 				".list_children": new Game.Views.Multilist({
                     model: game, 
@@ -180,7 +178,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Search, Team, Title, Pl
             	//this_game.fetch(); Game is not persisted yet so it cannot be fetched.
                 var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
                 teams.fetch();
-                myLayout.view(".titlebar", new Title.Views.Titlebar({model_class: "game", level: "edit", model: this_game}));
+                myLayout.view(".titlebar", new Navigation.Views.Titlebar({model_class: "game", level: "edit", model: this_game}));
                 myLayout.view(".content", new Game.Views.Edit({model: this_game, teams: teams}));
             }
             myLayout.view(".navbar", new Navigation.Views.Navbar({}));
@@ -286,7 +284,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Search, Team, Title, Pl
             var Team = require("modules/team");
             this.setViews({
             	".edit_area": new Game.Views.EditArea({model: this.model}),
-                ".team_search_list": new Search.Views.SearchableList({
+                ".team_search_list": new Navigation.Views.SearchableList({
                 	collection: this.options.teams, CollectionClass: Team.Collection, ViewsListClass: Team.Views.List, right_btn_class: "",
                     right_btn_txt: "Create", right_btn_href: "#newteam", search_object_name: "team",
                     tap_method: function() {

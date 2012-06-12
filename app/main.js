@@ -7,9 +7,7 @@ require([
 
 	//Do we need all modules or only those with routers or that are not required by other modules?
 	"modules/leaguevine",
-	"modules/title",
 	"modules/navigation",
-	"modules/search",
 	"modules/settings",	
 	"modules/season",
 	"modules/teamplayer",

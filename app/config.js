@@ -37,9 +37,10 @@ require.config({
 			deps: ["backbone", "plugins/backbone-tastypie"]
 		},
 		
-		"plugins/spinner": {
+/*		"plugins/spinner": {
 			deps: ["jquery"]
 		},
+*/
 		
 		"plugins/backbone.websqlajax": {
 			deps: ["backbone"]

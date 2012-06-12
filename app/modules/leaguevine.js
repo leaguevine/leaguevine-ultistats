@@ -62,7 +62,7 @@ function(app, Backbone) {
     Leaguevine.Views.MoreItems = Backbone.View.extend({
 		template: "leaguevine/more_items",
             events: {
-                "click": "fetch_more_items"
+                click: "fetch_more_items"
             },
 		tagName: "li",
         initialize: function() {

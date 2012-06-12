@@ -7,15 +7,13 @@ define([
   // Modules
   "modules/leaguevine",
   "modules/navigation",
-  "modules/title",
-  "modules/search",
   "modules/teamplayer",
   "modules/game",
   
   "plugins/backbone.websqlajax",
 ],
 
-function(app, Backbone, Leaguevine, Navigation, Title, Search) {
+function(app, Backbone, Leaguevine, Navigation) {
 
 	var Team = app.module();
 	
@@ -113,18 +111,19 @@ function(app, Backbone, Leaguevine, Navigation, Title, Search) {
 
 			//var Search = require("modules/search"); If that module is an argument to this module's function then it does not need to be required again.
 			// Prepare the layout/view(s)
-			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
+			var myLayout = app.router.useLayout("main");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({}),
-				".titlebar": new Title.Views.Titlebar({model_class: "team", level: "list"}),
-				".content": new Search.Views.SearchableList({
+				".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "list"}),
+				".content_1": new Navigation.Views.SearchableList({
 					collection: teams, 
 					CollectionClass: Team.Collection, 
 					ViewsListClass: Team.Views.List, 
 					right_btn_class: "", right_btn_txt: "Create", right_btn_href: "#newteam",
 					search_object_name: "team"
-				})
+				}),
+				".spinner": new Navigation.Views.Spinner({}),
 			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
@@ -149,7 +148,7 @@ function(app, Backbone, Leaguevine, Navigation, Title, Search) {
 				".navbar": new Navigation.Views.Navbar({}),
 				".detail": new Team.Views.Detail( {model: team}),
 				".list_children": new Team.Views.Multilist({ teamplayers: teamplayers, games: games}), 
-                ".titlebar": new Title.Views.Titlebar({model_class: "team", level: "show", model: team})
+                ".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "show", model: team})
 			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},

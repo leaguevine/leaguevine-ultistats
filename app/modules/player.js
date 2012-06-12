@@ -8,12 +8,11 @@ define([
   // Modules
   "modules/leaguevine",
   "modules/navigation",
-  "modules/title",
   "modules/teamplayer",
   
   "plugins/backbone.websqlajax",
 ],
-function(require, app, Backbone, Leaguevine, Navigation, Title) {
+function(require, app, Backbone, Leaguevine, Navigation) {
     
 	var Player = app.module();
 	
@@ -85,7 +84,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Title) {
 			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
 			myLayout.view(".navbar", new Navigation.Views.Navbar());
-            myLayout.view(".titlebar", new Title.Views.Titlebar({model_class: "player", level: "list"}));
+            myLayout.view(".titlebar", new Navigation.Views.Titlebar({model_class: "player", level: "list"}));
 			myLayout.view(".content", new Player.Views.List ({collection: app.players}));//pass the List view a collection of (fetched) players.
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
@@ -104,7 +103,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Title) {
 			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({href: "#editplayer/"+playerId, name: "Edit"}),
-				".titlebar": new Title.Views.Titlebar({model_class: "player", level: "show", model: player}),
+				".titlebar": new Navigation.Views.Titlebar({model_class: "player", level: "show", model: player}),
 				".detail": new Player.Views.Detail( {model: player}),
 				".list_children": new Player.Views.Multilist({ teamplayers: teamplayers}),
 			});

@@ -7,11 +7,10 @@ define([
 
   // Modules
   "modules/navigation",
-  "modules/title",
   
   "plugins/backbone.localStorage"
 ],
-function(require, app, Backbone, Navigation, Title) {
+function(require, app, Backbone, Navigation) {
     
 	var Settings = app.module();
 	
@@ -81,10 +80,12 @@ function(require, app, Backbone, Navigation, Title) {
         		setting.fetch();
         	});
 			var myLayout = app.router.useLayout("nav_content");
-			myLayout.view(".navbar", new Navigation.Views.Navbar({}));
-			myLayout.view(".titlebar", new Title.Views.Titlebar({model_class: "setting", level: "list"}));
-			myLayout.view(".content", new Settings.Views.List({collection: settings}));
-            myLayout.render(function(el) {$("#main").html(el);});
+			myLayout.setViews({
+				".navbar": new Navigation.Views.Navbar({}),
+				".titlebar": new Navigation.Views.Titlebar({model_class: "setting", level: "list"}),
+				".content": new Settings.Views.List({collection: settings})
+			});
+			myLayout.render(function(el) {$("#main").html(el);});
         }
     });
 	Settings.router = new Settings.Router();// INITIALIZE ROUTER
