@@ -188,6 +188,7 @@ function(app, Backbone, Game) {
          *          CollectionClass - the Collection class (e.g. Team.Collection)
          *          ViewsListClass - the Views.List class (e.g. Team.Views.List)
          *          search_object_name - type of object being searched
+         * 			tap_method (optional)
          *          Xright_btn_href - link for right button
          *          Xright_btn_txt - text of right button
          *          Xright_btn_class - additional class for right button
@@ -209,32 +210,25 @@ function(app, Backbone, Game) {
          */
         template: "navigation/searchable_list",
         events: {
-            click: "filterObjects"
+            "click": "filterObjects"
         },
         search_results: _.extend({}, Backbone.Events),
-        filterObjects: function(ev) {
-            //var my_collection = this.options.collection;//collection is special in that it is not passed to options.
-            var my_collection = this.collection; //Create a local closure so we can access this variable in the success callback.
+     /*   filterObjects: function(ev) {
             var search_string = ev.currentTarget.value;
             my_collection.name = search_string;
-
             //When we fetch a collection, upon its return the collection "reset" is triggered.
             //However, we cannot fetch our original collection because this will cause (error-generating) duplicates.
             //Thus we make a new collection then merge new results.
             this.search_results.reset();
             this.search_results.name = search_string;
-            this.search_results.fetch();
-            //Trigger a reset immediately so the already-present data are curated immediately.
-            my_collection.trigger("reset");
-        },
-        render: function(layout) {
-            var view = layout(this);
+            this.search_results.fetch(); //When the fetch returns it will cause this.search_results to merge with this.collection  
+            this.collection.trigger("reset");//Trigger a reset immediately so the already-present data are curated immediately.
+       }, */
+        render: function(manage) {
             //var temp_collection = {};
             //Leaguevine.Utils.concat_collections(this.collection, this.search_results);
-            this.setViews({
-                ".object_list_area": new this.options.ViewsListClass({collection: this.collection, tap_method: this.options.tap_method})
-            });
-            return view.render({
+            this.setView(".object_list_area", new this.options.ViewsListClass({collection: this.collection, tap_method: this.options.tap_method}));
+            return manage(this).render({
                 search_object_name: this.options.search_object_name,
                 /*right_btn_class: this.options.right_btn_class,
                 right_btn_txt: this.options.right_btn_txt,
@@ -249,7 +243,17 @@ function(app, Backbone, Game) {
 			this.search_results = new this.options.CollectionClass();
 			this.search_results.bind("reset", function() {
 			 	Leaguevine.Utils.concat_collections(this.collection, this.search_results);
-		 	}, this)
+		 	}, this);
+		 	this.filterObjects = function(ev) {
+            	var search_string = ev.currentTarget.value;
+	            //When we fetch a collection, upon its return the collection "reset" is triggered.
+	            //However, we cannot fetch our original collection because this will cause (error-generating) duplicates.
+	            //Thus we make a new collection then merge new results.
+	            this.search_results.reset();
+	            this.search_results.name = search_string;
+	            this.search_results.fetch(); //When the fetch returns it will cause this.search_results to merge with this.collection  
+	            this.collection.trigger("reset");//Trigger a reset immediately so the already-present data are curated immediately.
+		 	}
 			/*We could bind to reset here to re-render this whole thing.
 			Instead we bind to reset in the module's .Views.List
 			

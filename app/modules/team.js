@@ -120,10 +120,10 @@ function(app, Backbone, Leaguevine, Navigation) {
 					collection: teams, 
 					CollectionClass: Team.Collection, 
 					ViewsListClass: Team.Views.List, 
-					right_btn_class: "", right_btn_txt: "Create", right_btn_href: "#newteam",
+					//right_btn_class: "", right_btn_txt: "Create", right_btn_href: "#newteam",
 					search_object_name: "team"
 				}),
-				".spinner": new Navigation.Views.Spinner({}),
+				//".spinner": new Navigation.Views.Spinner({}),
 			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
@@ -143,11 +143,11 @@ function(app, Backbone, Leaguevine, Navigation) {
 			games.fetch();
 			//team.set("games", games);
 			
-			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
+			var myLayout = app.router.useLayout("main");// Get the layout. Has .navbar, .detail, .list_children
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({}),
-				".detail": new Team.Views.Detail( {model: team}),
-				".list_children": new Team.Views.Multilist({ teamplayers: teamplayers, games: games}), 
+				".content_1": new Team.Views.Detail( {model: team}),
+				".content_2": new Team.Views.Multilist({ teamplayers: teamplayers, games: games}), 
                 ".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "show", model: team})
 			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
@@ -157,7 +157,6 @@ function(app, Backbone, Leaguevine, Navigation) {
                 app.api.login();
                 return;
             }
-			var myLayout = app.router.useLayout("nav_content");
 			//If we have teamId, then we are editing. If not, then we are creating a new team.
 			if (teamId) { //make the edit team page
 				var team = new Team.Model({id: teamId});
@@ -166,9 +165,10 @@ function(app, Backbone, Leaguevine, Navigation) {
 			else { //make the add team page
 				var team = new Team.Model({});
 			}
-			myLayout.view(".navbar", new Navigation.Views.Navbar({}));
-			myLayout.view(".titlebar", new Title.Views.Titlebar({model_class: "team", level: "edit", model: team}));
-			myLayout.view(".content", new Team.Views.Edit({model: team}));
+			var myLayout = app.router.useLayout("main");
+			myLayout.setView(".navbar", new Navigation.Views.Navbar({}));
+			myLayout.setView(".titlebar", new Navigation.Views.Titlebar({model_class: "team", level: "edit", model: team}));
+			myLayout.setView(".content_1", new Team.Views.Edit({model: team}));
 			myLayout.render(function(el) {$("#main").html(el);});
 		}
 	});

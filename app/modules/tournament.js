@@ -110,13 +110,13 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			var games = new Game.Collection([],{tournament_id: tournament.get("id")});
 			games.fetch();
 			
-			var myLayout = app.router.useLayout("nav_detail_list");
+			var myLayout = app.router.useLayout("main");
 			myLayout.setViews({
 				//".navbar": new Navigation.Views.Navbar({href: "#edittournament/"+tournamentId, name: "Edit"}),
 				".navbar": new Navigation.Views.Navbar(),
 				".titlebar": new Navigation.Views.Titlebar({model_class: "tournament", level: "show", model: tournament}),
-				".detail": new Tournament.Views.Detail( {model: tournament}),
-				".list_children": new Tournament.Views.Multilist({ games: games, tournteams: tournteams }),					
+				".content_1": new Tournament.Views.Detail( {model: tournament}),
+				".content_2": new Tournament.Views.Multilist({ games: games, tournteams: tournteams }),					
 			});
 			myLayout.render(function(el) {$("#main").html(el);});
 		}

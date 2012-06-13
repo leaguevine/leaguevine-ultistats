@@ -124,17 +124,16 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
      //                   "editgame/:gameId": "editGame"
 		},
 		findGames: function () {
-			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
+			var myLayout = app.router.useLayout("main");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar(),
 				".titlebar": new Navigation.Views.Titlebar({model_class: "game", level: "list"}),
-				".content": new Game.Views.Find()
+				".content_1": new Game.Views.Find()
 			});
 			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 		},
 		showGame: function (gameId) {
-			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
 			//Prepare the data.
 			var game = new Game.Model({id: gameId});
 			
@@ -146,11 +145,12 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
             var teamstats = new TeamPerGameStats.Collection([],{game_ids: [gameId]});
             teamstats.fetch();
 			
+			var myLayout = app.router.useLayout("main");
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({href: "#editgame/"+gameId, name: "Edit"}),
 				".titlebar": new Navigation.Views.Titlebar({model_class: "game", level: "show", model: game}),
-				".detail": new Game.Views.Detail( {model: game}),
-				".list_children": new Game.Views.Multilist({
+				".content_1": new Game.Views.Detail( {model: game}),
+				".content_2": new Game.Views.Multilist({
                     model: game, 
                     playerstats: playerstats,
                     teamstats: teamstats
@@ -164,7 +164,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
                 return;
             }
             
-            var myLayout = app.router.useLayout("nav_content");
+            var myLayout = app.router.useLayout("main");
 
             /*if (gameId) { //edit existing game
 
@@ -178,10 +178,10 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
             	//this_game.fetch(); Game is not persisted yet so it cannot be fetched.
                 var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
                 teams.fetch();
-                myLayout.view(".titlebar", new Navigation.Views.Titlebar({model_class: "game", level: "edit", model: this_game}));
-                myLayout.view(".content", new Game.Views.Edit({model: this_game, teams: teams}));
+                myLayout.setView(".titlebar", new Navigation.Views.Titlebar({model_class: "game", level: "edit", model: this_game}));
+                myLayout.setView(".content_1", new Game.Views.Edit({model: this_game, teams: teams}));
             }
-            myLayout.view(".navbar", new Navigation.Views.Navbar({}));
+            myLayout.setView(".navbar", new Navigation.Views.Navbar({}));
             myLayout.render(function(el) {$("#main").html(el);});
         }
 	});

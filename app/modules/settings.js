@@ -79,11 +79,11 @@ function(require, app, Backbone, Navigation) {
         	_.each(settings.models, function(setting){
         		setting.fetch();
         	});
-			var myLayout = app.router.useLayout("nav_content");
+			var myLayout = app.router.useLayout("main");
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({}),
 				".titlebar": new Navigation.Views.Titlebar({model_class: "setting", level: "list"}),
-				".content": new Settings.Views.List({collection: settings})
+				".content_1": new Settings.Views.List({collection: settings})
 			});
 			myLayout.render(function(el) {$("#main").html(el);});
         }
