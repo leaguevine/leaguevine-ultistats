@@ -385,7 +385,6 @@ function(require, app, Backbone) {
                 return;
             }
 			
-			var myLayout = app.router.useLayout("tracked_game");
 			//var Team = require("modules/team");
 			var Game = require("modules/game");
 			var TeamPlayer = require("modules/teamplayer");
@@ -482,10 +481,11 @@ function(require, app, Backbone) {
 			});
 			trackedgame.get("offfield_2").bind("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
 			trackedgame.get("onfield_2").bind("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
-	
+			
+			var myLayout = app.router.useLayout("tracked_game");
 			myLayout.setViews({
-				".sub_team_1": new TrackedGame.Views.SubTeam({onfield: trackedgame.get("onfield_"+1), offfield: trackedgame.get("offfield_"+1), game: trackedgame.get("game"), team_ix: 1}),
-				".sub_team_2": new TrackedGame.Views.SubTeam({onfield: trackedgame.get("onfield_"+2), offfield: trackedgame.get("offfield_"+2), game: trackedgame.get("game"), team_ix: 2}),
+				".sub_team_1": new TrackedGame.Views.SubTeam({onfield: trackedgame.get("onfield_1"), offfield: trackedgame.get("offfield_"+1), game: trackedgame.get("game"), team_ix: 1}),
+				".sub_team_2": new TrackedGame.Views.SubTeam({onfield: trackedgame.get("onfield_2"), offfield: trackedgame.get("offfield_"+2), game: trackedgame.get("game"), team_ix: 2}),
 				//Game action of course requires the full trackedgame.
 				".t_game": new TrackedGame.Views.GameAction({model: trackedgame}),
 				".rotate_screen": new TrackedGame.Views.RotateButton({model: trackedgame})
@@ -545,7 +545,9 @@ function(require, app, Backbone) {
 		events: {
 			"click .game_over": "game_over",
 		},
-		game_over: function(ev){this.model.game_over();},
+		game_over: function(ev){
+			this.model.game_over();
+		},
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
 			this.setViews({
@@ -872,18 +874,19 @@ function(require, app, Backbone) {
 		initialize: function() {			
 			this.model.bind("change:visible_screen", function() {this.render();}, this);
 		},
-		render: function(layout) {
-			var view = layout(this);
+		render: function(manage) {
 			var n_screens = this.model.screens_list.length;
 			var sc_ix = this.model.get("visible_screen");
 			var next_screen_text = "";
 			sc_ix = sc_ix == n_screens-1 ? 0 : sc_ix + 1;
-			return view.render({next_screen: this.model.screens_list[sc_ix].b_string});
+			return manage(this).render({next_screen: this.model.screens_list[sc_ix].b_string});
 		},
 		events: {
 			"click .rotate": "rotate_screen"
 		},
-		rotate_screen: function(){this.model.rotate_visibility();}
+		rotate_screen: function(){
+			this.model.rotate_visibility();
+		}
 	});
 
 	return TrackedGame;

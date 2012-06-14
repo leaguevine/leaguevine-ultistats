@@ -22,7 +22,8 @@ require.config({
 		},
     
 		"plugins/backbone.layoutmanager": {
-			deps: ["backbone"]
+			deps: ["backbone"],
+			exports: "Backbone.LayoutManager"
 		},
 
 		"plugins/backbone.localStorage": {
@@ -31,10 +32,6 @@ require.config({
 		
 		"plugins/backbone-tastypie": {
 			deps: ["backbone"]
-		},
-		
-		"plugins/backbone-relational": {
-			deps: ["backbone", "plugins/backbone-tastypie"]
 		},
 		
 /*		"plugins/spinner": {

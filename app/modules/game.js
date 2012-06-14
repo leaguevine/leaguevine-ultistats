@@ -246,8 +246,8 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 	Game.Views.Multilist = Backbone.View.extend({
 		template: "games/multilist",
 		events: {
-			"click .bteam_stats": "showTeamStats",
-			"click .bplayer_stats": "showPlayerStats",
+			"click button.bteam_stats": "showTeamStats",
+			"click button.bplayer_stats": "showPlayerStats",
 		},
 		showTeamStats: function(ev){
 			$(".lplayer_stats").hide();

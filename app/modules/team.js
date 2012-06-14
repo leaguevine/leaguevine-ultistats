@@ -292,8 +292,8 @@ function(app, Backbone, Leaguevine, Navigation) {
         },
 		initialize: function() {this.model.bind("change", function() {this.render();}, this);},
   		events: {
-			"click .save": "saveModel",
-			"click .delete": "deleteModel"
+			"click button.save": "saveModel",
+			"click button.delete": "deleteModel"
 		},
 		saveModel: function(ev){
 			this.model.save(
