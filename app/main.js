@@ -46,7 +46,15 @@ function(app, $, Backbone, Leaguevine) {
 	    go: function() {
 			return this.navigate(_.toArray(arguments).join("/"), true);
 	    },
-		
+	    /* from older layoutmanager
+		useLayout: function(name) {// Super-simple layout swapping and reusing
+			var currentLayout = this.currentLayout;
+	        // If there is an existing layout and its the current one, return it.
+	        if (currentLayout && currentLayout.options.template == name) { return currentLayout;}
+	        // Create the new layout and set it as current.
+	        this.currentLayout = new Backbone.LayoutManager({template: name});
+	        return this.currentLayout;
+	    },*/
 		useLayout: function(name) {
 			// If already using this Layout, then don't re-inject into the DOM.
 			if (this.layout) {
