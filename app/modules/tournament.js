@@ -96,7 +96,8 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			//myLayout.view(".content", new Tournament.Views.List ({collection: tournaments}));
 			//myLayout.view(".content", new Search.Views.SearchableList({collection: tournaments, CollectionClass: Tournament.Collection, ViewsListClass: Tournament.Views.List,
             //                right_btn_class: "", right_btn_txt: "Create", right_btn_href: "#newtournament", search_object_name: "tournament"}));
-            myLayout.render(function(el) {$("#main").html(el);});
+            //myLayout.render(function(el) {$("#main").html(el);});
+            myLayout.render();
 		},
 		showTournament: function (tournamentId) {
             var tournament = new Tournament.Model({id: tournamentId});
@@ -118,7 +119,8 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 				".content_1": new Tournament.Views.Detail( {model: tournament}),
 				".content_2": new Tournament.Views.Multilist({ games: games, tournteams: tournteams }),					
 			});
-			myLayout.render(function(el) {$("#main").html(el);});
+			//myLayout.render(function(el) {$("#main").html(el);});
+			myLayout.render();
 		}
 	});
 	Tournament.router = new Tournament.Router();// INITIALIZE ROUTER

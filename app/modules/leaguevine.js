@@ -103,7 +103,7 @@ function(app, Backbone) {
   	Leaguevine.API = {	
         root: "http://api.playwithlv.com/v1/",
         base: "http://playwithlv.com/oauth2/authorize/?response_type=token&scope=universal",
-        client_id: "5b830cb7c788b095c94732c8ca03cb",
+        client_id: "9f30036f95850b185ccbfd66ab54fb",
         redirect_uri: "http://ultistats.localhost/",
         season_id: 20041,
         d_token: function() {//Modules will reference this dynamic token			

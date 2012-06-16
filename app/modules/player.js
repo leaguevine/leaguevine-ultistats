@@ -86,7 +86,8 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			myLayout.view(".navbar", new Navigation.Views.Navbar());
             myLayout.view(".titlebar", new Navigation.Views.Titlebar({model_class: "player", level: "list"}));
 			myLayout.view(".content", new Player.Views.List ({collection: app.players}));//pass the List view a collection of (fetched) players.
-			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+			//myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+			myLayout.render();
 		},
 		showPlayer: function (playerId) {
 			//Prepare the data.
@@ -107,7 +108,8 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 				".detail": new Player.Views.Detail( {model: player}),
 				".list_children": new Player.Views.Multilist({ teamplayers: teamplayers}),
 			});
-			myLayout.render(function(el) {$("#main").html(el);});
+			//myLayout.render(function(el) {$("#main").html(el);});
+			myLayout.render();
 		}
 	});
 	Player.router = new Player.Router();// INITIALIZE ROUTER

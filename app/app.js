@@ -7,7 +7,7 @@ define([
   // Plugins
   "plugins/backbone.layoutmanager",
   "plugins/backbone-tastypie",
-  "plugins/localSettings",
+  "plugins/localSettings"
   //"plugins/spinner"
 ],
 
@@ -30,7 +30,7 @@ function($, _, Backbone) {
 					JST[path] = _.template(contents);
 				});
 			} 
-				  
+
 			return JST[path];
 		},
 		

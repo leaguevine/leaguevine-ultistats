@@ -125,7 +125,8 @@ function(app, Backbone, Leaguevine, Navigation) {
 				}),
 				//".spinner": new Navigation.Views.Spinner({}),
 			});
-			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+			//myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+			myLayout.render();
 		},
 		showTeam: function (teamId) {
 			//Prepare the data.
@@ -146,11 +147,12 @@ function(app, Backbone, Leaguevine, Navigation) {
 			var myLayout = app.router.useLayout("main");// Get the layout. Has .navbar, .detail, .list_children
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({}),
+				".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "show", model: team}),
 				".content_1": new Team.Views.Detail( {model: team}),
 				".content_2": new Team.Views.Multilist({ teamplayers: teamplayers, games: games}), 
-                ".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "show", model: team})
 			});
-			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+			//myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+			myLayout.render();
 		},
 		editTeam: function (teamId) {
 			if (!app.api.is_logged_in()) {//Ensure that the user is logged in
@@ -169,7 +171,8 @@ function(app, Backbone, Leaguevine, Navigation) {
 			myLayout.setView(".navbar", new Navigation.Views.Navbar({}));
 			myLayout.setView(".titlebar", new Navigation.Views.Titlebar({model_class: "team", level: "edit", model: team}));
 			myLayout.setView(".content_1", new Team.Views.Edit({model: team}));
-			myLayout.render(function(el) {$("#main").html(el);});
+			//myLayout.render(function(el) {$("#main").html(el);});
+			myLayout.render();
 		}
 	});
 	Team.router = new Team.Router();// INITIALIZE ROUTER
@@ -285,12 +288,19 @@ function(app, Backbone, Leaguevine, Navigation) {
 			this.options.games.bind("reset", function() {this.render();}, this);
 		}
 	});
+	Team.Views.EditWrapper = Backbone.View.extend({
+		initialize: function() {this.model.bind("reset", function() {this.render();}, this);},
+		render: function(manage){
+			this.insertView(new Team.Views.Edit({model: this.model}));
+			return manage(this).render();
+		}
+	});
 	Team.Views.Edit = Backbone.View.extend({
 		template: "teams/edit",
 		render: function(layout) {
             return layout(this).render(this.model.toJSON());
         },
-		initialize: function() {this.model.bind("change", function() {this.render();}, this);},
+		//initialize: function() {this.model.bind("reset", function() {this.render();}, this);},
   		events: {
 			"click button.save": "saveModel",
 			"click button.delete": "deleteModel"

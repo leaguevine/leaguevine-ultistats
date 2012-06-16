@@ -131,7 +131,8 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 				".titlebar": new Navigation.Views.Titlebar({model_class: "game", level: "list"}),
 				".content_1": new Game.Views.Find()
 			});
-			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+			//myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+			myLayout.render();
 		},
 		showGame: function (gameId) {
 			//Prepare the data.
@@ -156,7 +157,8 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
                     teamstats: teamstats
                 })
 			});
-			myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+			//myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+			myLayout.render();
 		},
         editGame: function(teamId, gameId) {
         	if (!app.api.is_logged_in()) {//Ensure that the user is logged in
@@ -182,7 +184,8 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
                 myLayout.setView(".content_1", new Game.Views.Edit({model: this_game, teams: teams}));
             }
             myLayout.setView(".navbar", new Navigation.Views.Navbar({}));
-            myLayout.render(function(el) {$("#main").html(el);});
+            //myLayout.render(function(el) {$("#main").html(el);});
+            myLayout.render();
         }
 	});
 	Game.router = new Game.Router();// INITIALIZE ROUTER

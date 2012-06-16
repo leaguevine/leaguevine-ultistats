@@ -20,7 +20,7 @@ require([
 	"modules/game",
 	"modules/tournament",
 	"modules/gameevent",
-	"modules/trackedgame",
+	"modules/trackedgame"
 ],
 /*
  * The following callback is called after the dependices are loaded.
@@ -31,7 +31,7 @@ require([
  */
 function(app, $, Backbone, Leaguevine) {
     
-	 // Defining the application router, you can attach sub routers here.
+// Defining the application router, you can attach sub routers here.
 	var Router = Backbone.Router.extend({
 		//Routes are defined in sub modules.
 		routes: {

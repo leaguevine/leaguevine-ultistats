@@ -492,9 +492,10 @@ function(require, app, Backbone) {
 			});
 		    var callback = trackedgame.setButtonHeight;
 			//myLayout.render(function(el) {$("#main").html(el);});
-			myLayout.render(function(el) {
-				$("#main").html(el);
-			}).then(function() {
+			//myLayout.render(function(el) {
+				//$("#main").html(el);
+			//}).then(function() {
+			myLayout.render().then(function(){
                 // Unbind any other bindings to the browser height
                 $(window).unbind("resize"); //Is there a better way to do this besides binding globally?
                 $(window).bind("resize", function() {

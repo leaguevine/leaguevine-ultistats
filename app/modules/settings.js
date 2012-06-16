@@ -85,7 +85,8 @@ function(require, app, Backbone, Navigation) {
 				".titlebar": new Navigation.Views.Titlebar({model_class: "setting", level: "list"}),
 				".content_1": new Settings.Views.List({collection: settings})
 			});
-			myLayout.render(function(el) {$("#main").html(el);});
+			//myLayout.render(function(el) {$("#main").html(el);});
+			myLayout.render();
         }
     });
 	Settings.router = new Settings.Router();// INITIALIZE ROUTER

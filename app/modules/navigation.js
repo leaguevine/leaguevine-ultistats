@@ -208,14 +208,20 @@ function(app, Backbone, Game) {
          * 			modules that might use searchable list so I will hold off on 
          * 			this for now.
          */
+    	concat_collections: function(c1, c2) {
+    		var models = _.reject(c2.models, function(model) {
+    			return c1.pluck("id").indexOf(model.get("id")) != -1;
+    		});
+    		c1.reset(_.union(c1.models, models));
+    	},
         template: "navigation/searchable_list",
         events: {
-            "click": "filterObjects"
+            "keyup #object_search": "filterObjects"
         },
         search_results: _.extend({}, Backbone.Events),
-     /*   filterObjects: function(ev) {
+		filterObjects: function(ev) {
             var search_string = ev.currentTarget.value;
-            my_collection.name = search_string;
+            this.collection.name = search_string;
             //When we fetch a collection, upon its return the collection "reset" is triggered.
             //However, we cannot fetch our original collection because this will cause (error-generating) duplicates.
             //Thus we make a new collection then merge new results.
@@ -223,7 +229,7 @@ function(app, Backbone, Game) {
             this.search_results.name = search_string;
             this.search_results.fetch(); //When the fetch returns it will cause this.search_results to merge with this.collection  
             this.collection.trigger("reset");//Trigger a reset immediately so the already-present data are curated immediately.
-       }, */
+        },
         render: function(manage) {
             //var temp_collection = {};
             //Leaguevine.Utils.concat_collections(this.collection, this.search_results);
@@ -242,18 +248,9 @@ function(app, Backbone, Game) {
 		initialize: function() {
 			this.search_results = new this.options.CollectionClass();
 			this.search_results.bind("reset", function() {
-			 	Leaguevine.Utils.concat_collections(this.collection, this.search_results);
+				this.concat_collections(this.collection, this.search_results);
+			 	//Leaguevine.Utils.concat_collections(this.collection, this.search_results);
 		 	}, this);
-		 	this.filterObjects = function(ev) {
-            	var search_string = ev.currentTarget.value;
-	            //When we fetch a collection, upon its return the collection "reset" is triggered.
-	            //However, we cannot fetch our original collection because this will cause (error-generating) duplicates.
-	            //Thus we make a new collection then merge new results.
-	            this.search_results.reset();
-	            this.search_results.name = search_string;
-	            this.search_results.fetch(); //When the fetch returns it will cause this.search_results to merge with this.collection  
-	            this.collection.trigger("reset");//Trigger a reset immediately so the already-present data are curated immediately.
-		 	}
 			/*We could bind to reset here to re-render this whole thing.
 			Instead we bind to reset in the module's .Views.List
 			
