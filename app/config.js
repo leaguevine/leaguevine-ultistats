@@ -34,10 +34,9 @@ require.config({
 			deps: ["backbone"]
 		},
 		
-/*		"plugins/spinner": {
+		"plugins/spinner": {
 			deps: ["jquery"]
 		},
-*/
 		
 		"plugins/backbone.websqlajax": {
 			deps: ["backbone"]

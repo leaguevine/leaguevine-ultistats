@@ -8,7 +8,7 @@ define([
   // Modules
   "modules/leaguevine",
   
-  "plugins/backbone.websqlajax",
+  "plugins/backbone.websqlajax"
 ],
 
 function(require, app, Backbone, Leaguevine) {
@@ -54,7 +54,7 @@ function(require, app, Backbone, Leaguevine) {
 		urlRoot: Leaguevine.API.root + "events",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += "/?"
+			url += "/?";
 			if (this.game_id) {
 				url += "game_ids=%5B" + this.game_id + "%5D&";
 			}
@@ -71,15 +71,14 @@ function(require, app, Backbone, Leaguevine) {
 		initialize: function(models, options) {
 			if (options) {
 				if (options.game_id) {this.game_id = options.game_id;}
-    		}
+			}
 		},
 		comparator: function(gameevent) {// Define how items in the collection will be sorted.
-		  //return gameevent.get("ordinal_number");
-		  return gameevent.get("time");
+			//return gameevent.get("ordinal_number");
+			return gameevent.get("time");
 		}
 	});
-  
-  	
+
 	//
 	// VIEWS
 	//

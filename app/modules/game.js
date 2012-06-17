@@ -12,7 +12,7 @@ define([
   "modules/player_per_game_stats",
   "modules/team_per_game_stats",
   
-  "plugins/backbone.websqlajax",
+  "plugins/backbone.websqlajax"
 ],
 function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStats, TeamPerGameStats) {
 	
@@ -45,21 +45,21 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
             // Add a formatted start time 
             // TODO: Put this function in namespace?
             game.start_time_string = "";
-            if (game.start_time != "" ){ //parse the start time and make it human-readable
-                var arr = game.start_time.split(/[- :T]/);
+            if (game.start_time !== "" ){ //parse the start time and make it human-readable
+                var arr = game.start_time.split(/[\- :T]/);
                 var start_time_utc = new Date(arr[0], arr[1]-1, arr[2], arr[3], arr[4]); //Parse the ISOformat start time
-                var tz_minutes_offset = new Date().getTimezoneOffset() //The offset in minutes from GMT/UTC
+                var tz_minutes_offset = new Date().getTimezoneOffset();//The offset in minutes from GMT/UTC
                 var start_time = new Date(start_time_utc.getTime() + (tz_minutes_offset * 60 * 1000)); //Start time using user's system clock
                 var minutes = start_time.getMinutes();
                 if (minutes < 10) {minutes = "0" + minutes;} //Make the minutes field two digits
                 game.start_time_string = start_time.getHours() + ":" + minutes + " " + start_time.toLocaleDateString();
             }
             
-            if (this.get("team_1") != null && _.isFunction(this.get("team_1").get)) {game.team_1 = this.get("team_1").toJSON();}
-            if (this.get("team_2") != null && _.isFunction(this.get("team_2").get)) {game.team_2 = this.get("team_2").toJSON();}
+            if (this.get("team_1") !== null && _.isFunction(this.get("team_1").get)) {game.team_1 = this.get("team_1").toJSON();}
+            if (this.get("team_2") !== null && _.isFunction(this.get("team_2").get)) {game.team_2 = this.get("team_2").toJSON();}
 
-            return game
-		},
+            return game;
+		}
 	});
 	
 	Game.Collection = Backbone.Collection.extend({
@@ -67,12 +67,12 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 		sync: Backbone.WebSQLAjaxSync,
 		store: new Backbone.WebSQLStore("game"),
 		comparator: function(game) {// Define how items in the collection will be sorted.
-		  return game.get("start_time");
+			return game.get("start_time");
 		},
 		urlRoot: Leaguevine.API.root + "games",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += "/?"
+			url += "/?";
 			if ( models && models.length ) {
 				url += "game_ids=" + JSON.stringify(models.pluck("id")) + "&";
 			}
@@ -112,7 +112,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 				if (options.tournament_id) {this.tournament_id = options.tournament_id;}
 				if (options.team_1_id) {this.team_1_id = options.team_1_id;}
 				if (options.team_2_id) {this.team_2_id = options.team_2_id;}
-    		}
+			}
 		}
 	});
 	
@@ -120,7 +120,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 		routes : {
 			"games": "findGames", //List all games.
 			"games/:gameId": "showGame", //Show detail for one game.
-            "newgame/:teamId": "editGame",
+            "newgame/:teamId": "editGame"
      //                   "editgame/:gameId": "editGame"
 		},
 		findGames: function () {
@@ -161,7 +161,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 			myLayout.render();
 		},
         editGame: function(teamId, gameId) {
-        	if (!app.api.is_logged_in()) {//Ensure that the user is logged in
+			if (!app.api.is_logged_in()) {//Ensure that the user is logged in
                 app.api.login();
                 return;
             }
@@ -172,12 +172,12 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 
             }
             else*/ if (teamId) { //create new game
-            	var Team = require("modules/team");
-            	var this_team = new Team.Model({id: teamId});
-            	this_team.fetch();
-            	var placeholder_team = new Team.Model({name: "Select opponent from list below:"});
-            	var this_game = new Game.Model({team_1_id: teamId, team_1: this_team, team_2: placeholder_team});
-            	//this_game.fetch(); Game is not persisted yet so it cannot be fetched.
+				var Team = require("modules/team");
+				var this_team = new Team.Model({id: teamId});
+				this_team.fetch();
+				var placeholder_team = new Team.Model({name: "Select opponent from list below:"});
+				var this_game = new Game.Model({team_1_id: teamId, team_1: this_team, team_2: placeholder_team});
+				//this_game.fetch(); Game is not persisted yet so it cannot be fetched.
                 var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
                 teams.fetch();
                 myLayout.setView(".titlebar", new Navigation.Views.Titlebar({model_class: "game", level: "edit", model: this_game}));
@@ -222,19 +222,19 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 			this.collection.bind("reset", function() {
 				this.render();
 			}, this);
-		},
+		}
 	});
-	Game.Views.Detail = Backbone.View.extend({  	
+	Game.Views.Detail = Backbone.View.extend({
 		template: "games/detail",
 		render: function(layout) {
             var game = this.model.toJSON();
 			return layout(this).render(game);
 		},
 		initialize: function() {
-    		this.model.bind("change", function() {
-      			this.render();
-    		}, this);
-  		},
+			this.model.bind("change", function() {
+				this.render();
+			}, this);
+		},
         checkPermission: function() {
             // If the user is not logged in, redirect to login and disable the page transition
             if (!app.api.is_logged_in()) {
@@ -243,14 +243,14 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
             }
          },
 		events: {
-			"click button.btrack_game": "checkPermission",
+			"click button.btrack_game": "checkPermission"
         }
 	});
 	Game.Views.Multilist = Backbone.View.extend({
 		template: "games/multilist",
 		events: {
 			"click button.bteam_stats": "showTeamStats",
-			"click button.bplayer_stats": "showPlayerStats",
+			"click button.bplayer_stats": "showPlayerStats"
 		},
 		showTeamStats: function(ev){
 			$(".lplayer_stats").hide();
@@ -268,15 +268,15 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 			var view = layout(this);
 			this.setViews({
 				".lplayer_stats": new PlayerPerGameStats.Views.BoxScore( {collection: this.options.playerstats, game: this.model } ),
-				".lteam_stats": new TeamPerGameStats.Views.BoxScore( {collection: this.options.teamstats} ),
+				".lteam_stats": new TeamPerGameStats.Views.BoxScore( {collection: this.options.teamstats} )
 			});
 			return view.render();
         },
 		initialize: function() {
-    		this.model.bind("reset", function() {
-      			this.render();
-    		}, this);
-  		}
+			this.model.bind("reset", function() {
+				this.render();
+			}, this);
+		}
 	});
 	
     Game.Views.Edit = Backbone.View.extend({
@@ -286,12 +286,12 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
             var edit_view = this;
             var Team = require("modules/team");
             this.setViews({
-            	".edit_area": new Game.Views.EditArea({model: this.model}),
+				".edit_area": new Game.Views.EditArea({model: this.model}),
                 ".team_search_list": new Navigation.Views.SearchableList({
-                	collection: this.options.teams, CollectionClass: Team.Collection, ViewsListClass: Team.Views.List, right_btn_class: "",
+					collection: this.options.teams, CollectionClass: Team.Collection, ViewsListClass: Team.Views.List, right_btn_class: "",
                     right_btn_txt: "Create", right_btn_href: "#newteam", search_object_name: "team",
                     tap_method: function() {
-                    	edit_view.model.set("team_2",this.model);//check the context here.
+						edit_view.model.set("team_2",this.model);//check the context here.
                     }
                 })
             });
@@ -314,7 +314,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 		saveGame: function(ev) {
 			this.model.save(
 				{
-					start_time: $("#start_time").val(),
+					start_time: $("#start_time").val()
 				},
 				{
                     success: function(model, status, xhr) {

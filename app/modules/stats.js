@@ -6,7 +6,7 @@ define([
   "backbone",
 
   // Modules
-  "modules/leaguevine",
+  "modules/leaguevine"
 ],
 
 function(require, app, Backbone, Leaguevine) {
@@ -23,6 +23,5 @@ function(require, app, Backbone, Leaguevine) {
 		}
     });
 
-    return Stats
+	return Stats;
 });
-

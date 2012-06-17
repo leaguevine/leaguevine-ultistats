@@ -21,7 +21,7 @@ function(require, app, Backbone, Navigation) {
 			"type": "Toggle Button",
 			"value": function() {return app.api.is_logged_in();},
 			//"value": false,
-			"toggle_prompt_ft": ["Logged Out","Logged In"],
+			"toggle_prompt_ft": ["Logged Out","Logged In"]
 		},
 		{
 			"order": 2,
@@ -35,7 +35,7 @@ function(require, app, Backbone, Navigation) {
 			"name": "Battery Usage",
 			"type": "Scale",
 			"value": 0
-		},
+		}
 	];
 	
 	Settings.Model = Backbone.Model.extend({
@@ -48,7 +48,8 @@ function(require, app, Backbone, Navigation) {
 			"type": "Widget Type",
 			"value": true,
 			"list_items":[],
-			"toggle_prompt_ft":[],},
+			"toggle_prompt_ft":[]
+		},
 		toggle: function(){//Method used by toggle buttons
 			//Hack for login
 			if (this.get("name") == "Online Status"){
@@ -66,19 +67,19 @@ function(require, app, Backbone, Navigation) {
 		sync: Backbone.localSync,
 		localStorage: new Backbone.LocalStore("settings"),
 		comparator: function(setting) {// Define how items in the collection will be sorted.
-		  return setting.get("order");
-		},
+			return setting.get("order");
+		}
 	});
 	
 	Settings.Router = Backbone.Router.extend({
 		routes : {
-			"settings": "showSettings", 
+			"settings": "showSettings" 
 		},
-        showSettings: function () {
-        	var settings = new Settings.Collection(Settings.MySettings);
-        	_.each(settings.models, function(setting){
-        		setting.fetch();
-        	});
+		showSettings: function () {
+			var settings = new Settings.Collection(Settings.MySettings);
+			_.each(settings.models, function(setting){
+				setting.fetch();
+			});
 			var myLayout = app.router.useLayout("main");
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({}),
@@ -113,10 +114,10 @@ function(require, app, Backbone, Navigation) {
 				}
 			}, this);
 			return view.render();
-		},
+		}
 	});
-	
-	Settings.Views.ToggleButton = Backbone.View.extend({  	
+
+	Settings.Views.ToggleButton = Backbone.View.extend({
 		template: "settings/toggleButton",
 		tagName: "li",
 		render: function(layout) {
@@ -129,9 +130,9 @@ function(require, app, Backbone, Navigation) {
             "click button": "toggle"
         },
         toggle: function() {
-        	this.model.toggle();
-        	this.render();
-    	}
+			this.model.toggle();
+			this.render();
+		}
 	});
 	
 	Settings.Views.Select = Backbone.View.extend({

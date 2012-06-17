@@ -6,7 +6,7 @@ define([
   "backbone",
 
   // Modules
-  "modules/leaguevine",
+  "modules/leaguevine"
 ],
 function(require, app, Backbone, Leaguevine) {
     
@@ -56,7 +56,7 @@ function(require, app, Backbone, Leaguevine) {
 			else if (this.models && this.models.length) {
 				url += "player_ids=%5B";
 				_.each(this.models, function(tp) {
-					url = url + tp.get("player").id + ","
+					url = url + tp.get("player").id + ",";
 				});
 				url = url.substr(0,url.length-1) + "%5D&";
 			}
@@ -70,16 +70,16 @@ function(require, app, Backbone, Leaguevine) {
 			if (_.isFunction(temp_player.get)) {//If this is a proper model.
 				_.extend(this_obj,{
 					"first_name": temp_player.get("first_name").toLowerCase(),
-					 "last_name": temp_player.get("last_name").toLowerCase(),
-					 "nick_name": temp_player.get("nickname").toLowerCase(),
-					 "full_name": temp_player.get("last_name").toLowerCase() + temp_player.get("first_name").toLowerCase()[0]
+					"last_name": temp_player.get("last_name").toLowerCase(),
+					"nick_name": temp_player.get("nickname").toLowerCase(),
+					"full_name": temp_player.get("last_name").toLowerCase() + temp_player.get("first_name").toLowerCase()[0]
 				});
 			} else {//If this is a JSON object.
 				_.extend(this_obj,{
 					"first_name": temp_player.first_name.toLowerCase(),
-					 "last_name": temp_player.last_name.toLowerCase(),
-					 "nick_name": temp_player.nickname.toLowerCase(),
-					 "full_name": temp_player.last_name.toLowerCase() + temp_player.first_name.toLowerCase()[0]
+					"last_name": temp_player.last_name.toLowerCase(),
+					"nick_name": temp_player.nickname.toLowerCase(),
+					"full_name": temp_player.last_name.toLowerCase() + temp_player.first_name.toLowerCase()[0]
 				});
 			}
 			var sort_setting = JSON.parse(localStorage.getItem("settings-Sort players by:"));
@@ -105,7 +105,7 @@ function(require, app, Backbone, Leaguevine) {
 			if (options) {
 				if (options.team_id) {this.team_id = options.team_id;}
 				if (options.player_id) {this.player_id = options.player_id;}
-    		}
+			}
 		}
 	});
 	
@@ -133,7 +133,7 @@ function(require, app, Backbone, Leaguevine) {
 			this.collection.bind("reset", function() {
 				this.render();
 			}, this);
-		},
+		}
 	});
 	
 	TeamPlayer.Views.Team = Backbone.View.extend({
@@ -160,7 +160,7 @@ function(require, app, Backbone, Leaguevine) {
 			this.collection.bind("reset", function() {
 				this.render();
 			}, this);
-		},
+		}
 	});
 	
 	return TeamPlayer;

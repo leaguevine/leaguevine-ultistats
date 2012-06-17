@@ -7,8 +7,8 @@ define([
   // Plugins
   "plugins/backbone.layoutmanager",
   "plugins/backbone-tastypie",
-  "plugins/localSettings"
-  //"plugins/spinner"
+  "plugins/localSettings",
+  "plugins/spinner"
 ],
 
 function($, _, Backbone) {

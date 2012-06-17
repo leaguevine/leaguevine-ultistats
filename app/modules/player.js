@@ -10,7 +10,7 @@ define([
   "modules/navigation",
   "modules/teamplayer",
   
-  "plugins/backbone.websqlajax",
+  "plugins/backbone.websqlajax"
 ],
 function(require, app, Backbone, Leaguevine, Navigation) {
     
@@ -52,7 +52,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 		sync: Backbone.WebSQLAjaxSync,
 		store: new Backbone.WebSQLStore("player"),
 		comparator: function(player) {// Define how items in the collection will be sorted.
-		  return player.get("last_name").toLowerCase();
+			return player.get("last_name").toLowerCase();
 		},
 		urlRoot: Leaguevine.API.root + "players",
 		parse: function(resp, xhr) {
@@ -61,8 +61,8 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 		},
 		initialize: function(models, options) {
 			if (options) {
-        		this.season_id = options.season_id;
-    		}
+				this.season_id = options.season_id;
+			}
 		}
 	});
   
@@ -106,14 +106,14 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 				".navbar": new Navigation.Views.Navbar({href: "#editplayer/"+playerId, name: "Edit"}),
 				".titlebar": new Navigation.Views.Titlebar({model_class: "player", level: "show", model: player}),
 				".detail": new Player.Views.Detail( {model: player}),
-				".list_children": new Player.Views.Multilist({ teamplayers: teamplayers}),
+				".list_children": new Player.Views.Multilist({ teamplayers: teamplayers})
 			});
 			//myLayout.render(function(el) {$("#main").html(el);});
 			myLayout.render();
 		}
 	});
 	Player.router = new Player.Router();// INITIALIZE ROUTER
-  	
+
 	//
 	// VIEWS
 	//
@@ -147,9 +147,9 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			this.collection.bind("reset", function() {
 				this.render();
 			}, this);
-		},
+		}
 	});
-	Player.Views.Detail = Backbone.View.extend({  	
+	Player.Views.Detail = Backbone.View.extend({
 		template: "players/detail",
 		//We were passed a model on creation, so we have this.model
 		render: function(layout) {
@@ -158,10 +158,10 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			return layout(this).render(this.model.toJSON());
 		},
 		initialize: function() {
-    		this.model.bind("change", function() {
-      			this.render();
-    		}, this);
-  		}
+			this.model.bind("change", function() {
+				this.render();
+			}, this);
+		}
 	});
 	Player.Views.Multilist = Backbone.View.extend({
 		template: "players/multilist",

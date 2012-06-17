@@ -35,7 +35,7 @@ function(app, $, Backbone, Leaguevine) {
 	var Router = Backbone.Router.extend({
 		//Routes are defined in sub modules.
 		routes: {
-			"": "index",
+			"": "index"
 		},
 		
 		index: function () {
@@ -43,9 +43,9 @@ function(app, $, Backbone, Leaguevine) {
 		},
 		
 		// Shortcut for building a url.
-	    go: function() {
+		go: function(){
 			return this.navigate(_.toArray(arguments).join("/"), true);
-	    },
+		},
 		useLayout: function(name) {
 			// If already using this Layout, then don't re-inject into the DOM.
 			if (this.layout) {
@@ -65,7 +65,7 @@ function(app, $, Backbone, Leaguevine) {
 			// Render the layout.
 			this.layout.render();
 			return this.layout;
-		},
+		}
 	});	
 
 	// Treat the jQuery ready function as the entry point to the application.

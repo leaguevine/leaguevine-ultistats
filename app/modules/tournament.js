@@ -11,7 +11,7 @@ define([
   "modules/tournteam",
   "modules/game",
   
-  "plugins/backbone.websqlajax",
+  "plugins/backbone.websqlajax"
 ],
 function(require, app, Backbone, Leaguevine, Navigation) {
     
@@ -36,7 +36,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			return _.clone(this.attributes);
 		},
 		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("tournament"),
+		store: new Backbone.WebSQLStore("tournament")
 	});
 	
 	Tournament.Collection = Backbone.Collection.extend({
@@ -61,7 +61,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
             return url;
         },
 		comparator: function(tournament) {
-		  return tournament.get("name").toLowerCase();
+			return tournament.get("name").toLowerCase();
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Collection.prototype.parse(resp);
@@ -69,9 +69,9 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 		},
 		initialize: function(models, options) {
 			if (options) {
-        		this.season_id = options.season_id;
+				this.season_id = options.season_id;
 				this.name = options.name;
-    		}
+			}
 		}
 	});
 	
@@ -117,7 +117,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 				".navbar": new Navigation.Views.Navbar(),
 				".titlebar": new Navigation.Views.Titlebar({model_class: "tournament", level: "show", model: tournament}),
 				".content_1": new Tournament.Views.Detail( {model: tournament}),
-				".content_2": new Tournament.Views.Multilist({ games: games, tournteams: tournteams }),					
+				".content_2": new Tournament.Views.Multilist({ games: games, tournteams: tournteams })
 			});
 			//myLayout.render(function(el) {$("#main").html(el);});
 			myLayout.render();
@@ -136,7 +136,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 		render: function(layout) {
 			var view = layout(this);
 			var filter_by = this.collection.name ? this.collection.name : "";
-			this.$el.empty()
+			//this.$el.empty();
 			this.collection.each(function(tournament) {
 				if (!filter_by || tournament.get("name").toLowerCase().indexOf(filter_by.toLowerCase()) != -1) {
 					this.insertView("ul", new Tournament.Views.Item({ model: tournament}));
@@ -154,29 +154,29 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			}, this);
 		}
 	});
-	Tournament.Views.Detail = Backbone.View.extend({  	
+	Tournament.Views.Detail = Backbone.View.extend({
 		template: "tournaments/detail",
 		render: function(layout) {
             var tournament = this.model.toJSON();
             // Create a human-readable date for this tournament
             tournament.start_date_string = "";
-            if (tournament.start_date != "") {
+            if (tournament.start_date !== "") {
                 var start_date = new Date(tournament.start_date);
                 tournament.start_date_string = start_date.toLocaleDateString();
             }
             return layout(this).render(tournament);
 		},
 		initialize: function() {
-    		this.model.bind("change", function() {
-      			this.render();
-    		}, this);
-  		}
+			this.model.bind("change", function() {
+				this.render();
+			}, this);
+		}
 	});
 	Tournament.Views.Multilist = Backbone.View.extend({
 		template: "tournaments/multilist",
 		events: {
 			"click .bstandings": "showStandings",
-			"click .bgames": "showGames",
+			"click .bgames": "showGames"
         /*
 			"click .bpools": "showPools",
 			"click .bbrackets": "showBrackets"
@@ -227,7 +227,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			var Game = require("modules/game");
 			this.setViews({
 				".lstandings": new TournTeam.Views.TeamList( {collection: this.options.tournteams} ),
-				".lgames": new Game.Views.List( {collection: this.options.games} ),
+				".lgames": new Game.Views.List( {collection: this.options.games} )
                 /*
 				".lpools": new Game.Views.List( {collection: this.options.games} ),
 				".lbrackets": new Game.Views.List( {collection: this.options.games} )

@@ -10,7 +10,7 @@ define([
   "modules/teamplayer",
   "modules/game",
   
-  "plugins/backbone.websqlajax",
+  "plugins/backbone.websqlajax"	
 ],
 
 function(app, Backbone, Leaguevine, Navigation) {
@@ -40,7 +40,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 		},
 		sync: Backbone.WebSQLAjaxSync,
 		store: new Backbone.WebSQLStore("team"),
-		associations: {"season_id": "season"},
+		associations: {"season_id": "season"}
 	});
   
 	//
@@ -85,9 +85,9 @@ function(app, Backbone, Leaguevine, Navigation) {
 				//then check for the existence of these higher-level parameters.
 				//i.e. this.var_name returns undefined but does not return an error if this model/collection was not instantiated with these options.
 				//Note that this might also be true for views though thus far we seem to always instantiate them with their required options.
-        		this.season_id = options.season_id;
-        		this.name = options.name;
-    		}
+				this.season_id = options.season_id;
+				this.name = options.name;
+			}
 		}
 	});
 	
@@ -122,8 +122,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 					ViewsListClass: Team.Views.List, 
 					//right_btn_class: "", right_btn_txt: "Create", right_btn_href: "#newteam",
 					search_object_name: "team"
-				}),
-				//".spinner": new Navigation.Views.Spinner({}),
+				})
 			});
 			//myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 			myLayout.render();
@@ -146,10 +145,10 @@ function(app, Backbone, Leaguevine, Navigation) {
 			
 			var myLayout = app.router.useLayout("main");// Get the layout. Has .navbar, .detail, .list_children
 			myLayout.setViews({
-				".navbar": new Navigation.Views.Navbar({}),
+				".navbar": new Navigation.Views.Navbar(),
 				".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "show", model: team}),
 				".content_1": new Team.Views.Detail( {model: team}),
-				".content_2": new Team.Views.Multilist({ teamplayers: teamplayers, games: games}), 
+				".content_2": new Team.Views.Multilist({ teamplayers: teamplayers, games: games})
 			});
 			//myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 			myLayout.render();
@@ -160,23 +159,23 @@ function(app, Backbone, Leaguevine, Navigation) {
                 return;
             }
 			//If we have teamId, then we are editing. If not, then we are creating a new team.
+			var team = new Team.Model();
 			if (teamId) { //make the edit team page
-				var team = new Team.Model({id: teamId});
+				team.set(id, teamId);
                 team.fetch(); //Fetch this team instance
 			}
-			else { //make the add team page
-				var team = new Team.Model({});
-			}
 			var myLayout = app.router.useLayout("main");
-			myLayout.setView(".navbar", new Navigation.Views.Navbar({}));
-			myLayout.setView(".titlebar", new Navigation.Views.Titlebar({model_class: "team", level: "edit", model: team}));
-			myLayout.setView(".content_1", new Team.Views.Edit({model: team}));
+			myLayout.setViews({
+				".navbar": new Navigation.Views.Navbar(),
+				".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "edit", model: team}),
+				".content_1": new Team.Views.Edit({model: team})
+			});
 			//myLayout.render(function(el) {$("#main").html(el);});
 			myLayout.render();
 		}
 	});
 	Team.router = new Team.Router();// INITIALIZE ROUTER
-  	
+
 	//
 	// VIEWS
 	//
@@ -222,12 +221,12 @@ function(app, Backbone, Leaguevine, Navigation) {
             var team = this.model.toJSON();
             team.season_name = "";
             team.league_name = "";
-            if (team.season != null) {
+            if (team.season !== null) {
                 team.season_name = team.season.name;
                 team.league_name = team.season.league.name;
             }
-            return team
-    	}, //render looks for this to manipulate model before passing to the template.
+			return team;
+		}, //render looks for this to manipulate model before passing to the template.
         initialize: function() {
             if (this.options.tap_method) {
                 this.team_tap_method = this.options.tap_method;
@@ -235,12 +234,12 @@ function(app, Backbone, Leaguevine, Navigation) {
             else {
                 this.team_tap_method = function() {
                     Backbone.history.navigate("teams/"+this.model.get("id"), true);
-                }
+                };
             }
         }
 	});
 	Team.Views.Detail = Backbone.View.extend({
-		//We were passed a model on creation by Team.Router.showTeam(), so we have this.model  	
+		//We were passed a model on creation by Team.Router.showTeam(), so we have this.model
 		template: "teams/detail",
                 events: {
                     "click .bcreategame": "createGame"
@@ -301,7 +300,7 @@ function(app, Backbone, Leaguevine, Navigation) {
             return layout(this).render(this.model.toJSON());
         },
 		//initialize: function() {this.model.bind("reset", function() {this.render();}, this);},
-  		events: {
+		events: {
 			"click button.save": "saveModel",
 			"click button.delete": "deleteModel"
 		},

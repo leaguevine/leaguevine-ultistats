@@ -11,31 +11,31 @@ define([
 
 function(app, Backbone) {
 	/*
-	 * This module defines the API properties.
-	 */
+	* This module defines the API properties.
+	*/
 
-  	// Create a new module
-  	var Leaguevine = app.module();
+	// Create a new module
+	var Leaguevine = app.module();
 
-    Leaguevine.Utils = new Object();
-    Leaguevine.Utils.concat_collections = function(c1, c2) {
+	Leaguevine.Utils = {};
+	Leaguevine.Utils.concat_collections = function(c1, c2) {
         //Concatenates collections c1 and c2, making sure we remove any duplicate entries from c2 before appending
         
         var models = _.reject(c2.models, function(model) {
-            return c1.pluck("id").indexOf(model.get("id")) != -1
+            return c1.pluck("id").indexOf(model.get("id")) != -1;
         });
         //The models var consists of new results only.
         //So we union the two collections to create our more comprehensive collection.
         //Union does not trigger anything, so we do the union via a .reset
         //.reset also makes sure the instances in our collection are Backbone.Models and not simple JS objects.
         c1.reset(_.union(c1.models, models));
-    }
+   };
 
-  	Leaguevine.Router = Backbone.Router.extend({
+	Leaguevine.Router = Backbone.Router.extend({
 		
 		routes: {
 			"access_:hash": "token_received",
-            "error_description:hash": "login_error",
+            "error_description:hash": "login_error"
 		},
 		
 		token_received: function(hash) {//route matched by oauth/:hash
@@ -54,7 +54,7 @@ function(app, Backbone) {
 		},
         login_error: function(hash) {
             Backbone.history.navigate("settings", true); //Redirect to the settings page where there is a prompt to log in again
-         },
+         }
 
 	});
     Leaguevine.router = new Leaguevine.Router();// INITIALIZE ROUTER
@@ -70,7 +70,7 @@ function(app, Backbone) {
         },
         serialize: function() {
             // Determine how many items will be fetched with the next call and return this context so we can display it
-            var context = new Object();
+            var context = {};
             if (this.collection.meta && this.collection.meta.next) {
                 var limit = this.collection.meta.limit;
                 if (limit + this.collection.length > this.collection.meta.total_count) {
@@ -95,12 +95,12 @@ function(app, Backbone) {
                 success: function(collection, response) {
                     //Combine these results with the existing items in the list
                     Leaguevine.Utils.concat_collections(old_collection, collection);
-                },
+                }
             });
-        },
+        }
     });
 
-  	Leaguevine.API = {	
+	Leaguevine.API = {	
         root: "http://api.playwithlv.com/v1/",
         base: "http://playwithlv.com/oauth2/authorize/?response_type=token&scope=universal",
         client_id: "9f30036f95850b185ccbfd66ab54fb",
@@ -119,7 +119,7 @@ function(app, Backbone) {
             }
         },
         is_logged_in: function() {//Returns true if the user is logged in and false if not
-            return (localStorage.getItem("auth_object") != null)
+            return (localStorage.getItem("auth_object") !== null);
         },
         login: function() {//Redirects a user to the login screen
             localStorage.setItem("login_redirect", Backbone.history.fragment);
@@ -129,7 +129,7 @@ function(app, Backbone) {
         logout: function() {//Logs a user out by removing the locally stored token
             localStorage.removeItem("auth_object");
             this.token = undefined;
-        },
+        }
     };
 
     if (typeof localSettings != "undefined" && 

@@ -7,7 +7,7 @@ define([
 
   // Modules
   "modules/leaguevine",
-  "modules/stats",
+  "modules/stats"
 ],
 
 function(require, app, Backbone, Leaguevine) {
@@ -45,11 +45,11 @@ function(require, app, Backbone, Leaguevine) {
             points_played: "",
             pulls: "",
             throwaways: "",
-            turnovers: "",
+            turnovers: ""
 		},
         idAttribute: "player_id", // The unique identifier in a collection is a player. A player who is on both
                                   // teams in the same game could cause problems here.
-		urlRoot: Leaguevine.API.root + "stats/ultimate/player_stats_per_game",
+		urlRoot: Leaguevine.API.root + "stats/ultimate/player_stats_per_game"
 	});
 
 	//
@@ -80,9 +80,9 @@ function(require, app, Backbone, Leaguevine) {
 		},
 		initialize: function(models, options) {
 			if (options) {
-        		this.game_ids = options.game_ids;
-        		this.player_ids = options.player_ids;
-    		}
+				this.game_ids = options.game_ids;
+				this.player_ids = options.player_ids;
+			}
 		}
 	});
 
@@ -128,7 +128,7 @@ function(require, app, Backbone, Leaguevine) {
 			this.collection.bind("reset", function() {
 				this.render();
 			}, this);
-		},
+		}
 	});
     PlayerPerGameStats.Views.PlayerStatsList = Backbone.View.extend({
 		template: "playerstats/list",
@@ -149,7 +149,7 @@ function(require, app, Backbone, Leaguevine) {
 			this.collection.bind("reset", function() {
 				this.render();
 			}, this);
-		},
+		}
 	});
 
     return PlayerPerGameStats;

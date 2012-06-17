@@ -7,7 +7,7 @@ define([
 
   // Modules
   "modules/leaguevine",
-  "modules/stats",
+  "modules/stats"
 ],
 
 function(require, app, Backbone, Leaguevine, Stats) {
@@ -52,7 +52,7 @@ function(require, app, Backbone, Leaguevine, Stats) {
             throwaways: "",
             timeouts: "",
             turnovers: "",
-            wins: "",
+            wins: ""
         },
         idAttribute: "team_id", // The unique identifier in a collection is a team. 
         urlRoot: Leaguevine.API.root + "stats/ultimate/team_stats_per_game",
@@ -60,7 +60,7 @@ function(require, app, Backbone, Leaguevine, Stats) {
 			obj = _.clone(this.attributes);
             comp_percent_float = parseFloat(obj.completion_percent); //Convert to float
             obj.completion_percent = String(Math.round(comp_percent_float*10)/10); //Round to 1 decimal point
-            return obj
+            return obj;
 		}
     });
     
@@ -92,10 +92,10 @@ function(require, app, Backbone, Leaguevine, Stats) {
 		},
 		initialize: function(models, options) {
 			if (options) {
-        		this.team_ids = options.team_ids;
-        		this.game_ids = options.game_ids;
-    		}
-		},
+				this.team_ids = options.team_ids;
+				this.game_ids = options.game_ids;
+			}
+		}
 	});
 
 	//
@@ -128,7 +128,7 @@ function(require, app, Backbone, Leaguevine, Stats) {
 			this.collection.bind("reset", function() {
 				this.render();
 			}, this);
-		},
+		}
 	});
 
     return TeamPerGameStats;

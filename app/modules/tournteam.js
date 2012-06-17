@@ -8,7 +8,7 @@ define([
   // Modules
   "modules/leaguevine",
   "modules/tournament",
-  "modules/team",
+  "modules/team"
 ],
 function(require, app, Backbone, Leaguevine) {
 	
@@ -23,9 +23,9 @@ function(require, app, Backbone, Leaguevine) {
 		urlRoot: Leaguevine.API.root + "tournament_teams",
 		url: function(models) {
 			var url = this.urlRoot;
-			if (this.tournament) {url+=this.tournament.id}
+			if (this.tournament) {url+=this.tournament.id;}
 			url+="/";
-			if (this.team) {url+=this.team.id}
+			if (this.team) {url+=this.team.id;}
 			url+="/";
 			return url;
 		},
@@ -42,7 +42,7 @@ function(require, app, Backbone, Leaguevine) {
 		urlRoot: Leaguevine.API.root + "tournament_teams",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += "/?"
+			url += "/?";
 			if (this.team_id) {
 				url += "team_ids=%5B" + this.team_id + "%5D&";
 			}
@@ -52,7 +52,7 @@ function(require, app, Backbone, Leaguevine) {
 			return url.substr(0,url.length-1);
 		},
 		comparator: function(tournteam) {// Define how items in the collection will be sorted.
-		  return tournteam.get("final_standing");
+			return tournteam.get("final_standing");
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Collection.prototype.parse(resp);
@@ -84,7 +84,7 @@ function(require, app, Backbone, Leaguevine) {
 			if (options) {
 				if (options.team_id) {this.team_id = options.team_id;}
 				if (options.tournament_id) {this.tournament_id = options.tournament_id;}
-    		}
+			}
 		}
 	});
 	

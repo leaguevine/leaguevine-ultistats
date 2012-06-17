@@ -114,20 +114,21 @@ function(require, app, Backbone) {
         },
 		
 		/*
-		 * FUNCTIONS FOR GAME EVENTS
-		 * 
-		 * Pressing a player button will always create event.
-		 * The type of button created will depend on the game state.
-		 * 
-		 * Pressing an auxilliary button might create an
-		 * event (throwaway, unknown turn, injury, timeout, end_period).
-		 * Tapping an aux button will always result in a state change.
-		 * 
-		 */
+		* FUNCTIONS FOR GAME EVENTS
+		* 
+		* Pressing a player button will always create event.
+		* The type of button created will depend on the game state.
+		* 
+		* Pressing an auxilliary button might create an
+		* event (throwaway, unknown turn, injury, timeout, end_period).
+		* Tapping an aux button will always result in a state change.
+		* 
+		*/
 		
 		/*
-		 * Define game states. Game state determines effect of tapping a player button.
-		 */
+		* 
+		* Define game states. Game state determines effect of tapping a player button.
+		*/
 		game_states: {
 			pulling: {player_prompt: "Who pulled?", player_tap_event_type: 1},
 			picking_up: {player_prompt: "Who picked up?", player_tap_event_type: 10},
@@ -135,14 +136,14 @@ function(require, app, Backbone) {
 			scoring: {player_prompt: "Who caught the goal?", player_tap_event_type: 22, same_team: true},
 			dropping: {player_prompt: "Who dropped the disc?", player_tap_event_type: 33, same_team: true},
 			blocking: {player_prompt: "Who got the D?", player_tap_event_type: 34, same_team: false},
-			stalling: {player_prompt: "Who was marking?", player_tap_event_type: 51, same_team: false},
+			stalling: {player_prompt: "Who was marking?", player_tap_event_type: 51, same_team: false}
 		},
 		
 		/*
-		 * Define the event types. Also specify whether the event is a turnover,
-		 * whether it is usually accompanied by a screen toggle, and what the
-		 * play-by-play will display.
-		 */
+		* Define the event types. Also specify whether the event is a turnover,
+		* whether it is usually accompanied by a screen toggle, and what the
+		* play-by-play will display.
+		*/
 		events_meta: {
 			1: {is_turnover: true, toggle_screen: false, next_player_as: 1, play_string: "pulled", next_state: "picking_up"},
 			10: {is_turnover: false, toggle_screen: false, next_player_as: 1, play_string: "picked up the disc", next_state: "receiving"},
@@ -158,7 +159,7 @@ function(require, app, Backbone) {
 			91: {is_turnover: false, toggle_screen: false, play_string: "Timeout", next_state: "picking_up"},
 			92: {is_turnover: false, toggle_screen: true, play_string: "Injury timeout", next_state: "picking_up"},
 			94: {is_turnover: false, toggle_screen: true, play_string: "End of period", next_state: "pulling"},
-			98: {is_turnover: false, toggle_screen: false, play_string: "Game over"},
+			98: {is_turnover: false, toggle_screen: false, play_string: "Game over"}
 		},
 		
 		//A helper function to create a template gameevent. Futher details will be added after.
@@ -183,7 +184,7 @@ function(require, app, Backbone) {
 			var this_event = this.create_event();
 			//Set the event's type based on the current state.
 			var state_meta = this.game_states[this.get("current_state")];
-			var event_type = state_meta["player_tap_event_type"];
+			var event_type = state_meta.player_tap_event_type;
 			this_event.set({type: event_type});
 			
 			var event_meta = this.events_meta[event_type];
@@ -192,13 +193,13 @@ function(require, app, Backbone) {
 			var team_ix = this.get("team_in_possession_ix");
 			var team_id = this.get("game").get("team_"+team_ix+"_id");
 			if (_.has(event_meta,"next_player_as")){	
-				this_event.set("player_"+event_meta["next_player_as"]+"_id",pl_id);
-				this_event.set("player_"+event_meta["next_player_as"]+"_team_id",team_id);
+				this_event.set("player_"+event_meta.next_player_as+"_id",pl_id);
+				this_event.set("player_"+event_meta.next_player_as+"_team_id",team_id);
 			}
 			
 			//For some states, setting the state swaps possession.
 			//Swap back (temporarily) because we will swap again when processing the event.
-			if (_.has(state_meta,"same_team") && !state_meta["same_team"]){
+			if (_.has(state_meta,"same_team") && !state_meta.same_team){
 				this.set("team_in_possession_ix",3-this.get("team_in_possession_ix"));
 			}
 			
@@ -218,9 +219,9 @@ function(require, app, Backbone) {
 			if (_.has(event_meta,"last_player_as")){
 				//Hack for unknown turn which has a team but not a player.
 				if (this_event.get("type")!=30){
-					this_event.set("player_"+event_meta["last_player_as"]+"_id",last_pl_id);
+					this_event.set("player_"+event_meta.last_player_as+"_id",last_pl_id);
 				}
-				this_event.set("player_"+event_meta["last_player_as"]+"_team_id",last_team_id);
+				this_event.set("player_"+event_meta.last_player_as+"_team_id",last_team_id);
 			}
 			
 			//Hack for timeout, assumes possession team is calling team.
@@ -325,18 +326,18 @@ function(require, app, Backbone) {
 			var team_ix = this.get("team_in_possession_ix");
 			var event_meta = this.events_meta[model.get("type")];
 			
-			this.set("team_in_possession_ix",event_meta["is_turnover"] ? 3-team_ix : team_ix);
+			this.set("team_in_possession_ix",event_meta.is_turnover ? 3-team_ix : team_ix);
 			
 			//Hack for score.
 			if (model.get("type")== 22){
 				var game_model = this.get("game");
 				var team_score_string = "team_" + team_ix + "_score";
 				var last_score = game_model.get(team_score_string);
-				var new_score = last_score == "" ? 1 : last_score + 1;
+				var new_score = last_score === "" ? 1 : last_score + 1;
 				game_model.set(team_score_string,new_score);
 			}
 			
-			if (event_meta["toggle_screen"]){
+			if (event_meta.toggle_screen){
 				this.rotate_visibility();
 			}
 			
@@ -348,8 +349,8 @@ function(require, app, Backbone) {
 			var event_meta = this.events_meta[event.get("type")];
 			
 			if (_.has(event_meta,"next_state")){
-				this.set("current_state",event_meta["next_state"]);
-				this.set("player_in_possession_id",event_meta["next_state"] == "receiving" ? event.get("player_" + event_meta["next_player_as"] + "_id"): NaN);
+				this.set("current_state",event_meta.next_state);
+				this.set("player_in_possession_id",event_meta.next_state == "receiving" ? event.get("player_" + event_meta.next_player_as + "_id"): NaN);
 			}
 			
 			this.save();
@@ -367,8 +368,8 @@ function(require, app, Backbone) {
 			//Determine who should be pulling disc.
 			//If the period number is odd, then the team now pulling is the team that pulled to start the game.
 			var tip_ix = per_num%2==1 ? this.get("team_pulled_to_start_ix") : 3-this.get("team_pulled_to_start_ix");
-			this.set("team_in_possession_ix", tip_ix)
-		},
+			this.set("team_in_possession_ix", tip_ix);
+		}
 		
 	});
 	
@@ -377,7 +378,7 @@ function(require, app, Backbone) {
 	//
 	TrackedGame.Router = Backbone.Router.extend({
 		routes : {
-			"track/:gameId": "trackGame",
+			"track/:gameId": "trackGame"
 		},
 		trackGame: function (gameId) {
             if (!app.api.is_logged_in()) {//Ensure that the user is logged in
@@ -414,10 +415,10 @@ function(require, app, Backbone) {
 			}
 			
 			/*
-			 * Trackedgame has many child objects.
-			 * These need to be the proper model types.
-			 * These need to be refreshed from the data store.
-			 */
+			* Trackedgame has many child objects.
+			* These need to be the proper model types.
+			* These need to be refreshed from the data store.
+			*/
 			
 			//.game
 			var newGame = new Game.Model(trackedgame.get("game"));
@@ -442,8 +443,8 @@ function(require, app, Backbone) {
 			//trackedgame.get("gameevents").fetch(); //TODO: Fetch gameevents once the API only returns events created by this user.
 			
 			/*
-			 * MODEL BINDINGS.
-			 */
+			* MODEL BINDINGS.
+			*/
 			trackedgame.bind("change:current_state",trackedgame.update_state,trackedgame);
 			trackedgame.bind("change:is_over",trackedgame.save);
 			trackedgame.get("gameevents").bind("add",trackedgame.event_added,trackedgame);
@@ -490,7 +491,7 @@ function(require, app, Backbone) {
 				".t_game": new TrackedGame.Views.GameAction({model: trackedgame}),
 				".rotate_screen": new TrackedGame.Views.RotateButton({model: trackedgame})
 			});
-		    var callback = trackedgame.setButtonHeight;
+			var callback = trackedgame.setButtonHeight;
 			//myLayout.render(function(el) {$("#main").html(el);});
 			//myLayout.render(function(el) {
 				//$("#main").html(el);
@@ -505,38 +506,38 @@ function(require, app, Backbone) {
                 
                 trackedgame.toggle_screens();
             });
-		},
+		}
 	});
 	TrackedGame.router = new TrackedGame.Router();// INITIALIZE ROUTER
 	
 	/*
-	 * TrackedGame page view hierarchy:
-	 * 
-	 * sub_team_1 = SubTeam
-	 *   - sub_on_field_area = RosterList
-	 *     - many RosterItem
-	 *   - sub_off_field_area = RosterList
-	 *     - many RosterItem
-	 * sub_team_2 = SubTeam. Same as above.
-	 * t_game = GameAction
-	 *   - scoreboard = Scoreboard
-	 *	   - undo_button
-	 *   - play_by_play = PlayByPlay
-	 *   - player_area = PlayerArea
-	 *     - player_area_1 = TeamPlayerArea
-	 *       - many PlayerButton
-	 *     - player_area_2 = TeamPlayerArea
-	 *       - many PlayerButton
-	 *   - action_area = ActionArea
-	 * rotate_button = RotateButton
-	 */
-  	
+	* TrackedGame page view hierarchy:
+	* 
+	* sub_team_1 = SubTeam
+	*   - sub_on_field_area = RosterList
+	*     - many RosterItem
+	*   - sub_off_field_area = RosterList
+	*     - many RosterItem
+	* sub_team_2 = SubTeam. Same as above.
+	* t_game = GameAction
+	*   - scoreboard = Scoreboard
+	*		- undo_button
+	*   - play_by_play = PlayByPlay
+	*   - player_area = PlayerArea
+	*     - player_area_1 = TeamPlayerArea
+	*       - many PlayerButton
+	*     - player_area_2 = TeamPlayerArea
+	*       - many PlayerButton
+	*   - action_area = ActionArea
+	* rotate_button = RotateButton
+	*/
+
 	//
 	// VIEWS
 	//
 	
 	/*
-	Parent view for the substitution screen. The layout has 2 of these.
+	* Parent view for the substitution screen. The layout has 2 of these.
 	*/
 	TrackedGame.Views.SubTeam = Backbone.View.extend({
 		initialize: function(){
@@ -544,7 +545,7 @@ function(require, app, Backbone) {
 		},
 		template: "trackedgame/game_substitution",
 		events: {
-			"click .game_over": "game_over",
+			"click .game_over": "game_over"
 		},
 		game_over: function(ev){
 			this.model.game_over();
@@ -592,7 +593,7 @@ function(require, app, Backbone) {
 		swap_all: function(ev){
 			this.collection.remove(this.collection.models);
 			this.render();
-		},
+		}
 	});
 	TrackedGame.Views.RosterItem = Backbone.View.extend({
 		template: "trackedgame/roster_item",
@@ -609,8 +610,8 @@ function(require, app, Backbone) {
 		}
 	});
 	TrackedGame.Views.RosterItemRemoveAll = Backbone.View.extend({
-	    template: "trackedgame/roster_item_remove_all",
-	    tagName: "li"
+		template: "trackedgame/roster_item_remove_all",
+		tagName: "li"
 	});
     
     /*
@@ -647,14 +648,14 @@ function(require, app, Backbone) {
 		},
 		//render_helpers
 		show_previous_action: function(ev){
-        	//TODO: Move this into its own play-by-play view and include the Undo button.
-            // Update the Previous Play: based on the last event.
+			//TODO: Move this into its own play-by-play view and include the Undo button.
+			// Update the Previous Play: based on the last event.
             var last_event = this.model.get("gameevents").at(this.model.get("gameevents").length-1);
             var event_meta = this.model.events_meta[last_event.get("type")];
             
             var player_name = "";
             if (event_meta.needs_player_name){
-            	//TODO: Get player names from ids of last players.
+				//TODO: Get player names from ids of last players.
             }
             
             // Display the previous action 
@@ -663,8 +664,8 @@ function(require, app, Backbone) {
 	});
 	
 	/*
-	 * View for PlayByPlay
-	 */
+	* View for PlayByPlay
+	*/
 	TrackedGame.Views.PlayByPlay = Backbone.View.extend({
 		//this.model is trackedgame
 		template: "trackedgame/playbyplay",
@@ -681,35 +682,36 @@ function(require, app, Backbone) {
 				var last_event = _events.at(_events.length-1);
 				var event_meta = this.model.events_meta[last_event.get("type")];
 				//if event_meta has last_player_as or next_player_as and either of them have a value of 1.
-				var lpix = _.has(event_meta,"last_player_as") ? event_meta["last_player_as"] : null;
-				var npix = _.has(event_meta,"next_player_as") ? event_meta["next_player_as"] : null;
+				var lpix = _.has(event_meta,"last_player_as") ? event_meta.last_player_as : null;
+				var npix = _.has(event_meta,"next_player_as") ? event_meta.next_player_as : null;
+				var players = [];
 				if (lpix || npix){
 					var t1 = this.model.get("onfield_1").pluck("player");
 					var t2 = this.model.get("onfield_2").pluck("player");
-					var players = _.union(t1,t2);
+					players = _.union(t1,t2);
 				}
 				if (lpix==1 || npix==1){
 					var pl1 = _.find(players, function(pl_obj){return pl_obj.id == last_event.get("player_1_id");});
-                    if (pl1 != undefined) {
+					if (pl1 !== undefined) {
                         playtext = pl1.first_name[0] + ". " + pl1.last_name + " ";
                     } else {
                         playtext = "Unknown ";
                     }
 				}
 				
-				playtext += event_meta["play_string"];
+				playtext += event_meta.play_string;
 				
 				if (npix>1){
 					var pl2 = _.find(players, function(pl_obj){return pl_obj.id == last_event.get("player_" + npix + "_id");});
                     var pl2_name = 'Unknown';
-                    if (pl2 != undefined){
+                    if (pl2 !== undefined){
                         pl2_name = pl2.first_name[0] + ". " + pl2.last_name;
                     }
 					playtext = playtext + " " + pl2_name + ".";
 				}
 			}
 			return view.render({playtext: playtext});
-		},
+		}
 	});
 	
 	/*
@@ -728,7 +730,7 @@ function(require, app, Backbone) {
 			this.setViews({
 				//Need to pass the full trackedgame to the children views because we need to bind to its attributes that are not yet backbone model's'
 				".player_area_1": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix: 1}),
-				".player_area_2": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix: 2}),
+				".player_area_2": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix: 2})
 				//".player_area_1": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get("onfield_1"), model: this.model.get("game").get("team_1"), trackedgame: this.model}),
 				//".player_area_2": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get("onfield_2"), model: this.model.get("game").get("team_2"), trackedgame: this.model})
 			});
@@ -751,7 +753,11 @@ function(require, app, Backbone) {
 			//Specific players should only be added or removed on the substitution screen.
 			var ix = this.options.team_ix;
 			this.onf = this.model.get("onfield_"+ix);
-			this.onf.bind("add", function() {this.render().then(function(el) {this.model.setButtonHeight();})}, this);
+			this.onf.bind("add", function() {
+				this.render().then(function(el) {
+					this.model.setButtonHeight();
+				});
+			}, this);
 			//team is not a Backbone.Model yet. 
 			this.model.get("game").bind("change:team_"+this.options.team_ix,function(){this.render();}, this);//Team name will update when returned from db.
 		},
@@ -785,10 +791,10 @@ function(require, app, Backbone) {
 			return this.model.toJSON();//TODO: Player model to generate name?
 		},
 		events: {
-			"click": "player_tap",
+			"click": "player_tap"
 		},
 		player_tap: function(ev){
-            var player_id = parseInt(this.$el.find("button.player").attr("id"));
+            var player_id = parseInt(this.$el.find("button.player").attr("id"),10);
 			this.options.trackedgame.player_tap(player_id);
 		}
 	});
@@ -811,19 +817,19 @@ function(require, app, Backbone) {
 			var team_ix = this.model.get("team_in_possession_ix");
 			if (pl_id){
 				var pl_model = _.find(this.model.get("onfield_" + team_ix).pluck("player"), function(pl_obj){return pl_obj.id == pl_id;});
-                if (pl_model != undefined) {
-                	pl_string = pl_model.first_name[0] + ". " + pl_model.last_name + " ";
-                	ac_string = "throws a:";
+                if (pl_model !== undefined) {
+					pl_string = pl_model.first_name[0] + ". " + pl_model.last_name + " ";
+					ac_string = "throws a:";
                 }
 			}
 			return view.render({
 					player_string: pl_string,
 					action_string: ac_string,
-					per_num: this.model.get("period_number"),
+					per_num: this.model.get("period_number")
 				}).then(function(el) {
 					this.show_action_buttons();
-	                this.show_player_name();
-	                this.model.setButtonHeight();
+					this.show_player_name();
+					this.model.setButtonHeight();
 			});
 		},
 		show_action_buttons: function(ev){//shows or hides buttons depending on this.model.get("showing_alternate")
@@ -855,7 +861,7 @@ function(require, app, Backbone) {
 			"click .timeout": "timeout",
 			"click .injury": "injury",
 			"click .end_of_period": "end_of_period",
-        	"click .undo": "undo",
+			"click .undo": "undo"
 		},
 		undo: function(){this.model.undo();},
 		score: function(){this.model.set("current_state","scoring");},
@@ -867,7 +873,7 @@ function(require, app, Backbone) {
 		unknown_turn: function(){this.model.immediate_event(30);},
 		timeout: function(){this.model.immediate_event(91);},
 		injury: function(){this.model.immediate_event(92);},
-		end_of_period: function(){this.model.end_of_period();},
+		end_of_period: function(){this.model.end_of_period();}
 	});
 	
 	TrackedGame.Views.RotateButton = Backbone.View.extend({
