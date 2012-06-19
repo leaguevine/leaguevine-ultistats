@@ -39,7 +39,7 @@ function(app, $, Backbone, Leaguevine) {
 		},
 		
 		index: function () {
-			Backbone.history.navigate('teams', true); // Only works if I have a route to match teams
+			Backbone.history.navigate('/teams', true); // Only works if I have a route to match teams
 		},
 		
 		// Shortcut for building a url.
@@ -78,7 +78,7 @@ function(app, $, Backbone, Leaguevine) {
 		app.api = Leaguevine.API; //This will be useful if we ever use another API.
 
 		// Trigger the initial route and enable HTML5 History API support
-		Backbone.history.start({ pushState: false });
+		Backbone.history.start({ pushState: true });
 	});
     window.applicationCache.addEventListener('updateready', function(e) {
         if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {

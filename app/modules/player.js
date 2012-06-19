@@ -81,11 +81,11 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			app.players = new Player.Collection();
 			app.players.fetch();
 			
-			var myLayout = app.router.useLayout("nav_content");// Get the layout from a layout cache.
+			var myLayout = app.router.useLayout("main");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
 			myLayout.view(".navbar", new Navigation.Views.Navbar());
             myLayout.view(".titlebar", new Navigation.Views.Titlebar({model_class: "player", level: "list"}));
-			myLayout.view(".content", new Player.Views.List ({collection: app.players}));//pass the List view a collection of (fetched) players.
+			myLayout.view(".content_1", new Player.Views.List ({collection: app.players}));//pass the List view a collection of (fetched) players.
 			//myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
 			myLayout.render();
 		},
@@ -96,17 +96,17 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			player.fetch();
 			
 			var TeamPlayer = require("modules/teamplayer");
-			var teamplayers = new TeamPlayer.Collection([],{player_id: player.get("id")});
+			var teamplayers = new TeamPlayer.Collection([],{player_id: playerId});
 			teamplayers.fetch();
 			//player.set("teamplayers", teamplayers);
 			
 			//TODO: Get some player stats and add them to Multilist
-			var myLayout = app.router.useLayout("nav_detail_list");// Get the layout. Has .navbar, .detail, .list_children
+			var myLayout = app.router.useLayout("main");// Get the layout. Has .navbar, .detail, .list_children
 			myLayout.setViews({
-				".navbar": new Navigation.Views.Navbar({href: "#editplayer/"+playerId, name: "Edit"}),
+				".navbar": new Navigation.Views.Navbar({href: "/editplayer/"+playerId, name: "Edit"}),
 				".titlebar": new Navigation.Views.Titlebar({model_class: "player", level: "show", model: player}),
-				".detail": new Player.Views.Detail( {model: player}),
-				".list_children": new Player.Views.Multilist({ teamplayers: teamplayers})
+				".content_1": new Player.Views.Detail( {model: player}),
+				".content_2": new Player.Views.Multilist({ teamplayers: teamplayers})
 			});
 			//myLayout.render(function(el) {$("#main").html(el);});
 			myLayout.render();

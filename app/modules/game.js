@@ -148,7 +148,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 			
 			var myLayout = app.router.useLayout("main");
 			myLayout.setViews({
-				".navbar": new Navigation.Views.Navbar({href: "#editgame/"+gameId, name: "Edit"}),
+				".navbar": new Navigation.Views.Navbar({href: "/editgame/"+gameId, name: "Edit"}),
 				".titlebar": new Navigation.Views.Titlebar({model_class: "game", level: "show", model: game}),
 				".content_1": new Game.Views.Detail( {model: game}),
 				".content_2": new Game.Views.Multilist({
@@ -289,7 +289,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 				".edit_area": new Game.Views.EditArea({model: this.model}),
                 ".team_search_list": new Navigation.Views.SearchableList({
 					collection: this.options.teams, CollectionClass: Team.Collection, ViewsListClass: Team.Views.List, right_btn_class: "",
-                    right_btn_txt: "Create", right_btn_href: "#newteam", search_object_name: "team",
+                    right_btn_txt: "Create", right_btn_href: "/newteam", search_object_name: "team",
                     tap_method: function() {
 						edit_view.model.set("team_2",this.model);//check the context here.
                     }

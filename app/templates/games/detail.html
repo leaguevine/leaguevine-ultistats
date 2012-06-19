@@ -1,10 +1,10 @@
 <div id="game_detail">
     <div id="team1">
-        <div id="team1_name"><a href="#teams/<%= team_1.id %>"><%= team_1.name %></a></div>
+        <div id="team1_name"><a href="/teams/<%= team_1.id %>"><%= team_1.name %></a></div>
         <div id="team1_score"><span><%= team_1_score %></span></div>
     </div>
     <div id="team2">
-        <div id="team2_name"><a href="#teams/<%= team_2.id %>"><%= team_2.name %></a></div>
+        <div id="team2_name"><a href="/teams/<%= team_2.id %>"><%= team_2.name %></a></div>
         <div id="team2_score"><span><%= team_2_score %></span></div>
     </div>
     <div class="start_time">
@@ -14,7 +14,7 @@
         <span><% if (tournament) { %><%= tournament.name %><% } %></span>
     </div>
     <div>
-        <form action="#track/<%= id %>">
+        <form action="/track/<%= id %>">
             <button class="button btrack_game">Take Stats</button>
         </form>
     </div>

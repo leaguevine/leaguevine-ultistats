@@ -148,7 +148,7 @@ function(require, app, Backbone, Leaguevine) {
 			var view = layout(this);
 			//this.$el.empty()
 			// call .cleanup() on all child views, and remove all appended views
-			view.cleanup();
+			//view.cleanup();
 			this.collection.each(function(teamplayer) {
 				this.insertView("ul", new TeamPlayer.Views.Team({
 					model: teamplayer

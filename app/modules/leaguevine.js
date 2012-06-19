@@ -49,7 +49,8 @@ function(app, Backbone) {
 
 			//After token is received, navigate to the href that was saved earlier
 			localStorage.setItem("auth_object", JSON.stringify(app.api));
-            window.location.href = "#" + localStorage.getItem("login_redirect");
+            //window.location.href = "#" + localStorage.getItem("login_redirect");
+            window.location.href = localStorage.getItem("login_redirect");
             return false;
 		},
         login_error: function(hash) {

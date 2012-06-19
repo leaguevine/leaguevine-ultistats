@@ -15,10 +15,10 @@ function(app, Backbone, Game) {
     //We remember the last page viewed within each sub-navigation so subsequent clicks on that
     //navigation button take the user to the most recently viewed page instead of the top menu
     app.navigation = {
-        tournaments_href: "tournaments",
-        teams_href: "teams",
-        games_href: "games",
-        settings_href: "settings"
+        tournaments_href: "/tournaments",
+        teams_href: "/teams",
+        games_href: "/games",
+        settings_href: "/settings"
     };
 	
 	Navigation.Views.Navbar = Backbone.View.extend({
@@ -109,7 +109,8 @@ function(app, Backbone, Game) {
 			} else {my_title = "";}
 
 			var lbc, lbh, lbt, rbc, rbh, rbt;
-			var list_hrefs = {"team": "#teams", "game": "#games", "tournament": "#tournaments", "player": "#players", "setting": "#settings"};
+			//var list_hrefs = {"team": "#teams", "game": "#games", "tournament": "#tournaments", "player": "#players", "setting": "#settings"};
+			var list_hrefs = {"team": "/teams", "game": "/games", "tournament": "/tournaments", "player": "/players", "setting": "/settings"};
 			if (my_level === "list"){
 				//Left button does not exist for list level.
 				lbc = "disabled";
@@ -117,7 +118,7 @@ function(app, Backbone, Game) {
 				lbt = "";
 				//Right button is new/add for list
 				rbc = "add";
-				rbh = "#new" + my_class;
+				rbh = "/new" + my_class;
 				rbt = "";//Doesn't matter because it'll be a plus button.
 			} else if (my_level === "show"){
 				//Left button is back to the list if we are viewing an item.
@@ -126,7 +127,7 @@ function(app, Backbone, Game) {
 				lbt = list_titles[my_class];
 				//Right button is Edit if we are viewing an item.
 				rbc = ""; //No class for the 'edit' button.
-				rbh = "#edit" + my_class + "/" + this.model.id;
+				rbh = "/edit" + my_class + "/" + this.model.id;
 				rbt = "Edit";
 			} else if (my_level === "edit"){
 				//Left button is 'cancel' if we are editing.
@@ -153,7 +154,7 @@ function(app, Backbone, Game) {
 			if (my_level === "show" && my_class === "game"){
 				rbc = "disabled"; //We do not hav a way to edit games.
 			if (this.model.get("tournament_id")){
-				lbh = "#tournaments/" + this.model.get("tournament_id");
+				lbh = "/tournaments/" + this.model.get("tournament_id");
 				lbt = this.model.get("tournament").name ? this.model.get("tournament").name : "Tournament";
 			} else {lbc = "disabled";}//We do not have a generic list of games.
 			}
