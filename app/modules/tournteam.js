@@ -17,7 +17,9 @@ function(require, app, Backbone, Leaguevine) {
 		defaults: {// Include defaults for any attribute that will be rendered.
 			final_standing: "",
 			seed: "",
+			tournament_id: null,
 			tournament: {},
+			team_id: null,
 			team: {}
 		},
 		urlRoot: Leaguevine.API.root + "tournament_teams",
@@ -49,6 +51,7 @@ function(require, app, Backbone, Leaguevine) {
 			if (this.tournament_id) {
 				url += "tournament_ids=%5B" + this.tournament_id + "%5D&";
 			}
+			url += "fields=%5Bfinal_standing%2Cseed%2Ctournament_id%2Ctournament%2Cteam_id%2Cteam%2Ctime_created%2C%20time_last_updated%5D&";
 			return url.substr(0,url.length-1);
 		},
 		comparator: function(tournteam) {// Define how items in the collection will be sorted.

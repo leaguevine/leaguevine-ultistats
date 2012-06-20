@@ -21,15 +21,18 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 	Game.Model = Backbone.Model.extend({
 		defaults: {
 			//id: "",
-			team_1_score: "",
-			team_2_score: "",
-			start_time: "",
-			season: {},
+			season_id: undefined,
+			//season: {},
+			tournament_id: null,
 			tournament: {},
+			team_1_id: null,
+			team_1_score: null,
 			team_1: {name: ""},
-			team_2: {name: ""}
+			team_2_id: null,
+			team_2_score: null,
+			team_2: {name: ""},
+			start_time: ""
 			//pool, swiss_round, bracket
-            
 		},
 		sync: Backbone.WebSQLAjaxSync,
 		store: new Backbone.WebSQLStore("game"),
@@ -89,6 +92,8 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 				if (this.team_2_id){url += this.team_2_id;}
 				url += "%5D&";
 			}
+			//Can't specify fields until tournament_id works.
+			//url += "fields=%5Bid%2Cseason_id%2Cteam_1_id%2Cteam_1_score%2Cteam_1%2Cteam_2_id%2Cteam_2_score%2Cteam_2%2Cstart_time%2Ctime_created%2C%20time_last_updated%5D&";
 			return url.substr(0,url.length-1);
 		},
 		parse: function(resp, xhr) {
