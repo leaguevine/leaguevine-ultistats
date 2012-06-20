@@ -827,7 +827,8 @@ function(require, app, Backbone) {
 					action_string: ac_string,
 					per_num: this.model.get("period_number")
 				}).then(function(el) {
-					this.show_action_buttons();
+					this.model.set("showing_alternate",-1);//We should probably ALWAYS show the default buttons after an event or state change.
+					//this.show_action_buttons();
 					this.show_player_name();
 					this.model.setButtonHeight();
 			});
