@@ -236,19 +236,19 @@ function(require, app, Backbone) {
 		
 		end_period: function(){
 			//the End Period button should be disabled if we are in an injury_to... but I will check for the state anywyay.
-			if (this.get("current_state")=="pulling" && !this.get("injury_to")) {
-				var ev_type = 94;
-				var last_per_num = this.get("period_number");
-				//The following line COULD be used for specific end of period types,
-				//except that non AUDL games would have "end of first" events instead of half-time events.
-				//if (last_per_num <=3){ev_type = ev_type + last_per_num;}
-				this.set("period_number", last_per_num+1);
-				this.start_period_pull();
-				
-				var this_event = this.create_event();
-				this_event.set({type: ev_type});
-				this.save_event(this_event);
-			} 
+			//if (this.get("current_state")=="pulling" && !this.get("injury_to")) {
+			var ev_type = 94;
+			var last_per_num = this.get("period_number");
+			//The following line COULD be used for specific end of period types,
+			//except that non AUDL games would have "end of first" events instead of half-time events.
+			//if (last_per_num <=3){ev_type = ev_type + last_per_num;}
+			this.set("period_number", last_per_num+1);
+			this.start_period_pull();
+			
+			var this_event = this.create_event();
+			this_event.set({type: ev_type});
+			this.save_event(this_event);
+			//}
 		},
 		
 		game_over: function(){
@@ -873,7 +873,7 @@ function(require, app, Backbone) {
 		unknown_turn: function(){this.model.immediate_event(30);},
 		timeout: function(){this.model.immediate_event(91);},
 		injury: function(){this.model.immediate_event(92);},
-		end_of_period: function(){this.model.end_of_period();}
+		end_of_period: function(){this.model.end_period();}
 	});
 	
 	TrackedGame.Views.RotateButton = Backbone.View.extend({
