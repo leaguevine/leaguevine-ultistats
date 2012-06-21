@@ -20,12 +20,12 @@ function(require, app, Backbone, Leaguevine, Stats) {
 	TeamPerGameStats.Model = Stats.BaseModel.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
             //game: {id: ""},
-            game: {},
-            league: {},
-            season: {},
+            //game: {},
+            //league: {},
+            //season: {},
             //team: {id: ""},
             team: {},
-            tournament: {},
+            //tournament: {},
             team_id: "",
             callahans: "",
             completed_passes_thrown: "",
@@ -36,7 +36,7 @@ function(require, app, Backbone, Leaguevine, Stats) {
             goals_thrown: "",
             losses: "",
             incomplete_passes_thrown: "",
-            offense_plus_minus: "",
+            //offense_plus_minus: "",//not in API
             opponent_callahans: "",
             opponent_completed_passes_thrown: "",
             opponent_drops: "",
@@ -81,6 +81,8 @@ function(require, app, Backbone, Leaguevine, Stats) {
             }
 			url += "limit=30&";
             url += "order_by=[-game_id]";
+            //[team_id,callahans,completed_passes_thrown,completion_percent,drops,ds,goals_caught,goals_thrown,losses,incomplete_passes_thrown,opponent_callahans,opponent_completed_passes_thrown,opponent_drops,opponent_ds,opponent_passes_thrown,opponent_throwaways,opponent_turnovers,passes_caught,passes_thrown,points_allowed,points_scored,pulls,throwaways,timeouts,turnovers,wins]
+            url += "&fields=%5Bteam%2Cteam_id%2Ccallahans%2Ccompleted_passes_thrown%2Ccompletion_percent%2Cdrops%2Cds%2Cgoals_caught%2Cgoals_thrown%2Closses%2Cincomplete_passes_thrown%2Copponent_callahans%2Copponent_completed_passes_thrown%2Copponent_drops%2Copponent_ds%2Copponent_passes_thrown%2Copponent_throwaways%2Copponent_turnovers%2Cpasses_caught%2Cpasses_thrown%2Cpoints_allowed%2Cpoints_scored%2Cpulls%2Cthrowaways%2Ctimeouts%2Cturnovers%2Cwins%5D";
 			return url;
 		},
 		comparator: function(stat_line) {// Define how items in the collection will be sorted.
