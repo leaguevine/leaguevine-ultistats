@@ -1,3 +1,6 @@
+AddType text/cache-manifest appcache
+AddType text/cache-manifest .appcache
+
 # Remove the trailing slash from routes
 DirectorySlash Off
 
@@ -5,6 +8,12 @@ DirectorySlash Off
 RewriteEngine on
 
 # Map resources to development
+RewriteRule ^teams/(.*)$ $1 [NC,L]
+RewriteRule ^tournaments/(.*)$ $1 [NC,L]
+RewriteRule ^games/(.*)$ $1 [NC,L]
+RewriteRule ^settings/(.*)$ $1 [NC,L]
+RewriteRule ^players/(.*)$ $1 [NC,L]
+RewriteRule ^track/(.*)$ $1 [NC,L]
 RewriteRule ^app/(.*)$ app/$1 [NC,L]
 RewriteRule ^assets/(.*)$ assets/$1 [NC,L]
 

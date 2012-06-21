@@ -1,11 +1,9 @@
 CACHE MANIFEST
-# 2012-06-20:v4
+# 2012-06-19:v7
 
 CACHE:
 # CSS
-/assets/css/index.css
-/assets/css/main.css
-/assets/css/style.css
+/dist/release/index.css
 
 # Images
 /assets/img/ajax-loader.gif
