@@ -16204,215 +16204,6 @@ function(require, app, Backbone, Navigation) {
 	});
 });
 
-define('modules/season',[
-  "app",
-
-  // Libs
-  "backbone",
-
-  // Modules
-  "modules/leaguevine"
-	
-],
-function(app, Backbone, Leaguevine) {
-	
-	var Season = app.module();
-	
-	Season.Model = Backbone.Model.extend({
-		defaults: {
-			name: "",
-			start_date: "",
-			end_date: "",
-			teams: {}//one-to-many
-		},
-		urlRoot: Leaguevine.API.root + "seasons",
-		parse: function(resp, xhr) {
-			resp = Backbone.Model.prototype.parse(resp);
-			return resp;
-		},
-		toJSON: function() {
-			return _.clone(this.attributes);
-		}
-	});
-	
-	Season.Collection = Backbone.Collection.extend({
-		model: Season.Model,
-		urlRoot: Leaguevine.API.root + "seasons"
-	});
-	
-	return Season;// Required, return the module for AMD compliance
-});
-
-define('modules/teamplayer',[
-	"require",
-  "app",
-
-  // Libs
-  "backbone",
-
-  // Modules
-  "modules/leaguevine"
-],
-function(require, app, Backbone, Leaguevine) {
-    
-	var TeamPlayer = app.module();
-	
-	//
-	// MODEL
-	//
-	TeamPlayer.Model = Backbone.Model.extend({
-		defaults: {
-			number: null,
-			team_id: null,
-			team: {},
-			player_id: null,
-			player: {last_name: "", first_name: ""}
-		},
-		urlRoot: Leaguevine.API.root + "team_players",
-		//TODO: override URL to /team_players/team_id/player_id/
-		url: function(models) {
-			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += "/?";
-		},
-		parse: function(resp, xhr) {
-			resp = Backbone.Model.prototype.parse(resp);
-			return resp;
-		},
-		toJSON: function() {
-			//TODO: Remove attributes that are not stored
-			return _.clone(this.attributes);
-		}
-	});
-	//
-	// COLLECTION
-	//
-	TeamPlayer.Collection = Backbone.Collection.extend({
-		model: TeamPlayer.Model,
-		urlRoot: Leaguevine.API.root + "team_players",
-		url: function(models) {
-			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += "/?";
-			if (this.team_id) {
-				url += "team_ids=%5B" + this.team_id + "%5D&";
-			} else if (this.models && this.models.length) {
-				url += "team_ids=%5B" + this.models[0].get("team").id + "%5D&";
-			}
-			//If we already have a list of players, 
-			if (this.player_id) {url += "player_ids=%5B" + this.player_id + "%5D&";}
-			else if (this.models && this.models.length) {
-				url += "player_ids=%5B";
-				_.each(this.models, function(tp) {
-					url = url + tp.get("player").id + ",";
-				});
-				url = url.substr(0,url.length-1) + "%5D&";
-			}
-            url += "limit=50&"; //Make sure we grab all of the players. Omitting this defaults to 20 players
-            url += "fields=%5Bnumber%2Cplayer%2Cplayer_id%2Cteam%2Cteam_id%2Ctime_created%2Ctime_last_updated%5D&";
-			return url.substr(0,url.length-1);
-		},
-		comparator: function(teamplayer) {// Define how items in the collection will be sorted.
-			//Build an object containing different string representations.
-			var temp_player = teamplayer.get("player");
-			var this_obj = {"number": teamplayer.get("number")};
-			if (_.isFunction(temp_player.get)) {//If this is a proper model.
-				_.extend(this_obj,{
-					"first_name": temp_player.get("first_name").toLowerCase(),
-					"last_name": temp_player.get("last_name").toLowerCase(),
-					"nick_name": temp_player.get("nickname").toLowerCase(),
-					"full_name": temp_player.get("last_name").toLowerCase() + temp_player.get("first_name").toLowerCase()[0]
-				});
-			} else {//If this is a JSON object.
-				_.extend(this_obj,{
-					"first_name": temp_player.first_name.toLowerCase(),
-					"last_name": temp_player.last_name.toLowerCase(),
-					"nick_name": temp_player.nickname.toLowerCase(),
-					"full_name": temp_player.last_name.toLowerCase() + temp_player.first_name.toLowerCase()[0]
-				});
-			}
-			var sort_setting = JSON.parse(localStorage.getItem("settings-Sort players by:"));
-			if (sort_setting){
-				if (sort_setting.value == "nick name"){return this_obj.nick_name;}
-				else if (sort_setting.value == "jersey"){return this_obj.number;}
-				else if (sort_setting.value == "last name"){return this_obj.last_name;}
-			}
-			return this_obj.full_name;
-		},
-		parse: function(resp, xhr) {
-			resp = Backbone.Collection.prototype.parse(resp);
-			/*var _this = this;
-			if (this.team_id){resp = _.filter(resp, function(obj){
-				return obj.team_id == _this.team_id;
-			});}
-			if (this.player_id){resp = _.filter(resp, function(obj){
-				return obj.player_id == _this.player_id;
-			});}*/
-			return resp;
-		},
-		initialize: function(models, options) {
-			if (options) {
-				if (options.team_id) {this.team_id = options.team_id;}
-				if (options.player_id) {this.player_id = options.player_id;}
-			}
-		}
-	});
-	
-	TeamPlayer.Views.Player = Backbone.View.extend({
-		template: "teamplayers/player",
-		tagName: "li",
-		serialize: function() {return this.model.toJSON();}
-	});
-	TeamPlayer.Views.PlayerList = Backbone.View.extend({
-		template: "teamplayers/playerlist",
-		className: "players-wrapper",
-		render: function(layout) {
-			var view = layout(this);
-			//this.$el.empty()
-			// call .cleanup() on all child views, and remove all appended views
-			//view.cleanup();
-			this.collection.each(function(teamplayer) {
-				this.insertView("ul", new TeamPlayer.Views.Player({
-					model: teamplayer
-				}));
-			}, this);
-			return view.render();
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
-		}
-	});
-	
-	TeamPlayer.Views.Team = Backbone.View.extend({
-		template: "teamplayers/team",
-		tagName: "li",
-		serialize: function() {return this.model.toJSON();}
-	});
-	TeamPlayer.Views.TeamList = Backbone.View.extend({
-		template: "teamplayers/playerlist",
-		className: "teams-wrapper",
-		render: function(layout) {
-			var view = layout(this);
-			//this.$el.empty()
-			// call .cleanup() on all child views, and remove all appended views
-			//view.cleanup();
-			this.collection.each(function(teamplayer) {
-				this.insertView("ul", new TeamPlayer.Views.Team({
-					model: teamplayer
-				}));
-			}, this);
-			return view.render();
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
-		}
-	});
-	
-	return TeamPlayer;
-});
-
 /**
  * Backbone WebSQL Adapter + AJAX Syncing v0.0
  */
@@ -16721,9 +16512,24 @@ function(require, app, Backbone, Leaguevine) {
  			//then it won't be a model class so .set etc might not work.
  			//Is it possible to save the class name to the queue so that we can create a new model/collection on queue access?
 	 			
- 			//TODO: Process associations. e.g., make sure that team.season_id is a real id and not a local_id.
- 			if (method=="create" || method=="update"){
- 				console.log("TODO: Process model's associations");
+ 			//Process associations. e.g., make sure that team.season_id is a real id and not a local_id.
+ 			if ((method=="create" || method=="update") && model.associations!==undefined && _.isObject(model.associations)){
+ 				var assoc = model.associations;
+ 				_.each(_.keys(assoc), function(this_key){
+ 					var table_name = assoc[this_key];
+ 					if (_.isString(model.get(this_key)) && model.get(this_key).indexOf("local_id")==0){
+ 						//The associated object has a local_id for id. We need to check table_name for its updated id.
+ 						var store = new Backbone.WebSQLStore(table_name);
+ 						//var stmnt = "SELECT COALESCE(id, local_id) AS id FROM "+table_name+" WHERE local_id="+model.get(this_key);
+ 						var stmnt = "SELECT COALESCE(id, local_id) AS id FROM "+table_name+" WHERE id="+model.get(this_key);
+ 						store._executeSql(stmnt,[], function(tx,result) {
+ 							if (result.rows.length>0){
+ 								//console.log("new id set");
+ 								model.set(this_key,result.rows.item(0).id);
+ 							}
+						});
+					}
+ 				});
  			}
  			
  			//Remove any local_id from the model before syncing with remote.
@@ -16796,6 +16602,221 @@ function(require, app, Backbone, Leaguevine) {
 	
 })(this);
 define("plugins/backbone.websqlajax", ["backbone"], function(){});
+
+define('modules/season',[
+  "app",
+
+  // Libs
+  "backbone",
+
+  // Modules
+  "modules/leaguevine",
+  
+  "plugins/backbone.websqlajax"
+	
+],
+function(app, Backbone, Leaguevine) {
+	
+	var Season = app.module();
+	
+	Season.Model = Backbone.Model.extend({
+		defaults: {
+			name: "",
+			start_date: "",
+			end_date: "",
+			teams: {}//one-to-many
+		},
+		urlRoot: Leaguevine.API.root + "seasons",
+		parse: function(resp, xhr) {
+			resp = Backbone.Model.prototype.parse(resp);
+			return resp;
+		},
+		toJSON: function() {
+			var temp = _.clone(this.attributes);
+			delete temp.teams;
+			return temp;
+		},
+		sync: Backbone.WebSQLAjaxSync,
+		store: new Backbone.WebSQLStore("season")
+	});
+	
+	Season.Collection = Backbone.Collection.extend({
+		model: Season.Model,
+		urlRoot: Leaguevine.API.root + "seasons"
+	});
+	
+	return Season;// Required, return the module for AMD compliance
+});
+
+define('modules/teamplayer',[
+	"require",
+  "app",
+
+  // Libs
+  "backbone",
+
+  // Modules
+  "modules/leaguevine"
+],
+function(require, app, Backbone, Leaguevine) {
+    
+	var TeamPlayer = app.module();
+	
+	//
+	// MODEL
+	//
+	TeamPlayer.Model = Backbone.Model.extend({
+		defaults: {
+			number: null,
+			team_id: null,
+			team: {},
+			player_id: null,
+			player: {last_name: "", first_name: ""}
+		},
+		urlRoot: Leaguevine.API.root + "team_players",
+		//TODO: override URL to /team_players/team_id/player_id/
+		url: function(models) {
+			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
+			url += "/?";
+		},
+		parse: function(resp, xhr) {
+			resp = Backbone.Model.prototype.parse(resp);
+			return resp;
+		},
+		toJSON: function() {
+			//TODO: Remove attributes that are not stored
+			return _.clone(this.attributes);
+		}
+	});
+	//
+	// COLLECTION
+	//
+	TeamPlayer.Collection = Backbone.Collection.extend({
+		model: TeamPlayer.Model,
+		urlRoot: Leaguevine.API.root + "team_players",
+		url: function(models) {
+			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
+			url += "/?";
+			if (this.team_id) {
+				url += "team_ids=%5B" + this.team_id + "%5D&";
+			} else if (this.models && this.models.length) {
+				url += "team_ids=%5B" + this.models[0].get("team").id + "%5D&";
+			}
+			//If we already have a list of players, 
+			if (this.player_id) {url += "player_ids=%5B" + this.player_id + "%5D&";}
+			else if (this.models && this.models.length) {
+				url += "player_ids=%5B";
+				_.each(this.models, function(tp) {
+					url = url + tp.get("player").id + ",";
+				});
+				url = url.substr(0,url.length-1) + "%5D&";
+			}
+            url += "limit=50&"; //Make sure we grab all of the players. Omitting this defaults to 20 players
+            url += "fields=%5Bnumber%2Cplayer%2Cplayer_id%2Cteam%2Cteam_id%2Ctime_created%2Ctime_last_updated%5D&";
+			return url.substr(0,url.length-1);
+		},
+		comparator: function(teamplayer) {// Define how items in the collection will be sorted.
+			//Build an object containing different string representations.
+			var temp_player = teamplayer.get("player");
+			var this_obj = {"number": teamplayer.get("number")};
+			if (_.isFunction(temp_player.get)) {//If this is a proper model.
+				_.extend(this_obj,{
+					"first_name": temp_player.get("first_name").toLowerCase(),
+					"last_name": temp_player.get("last_name").toLowerCase(),
+					"nick_name": temp_player.get("nickname").toLowerCase(),
+					"full_name": temp_player.get("last_name").toLowerCase() + temp_player.get("first_name").toLowerCase()[0]
+				});
+			} else {//If this is a JSON object.
+				_.extend(this_obj,{
+					"first_name": temp_player.first_name.toLowerCase(),
+					"last_name": temp_player.last_name.toLowerCase(),
+					"nick_name": temp_player.nickname.toLowerCase(),
+					"full_name": temp_player.last_name.toLowerCase() + temp_player.first_name.toLowerCase()[0]
+				});
+			}
+			var sort_setting = JSON.parse(localStorage.getItem("settings-Sort players by:"));
+			if (sort_setting){
+				if (sort_setting.value == "nick name"){return this_obj.nick_name;}
+				else if (sort_setting.value == "jersey"){return this_obj.number;}
+				else if (sort_setting.value == "last name"){return this_obj.last_name;}
+			}
+			return this_obj.full_name;
+		},
+		parse: function(resp, xhr) {
+			resp = Backbone.Collection.prototype.parse(resp);
+			/*var _this = this;
+			if (this.team_id){resp = _.filter(resp, function(obj){
+				return obj.team_id == _this.team_id;
+			});}
+			if (this.player_id){resp = _.filter(resp, function(obj){
+				return obj.player_id == _this.player_id;
+			});}*/
+			return resp;
+		},
+		initialize: function(models, options) {
+			if (options) {
+				if (options.team_id) {this.team_id = options.team_id;}
+				if (options.player_id) {this.player_id = options.player_id;}
+			}
+		}
+	});
+	
+	TeamPlayer.Views.Player = Backbone.View.extend({
+		template: "teamplayers/player",
+		tagName: "li",
+		serialize: function() {return this.model.toJSON();}
+	});
+	TeamPlayer.Views.PlayerList = Backbone.View.extend({
+		template: "teamplayers/playerlist",
+		className: "players-wrapper",
+		render: function(layout) {
+			var view = layout(this);
+			//this.$el.empty()
+			// call .cleanup() on all child views, and remove all appended views
+			//view.cleanup();
+			this.collection.each(function(teamplayer) {
+				this.insertView("ul", new TeamPlayer.Views.Player({
+					model: teamplayer
+				}));
+			}, this);
+			return view.render();
+		},
+		initialize: function() {
+			this.collection.bind("reset", function() {
+				this.render();
+			}, this);
+		}
+	});
+	
+	TeamPlayer.Views.Team = Backbone.View.extend({
+		template: "teamplayers/team",
+		tagName: "li",
+		serialize: function() {return this.model.toJSON();}
+	});
+	TeamPlayer.Views.TeamList = Backbone.View.extend({
+		template: "teamplayers/playerlist",
+		className: "teams-wrapper",
+		render: function(layout) {
+			var view = layout(this);
+			//this.$el.empty()
+			// call .cleanup() on all child views, and remove all appended views
+			//view.cleanup();
+			this.collection.each(function(teamplayer) {
+				this.insertView("ul", new TeamPlayer.Views.Team({
+					model: teamplayer
+				}));
+			}, this);
+			return view.render();
+		},
+		initialize: function() {
+			this.collection.bind("reset", function() {
+				this.render();
+			}, this);
+		}
+	});
+	
+	return TeamPlayer;
+});
 
 define('modules/player',[
 	"require",
@@ -17023,8 +17044,11 @@ function(app, Backbone, Leaguevine, Navigation) {
 			return resp;
 		},
 		toJSON: function() {
-			//TODO: Remove attributes that are not stored (teamplayers, games)
-			return _.clone(this.attributes);
+			var temp = _.clone(this.attributes);
+			delete temp.teamplayers;
+			delete temp.games;
+			delete temp.season;
+			return temp;
 		},
 		sync: Backbone.WebSQLAjaxSync,
 		store: new Backbone.WebSQLStore("team"),
@@ -17059,7 +17083,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 		//TODO: I should override parse if I want to filter team's returned from DB. e.g. this would be useful for
 		//filtering results shown on the "Teams" page if a season is already set. Setting the season in "Settings" comes first.
 		comparator: function(team) {// Define how items in the collection will be sorted.
-			var team_obj = team.toJSON();
+			var team_obj = _.clone(team.attributes);
 			if (team_obj.season && team_obj.season.name) {return team_obj.name.toLowerCase() + team_obj.season.name.toLowerCase();}
             else {return team_obj.name.toLowerCase();}
 		},
@@ -17150,7 +17174,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 			//If we have teamId, then we are editing. If not, then we are creating a new team.
 			var team = new Team.Model();
 			if (teamId) { //make the edit team page
-				team.set(id, teamId);
+				team.id=teamId;
                 team.fetch(); //Fetch this team instance
 			}
 			var myLayout = app.router.useLayout("main");
@@ -17207,7 +17231,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul by the list's render function.
 		serialize: function() {
             // Add a couple attributes to the team for displaying
-            var team = this.model.toJSON();
+            var team = _.clone(this.model.attributes);
             team.season_name = "";
             team.league_name = "";
             if (team.season !== null && _.has(team.season,"name")) {
@@ -17236,7 +17260,7 @@ function(app, Backbone, Leaguevine, Navigation) {
                 createGame: function(ev) {
                     Backbone.history.navigate("newgame/"+this.model.get("id"), true);
                 },
-		serialize: function() {return this.model.toJSON();},
+		serialize: function() {return _.clone(this.model.attributes);},
 		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
 	});
 	Team.Views.Multilist = Backbone.View.extend({
@@ -17276,14 +17300,10 @@ function(app, Backbone, Leaguevine, Navigation) {
 			this.options.games.bind("reset", function() {this.render();}, this);
 		}
 	});
-	Team.Views.EditWrapper = Backbone.View.extend({
-		initialize: function() {this.model.bind("reset", function() {this.render();}, this);},
-		render: function(manage){
-			this.insertView(new Team.Views.Edit({model: this.model}));
-			return manage(this).render();
-		}
-	});
 	Team.Views.Edit = Backbone.View.extend({
+		initialize: function() {
+			this.model.on("reset", function() {this.render();}, this);
+		},
 		template: "teams/edit",
 		render: function(layout) {
             return layout(this).render(this.model.toJSON());
@@ -17544,12 +17564,12 @@ function(require, app, Backbone, Leaguevine, Stats) {
 	TeamPerGameStats.Model = Stats.BaseModel.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
             //game: {id: ""},
-            game: {},
-            league: {},
-            season: {},
+            //game: {},
+            //league: {},
+            //season: {},
             //team: {id: ""},
             team: {},
-            tournament: {},
+            //tournament: {},
             team_id: "",
             callahans: "",
             completed_passes_thrown: "",
@@ -17560,7 +17580,7 @@ function(require, app, Backbone, Leaguevine, Stats) {
             goals_thrown: "",
             losses: "",
             incomplete_passes_thrown: "",
-            offense_plus_minus: "",
+            //offense_plus_minus: "",//not in API
             opponent_callahans: "",
             opponent_completed_passes_thrown: "",
             opponent_drops: "",
@@ -17605,6 +17625,8 @@ function(require, app, Backbone, Leaguevine, Stats) {
             }
 			url += "limit=30&";
             url += "order_by=[-game_id]";
+            //[team_id,callahans,completed_passes_thrown,completion_percent,drops,ds,goals_caught,goals_thrown,losses,incomplete_passes_thrown,opponent_callahans,opponent_completed_passes_thrown,opponent_drops,opponent_ds,opponent_passes_thrown,opponent_throwaways,opponent_turnovers,passes_caught,passes_thrown,points_allowed,points_scored,pulls,throwaways,timeouts,turnovers,wins]
+            url += "&fields=%5Bteam%2Cteam_id%2Ccallahans%2Ccompleted_passes_thrown%2Ccompletion_percent%2Cdrops%2Cds%2Cgoals_caught%2Cgoals_thrown%2Closses%2Cincomplete_passes_thrown%2Copponent_callahans%2Copponent_completed_passes_thrown%2Copponent_drops%2Copponent_ds%2Copponent_passes_thrown%2Copponent_throwaways%2Copponent_turnovers%2Cpasses_caught%2Cpasses_thrown%2Cpoints_allowed%2Cpoints_scored%2Cpulls%2Cthrowaways%2Ctimeouts%2Cturnovers%2Cwins%5D";
 			return url;
 		},
 		comparator: function(stat_line) {// Define how items in the collection will be sorted.
@@ -17696,6 +17718,11 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 		},
 		sync: Backbone.WebSQLAjaxSync,
 		store: new Backbone.WebSQLStore("game"),
+		associations: {
+			"tournament_id": "tournament",
+			"team_1_id": "team",
+			"team_2_id": "team"
+		},
 		urlRoot: Leaguevine.API.root + "games",
 		parse: function(resp, xhr) {
 			resp = Backbone.Model.prototype.parse(resp);
@@ -18408,6 +18435,15 @@ function(require, app, Backbone, Leaguevine) {
 		},
 		sync: Backbone.WebSQLAjaxSync,
 		store: new Backbone.WebSQLStore("gameevent"),
+		associations: {
+			"game_id": "game",
+			"player_1_id": "player",
+			"player_2_id": "player",
+			"player_3_id": "player",
+			"player_1_team_id": "team",
+			"player_2_team_id": "team",
+			"player_3_team_id": "team"
+		},
 		urlRoot: Leaguevine.API.root + "events",
 		parse: function(resp, xhr) {
 			resp = Backbone.Model.prototype.parse(resp);

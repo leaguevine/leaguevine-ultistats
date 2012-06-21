@@ -5,7 +5,9 @@ define([
   "backbone",
 
   // Modules
-  "modules/leaguevine"
+  "modules/leaguevine",
+  
+  "plugins/backbone.websqlajax"
 	
 ],
 function(app, Backbone, Leaguevine) {
@@ -25,8 +27,12 @@ function(app, Backbone, Leaguevine) {
 			return resp;
 		},
 		toJSON: function() {
-			return _.clone(this.attributes);
-		}
+			var temp = _.clone(this.attributes);
+			delete temp.teams;
+			return temp;
+		},
+		sync: Backbone.WebSQLAjaxSync,
+		store: new Backbone.WebSQLStore("season")
 	});
 	
 	Season.Collection = Backbone.Collection.extend({

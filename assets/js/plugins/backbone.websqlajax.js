@@ -306,9 +306,24 @@
  			//then it won't be a model class so .set etc might not work.
  			//Is it possible to save the class name to the queue so that we can create a new model/collection on queue access?
 	 			
- 			//TODO: Process associations. e.g., make sure that team.season_id is a real id and not a local_id.
- 			if (method=="create" || method=="update"){
- 				console.log("TODO: Process model's associations");
+ 			//Process associations. e.g., make sure that team.season_id is a real id and not a local_id.
+ 			if ((method=="create" || method=="update") && model.associations!==undefined && _.isObject(model.associations)){
+ 				var assoc = model.associations;
+ 				_.each(_.keys(assoc), function(this_key){
+ 					var table_name = assoc[this_key];
+ 					if (_.isString(model.get(this_key)) && model.get(this_key).indexOf("local_id")==0){
+ 						//The associated object has a local_id for id. We need to check table_name for its updated id.
+ 						var store = new Backbone.WebSQLStore(table_name);
+ 						//var stmnt = "SELECT COALESCE(id, local_id) AS id FROM "+table_name+" WHERE local_id="+model.get(this_key);
+ 						var stmnt = "SELECT COALESCE(id, local_id) AS id FROM "+table_name+" WHERE id="+model.get(this_key);
+ 						store._executeSql(stmnt,[], function(tx,result) {
+ 							if (result.rows.length>0){
+ 								//console.log("new id set");
+ 								model.set(this_key,result.rows.item(0).id);
+ 							}
+						});
+					}
+ 				});
  			}
  			
  			//Remove any local_id from the model before syncing with remote.

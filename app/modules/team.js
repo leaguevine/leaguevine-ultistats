@@ -36,8 +36,11 @@ function(app, Backbone, Leaguevine, Navigation) {
 			return resp;
 		},
 		toJSON: function() {
-			//TODO: Remove attributes that are not stored (teamplayers, games)
-			return _.clone(this.attributes);
+			var temp = _.clone(this.attributes);
+			delete temp.teamplayers;
+			delete temp.games;
+			delete temp.season;
+			return temp;
 		},
 		sync: Backbone.WebSQLAjaxSync,
 		store: new Backbone.WebSQLStore("team"),
@@ -72,7 +75,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 		//TODO: I should override parse if I want to filter team's returned from DB. e.g. this would be useful for
 		//filtering results shown on the "Teams" page if a season is already set. Setting the season in "Settings" comes first.
 		comparator: function(team) {// Define how items in the collection will be sorted.
-			var team_obj = team.toJSON();
+			var team_obj = _.clone(team.attributes);
 			if (team_obj.season && team_obj.season.name) {return team_obj.name.toLowerCase() + team_obj.season.name.toLowerCase();}
             else {return team_obj.name.toLowerCase();}
 		},
@@ -163,7 +166,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 			//If we have teamId, then we are editing. If not, then we are creating a new team.
 			var team = new Team.Model();
 			if (teamId) { //make the edit team page
-				team.set(id, teamId);
+				team.id=teamId;
                 team.fetch(); //Fetch this team instance
 			}
 			var myLayout = app.router.useLayout("main");
@@ -220,7 +223,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul by the list's render function.
 		serialize: function() {
             // Add a couple attributes to the team for displaying
-            var team = this.model.toJSON();
+            var team = _.clone(this.model.attributes);
             team.season_name = "";
             team.league_name = "";
             if (team.season !== null && _.has(team.season,"name")) {
@@ -249,7 +252,7 @@ function(app, Backbone, Leaguevine, Navigation) {
                 createGame: function(ev) {
                     Backbone.history.navigate("newgame/"+this.model.get("id"), true);
                 },
-		serialize: function() {return this.model.toJSON();},
+		serialize: function() {return _.clone(this.model.attributes);},
 		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
 	});
 	Team.Views.Multilist = Backbone.View.extend({
@@ -289,14 +292,10 @@ function(app, Backbone, Leaguevine, Navigation) {
 			this.options.games.bind("reset", function() {this.render();}, this);
 		}
 	});
-	Team.Views.EditWrapper = Backbone.View.extend({
-		initialize: function() {this.model.bind("reset", function() {this.render();}, this);},
-		render: function(manage){
-			this.insertView(new Team.Views.Edit({model: this.model}));
-			return manage(this).render();
-		}
-	});
 	Team.Views.Edit = Backbone.View.extend({
+		initialize: function() {
+			this.model.on("reset", function() {this.render();}, this);
+		},
 		template: "teams/edit",
 		render: function(layout) {
             return layout(this).render(this.model.toJSON());

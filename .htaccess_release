@@ -9,6 +9,7 @@ RewriteEngine on
 
 # Map resources to development
 RewriteRule ^teams/(.*)$ $1 [NC,L]
+RewriteRule ^editteam/(.*)$ $1 [NC,L]
 RewriteRule ^tournaments/(.*)$ $1 [NC,L]
 RewriteRule ^games/(.*)$ $1 [NC,L]
 RewriteRule ^settings/(.*)$ $1 [NC,L]

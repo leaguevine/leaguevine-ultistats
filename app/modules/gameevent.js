@@ -30,6 +30,15 @@ function(require, app, Backbone, Leaguevine) {
 		},
 		sync: Backbone.WebSQLAjaxSync,
 		store: new Backbone.WebSQLStore("gameevent"),
+		associations: {
+			"game_id": "game",
+			"player_1_id": "player",
+			"player_2_id": "player",
+			"player_3_id": "player",
+			"player_1_team_id": "team",
+			"player_2_team_id": "team",
+			"player_3_team_id": "team"
+		},
 		urlRoot: Leaguevine.API.root + "events",
 		parse: function(resp, xhr) {
 			resp = Backbone.Model.prototype.parse(resp);
