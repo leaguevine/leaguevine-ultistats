@@ -17,9 +17,10 @@ function(require, app, Backbone, Leaguevine) {
 	//
 	TeamPlayer.Model = Backbone.Model.extend({
 		defaults: {
-			number: "",
+			number: null,
+			team_id: null,
 			team: {},
-			//player: {id: "", last_name: ""}
+			player_id: null,
 			player: {last_name: "", first_name: ""}
 		},
 		urlRoot: Leaguevine.API.root + "team_players",
@@ -61,6 +62,7 @@ function(require, app, Backbone, Leaguevine) {
 				url = url.substr(0,url.length-1) + "%5D&";
 			}
             url += "limit=50&"; //Make sure we grab all of the players. Omitting this defaults to 20 players
+            url += "fields=%5Bnumber%2Cplayer%2Cplayer_id%2Cteam%2Cteam_id%2Ctime_created%2Ctime_last_updated%5D&";
 			return url.substr(0,url.length-1);
 		},
 		comparator: function(teamplayer) {// Define how items in the collection will be sorted.

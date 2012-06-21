@@ -26,8 +26,9 @@ function(app, Backbone, Leaguevine, Navigation) {
 			name: "",
 			info: "",
 			season: {},
-			teamplayers: {},
-			games: {}
+			season_id: null,
+			teamplayers: [],
+			games: []
 		},
 		urlRoot: Leaguevine.API.root + "teams",
 		parse: function(resp, xhr) {
@@ -55,16 +56,17 @@ function(app, Backbone, Leaguevine, Navigation) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
 			url += "/?";
 			if ( models && models.length ) {
-				url += "team_ids=" + JSON.stringify(models.pluck("id")) + "&";
+				url += "&team_ids=" + JSON.stringify(models.pluck("id"));
 			}
             if (this.name) {
-                url += "name=" + this.name + "&";
+                url += "&name=" + this.name;
             }
 			if (this.season_id) {
-				url += "season_id=" + this.season_id + "&";
+				url += "&season_id=" + this.season_id;
 			}
-			url += "limit=30&";
-            url += "order_by=%5Bname,-season_id%5D&";
+			url += "&limit=30";
+            url += "&order_by=%5Bname,-season_id%5D";
+            url += "&fields=%5Bid%2Cinfo%2Cname%2Cseason_id%2Cseason%2Cshort_name%2Ctime_created%2Ctime_last_updated%5D";
 			return url;
 		},
 		//TODO: I should override parse if I want to filter team's returned from DB. e.g. this would be useful for
@@ -134,12 +136,12 @@ function(app, Backbone, Leaguevine, Navigation) {
             team.fetch();
 
 			var TeamPlayer = require("modules/teamplayer");
-			var teamplayers = new TeamPlayer.Collection([],{team_id: team.get("id")});
+			var teamplayers = new TeamPlayer.Collection([],{team_id: team.id});
 			teamplayers.fetch();
 			//team.set("teamplayers", teamplayers);
 			
 			var Game = require("modules/game");
-			var games = new Game.Collection([],{team_1_id: team.get("id")});
+			var games = new Game.Collection([],{team_1_id: team.id});
 			games.fetch();
 			//team.set("games", games);
 			
@@ -221,7 +223,7 @@ function(app, Backbone, Leaguevine, Navigation) {
             var team = this.model.toJSON();
             team.season_name = "";
             team.league_name = "";
-            if (team.season !== null) {
+            if (team.season !== null && _.has(team.season,"name")) {
                 team.season_name = team.season.name;
                 team.league_name = team.season.league.name;
             }

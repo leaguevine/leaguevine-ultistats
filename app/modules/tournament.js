@@ -23,7 +23,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			start_date: "",
 			end_date: "",
 			info: "",
-			season: {},
+			//season: {},
 			tournteams: {},
 			games: {}
 		},
@@ -58,6 +58,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
             }
             url += "limit=30&";
             url += "order_by=%5Bname,-season_id%5D&";
+            url += "fields=%5Bid%2Cseason_id%2Cname%2Cstart_date%2Cend_date%2Cinfo%2Ctime_created%2C%20time_last_updated%5D&";
             return url;
         },
 		comparator: function(tournament) {

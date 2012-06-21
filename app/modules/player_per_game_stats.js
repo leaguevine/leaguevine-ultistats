@@ -20,13 +20,13 @@ function(require, app, Backbone, Leaguevine) {
 	PlayerPerGameStats.Model = Backbone.Model.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
             game: {id: ""},
-            league: {},
+            //league: {},
             //player: {id: ""},
             player: {},
-            season: {},
+            //season: {},
             //team: {id: ""},
-            team: {},
-            tournament: {},
+            //team: {},
+            //tournament: {},
             player_id: "",
             callahans: "",
             completed_passes_thrown: "",
@@ -34,8 +34,8 @@ function(require, app, Backbone, Leaguevine) {
             defense_plus_minus: "",
             drops: "",
             ds: "",
-            goals_caught: "",
-            goals_thrown: "",
+            goals_caught: "",//*
+            goals_thrown: "",//*
             incomplete_passes_thrown: "",
             offense_plus_minus: "",
             passes_caught: "",
@@ -62,13 +62,16 @@ function(require, app, Backbone, Leaguevine) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
 			url += "/?";
             if (this.game_ids) {
-                url += "game_ids=[" + this.game_ids + "]&";
+                url += "game_ids=%5B" + this.game_ids + "%5D&";
             }
             if (this.player_ids) {
-                url += "player_ids[" + this.player_ids + "]&";
+                url += "player_ids%5B" + this.player_ids + "%5D&";
             }
 			url += "limit=30&";
-            url += "order_by=[-points_played, -goals_caught, -goals_thrown]";
+            url += "order_by=%5B-points_played,-goals_caught,-goals_thrown%5D";
+            url += "&fields=%5Bplayer%2Cplayer_id%2Ccallahans%2Ccompleted_passes_thrown%2Ccompletion_percent%2Cdefense_plus_minus";
+            url += "%2Cdrops%2Cds%2Cgoals_caught%2Cgoals_thrown%2Cincomplete_passes_thrown%2Coffense_plus_minus%2Cpasses_caught";
+            url += "%2Cpasses_thrown%2Cpicked_up_disc%2Cplus_minus%2Cpoints_played%2Cpulls%2Cthrowaways%2Cturnovers%2Cteam_id%5D";
 			return url;
 		},
 		comparator: function(stat_line) {// Define how items in the collection will be sorted.
@@ -92,7 +95,9 @@ function(require, app, Backbone, Leaguevine) {
 	PlayerPerGameStats.Views.PlayerStats = Backbone.View.extend({
 		template: "playerstats/per_game_stat_line",
 		tagName: "tr",
-		serialize: function() {return this.model.toJSON();}
+		serialize: function() {
+			return this.model.toJSON();
+		}
 	});
     PlayerPerGameStats.Views.BoxScore = Backbone.View.extend({
         /* Usage:
@@ -137,7 +142,7 @@ function(require, app, Backbone, Leaguevine) {
 			var view = layout(this);
 			//this.$el.empty()
 			// call .cleanup() on all child views, and remove all appended views
-			view.cleanup();
+			//view.cleanup();
 			this.collection.each(function(playerstats) {
 				this.insertView("table", new PlayerPerGameStats.Views.PlayerStats({
 					model: playerstats

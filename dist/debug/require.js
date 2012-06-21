@@ -16262,9 +16262,10 @@ function(require, app, Backbone, Leaguevine) {
 	//
 	TeamPlayer.Model = Backbone.Model.extend({
 		defaults: {
-			number: "",
+			number: null,
+			team_id: null,
 			team: {},
-			//player: {id: "", last_name: ""}
+			player_id: null,
 			player: {last_name: "", first_name: ""}
 		},
 		urlRoot: Leaguevine.API.root + "team_players",
@@ -16306,6 +16307,7 @@ function(require, app, Backbone, Leaguevine) {
 				url = url.substr(0,url.length-1) + "%5D&";
 			}
             url += "limit=50&"; //Make sure we grab all of the players. Omitting this defaults to 20 players
+            url += "fields=%5Bnumber%2Cplayer%2Cplayer_id%2Cteam%2Cteam_id%2Ctime_created%2Ctime_last_updated%5D&";
 			return url.substr(0,url.length-1);
 		},
 		comparator: function(teamplayer) {// Define how items in the collection will be sorted.
@@ -17011,8 +17013,9 @@ function(app, Backbone, Leaguevine, Navigation) {
 			name: "",
 			info: "",
 			season: {},
-			teamplayers: {},
-			games: {}
+			season_id: null,
+			teamplayers: [],
+			games: []
 		},
 		urlRoot: Leaguevine.API.root + "teams",
 		parse: function(resp, xhr) {
@@ -17040,16 +17043,17 @@ function(app, Backbone, Leaguevine, Navigation) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
 			url += "/?";
 			if ( models && models.length ) {
-				url += "team_ids=" + JSON.stringify(models.pluck("id")) + "&";
+				url += "&team_ids=" + JSON.stringify(models.pluck("id"));
 			}
             if (this.name) {
-                url += "name=" + this.name + "&";
+                url += "&name=" + this.name;
             }
 			if (this.season_id) {
-				url += "season_id=" + this.season_id + "&";
+				url += "&season_id=" + this.season_id;
 			}
-			url += "limit=30&";
-            url += "order_by=%5Bname,-season_id%5D&";
+			url += "&limit=30";
+            url += "&order_by=%5Bname,-season_id%5D";
+            url += "&fields=%5Bid%2Cinfo%2Cname%2Cseason_id%2Cseason%2Cshort_name%2Ctime_created%2Ctime_last_updated%5D";
 			return url;
 		},
 		//TODO: I should override parse if I want to filter team's returned from DB. e.g. this would be useful for
@@ -17119,12 +17123,12 @@ function(app, Backbone, Leaguevine, Navigation) {
             team.fetch();
 
 			var TeamPlayer = require("modules/teamplayer");
-			var teamplayers = new TeamPlayer.Collection([],{team_id: team.get("id")});
+			var teamplayers = new TeamPlayer.Collection([],{team_id: team.id});
 			teamplayers.fetch();
 			//team.set("teamplayers", teamplayers);
 			
 			var Game = require("modules/game");
-			var games = new Game.Collection([],{team_1_id: team.get("id")});
+			var games = new Game.Collection([],{team_1_id: team.id});
 			games.fetch();
 			//team.set("games", games);
 			
@@ -17206,7 +17210,7 @@ function(app, Backbone, Leaguevine, Navigation) {
             var team = this.model.toJSON();
             team.season_name = "";
             team.league_name = "";
-            if (team.season !== null) {
+            if (team.season !== null && _.has(team.season,"name")) {
                 team.season_name = team.season.name;
                 team.league_name = team.season.league.name;
             }
@@ -17378,13 +17382,13 @@ function(require, app, Backbone, Leaguevine) {
 	PlayerPerGameStats.Model = Backbone.Model.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
             game: {id: ""},
-            league: {},
+            //league: {},
             //player: {id: ""},
             player: {},
-            season: {},
+            //season: {},
             //team: {id: ""},
-            team: {},
-            tournament: {},
+            //team: {},
+            //tournament: {},
             player_id: "",
             callahans: "",
             completed_passes_thrown: "",
@@ -17392,8 +17396,8 @@ function(require, app, Backbone, Leaguevine) {
             defense_plus_minus: "",
             drops: "",
             ds: "",
-            goals_caught: "",
-            goals_thrown: "",
+            goals_caught: "",//*
+            goals_thrown: "",//*
             incomplete_passes_thrown: "",
             offense_plus_minus: "",
             passes_caught: "",
@@ -17420,13 +17424,16 @@ function(require, app, Backbone, Leaguevine) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
 			url += "/?";
             if (this.game_ids) {
-                url += "game_ids=[" + this.game_ids + "]&";
+                url += "game_ids=%5B" + this.game_ids + "%5D&";
             }
             if (this.player_ids) {
-                url += "player_ids[" + this.player_ids + "]&";
+                url += "player_ids%5B" + this.player_ids + "%5D&";
             }
 			url += "limit=30&";
-            url += "order_by=[-points_played, -goals_caught, -goals_thrown]";
+            url += "order_by=%5B-points_played,-goals_caught,-goals_thrown%5D";
+            url += "&fields=%5Bplayer%2Cplayer_id%2Ccallahans%2Ccompleted_passes_thrown%2Ccompletion_percent%2Cdefense_plus_minus";
+            url += "%2Cdrops%2Cds%2Cgoals_caught%2Cgoals_thrown%2Cincomplete_passes_thrown%2Coffense_plus_minus%2Cpasses_caught";
+            url += "%2Cpasses_thrown%2Cpicked_up_disc%2Cplus_minus%2Cpoints_played%2Cpulls%2Cthrowaways%2Cturnovers%2Cteam_id%5D";
 			return url;
 		},
 		comparator: function(stat_line) {// Define how items in the collection will be sorted.
@@ -17450,7 +17457,9 @@ function(require, app, Backbone, Leaguevine) {
 	PlayerPerGameStats.Views.PlayerStats = Backbone.View.extend({
 		template: "playerstats/per_game_stat_line",
 		tagName: "tr",
-		serialize: function() {return this.model.toJSON();}
+		serialize: function() {
+			return this.model.toJSON();
+		}
 	});
     PlayerPerGameStats.Views.BoxScore = Backbone.View.extend({
         /* Usage:
@@ -17495,7 +17504,7 @@ function(require, app, Backbone, Leaguevine) {
 			var view = layout(this);
 			//this.$el.empty()
 			// call .cleanup() on all child views, and remove all appended views
-			view.cleanup();
+			//view.cleanup();
 			this.collection.each(function(playerstats) {
 				this.insertView("table", new PlayerPerGameStats.Views.PlayerStats({
 					model: playerstats
@@ -17672,15 +17681,18 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 	Game.Model = Backbone.Model.extend({
 		defaults: {
 			//id: "",
-			team_1_score: "",
-			team_2_score: "",
-			start_time: "",
-			season: {},
+			season_id: undefined,
+			//season: {},
+			tournament_id: null,
 			tournament: {},
+			team_1_id: null,
+			team_1_score: null,
 			team_1: {name: ""},
-			team_2: {name: ""}
+			team_2_id: null,
+			team_2_score: null,
+			team_2: {name: ""},
+			start_time: ""
 			//pool, swiss_round, bracket
-            
 		},
 		sync: Backbone.WebSQLAjaxSync,
 		store: new Backbone.WebSQLStore("game"),
@@ -17740,6 +17752,8 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 				if (this.team_2_id){url += this.team_2_id;}
 				url += "%5D&";
 			}
+			//Can't specify fields until tournament_id works.
+			//url += "fields=%5Bid%2Cseason_id%2Cteam_1_id%2Cteam_1_score%2Cteam_1%2Cteam_2_id%2Cteam_2_score%2Cteam_2%2Cstart_time%2Ctime_created%2C%20time_last_updated%5D&";
 			return url.substr(0,url.length-1);
 		},
 		parse: function(resp, xhr) {
@@ -18010,7 +18024,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			start_date: "",
 			end_date: "",
 			info: "",
-			season: {},
+			//season: {},
 			tournteams: {},
 			games: {}
 		},
@@ -18045,6 +18059,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
             }
             url += "limit=30&";
             url += "order_by=%5Bname,-season_id%5D&";
+            url += "fields=%5Bid%2Cseason_id%2Cname%2Cstart_date%2Cend_date%2Cinfo%2Ctime_created%2C%20time_last_updated%5D&";
             return url;
         },
 		comparator: function(tournament) {
@@ -18256,7 +18271,9 @@ function(require, app, Backbone, Leaguevine) {
 		defaults: {// Include defaults for any attribute that will be rendered.
 			final_standing: "",
 			seed: "",
+			tournament_id: null,
 			tournament: {},
+			team_id: null,
 			team: {}
 		},
 		urlRoot: Leaguevine.API.root + "tournament_teams",
@@ -18288,6 +18305,7 @@ function(require, app, Backbone, Leaguevine) {
 			if (this.tournament_id) {
 				url += "tournament_ids=%5B" + this.tournament_id + "%5D&";
 			}
+			url += "fields=%5Bfinal_standing%2Cseed%2Ctournament_id%2Ctournament%2Cteam_id%2Cteam%2Ctime_created%2C%20time_last_updated%5D&";
 			return url.substr(0,url.length-1);
 		},
 		comparator: function(tournteam) {// Define how items in the collection will be sorted.
@@ -18708,19 +18726,19 @@ function(require, app, Backbone) {
 		
 		end_period: function(){
 			//the End Period button should be disabled if we are in an injury_to... but I will check for the state anywyay.
-			if (this.get("current_state")=="pulling" && !this.get("injury_to")) {
-				var ev_type = 94;
-				var last_per_num = this.get("period_number");
-				//The following line COULD be used for specific end of period types,
-				//except that non AUDL games would have "end of first" events instead of half-time events.
-				//if (last_per_num <=3){ev_type = ev_type + last_per_num;}
-				this.set("period_number", last_per_num+1);
-				this.start_period_pull();
-				
-				var this_event = this.create_event();
-				this_event.set({type: ev_type});
-				this.save_event(this_event);
-			} 
+			//if (this.get("current_state")=="pulling" && !this.get("injury_to")) {
+			var ev_type = 94;
+			var last_per_num = this.get("period_number");
+			//The following line COULD be used for specific end of period types,
+			//except that non AUDL games would have "end of first" events instead of half-time events.
+			//if (last_per_num <=3){ev_type = ev_type + last_per_num;}
+			this.set("period_number", last_per_num+1);
+			this.start_period_pull();
+			
+			var this_event = this.create_event();
+			this_event.set({type: ev_type});
+			this.save_event(this_event);
+			//}
 		},
 		
 		game_over: function(){
@@ -19299,7 +19317,8 @@ function(require, app, Backbone) {
 					action_string: ac_string,
 					per_num: this.model.get("period_number")
 				}).then(function(el) {
-					this.show_action_buttons();
+					this.model.set("showing_alternate",-1);//We should probably ALWAYS show the default buttons after an event or state change.
+					//this.show_action_buttons();
 					this.show_player_name();
 					this.model.setButtonHeight();
 			});
@@ -19345,7 +19364,7 @@ function(require, app, Backbone) {
 		unknown_turn: function(){this.model.immediate_event(30);},
 		timeout: function(){this.model.immediate_event(91);},
 		injury: function(){this.model.immediate_event(92);},
-		end_of_period: function(){this.model.end_of_period();}
+		end_of_period: function(){this.model.end_period();}
 	});
 	
 	TrackedGame.Views.RotateButton = Backbone.View.extend({
