@@ -75,9 +75,8 @@ function(app, Backbone, Leaguevine, Navigation) {
 		//TODO: I should override parse if I want to filter team's returned from DB. e.g. this would be useful for
 		//filtering results shown on the "Teams" page if a season is already set. Setting the season in "Settings" comes first.
 		comparator: function(team) {// Define how items in the collection will be sorted.
-			var team_obj = _.clone(team.attributes);
-			if (team_obj.season && team_obj.season.name) {return team_obj.name.toLowerCase() + team_obj.season.name.toLowerCase();}
-            else {return team_obj.name.toLowerCase();}
+			if (team.season && team.season.name) {return team.get("name").toLowerCase() + team.season.name.toLowerCase();}
+            else {return team.get("name").toLowerCase();}
 		},
 		initialize: function(models, options) {
 			if (options) {
@@ -190,10 +189,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
 			var filter_by = this.collection.name ? this.collection.name : "";
-                        var tap_method = this.options.tap_method;
-			//this.$el.empty()
-			// call .cleanup() on all child views, and remove all appended views
-			//view.cleanup();
+			var tap_method = this.options.tap_method;
 			this.collection.each(function(team) {//for each team in the collection.
 				//Do collection filtering here
 				if (!filter_by || team.get("name").toLowerCase().indexOf(filter_by.toLowerCase()) != -1) {

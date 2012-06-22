@@ -63,8 +63,9 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
                 game.start_time_string = start_time.getHours() + ":" + minutes + " " + start_time.toLocaleDateString();
             }
             
-            if (this.get("team_1") !== null && _.isFunction(this.get("team_1").get)) {game.team_1 = this.get("team_1").toJSON();}
-            if (this.get("team_2") !== null && _.isFunction(this.get("team_2").get)) {game.team_2 = this.get("team_2").toJSON();}
+            delete game.tournament;
+            delete game.team_1;
+            delete game.team_2;
 
             return game;
 		}
@@ -206,7 +207,16 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 	Game.Views.Item = Backbone.View.extend({
 		template: "games/item",
 		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul.
-		serialize: function() {return this.model.toJSON();} //render looks for this to manipulate model before passing to the template.
+		serialize: function() {
+			var game = this.model.toJSON();
+			if (this.model.get("team_1") !== null){
+				game.team_1 = _.isFunction(this.model.get("team_1").get) ? this.model.get("team_1").toJSON() : this.model.get("team_1");
+			}
+			if (this.model.get("team_1") !== null){
+				game.team_2 = _.isFunction(this.model.get("team_2").get) ? this.model.get("team_2").toJSON() : this.model.get("team_2");
+			}
+			return game;
+		} //render looks for this to manipulate model before passing to the template.
 	});
     Game.Views.Find = Backbone.View.extend({
         template: "games/find"
@@ -238,6 +248,15 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 		template: "games/detail",
 		render: function(layout) {
             var game = this.model.toJSON();
+            if (this.model.get("team_1") !== null){
+				game.team_1 = _.isFunction(this.model.get("team_1").get) ? this.model.get("team_1").toJSON() : this.model.get("team_1");
+			}
+			if (this.model.get("team_1") !== null){
+				game.team_2 = _.isFunction(this.model.get("team_2").get) ? this.model.get("team_2").toJSON() : this.model.get("team_2");
+			}
+			if (this.model.get("tournament") !== null){
+				game.tournament = _.isFunction(this.model.get("tournament").get) ? this.model.get("tournament").toJSON() : this.model.get("tournament");
+			} else {game.tournament = {name: ""};}
 			return layout(this).render(game);
 		},
 		initialize: function() {
@@ -338,7 +357,14 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 		},
 		deleteGame: function(ev) {},
 		serialize: function() {
-			return this.model.toJSON();
+			var game = this.model.toJSON();
+			if (this.model.get("team_1") !== null){
+				game.team_1 = _.isFunction(this.model.get("team_1").get) ? this.model.get("team_1").toJSON() : this.model.get("team_1");
+			}
+			if (this.model.get("team_1") !== null){
+				game.team_2 = _.isFunction(this.model.get("team_2").get) ? this.model.get("team_2").toJSON() : this.model.get("team_2");
+			}
+			return game;
 		}
 	});
 	return Game;// Required, return the module for AMD compliance

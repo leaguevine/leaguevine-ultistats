@@ -29,7 +29,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			last_name: "",
 			nickname: "",
 			weight: "",
-			teamplayers: {}//used to get to teams
+			teamplayers: {}//used to get to teams that this player belongs to.
 		},
 		sync: Backbone.WebSQLAjaxSync,
 		store: new Backbone.WebSQLStore("player"),
@@ -39,8 +39,9 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			return resp;
 		},
 		toJSON: function() {
-			//TODO: Remove attributes that are not stored (templayers)
-			return _.clone(this.attributes);
+			var player = _.clone(this.attributes);
+			delete player.teamplayers;
+			return player;
 		}
 	});
   
@@ -133,7 +134,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			var view = layout(this); //Get this view from the layout.
 			//this.$el.empty()
 			// call .cleanup() on all child views, and remove all appended views
-			view.cleanup();
+			// view.cleanup();
 			this.collection.each(function(player) {//for each player in the collection.
 				this.insertView("ul", new Player.Views.Item({//Inserts the player into the ul in the list template.
 					model: player//pass each player to a Item view instance.
@@ -155,7 +156,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 		render: function(layout) {
 			// The model has not yet been filled by the fetch process if it was fetched just now
 			// We need to update the view once the data have changed.
-			return layout(this).render(this.model.toJSON());
+			return layout(this).render(this.model.toJSON());//toJSON OK here.
 		},
 		initialize: function() {
 			this.model.bind("change", function() {

@@ -60,7 +60,11 @@ function(require, app, Backbone, Leaguevine, Stats) {
 			obj = _.clone(this.attributes);
             comp_percent_float = parseFloat(obj.completion_percent); //Convert to float
             obj.completion_percent = String(Math.round(comp_percent_float*10)/10); //Round to 1 decimal point
+            delete obj.team;
             return obj;
+		},
+		associations: {
+			"team_id": "team"
 		}
     });
     
@@ -106,7 +110,11 @@ function(require, app, Backbone, Leaguevine, Stats) {
 	TeamPerGameStats.Views.TeamStats = Backbone.View.extend({
 		template: "teamstats/per_game_stat_line",
 		tagName: "tr",
-		serialize: function() {return this.model.toJSON();}
+		serialize: function() {
+			var tpgs = this.model.toJSON();
+			tpgs.team = _.isFunction(this.model.get("team").get) ? this.model.get("team").toJSON() : this.model.get("team");
+			return tpgs;
+		}
 	});
     TeamPerGameStats.Views.BoxScore = Backbone.View.extend({
         /* Usage:
