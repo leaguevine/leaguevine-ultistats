@@ -156,6 +156,8 @@ function(require, app, Backbone) {
 			51: {is_turnover: true, toggle_screen: false, last_player_as: 1, play_string: "ran out of time while marked by", next_player_as: 2, next_state: "picking_up"},
 			80: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "stepped on the field"},
 			81: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "stepped off the field"},
+			82: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "bravely stepped on the field"},
+			83: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "limped off the field"},
 			91: {is_turnover: false, toggle_screen: false, play_string: "Timeout", next_state: "picking_up"},
 			92: {is_turnover: false, toggle_screen: true, play_string: "Injury timeout", next_state: "picking_up"},
 			94: {is_turnover: false, toggle_screen: true, play_string: "End of period", next_state: "pulling"},
@@ -232,6 +234,11 @@ function(require, app, Backbone) {
 			//save the event to the server.
 			this.save_event(this_event, this);
 			
+		},
+		
+		injury_to: function(){
+			this.set("injury_to", true);
+			this.immediate_event(92);
 		},
 		
 		end_period: function(){
@@ -353,6 +360,11 @@ function(require, app, Backbone) {
 				this.set("player_in_possession_id",event_meta.next_state == "receiving" ? event.get("player_" + event_meta.next_player_as + "_id"): NaN);
 			}
 			
+			//If the event is not an injury timeout event or an injury substitution event, then we need to make sure injury timeout is off.
+			if (event.get("type") !== 82 && event.get("type")!==83 && event.get("type")!==92){
+				this.set("injury_to", false);
+			}
+			
 			this.save();
 		},
 		
@@ -440,7 +452,7 @@ function(require, app, Backbone) {
 			//.gameevents
 			trackedgame.set("gameevents",
 				new GameEvent.Collection(trackedgame.get("gameevents"),{game_id: gameId}));
-			//trackedgame.get("gameevents").fetch(); //TODO: Fetch gameevents once the API only returns events created by this user.
+			//trackedgame.get("gameevents").fetch(); //TODO: Fetch gameevents once the API is capable of returning events created by the user.
 			
 			/*
 			* MODEL BINDINGS.
@@ -458,7 +470,7 @@ function(require, app, Backbone) {
 				}
 			});
 			
-			//I can't seem to setup the onfield and offfield fetches properly with loops so I will write it out manually.
+			//I can't seem to setup the onfield and offfield fetches properly with loops so I will write it out individually.
 			game.bind("change:team_1_id", function(){
 				var onf = trackedgame.get("onfield_1");
 				var offf = trackedgame.get("offfield_1");
@@ -873,7 +885,7 @@ function(require, app, Backbone) {
 		throwaway: function(){this.model.immediate_event(32);},
 		unknown_turn: function(){this.model.immediate_event(30);},
 		timeout: function(){this.model.immediate_event(91);},
-		injury: function(){this.model.immediate_event(92);},
+		injury: function(){this.model.injury_to();},
 		end_of_period: function(){this.model.end_period();}
 	});
 	

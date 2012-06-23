@@ -40,7 +40,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 		},
 		toJSON: function() {
 			var player = _.clone(this.attributes);
-			delete player.teamplayers;
+			//delete player.teamplayers;
 			return player;
 		}
 	});

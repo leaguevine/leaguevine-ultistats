@@ -36,8 +36,8 @@ function(require, app, Backbone, Leaguevine) {
 		toJSON: function() {
 			//TODO: Remove attributes that are not stored
 			var tp = _.clone(this.attributes);
-			delete tp.team;
-			delete tp.player;
+			//delete tp.team;
+			//delete tp.player;
 			return tp;
 		},
 		associations: {

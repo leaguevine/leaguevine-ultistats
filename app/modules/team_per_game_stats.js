@@ -60,7 +60,7 @@ function(require, app, Backbone, Leaguevine, Stats) {
 			obj = _.clone(this.attributes);
             comp_percent_float = parseFloat(obj.completion_percent); //Convert to float
             obj.completion_percent = String(Math.round(comp_percent_float*10)/10); //Round to 1 decimal point
-            delete obj.team;
+            //delete obj.team;
             return obj;
 		},
 		associations: {

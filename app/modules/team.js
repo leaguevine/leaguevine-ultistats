@@ -37,9 +37,9 @@ function(app, Backbone, Leaguevine, Navigation) {
 		},
 		toJSON: function() {
 			var temp = _.clone(this.attributes);
-			delete temp.teamplayers;
-			delete temp.games;
-			delete temp.season;
+			//delete temp.teamplayers;
+			//delete temp.games;
+			//delete temp.season;
 			return temp;
 		},
 		sync: Backbone.WebSQLAjaxSync,

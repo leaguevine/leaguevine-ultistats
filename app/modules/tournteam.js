@@ -37,8 +37,8 @@ function(require, app, Backbone, Leaguevine) {
 		},
 		toJSON: function() {
 			var tt = _.clone(this.attributes);
-			delete tt.team;
-			delete tt.tournament;
+			//delete tt.team;
+			//delete tt.tournament;
 			return tt;
 		},
 		associations: {

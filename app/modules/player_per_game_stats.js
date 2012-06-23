@@ -53,8 +53,8 @@ function(require, app, Backbone, Leaguevine) {
 		
 		toJSON: function(){
 			var ppgs = _.clone(this.attributes);
-			delete ppgs.game;
-			delete ppgs.player;
+			//delete ppgs.game;
+			//delete ppgs.player;
 			return ppgs;
 		}
 	});
