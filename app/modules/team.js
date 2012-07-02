@@ -248,7 +248,9 @@ function(app, Backbone, Leaguevine, Navigation) {
                 createGame: function(ev) {
                     Backbone.history.navigate("newgame/"+this.model.get("id"), true);
                 },
-		serialize: function() {return _.clone(this.model.attributes);},
+		serialize: function() {
+			return _.clone(this.model.attributes);
+		},
 		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
 	});
 	Team.Views.Multilist = Backbone.View.extend({

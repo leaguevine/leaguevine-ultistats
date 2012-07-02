@@ -65,7 +65,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
             
             game.team_1 = _.isFunction(this.get("team_1").get) ? this.get("team_1").toJSON() : this.get("team_1");
             game.team_2 = _.isFunction(this.get("team_2").get) ? this.get("team_2").toJSON() : this.get("team_2");
-            game.tournament = _.isFunction(this.get("tournament").get) ? this.get("tournament").toJSON() : this.get("tournament");
+            game.tournament = (this.get("tournament")!==null && _.isFunction(this.get("tournament").get)) ? this.get("tournament").toJSON() : this.get("tournament");
             
             //delete game.tournament;
             //delete game.team_1;

@@ -215,7 +215,7 @@ function(app, Backbone, Game) {
 		events: {
 			"keyup #object_search": "filterObjects"
 		},
-		search_results: _.extend({}, Backbone.Events),
+		//search_results: _.extend({}, Backbone.Events),
 		filterObjects: function(ev) {
 			var search_string = ev.currentTarget.value;
 			this.collection.name = search_string;
