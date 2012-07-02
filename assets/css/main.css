@@ -339,7 +339,7 @@ th, td {
 /* =============================================================================
    Sub navigation bars
    ========================================================================== */
-.list_children div.buttons {
+.content_2 div.buttons {
     background-color: #E2E5EB;
     border-bottom: 1px solid #c3c3c3;
     border-top: 1px solid #767676;
@@ -350,12 +350,12 @@ th, td {
     -moz-box-shadow: inset 0 1px 1px -1px #fff;
 }
 
-.list_children div.buttons table {
+.content_2 div.buttons table {
     padding-right: 10px;
     width: 100%;
 }
 
-.list_children button {
+.content_2 button {
     background-color: #FAFBFE;
     border: 1px solid #c3c3c3;
     color: #505C77;
@@ -371,8 +371,8 @@ th, td {
     -moz-box-shadow: inset 0 1px 1px -1px #fff;
 }
 
-    .list_children button.is_active,
-    .list_children button:active {
+    .content_2 button.is_active,
+    .content_2 button:active {
         border: 2px solid #8599c6;
         color: #424c62;
     }
