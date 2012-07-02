@@ -32,6 +32,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			resp = Backbone.Model.prototype.parse(resp);
 			return resp;
 		},
+		//If a tournament is saved to the API does it care about the teams and games?
 		toJSON: function() {//get rid of tournteams
 			return _.clone(this.attributes);
 		},

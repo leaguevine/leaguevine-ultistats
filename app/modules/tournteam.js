@@ -36,7 +36,14 @@ function(require, app, Backbone, Leaguevine) {
 			return resp;
 		},
 		toJSON: function() {
-			return _.clone(this.attributes);
+			var tt = _.clone(this.attributes);
+			//delete tt.team;
+			//delete tt.tournament;
+			return tt;
+		},
+		associations: {
+			"team_id": "team",
+			"tournament_id": "tournament"
 		}
 	});
 	TournTeam.Collection = Backbone.Collection.extend({

@@ -49,7 +49,14 @@ function(require, app, Backbone, Leaguevine) {
 		},
         idAttribute: "player_id", // The unique identifier in a collection is a player. A player who is on both
                                   // teams in the same game could cause problems here.
-		urlRoot: Leaguevine.API.root + "stats/ultimate/player_stats_per_game"
+		urlRoot: Leaguevine.API.root + "stats/ultimate/player_stats_per_game",
+		
+		toJSON: function(){
+			var ppgs = _.clone(this.attributes);
+			//delete ppgs.game;
+			//delete ppgs.player;
+			return ppgs;
+		}
 	});
 
 	//
@@ -96,7 +103,9 @@ function(require, app, Backbone, Leaguevine) {
 		template: "playerstats/per_game_stat_line",
 		tagName: "tr",
 		serialize: function() {
-			return this.model.toJSON();
+			var ppgs = this.model.toJSON();
+			ppgs.player = _.isFunction(this.model.get("player").get) ? this.model.get("player").toJSON() : this.model.get("player");
+			return ppgs;
 		}
 	});
     PlayerPerGameStats.Views.BoxScore = Backbone.View.extend({
@@ -107,7 +116,19 @@ function(require, app, Backbone, Leaguevine) {
          */
 		template: "playerstats/boxscore",
 		className: "playerstats-boxscore-wrapper",
-        serialize: function() {return this.options.game.toJSON();},
+        serialize: function() {//I think serialize is ignored if render is provided.
+        	var game = this.options.game.toJSON();
+        	if (this.options.game.get("team_1") !== null){
+				game.team_1 = _.isFunction(this.options.game.get("team_1").get) ? this.options.game.get("team_1").toJSON() : this.options.game.get("team_1");
+			}
+			if (this.options.game.get("team_1") !== null){
+				game.team_2 = _.isFunction(this.options.game.get("team_2").get) ? this.options.game.get("team_2").toJSON() : this.options.game.get("team_2");
+			}
+			if (this.options.game.get("tournament") !== null){
+				game.tournament = _.isFunction(this.options.game.get("tournament").get) ? this.options.game.get("tournament").toJSON() : this.options.game.get("tournament");
+			}
+        	return game;
+    	},
 		render: function(layout) {
 			var view = layout(this);
 			//this.$el.empty()

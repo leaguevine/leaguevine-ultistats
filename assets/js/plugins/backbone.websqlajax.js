@@ -285,9 +285,14 @@
 		},
 		request: function(callback) {
 			var _this = this;
-			return (callback()).then(function() {
-				return _this.requestNext();
-			});
+			//if (is_online()) {
+				return (callback()).then(function() {
+					return _this.requestNext();
+				});
+			//} else {
+				//this.requests.unshift(callback);
+				//return setTimeout(this.requestNext(),10000);
+			//}
 		},
 		queue: function(callback) {
 			if (!this.enabled) {

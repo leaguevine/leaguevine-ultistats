@@ -35,7 +35,14 @@ function(require, app, Backbone, Leaguevine) {
 		},
 		toJSON: function() {
 			//TODO: Remove attributes that are not stored
-			return _.clone(this.attributes);
+			var tp = _.clone(this.attributes);
+			//delete tp.team;
+			//delete tp.player;
+			return tp;
+		},
+		associations: {
+			"team_id": "team",
+			"player_id": "player"
 		}
 	});
 	//
@@ -114,7 +121,7 @@ function(require, app, Backbone, Leaguevine) {
 	TeamPlayer.Views.Player = Backbone.View.extend({
 		template: "teamplayers/player",
 		tagName: "li",
-		serialize: function() {return this.model.toJSON();}
+		serialize: function() {return _.clone(this.model.attributes);}
 	});
 	TeamPlayer.Views.PlayerList = Backbone.View.extend({
 		template: "teamplayers/playerlist",
@@ -141,7 +148,7 @@ function(require, app, Backbone, Leaguevine) {
 	TeamPlayer.Views.Team = Backbone.View.extend({
 		template: "teamplayers/team",
 		tagName: "li",
-		serialize: function() {return this.model.toJSON();}
+		serialize: function() {return _.clone(this.model.attributes);}
 	});
 	TeamPlayer.Views.TeamList = Backbone.View.extend({
 		template: "teamplayers/playerlist",
