@@ -21,7 +21,7 @@ function(require, app, Backbone, Navigation) {
 			"type": "Toggle Button",
 			"value": function() {return app.api.is_logged_in();},
 			//"value": false,
-			"toggle_prompt_ft": ["Logged Out","Logged In"]
+			"toggle_prompt_ft": ["Logged Out (click to login)","Logged In (click to logout)"]
 		},
 		{
 			"order": 2,
