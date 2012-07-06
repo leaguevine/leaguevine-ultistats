@@ -762,10 +762,7 @@ function(require, app, Backbone) {
 		//this.model = trackedgame; this.options.team_ix = 1 or 2
 		template: "trackedgame/teamplayer_area",
 		initialize: function() {
-			//Specific players should only be added or removed on the substitution screen.
-			var ix = this.options.team_ix;
-			this.onf = this.model.get("onfield_"+ix);
-			this.onf.bind("add", function() {
+			this.model.get("onfield_"+this.options.team_ix).bind("add remove", function() {
 				this.render().then(function(el) {
 					this.model.setButtonHeight();
 				});
@@ -779,14 +776,14 @@ function(require, app, Backbone) {
 			//this.$el.empty()
 			// call .cleanup() on all child views, and remove all appended views
 			//view.cleanup();
-			this.onf.each(function(tp) {
+			this.model.get("onfield_"+this.options.team_ix).each(function(tp) {
 				this.insertView("ul", new TrackedGame.Views.PlayerButton({
 					model: tp, trackedgame: _this.model
 				}));
 			}, this);
 			//insert unknown buttons for less than 8 players.
 			var TeamPlayer = require("modules/teamplayer");
-			for(var i=this.onf.length;i<8;i++){
+			for(var i=this.model.get("onfield_"+this.options.team_ix).length;i<8;i++){
 				this.insertView("ul", new TrackedGame.Views.PlayerButton({
 					model: new TeamPlayer.Model({player: {id:NaN, last_name:"unknown"}}),
 					trackedgame: _this.model
