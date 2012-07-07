@@ -271,6 +271,7 @@ function(require, app, Backbone) {
 			//Determine which collection we will be swapping TO.
 			var team_ix = collection.team_id == this.get("game").get("team_1_id") ? 1 : 2;
 			var was_off = collection == this.get("offfield_"+team_ix);
+			console.log("Not detected as offfield")
 			var new_model = model.clone();
 			var event_needs_saving = true;
 			var event_type = 80;
@@ -319,13 +320,43 @@ function(require, app, Backbone) {
 			//This is triggered when an event is successfully removed from the data store and then the events stack.
 			var last_event_meta = this.events_meta[model.get("type")];
 			
+			//undo substitution.
+			//We could simply remove the player from its current collection
+			//but this would also trigger the creation of an event.
+			if (model.get("type")>= 80 && model.get("type")<=83){
+				//Instead we need to remove the tp from its current collection with silent:true
+				//and then add the tp to the other collection
+				var mv_pl_id = model.get("player_1_id"); //moved tp player_id
+				var mv_tm_id = model.get("player_1_team_id"); //moved team id. Is this used?
+				var team_ix = mv_tm_id == this.get("game").get("team_1_id") ? 1 : 2; //team index, 1 or 2
+				var off_coll = this.get("offfield_"+team_ix);
+				var on_coll = this.get("onfield_"+team_ix);
+				var mv_pl = off_coll.where({player_id: mv_pl_id});//Find the tp model in the offfield tp
+				if (mv_pl.length>0){//if the player was offfield
+					mv_pl = mv_pl[0];//extract the tp from the offfield teamplayers that matched the player_id
+					off_coll.remove(mv_pl,{silent:true});
+					on_coll.add(mv_pl);//Do I need to clone mv_pl before adding to new coll?
+				} else {//if the player was onfield.
+					mv_pl = this.get("onfield_"+team_ix).where({player_id: mv_pl_id})[0];//extract the tp from onfield
+					on_coll.remove(mv_pl,{silent:true});
+					off_coll.add(mv_pl);//Do I need to clone mv_pl before adding to new coll?
+					on_coll.trigger("add");//Need to trigger onfield add to get the view to update.
+				}
+			}
+			
+			//undo score
+			if (model.get("type")== 22){
+				var team_ix = this.get("team_in_possession_ix");
+				var game_model = this.get("game");
+				var team_score_string = "team_" + team_ix + "_score";
+				var last_score = game_model.get(team_score_string);
+				var new_score = last_score - 1;
+				game_model.set(team_score_string,new_score);
+			}
+			
 			if (last_event_meta.is_turnover){
 				this.set("team_in_possession_ix",3-this.get("team_in_possession_ix"));
 			}
-			
-			//TODO: undo score
-			
-			//TODO: undo substitution.
 			
 			var event_coll = this.get("gameevents");
 			var remaining_event = event_coll.at(event_coll.length-1);
