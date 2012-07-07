@@ -323,6 +323,10 @@ function(require, app, Backbone) {
 				this.set("team_in_possession_ix",3-this.get("team_in_possession_ix"));
 			}
 			
+			//TODO: undo score
+			
+			//TODO: undo substitution.
+			
 			var event_coll = this.get("gameevents");
 			var remaining_event = event_coll.at(event_coll.length-1);
 			this.state_for_event(remaining_event);
@@ -358,6 +362,12 @@ function(require, app, Backbone) {
 			if (_.has(event_meta,"next_state")){
 				this.set("current_state",event_meta.next_state);
 				this.set("player_in_possession_id",event_meta.next_state == "receiving" ? event.get("player_" + event_meta.next_player_as + "_id"): NaN);
+			}
+			
+			//If the event is a sub off, and the substituting player had the disc, then make the next state picking up.
+			if ((event.get("type")==81 || event.get("type")==83) && event.get("player_1_id")==this.get("player_in_possession_id")){
+				this.set("current_state","picking_up");
+				this.set("player_in_possession_id",NaN);
 			}
 			
 			//If the event is not an injury timeout event or an injury substitution event, then we need to make sure injury timeout is off.
@@ -700,7 +710,9 @@ function(require, app, Backbone) {
 				if (lpix || npix){
 					var t1 = this.model.get("onfield_1").pluck("player");
 					var t2 = this.model.get("onfield_2").pluck("player");
-					players = _.union(t1,t2);
+					var t3 = this.model.get("offfield_1").pluck("player");
+					var t4 = this.model.get("offfield_2").pluck("player");
+					players = _.union(t1,t2,t3,t4);
 				}
 				if (lpix==1 || npix==1){
 					var pl1 = _.find(players, function(pl_obj){return pl_obj.id == last_event.get("player_1_id");});
