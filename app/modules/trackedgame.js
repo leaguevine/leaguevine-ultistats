@@ -482,8 +482,8 @@ function(require, app, Backbone) {
 			
 			//.onfield and .offfield
 			for (var ix=1;ix<3;ix++) {//Setup offfield or onfield with data from localStorage (or empty)
-				trackedgame.set("offfield_"+ix, new TeamPlayer.Collection(trackedgame.get("offfield_"+ix)));
 				trackedgame.set("onfield_"+ix, new TeamPlayer.Collection(trackedgame.get("onfield_"+ix)));
+				trackedgame.set("offfield_"+ix, new TeamPlayer.Collection(trackedgame.get("offfield_"+ix)));
 			}
 			//Need team_x_id from game to fetch the rosters
 			trackedgame.get("game").bind("reset", function(){
@@ -491,8 +491,36 @@ function(require, app, Backbone) {
 					_.extend(trackedgame.get("offfield_"+xx),{team_id: trackedgame.get("game").get("team_"+xx+"_id")});
 					trackedgame.get("offfield_"+xx).fetch();
 					_.extend(trackedgame.get("onfield_"+xx),{team_id: trackedgame.get("game").get("team_"+xx+"_id")});
-					if (trackedgame.get("onfield_"+xx).length>0){trackedgame.get("onfield_"+xx).fetch();}
+					if (trackedgame.get("onfield_"+xx).length>0){
+						trackedgame.get("onfield_"+xx).fetch();
+					}
 				}
+			});
+			//Also fetch an empty collection to get all players from API. Then add new players to offfield.
+			//Binding shouldn't be done in a loop, so I need to do this twice.
+			trackedgame.get("game").bind("reset", function(){
+				var tp_off = new TeamPlayer.Collection([],{team_id: trackedgame.get("game").get("team_1_id")});
+				tp_off.fetch();
+				tp_off.bind("reset", function(collection, options) {
+					var local_pl_ids = _.union(trackedgame.get("onfield_1").pluck("player_id"),trackedgame.get("offfield_1").pluck("player_id"));
+					var new_tps = _.reject(collection.models, function(tp){
+						return (_.indexOf(local_pl_ids, tp.get("player_id")) >= 0);
+					});
+					if (new_tps.length>0){
+						trackedgame.get("offfield_1").add(new_tps);
+					}
+				});
+				var tp_off2 = new TeamPlayer.Collection([],{team_id: trackedgame.get("game").get("team_2_id")});
+				tp_off2.fetch();
+				tp_off2.bind("reset", function(collection, options) {
+					var local_pl_ids2 = _.union(trackedgame.get("onfield_2").pluck("player_id"),trackedgame.get("offfield_2").pluck("player_id"));
+					var new_tps2 = _.reject(collection.models, function(tp){
+						return (_.indexOf(local_pl_ids2, tp.get("player_id")) >= 0);
+					});
+					if (new_tps2.length>0){
+						trackedgame.get("offfield_2").add(new_tps2);
+					}
+				});
 			});
 			
 			//.gameevents
