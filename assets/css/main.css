@@ -753,14 +753,14 @@ span.button_line_2 {
     margin-top: 15px;
 }
 
-.sub_team_1,
-.sub_team_2,
+.roster_1,
+.roster_2,
 .t_game {
     z-index: 5;
 }
 
 /* ----------------------- Substitutions ----------------- */
-.sub_team_header {
+.roster_team_header {
     border-bottom: 1px solid #c3c3c3;
     font-size: 15px;
     font-weight: bold;
@@ -769,39 +769,36 @@ span.button_line_2 {
     text-align: center;
     width: 100%;
 }
-.sub_team_name {
+.roster_team_name {
     padding: 5px;
 }
 
-.sub_off_field_wrapper,
-.sub_on_field_wrapper {
+.roster_wrapper {
     float: left;
     width: 50%;
 }
 
-.sub_on_field_title,
-.sub_off_field_title {
+.roster_title {
     padding: 5px;
 }
 
-.sub_off_field_area,
-.sub_on_field_area {
+.roster_area {
     text-align: center;
 }
 
-.sub_on_field_area button {
+.roster_area button {
     background: url(../img/icons/right_arrow_grey.png) 95% 50% no-repeat;
 }
 
-.sub_off_field_area button {
+.roster_area button {
     background: url(../img/icons/left_arrow_grey.png) 5% 50% no-repeat;
 }
 
-.sub_page_wrapper button {
+.roster_wrapper button {
     margin: 2px;
 }
 
-.sub_buttons_area {
+.roster_buttons_area {
     clear: both;
 }
 
