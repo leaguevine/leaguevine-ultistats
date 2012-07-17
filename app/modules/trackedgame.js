@@ -651,7 +651,7 @@ function(require, app, Backbone) {
 	TrackedGame.Views.MainSection = Backbone.View.extend({
 		//tagName: "div",
 		initialize: function(){
-			this.model.on("change:visible_screen", this.render, this);
+			this.model.on("change:visible_screen", this.render, this);//re-render when screens rotate.
 		},
 		render: function(manage){
 			var sc_ix = this.model.get("visible_screen");
@@ -714,11 +714,7 @@ function(require, app, Backbone) {
 		tagName: "li",
 		render: function(manage){
 			return manage(this).render(this.model.toJSON()).then(function(el){
-				if (this.options.trackedgame.get("field_status_"+this.options.team_ix)[this.model.get("player_id")]){
-					console.log("TODO: Change class/css to indicate this player is onfield.");
-				} else {
-					console.log("TODO: Change class/css to indicate this player is offfield.");
-				}
+				this.$el.toggleClass('onfield',this.options.trackedgame.get("field_status_"+this.options.team_ix)[this.model.get("player_id")]==1);
 			}, this);
 		},
 		events: {
@@ -738,6 +734,10 @@ function(require, app, Backbone) {
 	*/
 	TrackedGame.Views.GameAction = Backbone.View.extend({
 		//this.model = trackedgame
+		initialize: function() {
+			this.model.get("roster_1").on("reset", this.render, this);
+			this.model.get("roster_2").on("reset", this.render, this);
+		},
 		template: "trackedgame/game_action",
 		render: function(layout) {
 			var view = layout(this);

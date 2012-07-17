@@ -512,12 +512,15 @@ table.stats {
    Game Tracking
    ========================================================================== */
 .scoreboard {
-    height: 25px;
+	position: absolute;
+    height: 30px;
+    width: 80%;
+    right: 20%;
 }
     .scoreboard .name {
         float: left;
-        width: 34%;
-        height: 10px;
+        width: 35%;
+        height: 23px;
         padding: 5px;
         overflow: hidden;
         word-break: break-all;
@@ -530,11 +533,16 @@ table.stats {
 
     .scoreboard .score {
         float: left;
-        width: 12%;
+        width: 13%;
         padding-top: 5px;
         padding-bottom: 5px;
         text-align: center;
     }
+    
+    .scoreboard .score_area {
+	    height: 30px;
+	    border-bottom: 1px solid #c3c3c3;
+	}
 
 .last_action_label {
     clear: both;
@@ -550,12 +558,6 @@ table.stats {
     text-align: center;
     color: #767676;
 }
-
-    .scoreboard .score_area {
-        height: 23px;
-        border-bottom: 1px solid #c3c3c3;
-    }
-
 
 .extra_actions,
 .player_area {
@@ -588,7 +590,6 @@ table.stats {
 .track {
     height: 100%;
     display: block;
-    position: relative;
     height:auto;
     top:0;
     left:0;
@@ -716,6 +717,8 @@ table.stats {
 
     .rotate_screen button.rotate{
         margin-bottom: 10px;
+        float: right;
+        width: 20%;
     }
 
 span.button_line_1,
@@ -775,7 +778,7 @@ span.button_line_2 {
 
 .roster_wrapper {
     float: left;
-    width: 50%;
+    width: 100%;
 }
 
 .roster_title {
@@ -786,12 +789,14 @@ span.button_line_2 {
     text-align: center;
 }
 
-.roster_area button {
+.roster_area .onfield button{
     background: url(../img/icons/right_arrow_grey.png) 95% 50% no-repeat;
+    border-style: solid;
 }
 
 .roster_area button {
     background: url(../img/icons/left_arrow_grey.png) 5% 50% no-repeat;
+    border-style: dashed;
 }
 
 .roster_wrapper button {
