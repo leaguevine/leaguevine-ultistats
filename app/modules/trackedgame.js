@@ -282,6 +282,27 @@ function(require, app, Backbone) {
 			if (event_needs_saving) {this.save_event(this_event);}
 		},
 		
+		field_status_events: function(){
+			var sc_ix = this.get("visible_screen");//0 is roster1, 1 is roster2, 2 is action
+			if (sc_ix>0){//If the new screen is roster2 or action.
+				var old_game = JSON.parse(localStorage.getItem("trackedGame"));
+				var old_status = old_game && old_game["field_status_"+sc_ix];
+				var tm_id = this.get("game").get("team_"+sc_ix+"_id");
+				var new_status = this.get("field_status_"+sc_ix);
+				_.each(new_status, function (value, key, list){
+					//console.log(key + " " + value);
+					if ((old_status===null && value==1) || (old_status && old_status[key]!=value)){
+						var event_type = 80;
+						if (value==0){event_type = event_type + 1;}
+						if (this.get("injury_to")){event_type = event_type + 2;}
+						var this_event = this.create_event();
+						this_event.set({type: event_type, player_1_id: key, player_1_team_id: tm_id});
+						this.save_event(this_event);
+					}
+				}, this);
+			}
+		},
+		
 		save_event: function(event) {
 			var trackedgame=this;
 			$.when(event.save()).then(function(){
@@ -423,8 +444,8 @@ function(require, app, Backbone) {
 			"track/:gameId": "trackGame"
 		},
 		trackGame: function (gameId) {
-            if (!app.api.is_logged_in()) {//Ensure that the user is logged in
-                app.api.login();
+            if (!app.api.d_token()) {//Ensure that the user is logged in
+                //app.api.login();
                 return;
             }
             
@@ -518,22 +539,16 @@ function(require, app, Backbone) {
 				}
 			});
 			
-			trackedgame.on("change:field_status_1", function(model, x, options) {
-				console.log("TODO: Create events for substitutions when the field_status_1 changes.");
-			});
-			trackedgame.on("change:field_status_2", function(model, x, options) {
-				console.log("TODO: Create events for substitutions when the field_status_2 changes.");
-			});
-			
+			trackedgame.on("change:visible_screen", trackedgame.field_status_events);
 			trackedgame.get("roster_1").on("reset", function(collection, options){
-				var status_1 = trackedgame.get("field_status_1");
+				var status_1 = _.clone(trackedgame.get("field_status_1"));
 				_.each(collection.models, function(tp, index, list){
 					if (status_1[tp.get("player_id")]===undefined){status_1[tp.get("player_id")] = 0;} 
 				}, this);
 				trackedgame.set("field_status_1", status_1, {silent:true});
 			}, this);
 			trackedgame.get("roster_2").on("reset", function(collection, options){
-				var status_2 = trackedgame.get("field_status_2");
+				var status_2 = _.clone(trackedgame.get("field_status_2"));
 				_.each(collection.models, function(tp, index, list){
 					if (status_2[tp.get("player_id")]===undefined){status_2[tp.get("player_id")] = 0;} 
 				}, this);
@@ -658,7 +673,6 @@ function(require, app, Backbone) {
 		//passed this.model = trackedgame, and this.options.team_ix is the index of the team this view is used for.
 		template: "trackedgame/roster",
 		initialize: function() {
-			this.model.on("change:visible_screen", this.render, this);
 			this.model.get("game").on("reset", this.render, this);
 		},
 		render: function(manage) {
@@ -701,9 +715,9 @@ function(require, app, Backbone) {
 		render: function(manage){
 			return manage(this).render(this.model.toJSON()).then(function(el){
 				if (this.options.trackedgame.get("field_status_"+this.options.team_ix)[this.model.get("player_id")]){
-					//console.log("TODO: Do something to indicate this player is onfield.");
+					console.log("TODO: Change class/css to indicate this player is onfield.");
 				} else {
-					//console.log("TODO: Do something to indicate this player is offfield.");
+					console.log("TODO: Change class/css to indicate this player is offfield.");
 				}
 			}, this);
 		},
@@ -713,7 +727,8 @@ function(require, app, Backbone) {
 		toggle_me: function(ev) {
 			var my_status = this.options.trackedgame.get("field_status_"+this.options.team_ix);
 			my_status[this.model.get("player_id")] = 1 - my_status[this.model.get("player_id")];
-			this.options.trackedgame.set("field_status_"+this.options.team_ix, my_status);
+			//this.options.trackedgame.set("field_status_"+this.options.team_ix, my_status);
+			//this.options.trackedgame.trigger("change:field_status_"+this.options.team_ix, this.model, this.options.team_ix);
 			this.render();
 		}
 	});

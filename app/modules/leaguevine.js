@@ -113,7 +113,7 @@ function(app, Backbone) {
                 _.extend(this,stored_api);
             }
             if (!this.token) {
-                this.login();
+                return this.login();
             }
             else {
                 return this.token;
