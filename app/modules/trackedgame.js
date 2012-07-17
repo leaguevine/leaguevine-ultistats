@@ -257,31 +257,6 @@ function(require, app, Backbone) {
 			Backbone.history.navigate("games/"+this.get("game").id, true);
 		},
 		
-		add_removed_player_to_other_collection: function(model, collection, options){
-			//Determine which collection we will be swapping TO.
-			var team_ix = collection.team_id == this.get("game").get("team_1_id") ? 1 : 2;
-			var was_off = collection == this.get("offfield_"+team_ix);
-			var new_model = model.clone();
-			var event_needs_saving = true;
-			var event_type = 80;
-			if (was_off) {
-				//If onfield has < 7, add it, otherwise add it back to offield
-				if (this.get("onfield_"+team_ix).length<7){
-					this.get("onfield_"+team_ix).add(new_model);
-				} else {
-					this.get("offfield_"+team_ix).add(new_model);
-                    event_needs_saving = false;
-				}
-			} else {
-				event_type=event_type+1;
-				this.get("offfield_"+team_ix).add(new_model);
-			}
-			if (this.get("injury_to")){event_type = event_type + 2;}
-			var this_event = this.create_event();
-			this_event.set({type: event_type, player_1_id: model.get("player_id"), player_1_team_id: model.get("team_id")});
-			if (event_needs_saving) {this.save_event(this_event);}
-		},
-		
 		field_status_events: function(){
 			var sc_ix = this.get("visible_screen");//0 is roster1, 1 is roster2, 2 is action
 			if (sc_ix>0){//If the new screen is roster2 or action.
@@ -331,27 +306,15 @@ function(require, app, Backbone) {
 			var last_event_meta = this.events_meta[model.get("type")];
 			
 			//undo substitution.
-			//We could simply remove the player from its current collection
-			//but this would also trigger the creation of an event.
 			if (model.get("type")>= 80 && model.get("type")<=83){
 				//Instead we need to remove the tp from its current collection with silent:true
 				//and then add the tp to the other collection
 				var mv_pl_id = model.get("player_1_id"); //moved tp player_id
 				var mv_tm_id = model.get("player_1_team_id"); //moved team id. Is this used?
 				var team_ix = mv_tm_id == this.get("game").get("team_1_id") ? 1 : 2; //team index, 1 or 2
-				var off_coll = this.get("offfield_"+team_ix);
-				var on_coll = this.get("onfield_"+team_ix);
-				var mv_pl = off_coll.where({player_id: mv_pl_id});//Find the tp model in the offfield tp
-				if (mv_pl.length>0){//if the player was offfield
-					mv_pl = mv_pl[0];//extract the tp from the offfield teamplayers that matched the player_id
-					off_coll.remove(mv_pl,{silent:true});
-					on_coll.add(mv_pl);//Do I need to clone mv_pl before adding to new coll?
-				} else {//if the player was onfield.
-					mv_pl = this.get("onfield_"+team_ix).where({player_id: mv_pl_id})[0];//extract the tp from onfield
-					on_coll.remove(mv_pl,{silent:true});
-					off_coll.add(mv_pl);//Do I need to clone mv_pl before adding to new coll?
-					on_coll.trigger("add");//Need to trigger onfield add to get the view to update.
-				}
+				var my_status = this.get("field_status_"+team_ix);
+				my_status[mv_pl_id] = 1 - my_status[mv_pl_id];
+				this.trigger("change:field_status_"+team_ix);//So the view gets updated.
 			}
 			
 			//undo score
@@ -503,23 +466,6 @@ function(require, app, Backbone) {
 				}
 			});
 			
-			/*
-			//.onfield and .offfield
-			for (var ix=1;ix<3;ix++) {//Setup offfield or onfield with data from localStorage (or empty)
-				trackedgame.set("offfield_"+ix, new TeamPlayer.Collection(trackedgame.get("offfield_"+ix)));
-				trackedgame.set("onfield_"+ix, new TeamPlayer.Collection(trackedgame.get("onfield_"+ix)));
-			}
-			//Need team_x_id from game to fetch the rosters
-			trackedgame.get("game").on("reset", function(){
-				for (var xx=1;xx<3;xx++){
-					_.extend(trackedgame.get("offfield_"+xx),{team_id: trackedgame.get("game").get("team_"+xx+"_id")});
-					trackedgame.get("offfield_"+xx).fetch();
-					_.extend(trackedgame.get("onfield_"+xx),{team_id: trackedgame.get("game").get("team_"+xx+"_id")});
-					if (trackedgame.get("onfield_"+xx).length>0){trackedgame.get("onfield_"+xx).fetch();}
-				}
-			});
-			*/
-			
 			//.gameevents
 			trackedgame.set("gameevents",
 				new GameEvent.Collection(trackedgame.get("gameevents"),{game_id: gameId}));
@@ -554,13 +500,6 @@ function(require, app, Backbone) {
 				}, this);
 				trackedgame.set("field_status_2", status_2, {silent:true});
 			}, this);
-			
-			/*
-			trackedgame.get("offfield_1").on("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
-			trackedgame.get("onfield_1").on("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
-			trackedgame.get("offfield_2").on("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
-			trackedgame.get("onfield_2").on("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
-			*/
 			
 			/*
 			* SET UP THE VIEWS
@@ -818,8 +757,6 @@ function(require, app, Backbone) {
 				//Need to pass the full trackedgame to the children views because we need to bind to its attributes that are not yet backbone model's'
 				".player_area_1": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix: 1}),
 				".player_area_2": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix: 2})
-				//".player_area_1": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get("onfield_1"), model: this.model.get("game").get("team_1"), trackedgame: this.model}),
-				//".player_area_2": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get("onfield_2"), model: this.model.get("game").get("team_2"), trackedgame: this.model})
 			});
 			return view.render({
 				//player_prompt: this.model.player_prompt_strings[this.model.get("current_state")]
@@ -838,6 +775,7 @@ function(require, app, Backbone) {
 		template: "trackedgame/teamplayer_area",
 		initialize: function() {
 			this.model.get("game").on("change:team_"+this.options.team_ix, this.render, this);//Team name will update when returned from db.
+			this.model.on("change:field_status_"+this.options.team_ix, this.render, this);//Change displayed player buttons
 		},
 		render: function(manage) {
 			var my_status = this.model.get("field_status_"+this.options.team_ix);
@@ -899,7 +837,7 @@ function(require, app, Backbone) {
 			var pl_id = this.model.get("player_in_possession_id");
 			var team_ix = this.model.get("team_in_possession_ix");
 			if (pl_id){
-				var pl_model = _.find(this.model.get("onfield_" + team_ix).pluck("player"), function(pl_obj){return pl_obj.id == pl_id;});
+				var pl_model = _.find(this.model.get("roster_" + team_ix).pluck("player"), function(pl_obj){return pl_obj.id == pl_id;});
                 if (pl_model !== undefined) {
 					pl_string = pl_model.first_name[0] + ". " + pl_model.last_name + " ";
 					ac_string = "throws a:";
