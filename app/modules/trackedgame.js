@@ -285,7 +285,7 @@ function(require, app, Backbone) {
 		field_status_events: function(){
 			var sc_ix = this.get("visible_screen");//0 is roster1, 1 is roster2, 2 is action
 			if (sc_ix>0){//If the new screen is roster2 or action.
-				var old_game = JSON.parse(localStorage.getItem("trackedGame"));
+				var old_game = JSON.parse(localStorage.getItem("trackedGame-"+this.get("game").id));
 				var old_status = old_game && old_game["field_status_"+sc_ix];
 				var tm_id = this.get("game").get("team_"+sc_ix+"_id");
 				var new_status = this.get("field_status_"+sc_ix);
@@ -728,7 +728,7 @@ function(require, app, Backbone) {
 			var my_status = this.options.trackedgame.get("field_status_"+this.options.team_ix);
 			my_status[this.model.get("player_id")] = 1 - my_status[this.model.get("player_id")];
 			//this.options.trackedgame.set("field_status_"+this.options.team_ix, my_status);
-			//this.options.trackedgame.trigger("change:field_status_"+this.options.team_ix, this.model, this.options.team_ix);
+			this.options.trackedgame.trigger("change:field_status_"+this.options.team_ix);
 			this.render();
 		}
 	});
@@ -837,7 +837,6 @@ function(require, app, Backbone) {
 		//this.model = trackedgame; this.options.team_ix = 1 or 2
 		template: "trackedgame/teamplayer_area",
 		initialize: function() {
-			this.model.on("change:field_status_"+this.options.team_ix, this.render, this);//When the onfield status changes, redo which players are rendered.
 			this.model.get("game").on("change:team_"+this.options.team_ix, this.render, this);//Team name will update when returned from db.
 		},
 		render: function(manage) {
