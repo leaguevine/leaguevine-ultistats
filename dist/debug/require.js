@@ -316,99 +316,99 @@ var requirejs, require, define;
 this['JST'] = this['JST'] || {};
 
 this['JST']['app/templates/games/detail.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="game_detail">\r\n    <div id="team1">\r\n        <div id="team1_name"><a href="/teams/', team_1.id ,'">', team_1.name ,'</a></div>\r\n        <div id="team1_score"><span>', team_1_score ,'</span></div>\r\n    </div>\r\n    <div id="team2">\r\n        <div id="team2_name"><a href="/teams/', team_2.id ,'">', team_2.name ,'</a></div>\r\n        <div id="team2_score"><span>', team_2_score ,'</span></div>\r\n    </div>\r\n    <div class="start_time">\r\n        <span>', start_time_string ,'</span>\r\n    </div>\r\n    <div class="game_tournament">\r\n        <span>'); if (tournament) { ;__p.push('', tournament.name ,''); } ;__p.push('</span>\r\n    </div>\r\n    <div>\r\n        <form action="/track/', id ,'">\r\n            <button class="button btrack_game">Take Stats</button>\r\n        </form>\r\n    </div>\r\n</div>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="game_detail">\n    <div id="team1">\n        <div id="team1_name"><a href="/teams/', team_1.id ,'">', team_1.name ,'</a></div>\n        <div id="team1_score"><span>', team_1_score ,'</span></div>\n    </div>\n    <div id="team2">\n        <div id="team2_name"><a href="/teams/', team_2.id ,'">', team_2.name ,'</a></div>\n        <div id="team2_score"><span>', team_2_score ,'</span></div>\n    </div>\n    <div class="start_time">\n        <span>', start_time_string ,'</span>\n    </div>\n    <div class="game_tournament">\n        <span>'); if (tournament) { ;__p.push('', tournament.name ,''); } ;__p.push('</span>\n    </div>\n    <div>\n        <form action="/track/', id ,'">\n            <button class="button btrack_game">Take Stats</button>\n        </form>\n    </div>\n</div>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/games/edit.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="edit_area"></section>\r\n<section class="team_search_list"></section>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="edit_area"></section>\n<section class="team_search_list"></section>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/games/edit_area.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<form>\r\n    <label>Team 1:</label>\r\n    <h3 id="team1_txt"><span>', team_1.name ,'</span></h3>\r\n    <label>Team 2:</label>\r\n    <h3 id="team2_txt"><span>', team_2.name ,'</span></h3>\r\n    <label>Start Time:</label>\r\n    <input type="text" id="start_time" name="start_time" value="', start_time ,'" />\r\n    <button class="save">Save</button>\r\n    <button class="delete">Delete</button>\r\n</form>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<form>\n    <label>Team 1:</label>\n    <h3 id="team1_txt"><span>', team_1.name ,'</span></h3>\n    <label>Team 2:</label>\n    <h3 id="team2_txt"><span>', team_2.name ,'</span></h3>\n    <label>Start Time:</label>\n    <input type="text" id="start_time" name="start_time" value="', start_time ,'" />\n    <button class="save">Save</button>\n    <button class="delete">Delete</button>\n</form>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/games/find.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="game_find_detail">\r\n    <form action="/teams">\r\n    <h2>Get started</h2>\r\n    <p>To get started, find or create your team.</p>\r\n        <button class="button">Find your team</button>\r\n    </form>\r\n    <form action="/tournaments">\r\n    <p>Or, search for your game by tournament</p>\r\n        <button class="button">Find your tournament</button>\r\n    </form>\r\n</div>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="game_find_detail">\n    <form action="/teams">\n    <h2>Get started</h2>\n    <p>To get started, find or create your team.</p>\n        <button class="button">Find your team</button>\n    </form>\n    <form action="/tournaments">\n    <p>Or, search for your game by tournament</p>\n        <button class="button">Find your tournament</button>\n    </form>\n</div>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/games/item.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<a class="game_list_item_link" href=\'/games/', id ,'\'>\r\n    <div class="game_list_team_name">'); if (team_1) { ;__p.push('', team_1.name ,''); } ;__p.push('</div>\r\n    <div class="game_list_icon_spacer">&nbsp</div>\r\n    <div class="game_list_team_score">', team_1_score ,'</div>\r\n    <div class="game_list_team_name">'); if (team_2) { ;__p.push('', team_2.name ,''); } ;__p.push('</div>\r\n    <div class="game_list_icon_spacer">&nbsp</div>\r\n    <div class="game_list_team_score">', team_2_score ,'</div>\r\n    <div class="game_list_start_time">', start_time_string ,'</div>\r\n</a>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<a class="game_list_item_link" href=\'/games/', id ,'\'>\n    <div class="game_list_team_name">'); if (team_1) { ;__p.push('', team_1.name ,''); } ;__p.push('</div>\n    <div class="game_list_icon_spacer">&nbsp</div>\n    <div class="game_list_team_score">', team_1_score ,'</div>\n    <div class="game_list_team_name">'); if (team_2) { ;__p.push('', team_2.name ,''); } ;__p.push('</div>\n    <div class="game_list_icon_spacer">&nbsp</div>\n    <div class="game_list_team_score">', team_2_score ,'</div>\n    <div class="game_list_start_time">', start_time_string ,'</div>\n</a>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/games/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="games-list obj-list"></ul>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="games-list obj-list"></ul>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/games/multilist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\r\n    <table>\r\n        <tr>\r\n            <td>\r\n                <button class="button bplayer_stats is_active">Player Stats</button>\r\n            </td>\r\n            <td>\r\n                <button class="button bteam_stats">Team Stats</button>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n<div class="list lteam_stats"></div>\r\n<div class="list lplayer_stats"></div>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\n    <table>\n        <tr>\n            <td>\n                <button class="button bplayer_stats is_active">Player Stats</button>\n            </td>\n            <td>\n                <button class="button bteam_stats">Team Stats</button>\n            </td>\n        </tr>\n    </table>\n</div>\n<div class="list lteam_stats"></div>\n<div class="list lplayer_stats"></div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/layouts/div.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div></div>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div></div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/layouts/main.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="navbar clearfix"></section>\r\n<section class="titlebar clearfix"></section>\r\n<section class="content_1 clearfix"></section>\r\n<section class="content_2 clearfix"></section>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="navbar clearfix"></section>\n<section class="titlebar clearfix"></section>\n<section class="content_1 clearfix"></section>\n<section class="content_2 clearfix"></section>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/layouts/nav_content.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="navbar clearfix"></section>\r\n<section class="titlebar clearfix"></section>\r\n<section class="content clearfix"></section>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="navbar clearfix"></section>\n<section class="titlebar clearfix"></section>\n<section class="content clearfix"></section>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/layouts/nav_detail_list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="navbar clearfix"></section>\r\n<section class="titlebar clearfix"></section>\r\n<section class="detail clearfix"></section>\r\n<section class="list_children clearfix"></section>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="navbar clearfix"></section>\n<section class="titlebar clearfix"></section>\n<section class="detail clearfix"></section>\n<section class="list_children clearfix"></section>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/layouts/tracked_game.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="track substitution sub_team_1"></section>\r\n<section class="track substitution sub_team_2"></section>\r\n<section class="track t_game"></section>\r\n<section class="track rotate_screen"></section>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="track scoreboard"></section>\n<section class="track rotate_screen"></section>\n<section class="track main_section"></section>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/leaguevine/more_items.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push(''); if (num_items > 0) { ;__p.push('\r\n    <a id="more-items">\r\n        <div class="more-items-main-txt">Load ', num_items ,' More</div>\r\n        <div class="more-items-loading-txt">Loading...</div>\r\n    </a>\r\n'); } ;__p.push('\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push(''); if (num_items > 0) { ;__p.push('\n    <a id="more-items">\n        <div class="more-items-main-txt">Load ', num_items ,' More</div>\n        <div class="more-items-loading-txt">Loading...</div>\n    </a>\n'); } ;__p.push('\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/navigation/navbar.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="navbar-list">\r\n    <li>\r\n        <a href="', teams_href ,'" class="teams ', teams_class ,'">\r\n            Teams\r\n            <div>\r\n                <img '); if (teams_class == "currently_viewed") { ;__p.push('src="/assets/img/icons/teams_list_white.png"'); } else { ;__p.push('src="/assets/img/icons/teams_list.png"'); } ;__p.push('>\r\n            </div>\r\n        </a>\r\n    </li>\r\n    <li>\r\n        <a href="', tournaments_href ,'" class="tournaments ', tournaments_class ,'">\r\n            Tournaments\r\n            <div>\r\n                <img '); if (tournaments_class == "currently_viewed") { ;__p.push('src="/assets/img/icons/tournaments_icon_white.png"'); } else { ;__p.push('src="/assets/img/icons/tournaments_icon.png"'); } ;__p.push('>\r\n            </div>\r\n        </a>\r\n    </li>\r\n    <li>\r\n        <a href="', games_href ,'" class="games ', games_class ,'">\r\n            Games\r\n            <div>\r\n                <img '); if (games_class == "currently_viewed") { ;__p.push('src="/assets/img/icons/games_icon_white.png"'); } else { ;__p.push('src="/assets/img/icons/games_icon.png"'); } ;__p.push('>\r\n            </div>\r\n        </a>\r\n    </li>\r\n    <li>\r\n        <a href="', settings_href ,'" class="settings ', settings_class ,'">\r\n            Settings\r\n            <div>\r\n                <img '); if (settings_class == "currently_viewed") { ;__p.push('src="/assets/img/icons/settings_gear_white.png"'); } else { ;__p.push('src="/assets/img/icons/settings_gear.png"'); } ;__p.push('>\r\n            </div>\r\n        </a>\r\n    </li>\r\n</ul>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="navbar-list">\n    <li>\n        <a href="', teams_href ,'" class="teams ', teams_class ,'">\n            Teams\n            <div>\n                <img '); if (teams_class == "currently_viewed") { ;__p.push('src="/assets/img/icons/teams_list_white.png"'); } else { ;__p.push('src="/assets/img/icons/teams_list.png"'); } ;__p.push('>\n            </div>\n        </a>\n    </li>\n    <li>\n        <a href="', tournaments_href ,'" class="tournaments ', tournaments_class ,'">\n            Tournaments\n            <div>\n                <img '); if (tournaments_class == "currently_viewed") { ;__p.push('src="/assets/img/icons/tournaments_icon_white.png"'); } else { ;__p.push('src="/assets/img/icons/tournaments_icon.png"'); } ;__p.push('>\n            </div>\n        </a>\n    </li>\n    <li>\n        <a href="', games_href ,'" class="games ', games_class ,'">\n            Games\n            <div>\n                <img '); if (games_class == "currently_viewed") { ;__p.push('src="/assets/img/icons/games_icon_white.png"'); } else { ;__p.push('src="/assets/img/icons/games_icon.png"'); } ;__p.push('>\n            </div>\n        </a>\n    </li>\n    <li>\n        <a href="', settings_href ,'" class="settings ', settings_class ,'">\n            Settings\n            <div>\n                <img '); if (settings_class == "currently_viewed") { ;__p.push('src="/assets/img/icons/settings_gear_white.png"'); } else { ;__p.push('src="/assets/img/icons/settings_gear.png"'); } ;__p.push('>\n            </div>\n        </a>\n    </li>\n</ul>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/navigation/searchable_list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="search_bar_wrapper">\r\n\t<input type="text" class="search_bar" id="object_search" name="search" placeholder="Search for a ', search_object_name ,'" />\r\n</div>\r\n<section class="object_list_area clearfix"></section>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="search_bar_wrapper">\n\t<input type="text" class="search_bar" id="object_search" name="search" placeholder="Search for a ', search_object_name ,'" />\n</div>\n<section class="object_list_area clearfix"></section>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/navigation/titlebar.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="title_body">\r\n    <h1 id="title_txt"><span>', title ,'</span></h1>\r\n    <div id="title_left_btn" class="btn ', left_btn_class ,'">\r\n        <div id="title_left_pointer"><span></span></div>\r\n        <a href="', left_btn_href ,'">\r\n            <span></span>\r\n            <p>', left_btn_txt ,'</p>\r\n        </a>\r\n    </div>\r\n    <div id="title_right_btn" class="btn ', right_btn_class ,'">\r\n        <a href="', right_btn_href ,'">\r\n            <span>&nbsp</span>\r\n            <p>', right_btn_txt ,'</p>\r\n        </a>\r\n    </div>\r\n</div>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="title_body">\n    <h1 id="title_txt"><span>', title ,'</span></h1>\n    <div id="title_left_btn" class="btn ', left_btn_class ,'">\n        <div id="title_left_pointer"><span></span></div>\n        <a href="', left_btn_href ,'">\n            <span></span>\n            <p>', left_btn_txt ,'</p>\n        </a>\n    </div>\n    <div id="title_right_btn" class="btn ', right_btn_class ,'">\n        <a href="', right_btn_href ,'">\n            <span>&nbsp</span>\n            <p>', right_btn_txt ,'</p>\n        </a>\n    </div>\n</div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/players/detail.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<!--\r\n<ul>\r\n\t<li> DOB: ', birth_date ,'</li>\r\n\t<li> Height: ', height ,' cm</li>\r\n\t<li> Weight: ', weight ,' kg?</li>\r\n</ul>\r\n-->\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<!--\n<ul>\n\t<li> DOB: ', birth_date ,'</li>\n\t<li> Height: ', height ,' cm</li>\n\t<li> Weight: ', weight ,' kg?</li>\n</ul>\n-->\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/players/item.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<a href=\'/players/', id ,'\'>\r\n    ', number ,' \r\n    ', first_name ,' \r\n    '); if (nickname) { ;__p.push('"', nickname ,'"'); } ;__p.push('\r\n    ', last_name ,'\r\n</a>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<a href=\'/players/', id ,'\'>\n    ', number ,' \n    ', first_name ,' \n    '); if (nickname) { ;__p.push('"', nickname ,'"'); } ;__p.push('\n    ', last_name ,'\n</a>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/players/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="players-list obj-list"></ul>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="players-list obj-list"></ul>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/players/multilist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\r\n\t<button class="button bteams is_active">Teams</button>\r\n</div>\r\n<div class="list lteams"></div>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\n\t<button class="button bteams is_active">Teams</button>\n</div>\n<div class="list lteams"></div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/playerstats/boxscore.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="player_per_game_stats_1" class="playerstats_list stats">\r\n    <tr class="table_name">\r\n        <td colspan=8 width="100%" >', team_1.name ,'</td>\r\n    </tr>\r\n    <tr class="column_headers">\r\n        <th width="40%" class="table_first_item">\r\n            PLAYER\r\n        </th>\r\n        <th width="12%">\r\n            COMP\r\n        </th>\r\n        <th width="8%">\r\n            PT\r\n        </th>\r\n        <th width="8%">\r\n            AST\r\n        </th>\r\n        <th width="8%">\r\n            Ds\r\n        </th>\r\n        <th width="8%">\r\n            TO\r\n        </th>\r\n        <th width="8%">\r\n            +/-\r\n        </th>\r\n        <th width="8%">\r\n            GLS\r\n        </th>\r\n    </th>\r\n</table>\r\n\r\n<table id="player_per_game_stats_2" class="playerstats_list stats">\r\n    <tr class="table_name">\r\n        <td colspan=8 width="100%" >', team_2.name ,'</td>\r\n    </tr>\r\n    <tr class="column_headers">\r\n        <th width="40%" class="table_first_item">\r\n            PLAYER\r\n        </th>\r\n        <th width="12%">\r\n            COMP\r\n        </th>\r\n        <th width="8%">\r\n            PT\r\n        </th>\r\n        <th width="8%">\r\n            AST\r\n        </th>\r\n        <th width="8%">\r\n            Ds\r\n        </th>\r\n        <th width="8%">\r\n            TO\r\n        </th>\r\n        <th width="8%">\r\n            +/-\r\n        </th>\r\n        <th width="8%">\r\n            GLS\r\n        </th>\r\n    </th>\r\n</table>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="player_per_game_stats_1" class="playerstats_list stats">\n    <tr class="table_name">\n        <td colspan=8 width="100%" >', team_1.name ,'</td>\n    </tr>\n    <tr class="column_headers">\n        <th width="40%" class="table_first_item">\n            PLAYER\n        </th>\n        <th width="12%">\n            COMP\n        </th>\n        <th width="8%">\n            PT\n        </th>\n        <th width="8%">\n            AST\n        </th>\n        <th width="8%">\n            Ds\n        </th>\n        <th width="8%">\n            TO\n        </th>\n        <th width="8%">\n            +/-\n        </th>\n        <th width="8%">\n            GLS\n        </th>\n    </th>\n</table>\n\n<table id="player_per_game_stats_2" class="playerstats_list stats">\n    <tr class="table_name">\n        <td colspan=8 width="100%" >', team_2.name ,'</td>\n    </tr>\n    <tr class="column_headers">\n        <th width="40%" class="table_first_item">\n            PLAYER\n        </th>\n        <th width="12%">\n            COMP\n        </th>\n        <th width="8%">\n            PT\n        </th>\n        <th width="8%">\n            AST\n        </th>\n        <th width="8%">\n            Ds\n        </th>\n        <th width="8%">\n            TO\n        </th>\n        <th width="8%">\n            +/-\n        </th>\n        <th width="8%">\n            GLS\n        </th>\n    </th>\n</table>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/playerstats/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table class="playerstats-list">\r\n    <tr>\r\n        <th width="60%">\r\n            Player\r\n        </th>\r\n        <th width="10%">\r\n            Goals\r\n        </th>\r\n        <th width="10%">\r\n            Assists\r\n        </th>\r\n        <th width="10%">\r\n            Ds\r\n        </th>\r\n        <th width="10%">\r\n            Turns\r\n        </th>\r\n    </th>\r\n</table>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table class="playerstats-list">\n    <tr>\n        <th width="60%">\n            Player\n        </th>\n        <th width="10%">\n            Goals\n        </th>\n        <th width="10%">\n            Assists\n        </th>\n        <th width="10%">\n            Ds\n        </th>\n        <th width="10%">\n            Turns\n        </th>\n    </th>\n</table>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/playerstats/per_game_stat_line.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td class="table_first_item">\r\n    <a href="players/', player.id ,'">', player.first_name ,' '); if (player.nickname) { ;__p.push('"'); } ;__p.push('', player.nickname ,''); if (player.nickname) { ;__p.push('"'); } ;__p.push(' ', player.last_name ,'</a>\r\n</td>\r\n<td>\r\n    ', completed_passes_thrown ,'/', passes_thrown ,'\r\n</td>\r\n<td>\r\n    ', points_played ,'\r\n</td>\r\n<td>\r\n    ', goals_thrown ,'\r\n</td>\r\n<td>\r\n    ', ds ,'\r\n</td>\r\n<td>\r\n    ', turnovers ,'\r\n</td>\r\n<td>\r\n    ', plus_minus ,'\r\n</td>\r\n<td>\r\n    ', goals_caught ,'\r\n</td>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td class="table_first_item">\n    <a href="players/', player.id ,'">', player.first_name ,' '); if (player.nickname) { ;__p.push('"'); } ;__p.push('', player.nickname ,''); if (player.nickname) { ;__p.push('"'); } ;__p.push(' ', player.last_name ,'</a>\n</td>\n<td>\n    ', completed_passes_thrown ,'/', passes_thrown ,'\n</td>\n<td>\n    ', points_played ,'\n</td>\n<td>\n    ', goals_thrown ,'\n</td>\n<td>\n    ', ds ,'\n</td>\n<td>\n    ', turnovers ,'\n</td>\n<td>\n    ', plus_minus ,'\n</td>\n<td>\n    ', goals_caught ,'\n</td>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/settings/detail.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push(''); if (logged_in) { ;__p.push('\r\n<div id="logout_area">\r\n    <h2>You are logged in</h2>\r\n    <button id="logout" href="#">Log out</button>\r\n</div>\r\n'); } else { ;__p.push('\r\n<div id="logout_area">\r\n    <h2>Please log in</h2>\r\n    <button id="login" href="#">Log in</button>\r\n</div>\r\n'); } ;__p.push('\r\n<div id="battery_usage_area">\r\n    <h2>Set battery usage</h2>\r\n    <p>Sorry, this feature is not available at this time.</p>\r\n</div>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push(''); if (logged_in) { ;__p.push('\n<div id="logout_area">\n    <h2>You are logged in</h2>\n    <button id="logout" href="#">Log out</button>\n</div>\n'); } else { ;__p.push('\n<div id="logout_area">\n    <h2>Please log in</h2>\n    <button id="login" href="#">Log in</button>\n</div>\n'); } ;__p.push('\n<div id="battery_usage_area">\n    <h2>Set battery usage</h2>\n    <p>Sorry, this feature is not available at this time.</p>\n</div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/settings/list.html'] = function(data) { return function (obj,_) {
@@ -424,11 +424,11 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/teamplayers/player.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<a class="team_player_list_link" href=\'players/', player.id ,'\'>\r\n    <span class="team_player_list_number">', number ,'</span>\r\n    <span class="team_player_list_name">\r\n        ', player.first_name ,' \r\n        '); if (player.nickname) { ;__p.push('"'); } ;__p.push('', player.nickname ,''); if (player.nickname) { ;__p.push('"'); } ;__p.push(' \r\n        ', player.last_name ,'\r\n    </span>\r\n</a>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<a class="team_player_list_link" href=\'players/', player.id ,'\'>\n    <span class="team_player_list_number">', number ,'</span>\n    <span class="team_player_list_name">\n        ', player.first_name ,' \n        '); if (player.nickname) { ;__p.push('"'); } ;__p.push('', player.nickname ,''); if (player.nickname) { ;__p.push('"'); } ;__p.push(' \n        ', player.last_name ,'\n    </span>\n</a>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teamplayers/playerlist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="players-list obj-list"></ul>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="players-list obj-list"></ul>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teamplayers/team.html'] = function(data) { return function (obj,_) {
@@ -436,39 +436,39 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/teamplayers/teamlist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="teams-list"></ul>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="teams-list"></ul>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teams/detail.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div>', info ,'</div>\r\n<div>\r\n\r\n    <!--\r\n    <form>\r\n        <button class="button bcreategame">Create a Game</button>\r\n    </form>\r\n    -->\r\n\r\n</div>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div>', info ,'</div>\n<div>\n\n    <!--\n    <form>\n        <button class="button bcreategame">Create a Game</button>\n    </form>\n    -->\n\n</div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teams/edit.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<form>\r\n    <label>Name:</label>\r\n    <input type="text" id="name" name="name" value="', name ,'" required/>\r\n    <label>Info:</label>\r\n    <input type="text" id="info" name="info" value="', info ,'" />\r\n</form>\r\n<button class="save">Save</button>\r\n<button class="delete">Delete</button>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<form>\n    <label>Name:</label>\n    <input type="text" id="name" name="name" value="', name ,'" required/>\n    <label>Info:</label>\n    <input type="text" id="info" name="info" value="', info ,'" />\n</form>\n<button class="save">Save</button>\n<button class="delete">Delete</button>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teams/item.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<a class="teams_list_item_link">\r\n    <div class="teams_list_team_name">', name ,'</div>\r\n    <div class="teams_list_season_name">\r\n        ', season_name ,' ', league_name ,'\r\n    </div>\r\n</a>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<a class="teams_list_item_link">\n    <div class="teams_list_team_name">', name ,'</div>\n    <div class="teams_list_season_name">\n        ', season_name ,' ', league_name ,'\n    </div>\n</a>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teams/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="team-list obj-list"></ul>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="team-list obj-list"></ul>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teams/multilist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\r\n    <table>\r\n        <tr>\r\n            <td>\r\n                <button class="button bgames is_active">Games</button>\r\n            </td>\r\n            <td>\r\n                <button class="button bplayers">Players</button>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n<div class="list lgames"></div>\r\n<div class="list lplayers"></div>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\n    <table>\n        <tr>\n            <td>\n                <button class="button bgames is_active">Games</button>\n            </td>\n            <td>\n                <button class="button bplayers">Players</button>\n            </td>\n        </tr>\n    </table>\n</div>\n<div class="list lgames"></div>\n<div class="list lplayers"></div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teamstats/boxscore.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="team_per_game_stats" class="teamstats_list stats">\r\n    <tr class="table_name">\r\n        <td colspan=8 width="100%" >Team Stats</td>\r\n    </tr>\r\n    <tr class="column_headers">\r\n        <th width="40%" class="table_first_item">\r\n            TEAM\r\n        </th>\r\n        <th width="14%">\r\n            COMP\r\n        </th>\r\n        <th width="14%">\r\n            COMP%\r\n        </th>\r\n        <th width="8">\r\n            Ds\r\n        </th>\r\n        <th width="8%">\r\n            DRP\r\n        </th>\r\n        <th width="8%">\r\n            TA\r\n        </th>\r\n        <th width="8%">\r\n            TO\r\n        </th>\r\n    </th>\r\n</table>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="team_per_game_stats" class="teamstats_list stats">\n    <tr class="table_name">\n        <td colspan=8 width="100%" >Team Stats</td>\n    </tr>\n    <tr class="column_headers">\n        <th width="40%" class="table_first_item">\n            TEAM\n        </th>\n        <th width="14%">\n            COMP\n        </th>\n        <th width="14%">\n            COMP%\n        </th>\n        <th width="8">\n            Ds\n        </th>\n        <th width="8%">\n            DRP\n        </th>\n        <th width="8%">\n            TA\n        </th>\n        <th width="8%">\n            TO\n        </th>\n    </th>\n</table>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teamstats/per_game_stat_line.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td class="table_first_item">\r\n    <a href="teams/', team.id ,'">', team.name ,'</a>\r\n</td>\r\n<td>\r\n    ', completed_passes_thrown ,'/', passes_thrown ,'\r\n</td>\r\n<td>\r\n    ', completion_percent ,'\r\n</td>\r\n<td>\r\n    ', ds ,'\r\n</td>\r\n<td>\r\n    ', drops ,'\r\n</td>\r\n<td>\r\n    ', throwaways ,'\r\n</td>\r\n<td>\r\n    ', turnovers ,'\r\n</td>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td class="table_first_item">\n    <a href="teams/', team.id ,'">', team.name ,'</a>\n</td>\n<td>\n    ', completed_passes_thrown ,'/', passes_thrown ,'\n</td>\n<td>\n    ', completion_percent ,'\n</td>\n<td>\n    ', ds ,'\n</td>\n<td>\n    ', drops ,'\n</td>\n<td>\n    ', throwaways ,'\n</td>\n<td>\n    ', turnovers ,'\n</td>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/tournaments/detail.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="tournament_start_date"><span>', start_date_string ,'</span></div>\r\n<div>', info ,'</div>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="tournament_start_date"><span>', start_date_string ,'</span></div>\n<div>', info ,'</div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/tournaments/item.html'] = function(data) { return function (obj,_) {
@@ -476,63 +476,63 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/tournaments/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="tournament-list obj-list"></ul>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="tournament-list obj-list"></ul>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/tournaments/multilist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\r\n    <table>\r\n        <tr>\r\n            <td>\r\n                <button class="button bgames is_active">Games</button>\r\n            </td>\r\n            <td>\r\n                <button class="button bstandings">Standings</button>\r\n            </td>\r\n            <!--\r\n            <td>\r\n                <button class="button bpools">Pools</button>\r\n            </td>\r\n            <td>\r\n                <button class="button bbrackets">Brackets</button>\r\n            </td>\r\n            -->\r\n        </tr>\r\n    </table>\r\n</div>\r\n<div class="list lgames"></div>\r\n<div class="list lstandings"></div>\r\n<!--\r\n<div class="list lpools"></div>\r\n<div class="list lbrackets"></div>\r\n-->\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\n    <table>\n        <tr>\n            <td>\n                <button class="button bgames is_active">Games</button>\n            </td>\n            <td>\n                <button class="button bstandings">Standings</button>\n            </td>\n            <!--\n            <td>\n                <button class="button bpools">Pools</button>\n            </td>\n            <td>\n                <button class="button bbrackets">Brackets</button>\n            </td>\n            -->\n        </tr>\n    </table>\n</div>\n<div class="list lgames"></div>\n<div class="list lstandings"></div>\n<!--\n<div class="list lpools"></div>\n<div class="list lbrackets"></div>\n-->\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/tournteams/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="tournament_standings" class="tournteam-list">\r\n    <tr>\r\n        <th width="70%">\r\n            Team\r\n        </th>\r\n        <th width="15%">\r\n            Seed\r\n        </th>\r\n        <th width="15%">\r\n            Finish\r\n        </th>\r\n    </th>\r\n</table>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="tournament_standings" class="tournteam-list">\n    <tr>\n        <th width="70%">\n            Team\n        </th>\n        <th width="15%">\n            Seed\n        </th>\n        <th width="15%">\n            Finish\n        </th>\n    </th>\n</table>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/tournteams/team.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td>\r\n    <a href=\'teams/', team.id ,'\'>', team.name ,'</a>\r\n</td>\r\n<td>\r\n    ', seed ,'\r\n</td>\r\n<td>\r\n    ', final_standing ,'\r\n</td>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td>\n    <a href=\'teams/', team.id ,'\'>', team.name ,'</a>\n</td>\n<td>\n    ', seed ,'\n</td>\n<td>\n    ', final_standing ,'\n</td>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/action_area.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons main_action">\r\n    <div id="throw_prompt" class="action_prompt">\r\n        <div class="action_prompt_player">\r\n            ', player_string ,'\r\n        </div>\r\n        <div class="action_prompt_action">\r\n            ', action_string ,'\r\n        </div>\r\n    </div>\r\n    <button class="button completion">Complete Pass</button>\r\n\t<button class="button dropped_pass">Dropped pass</button>\r\n\t<button class="button defd_pass">D\'ed Pass</button>\r\n    <button class="button throwaway">\r\n        <span class="button_line_1">Untouched</span> \r\n        <span class="button_line_2">Throwaway</span>\r\n    </button>\r\n    <button class="button score">Score</button>\r\n</div>\r\n<div class="buttons alternate_action">\r\n    <div id="alternate_action_prompt" class="action_prompt">\r\n        <div class="action_prompt_action">What happened?</div>\r\n    </div>\r\n\t<button class="button unknown_turn">Unknown Turn</button>\r\n\t<button class="button stall">Stall</button>\r\n    <!-- Removed for simplicity for the first version \r\n        <button class="button foul">Foul/Violation</button>\r\n    -->\r\n\t<button class="button injury">Injury</button>\r\n\t<button class="button timeout">Timeout</button>\r\n\t<button class="button end_of_period">End of Period ', per_num ,'</button>\r\n</div>\r\n<div class="buttons extra_actions">\r\n    <button class="button misc">Misc</button>\r\n    <button class="button undo">Undo</button>\r\n</div>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons main_action">\n    <div id="throw_prompt" class="action_prompt">\n        <div class="action_prompt_player">\n            ', player_string ,'\n        </div>\n        <div class="action_prompt_action">\n            ', action_string ,'\n        </div>\n    </div>\n    <button class="button completion">Complete Pass</button>\n\t<button class="button dropped_pass">Dropped pass</button>\n\t<button class="button defd_pass">D\'ed Pass</button>\n    <button class="button throwaway">\n        <span class="button_line_1">Untouched</span> \n        <span class="button_line_2">Throwaway</span>\n    </button>\n    <button class="button score">Score</button>\n</div>\n<div class="buttons alternate_action">\n    <div id="alternate_action_prompt" class="action_prompt">\n        <div class="action_prompt_action">What happened?</div>\n    </div>\n\t<button class="button unknown_turn">Unknown Turn</button>\n\t<button class="button stall">Stall</button>\n    <!-- Removed for simplicity for the first version \n        <button class="button foul">Foul/Violation</button>\n    -->\n\t<button class="button injury">Injury</button>\n\t<button class="button timeout">Timeout</button>\n\t<button class="button end_of_period">End of Period ', per_num ,'</button>\n</div>\n<div class="buttons extra_actions">\n    <button class="button misc">Misc</button>\n    <button class="button undo">Undo</button>\n</div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/game_action.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="scoreboard"></div>\r\n<div class="playbyplay"></div>\r\n<div class="player_area"></div>\r\n<div class="action_area"></div>\r\n');}return __p.join('');
-}(data, _)};
-
-this['JST']['app/templates/trackedgame/game_substitution.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="track sub_page_wrapper">\r\n    <div class="sub_team_header">\r\n        <span class="sub_team_name">\r\n            ', team.name ,'\r\n        </span>\r\n    </div>\r\n    <div class="sub_wrapper">\r\n        <div class="sub_on_field_wrapper">\r\n        \t<div class="sub_on_field_title">On field</div>\r\n            <div class="sub_on_field_area"></div>\r\n        </div>\r\n        <div class="sub_off_field_wrapper">\r\n        \t<div class="sub_off_field_title">Off field</div>\r\n            <div class="sub_off_field_area"></div>\r\n        </div>\r\n    </div>\r\n    <div class="sub_buttons_area">\r\n        <button class="button game_over">End Game</button>\r\n    </div>\r\n</div>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="playbyplay"></div>\n<div class="player_area"></div>\n<div class="action_area"></div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/playbyplay.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="last_action_area">\r\n    <div class="last_action_label">Previous Play:</div>\r\n    <div class="last_action">', playtext ,'</div>\r\n</div>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="last_action_area">\n    <div class="last_action_label">Previous Play:</div>\n    <div class="last_action">', playtext ,'</div>\n</div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/player_area.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="player_prompt">\r\n    <div class="player_prompt_action">\r\n        ', player_prompt ,'\r\n    </div>\r\n</div>\r\n<div class="player_area_1"></div>\r\n<div class="player_area_2"></div>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="player_prompt">\n    <div class="player_prompt_action">\n        ', player_prompt ,'\n    </div>\n</div>\n<div class="player_area_1"></div>\n<div class="player_area_2"></div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/player_button.html'] = function(data) { return function (obj,_) {
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="button player" id="', player.id ,'"><span class="player_name">', player.first_name ,' ', player.last_name ,'</span><span class="player_number">', number ,'</span></button>');}return __p.join('');
 }(data, _)};
 
-this['JST']['app/templates/trackedgame/roster_item.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="roster_player player" id="', player.id ,'">\r\n    <span class="player_name" id="', player.id ,'">', player.first_name ,' ', player.last_name ,'</span>\r\n    <span class="player_number" id="', player.id ,'">', number ,'</span>\r\n</button>\r\n');}return __p.join('');
+this['JST']['app/templates/trackedgame/roster.html'] = function(data) { return function (obj,_) {
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="track roster_wrapper">\n    <div class="roster_team_header">\n        <span class="roster_team_name">\n            ', team.name ,'\n        </span>\n    </div>\n    <div class="roster_onfield_sum">\n    </div>\n    <div class="roster_wrapper">\n        <div class="roster_area"></div>\n    </div>\n</div>\n');}return __p.join('');
 }(data, _)};
 
-this['JST']['app/templates/trackedgame/roster_item_remove_all.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="roster_remove_all">\r\n    <span>REMOVE ALL</span>\r\n</button>\r\n');}return __p.join('');
+this['JST']['app/templates/trackedgame/roster_item.html'] = function(data) { return function (obj,_) {
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="roster_player player" id="', player_id ,'">\n    <span class="player_name" id="', player_id ,'">', player.first_name ,' ', player.last_name ,'</span>\n    <span class="player_number" id="', player_id ,'">', number ,'</span>\n</button>\n');}return __p.join('');
+}(data, _)};
+
+this['JST']['app/templates/trackedgame/rostersum.html'] = function(data) { return function (obj,_) {
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<span class="roster_onfield_sum_value">', onfield_sum ,'</span>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/rotate_button.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="button rotate">', next_screen ,'</button>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="button rotate">', next_screen ,'</button>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/scoreboard.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="score_area">\r\n    <div class="name team1"><span>', game.team_1.name ,'</div>\r\n    <div class="score team1"><span>', game.team_1_score ,'</div>\r\n    <div class="score team2"><span>', game.team_2_score ,'</div>\r\n    <div class="name team2"><span>', game.team_2.name ,'</div>\r\n</div>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="score_area">\n    <div class="name team1"><span>', game.team_1.name ,'</div>\n    <div class="score team1"><span>', game.team_1_score ,'</div>\n    <div class="score team2"><span>', game.team_2_score ,'</div>\n    <div class="name team2"><span>', game.team_2.name ,'</div>\n</div>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/teamplayer_area.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="player_buttons"></ul>\r\n<div class="offense_teamname"><p>', team.name ,'</p></div>\r\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="player_buttons"></ul>\n<div class="offense_teamname"><p>', team.name ,'</p></div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/ul.html'] = function(data) { return function (obj,_) {
@@ -14670,7 +14670,7 @@ define("backbone", ["lodash","jquery"], (function (global) {
 }(this)));
 
 /*!
- * backbone.layoutmanager.js v0.5.1
+ * backbone.layoutmanager.js v0.5.2
  * Copyright 2012, Tim Branyen (@tbranyen)
  * backbone.layoutmanager.js may be freely distributed under the MIT license.
  */
@@ -14678,16 +14678,18 @@ define("backbone", ["lodash","jquery"], (function (global) {
 
 
 
-// Alias the libraries from the global object
+// Alias the libraries from the global object.
 var Backbone = window.Backbone;
 var _ = window._;
 var $ = window.$;
 
+// Store a references to original View functions.
+var _configure = Backbone.View.prototype._configure;
+var render = Backbone.View.prototype.render;
+
+// A LayoutManager is simply a Backbone.View with some sugar.
 var LayoutManager = Backbone.View.extend({
-  // This is a named function to improve logging and debugging within browser
-  // dev tools.  Typically you do not use "anonymous" named functions since IE
-  // has a well known bug, BUT I think we all know the reason why I'm ignoring
-  // that here.
+  // This named function allows for significantly easier debugging.
   constructor: function Layout(options) {
     options = options || {};
 
@@ -14696,26 +14698,26 @@ var LayoutManager = Backbone.View.extend({
       return manage(this).render();
     };
 
-    // Ensure the View is setup correctly
+    // Ensure the View is setup correctly.
     LayoutManager.setupView(this, options);
 
-    // Set the prefix for a layout
+    // Set the prefix for a layout.
     if (options.paths) {
       this._prefix = options.paths.layout || "";
     }
 
-    // Have Backbone set up the rest of this View
+    // Have Backbone set up the rest of this View.
     Backbone.View.call(this, options);
   },
 
   // Shorthand to root.view function with append flag.
-  insertView: function(partial, view) {
+  insertView: function(selector, view) {
     if (view) {
-      return this.setView(partial, view, true);
+      return this.setView(selector, view, true);
     }
 
-    // Omitting a partial will place the View directly into the parent.
-    return this.setView(partial, true);
+    // Omitting a selector will place the View directly into the parent.
+    return this.setView(selector, true);
   },
 
   // Works like insertView, except allows you to bulk insert via setViews.
@@ -14774,22 +14776,14 @@ var LayoutManager = Backbone.View.extend({
     // Instance overrides take precedence, fallback to prototype options.
     options = view._options();
 
-    // Ensure render is set correctly.
-    if (options.render !== LayoutManager.prototype.options.render) {
-      view.render = options.render;
-      options.render = LayoutManager.prototype.options.render;
-    }
-
     // Set up the View.
     LayoutManager.setupView(view, options);
 
-    // Add in all missing LayoutManager properties and methods.
-    view._render = view.render;
-
-    // If no render override was specified assign the default
-    if (view.render === Backbone.View.prototype.render) {
-      view._render = function(layout) {
-        return layout(this).render();
+    // If no render override was specified assign the default; if the render
+    // is the fake function inserted, ensure that is updated as well.
+    if (view.render.__fake__) {
+      view._render = function(manage) {
+        return manage(this).render();
       };
     }
 
@@ -14827,7 +14821,7 @@ var LayoutManager = Backbone.View.extend({
         }
       }
 
-      // Call the original render method
+      // Call the original render method.
       LayoutManager.prototype.render.call(view).then(renderCallback);
 
       return viewDeferred.promise();
@@ -14846,13 +14840,15 @@ var LayoutManager = Backbone.View.extend({
     // Special logic for appending items. List items are represented as an
     // array.
     if (append) {
+      // Start with an array if none exists.
       partials = this.views[name] = this.views[name] || [];
       
       if (!_.isArray(this.views[name])) {
         // Ensure this.views[name] is an array.
         partials = this.views[name] = [this.views[name]];
       }
-      
+
+      // Add the view to the list of partials.
       partials.push(view);
 
       return view;
@@ -14866,14 +14862,14 @@ var LayoutManager = Backbone.View.extend({
   setViews: function(views) {
     // Iterate over all the views and use the View's view method to assign.
     _.each(views, function(view, name) {
-      // If the view is an array put all views into insert mode
+      // If the view is an array put all views into insert mode.
       if (_.isArray(view)) {
         return _.each(view, function(view) {
-          this.setView(name, view, true);
+          this.insertView(name, view);
         }, this);
       }
 
-      // Assign each view using the view function
+      // Assign each view using the view function.
       this.setView(name, view);
     }, this);
 
@@ -14892,7 +14888,7 @@ var LayoutManager = Backbone.View.extend({
     var options = this._options();
     var viewDeferred = options.deferred();
 
-    // Ensure duplicate renders don't override
+    // Ensure duplicate renders don't override.
     if (root.__manager__.renderDeferred) {
       return root.__manager__.renderDeferred;
     }
@@ -14906,8 +14902,19 @@ var LayoutManager = Backbone.View.extend({
 
       // For every view in the array, remove the View and it's children.
       _.each(_.clone(view), function(subView, i) {
-        if (!subView.keep && (subView.options && !subView.options.keep)) {
+        // Look on the instance.
+        var keep = subView.keep;
+
+        // Fall back to the options object if it exists.
+        if (!_.isBoolean(keep) && subView.options) {
+          keep = subView.options.keep;
+        }
+
+        // Ensure keep: true is set for any View that has already rendered.
+        if (subView.__manager__.hasRendered && !keep) {
+          // Ensure the view is removed from the DOM.
           subView.remove();
+
           // Remove from the array.
           view.splice(i, 1);
         }
@@ -14948,7 +14955,7 @@ var LayoutManager = Backbone.View.extend({
           });
         }
 
-        // If rendering a list out, ensure they happen in a serial order
+        // If rendering a list out, ensure they happen in a serial order.
         if (_.isArray(view)) {
           // A singular deferred that represents all the items.
           def = options.deferred();
@@ -14960,7 +14967,7 @@ var LayoutManager = Backbone.View.extend({
           return def.promise();
         }
 
-        // This View is now managed by LayoutManager *toot*.
+        // This View is now managed by LayoutManager.
         view.__manager__.isManaged = true;
 
         // Only return the fetch deferred, resolve the main deferred after
@@ -14982,7 +14989,7 @@ var LayoutManager = Backbone.View.extend({
         done.call(root, root.el);
       }
 
-      // Remove the rendered deferred
+      // Remove the rendered deferred.
       delete root.__manager__.renderDeferred;
     }).promise();
   },
@@ -14991,7 +14998,7 @@ var LayoutManager = Backbone.View.extend({
   remove: function() {
     LayoutManager.cleanViews(this);
 
-    // Call the original remove function
+    // Call the original remove function.
     return this._remove.apply(this, arguments);
   },
 
@@ -15002,14 +15009,14 @@ var LayoutManager = Backbone.View.extend({
   }
 },
 {
-  // Clearable cache
+  // Clearable cache.
   _cache: {},
 
   // Creates a deferred and returns a function to call when finished.
   _makeAsync: function(options, done) {
     var handler = options.deferred();
 
-    // Used to handle asynchronous renders
+    // Used to handle asynchronous renders.
     handler.async = function() {
       handler._isAsync = true;
 
@@ -15055,16 +15062,16 @@ var LayoutManager = Backbone.View.extend({
         // Seek out serialize method and use that object.
         if (!context && _.isFunction(options.serialize)) {
           context = options.serialize.call(root);
-        // If serialize is an object, just use that
+        // If serialize is an object, just use that.
         } else if (!context && _.isObject(options.serialize)) {
           context = options.serialize;
         }
 
-        // Create an asynchronous handler
+        // Create an asynchronous handler.
         handler = LayoutManager._makeAsync(options, _.bind(done, root,
           context));
 
-        // Make a new deferred purely for the fetch function
+        // Make a new deferred purely for the fetch function.
         handler.fetch = options.deferred();
 
         // Assign the handler internally to be resolved once its inside the
@@ -15076,17 +15083,17 @@ var LayoutManager = Backbone.View.extend({
           url = root._prefix + template;
         }
 
-        // Check if contents are already cached
+        // Check if contents are already cached.
         if (contents = LayoutManager.cache(url)) {
           done(context, contents, url);
 
           return handler;
         }
 
-        // Fetch layout and template contents
+        // Fetch layout and template contents.
         if (_.isString(template)) {
           contents = options.fetch.call(handler, root._prefix + template);
-        // If its not a string just pass the object/function/whatever
+        // If its not a string just pass the object/function/whatever.
         } else if (template != null) {
           contents = options.fetch.call(handler, template);
         }
@@ -15104,12 +15111,12 @@ var LayoutManager = Backbone.View.extend({
   // Accept either a single view or an array of views to clean of all DOM
   // events internal model and collection references and all Backbone.Events.
   cleanViews: function(views) {
-    // Clear out all existing views
+    // Clear out all existing views.
     _.each([].concat(views), function(view) {
-      // Remove all custom events attached to this View
+      // Remove all custom events attached to this View.
       view.unbind();
 
-      // Ensure all nested views are cleaned as well
+      // Ensure all nested views are cleaned as well.
       if (view.views) {
         _.each(view.views, function(view) {
           LayoutManager.cleanViews(view);
@@ -15124,12 +15131,12 @@ var LayoutManager = Backbone.View.extend({
     });
   },
 
-  // Cache templates into LayoutManager._cache
+  // Cache templates into LayoutManager._cache.
   cache: function(path, contents) {
     // If template path is found in the cache, return the contents.
     if (path in this._cache) {
       return this._cache[path];
-    // Ensure path and contents aren't undefined
+    // Ensure path and contents aren't undefined.
     } else if (path != null && contents != null) {
       return this._cache[path] = contents;
     }
@@ -15145,6 +15152,7 @@ var LayoutManager = Backbone.View.extend({
   // Configure a View to work with the LayoutManager plugin.
   setupView: function(view, options) {
     var proto = Backbone.LayoutManager.prototype;
+    var keys = _.keys(LayoutManager.prototype.options);
 
     // Extend the options with the prototype and passed options.
     options = view.options = _.defaults(options || {}, proto.options);
@@ -15159,15 +15167,15 @@ var LayoutManager = Backbone.View.extend({
       __manager__: {}
     });
 
-    // If the user provided their own render override, use that instead of the
-    // default.
-    if (this.render !== proto.render && !this._render) {
-      this._render = this.render;
-      this.render = proto.render;
-    }
+    // Pick out the specific properties that can be dynamically added at
+    // runtime and ensure they are available on the view object.
+    _.extend(options, _.pick(this, keys));
 
     // By default the original Remove function is the Backbone.View one.
     view._remove = Backbone.View.prototype.remove;
+
+    // Reset the render function.
+    view.options.render = LayoutManager.prototype.options.render;
 
     // If the user provided their own remove override, use that instead of the
     // default.
@@ -15179,18 +15187,18 @@ var LayoutManager = Backbone.View.extend({
     // Default the prefix to an empty string.
     view._prefix = "";
 
-    // Set the internal views
+    // Set the internal views.
     if (options.views) {
       view.setViews(options.views);
     }
 
-    // Ensure the template is mapped over
+    // Ensure the template is mapped over.
     if (view.template) {
       options.template = view.template;
     }
   },
 
-  // Completely remove all subViews
+  // Completely remove all subViews.
   removeView: function(root, append) {
     // Can be used static or as a method.
     if (!_.isObject(root)) {
@@ -15205,9 +15213,9 @@ var LayoutManager = Backbone.View.extend({
         return;
       }
 
-      // Clear out all existing views
+      // Clear out all existing views.
       _.each([].concat(views), function(view) {
-        // Remove the View completely
+        // Remove the View completely.
         view.remove();
 
         // Ensure all nested views are cleaned as well.
@@ -15226,6 +15234,7 @@ _.each(["get", "set", "insert"], function(method) {
 
   // Attach the singular form.
   backboneProto[method + "View"] = layoutProto[method + "View"];
+
   // Attach the plural form.
   backboneProto[method + "Views"] = layoutProto[method + "Views"];
 });
@@ -15235,7 +15244,38 @@ _.extend(Backbone.View.prototype, {
   removeView: LayoutManager.removeView,
 
   // Add options into the prototype.
-  _options: LayoutManager.prototype._options
+  _options: LayoutManager.prototype._options,
+
+  // Override _configure to provide extra functionality that is necessary in
+  // order for the render function reference to be bound during initialize.
+  _configure: function() {
+    var retVal = _configure.apply(this, arguments);
+    var renderPlaceholder;
+
+    // Only update the render method for non-Layouts, which need them.
+    if (!this.__manager__) {
+      // Ensure the proper setup is made.
+      this._render = this.options.render || this.render;
+
+      // Ensure render functions work as expected.
+      renderPlaceholder = this.render = function() {
+        if (this.render !== renderPlaceholder) {
+          return this.render.apply(this, arguments);
+        }
+
+        // Call the render method.
+        return this._render.apply(this, arguments);
+      };
+
+      // Mark this function as fake for later checking and overriding in the
+      // setView function.
+      if (this._render === render) {
+        this.render.__fake__ = true;
+      }
+    }
+
+    return retVal;
+  }
 });
 
 // Convenience assignment to make creating Layout's slightly shorter.
@@ -15248,7 +15288,7 @@ LayoutManager.prototype.options = {
   // template/layout names.
   paths: {},
 
-  // Can be used to supply a different deferred that implements Promises/A.
+  // Can be used to supply a different deferred implementation.
   deferred: function() {
     return $.Deferred();
   },
@@ -15266,7 +15306,7 @@ LayoutManager.prototype.options = {
     // If no selector is specified, assume the parent should be added to.
     var $root = name ? $(root).find(name) : $(root);
 
-    // If no root found, return false
+    // If no root found, return false.
     if (!$root.length) {
       return false;
     }
@@ -15274,7 +15314,7 @@ LayoutManager.prototype.options = {
     // Use the append method if append argument is true.
     this[append ? "append" : "html"]($root, el);
 
-    // If successfully added, return true
+    // If successfully added, return true.
     return true;
   },
 
@@ -15302,7 +15342,6 @@ LayoutManager.prototype.options = {
 };
 
 })(this);
-
 define("plugins/backbone.layoutmanager", ["backbone"], (function (global) {
     return function () {
         return global.Backbone.LayoutManager;
@@ -15440,17 +15479,17 @@ define("plugins/backbone.layoutmanager", ["backbone"], (function (global) {
 define("plugins/backbone-tastypie", ["backbone"], function(){});
 
 /* localSettings.js */
-/*
+
 var localSettings = {
     Leaguevine: {
         API: {
-            client_id: "26a25288917682b6d3abcdbf433de3", //Client ID registered on the developer pages
+            client_id: "9f30036f95850b185ccbfd66ab54fb", //Client ID registered on the developer pages
             redirect_uri: "http://ultistats.localhost/", //Redirect URI specified when registering
-            token: "d54191ebb0", //Optionally pass a working token to bypass the entire oauth process
+            token: "b3abaadef8", //Optionally pass a working token to bypass the entire oauth process
         }
     }
 }
-*/;
+;
 define("plugins/localSettings", function(){});
 
 $(function () {
@@ -15635,7 +15674,7 @@ function(app, Backbone) {
                 _.extend(this,stored_api);
             }
             if (!this.token) {
-                this.login();
+                return this.login();
             }
             else {
                 return this.token;
@@ -15883,7 +15922,7 @@ function(app, Backbone, Game) {
 		events: {
 			"keyup #object_search": "filterObjects"
 		},
-		search_results: _.extend({}, Backbone.Events),
+		//search_results: _.extend({}, Backbone.Events),
 		filterObjects: function(ev) {
 			var search_string = ev.currentTarget.value;
 			this.collection.name = search_string;
@@ -16491,9 +16530,14 @@ function(require, app, Backbone, Navigation) {
 		},
 		request: function(callback) {
 			var _this = this;
-			return (callback()).then(function() {
-				return _this.requestNext();
-			});
+			//if (is_online()) {
+				return (callback()).then(function() {
+					return _this.requestNext();
+				});
+			//} else {
+				//this.requests.unshift(callback);
+				//return setTimeout(this.requestNext(),10000);
+			//}
 		},
 		queue: function(callback) {
 			if (!this.enabled) {
@@ -16633,7 +16677,7 @@ function(app, Backbone, Leaguevine) {
 		},
 		toJSON: function() {
 			var temp = _.clone(this.attributes);
-			delete temp.teams;
+			//delete temp.teams;
 			return temp;
 		},
 		sync: Backbone.WebSQLAjaxSync,
@@ -16685,7 +16729,14 @@ function(require, app, Backbone, Leaguevine) {
 		},
 		toJSON: function() {
 			//TODO: Remove attributes that are not stored
-			return _.clone(this.attributes);
+			var tp = _.clone(this.attributes);
+			//delete tp.team;
+			//delete tp.player;
+			return tp;
+		},
+		associations: {
+			"team_id": "team",
+			"player_id": "player"
 		}
 	});
 	//
@@ -16764,7 +16815,7 @@ function(require, app, Backbone, Leaguevine) {
 	TeamPlayer.Views.Player = Backbone.View.extend({
 		template: "teamplayers/player",
 		tagName: "li",
-		serialize: function() {return this.model.toJSON();}
+		serialize: function() {return _.clone(this.model.attributes);}
 	});
 	TeamPlayer.Views.PlayerList = Backbone.View.extend({
 		template: "teamplayers/playerlist",
@@ -16791,7 +16842,7 @@ function(require, app, Backbone, Leaguevine) {
 	TeamPlayer.Views.Team = Backbone.View.extend({
 		template: "teamplayers/team",
 		tagName: "li",
-		serialize: function() {return this.model.toJSON();}
+		serialize: function() {return _.clone(this.model.attributes);}
 	});
 	TeamPlayer.Views.TeamList = Backbone.View.extend({
 		template: "teamplayers/playerlist",
@@ -16849,7 +16900,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			last_name: "",
 			nickname: "",
 			weight: "",
-			teamplayers: {}//used to get to teams
+			teamplayers: {}//used to get to teams that this player belongs to.
 		},
 		sync: Backbone.WebSQLAjaxSync,
 		store: new Backbone.WebSQLStore("player"),
@@ -16859,8 +16910,9 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			return resp;
 		},
 		toJSON: function() {
-			//TODO: Remove attributes that are not stored (templayers)
-			return _.clone(this.attributes);
+			var player = _.clone(this.attributes);
+			//delete player.teamplayers;
+			return player;
 		}
 	});
   
@@ -16953,7 +17005,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			var view = layout(this); //Get this view from the layout.
 			//this.$el.empty()
 			// call .cleanup() on all child views, and remove all appended views
-			view.cleanup();
+			// view.cleanup();
 			this.collection.each(function(player) {//for each player in the collection.
 				this.insertView("ul", new Player.Views.Item({//Inserts the player into the ul in the list template.
 					model: player//pass each player to a Item view instance.
@@ -16975,7 +17027,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 		render: function(layout) {
 			// The model has not yet been filled by the fetch process if it was fetched just now
 			// We need to update the view once the data have changed.
-			return layout(this).render(this.model.toJSON());
+			return layout(this).render(this.model.toJSON());//toJSON OK here.
 		},
 		initialize: function() {
 			this.model.bind("change", function() {
@@ -17045,9 +17097,9 @@ function(app, Backbone, Leaguevine, Navigation) {
 		},
 		toJSON: function() {
 			var temp = _.clone(this.attributes);
-			delete temp.teamplayers;
-			delete temp.games;
-			delete temp.season;
+			//delete temp.teamplayers;
+			//delete temp.games;
+			//delete temp.season;
 			return temp;
 		},
 		sync: Backbone.WebSQLAjaxSync,
@@ -17083,9 +17135,8 @@ function(app, Backbone, Leaguevine, Navigation) {
 		//TODO: I should override parse if I want to filter team's returned from DB. e.g. this would be useful for
 		//filtering results shown on the "Teams" page if a season is already set. Setting the season in "Settings" comes first.
 		comparator: function(team) {// Define how items in the collection will be sorted.
-			var team_obj = _.clone(team.attributes);
-			if (team_obj.season && team_obj.season.name) {return team_obj.name.toLowerCase() + team_obj.season.name.toLowerCase();}
-            else {return team_obj.name.toLowerCase();}
+			if (team.season && team.season.name) {return team.get("name").toLowerCase() + team.season.name.toLowerCase();}
+            else {return team.get("name").toLowerCase();}
 		},
 		initialize: function(models, options) {
 			if (options) {
@@ -17198,10 +17249,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
 			var filter_by = this.collection.name ? this.collection.name : "";
-                        var tap_method = this.options.tap_method;
-			//this.$el.empty()
-			// call .cleanup() on all child views, and remove all appended views
-			//view.cleanup();
+			var tap_method = this.options.tap_method;
 			this.collection.each(function(team) {//for each team in the collection.
 				//Do collection filtering here
 				if (!filter_by || team.get("name").toLowerCase().indexOf(filter_by.toLowerCase()) != -1) {
@@ -17260,7 +17308,9 @@ function(app, Backbone, Leaguevine, Navigation) {
                 createGame: function(ev) {
                     Backbone.history.navigate("newgame/"+this.model.get("id"), true);
                 },
-		serialize: function() {return _.clone(this.model.attributes);},
+		serialize: function() {
+			return _.clone(this.model.attributes);
+		},
 		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
 	});
 	Team.Views.Multilist = Backbone.View.extend({
@@ -17431,7 +17481,14 @@ function(require, app, Backbone, Leaguevine) {
 		},
         idAttribute: "player_id", // The unique identifier in a collection is a player. A player who is on both
                                   // teams in the same game could cause problems here.
-		urlRoot: Leaguevine.API.root + "stats/ultimate/player_stats_per_game"
+		urlRoot: Leaguevine.API.root + "stats/ultimate/player_stats_per_game",
+		
+		toJSON: function(){
+			var ppgs = _.clone(this.attributes);
+			//delete ppgs.game;
+			//delete ppgs.player;
+			return ppgs;
+		}
 	});
 
 	//
@@ -17478,7 +17535,9 @@ function(require, app, Backbone, Leaguevine) {
 		template: "playerstats/per_game_stat_line",
 		tagName: "tr",
 		serialize: function() {
-			return this.model.toJSON();
+			var ppgs = this.model.toJSON();
+			ppgs.player = _.isFunction(this.model.get("player").get) ? this.model.get("player").toJSON() : this.model.get("player");
+			return ppgs;
 		}
 	});
     PlayerPerGameStats.Views.BoxScore = Backbone.View.extend({
@@ -17489,7 +17548,19 @@ function(require, app, Backbone, Leaguevine) {
          */
 		template: "playerstats/boxscore",
 		className: "playerstats-boxscore-wrapper",
-        serialize: function() {return this.options.game.toJSON();},
+        serialize: function() {//I think serialize is ignored if render is provided.
+			var game = this.options.game.toJSON();
+			if (this.options.game.get("team_1") !== null){
+				game.team_1 = _.isFunction(this.options.game.get("team_1").get) ? this.options.game.get("team_1").toJSON() : this.options.game.get("team_1");
+			}
+			if (this.options.game.get("team_1") !== null){
+				game.team_2 = _.isFunction(this.options.game.get("team_2").get) ? this.options.game.get("team_2").toJSON() : this.options.game.get("team_2");
+			}
+			if (this.options.game.get("tournament") !== null){
+				game.tournament = _.isFunction(this.options.game.get("tournament").get) ? this.options.game.get("tournament").toJSON() : this.options.game.get("tournament");
+			}
+			return game;
+		},
 		render: function(layout) {
 			var view = layout(this);
 			//this.$el.empty()
@@ -17604,7 +17675,11 @@ function(require, app, Backbone, Leaguevine, Stats) {
 			obj = _.clone(this.attributes);
             comp_percent_float = parseFloat(obj.completion_percent); //Convert to float
             obj.completion_percent = String(Math.round(comp_percent_float*10)/10); //Round to 1 decimal point
+            //delete obj.team;
             return obj;
+		},
+		associations: {
+			"team_id": "team"
 		}
     });
     
@@ -17650,7 +17725,11 @@ function(require, app, Backbone, Leaguevine, Stats) {
 	TeamPerGameStats.Views.TeamStats = Backbone.View.extend({
 		template: "teamstats/per_game_stat_line",
 		tagName: "tr",
-		serialize: function() {return this.model.toJSON();}
+		serialize: function() {
+			var tpgs = this.model.toJSON();
+			tpgs.team = _.isFunction(this.model.get("team").get) ? this.model.get("team").toJSON() : this.model.get("team");
+			return tpgs;
+		}
 	});
     TeamPerGameStats.Views.BoxScore = Backbone.View.extend({
         /* Usage:
@@ -17745,8 +17824,13 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
                 game.start_time_string = start_time.getHours() + ":" + minutes + " " + start_time.toLocaleDateString();
             }
             
-            if (this.get("team_1") !== null && _.isFunction(this.get("team_1").get)) {game.team_1 = this.get("team_1").toJSON();}
-            if (this.get("team_2") !== null && _.isFunction(this.get("team_2").get)) {game.team_2 = this.get("team_2").toJSON();}
+            game.team_1 = _.isFunction(this.get("team_1").get) ? this.get("team_1").toJSON() : this.get("team_1");
+            game.team_2 = _.isFunction(this.get("team_2").get) ? this.get("team_2").toJSON() : this.get("team_2");
+            game.tournament = (this.get("tournament")!==null && _.isFunction(this.get("tournament").get)) ? this.get("tournament").toJSON() : this.get("tournament");
+            
+            //delete game.tournament;
+            //delete game.team_1;
+            //delete game.team_2;
 
             return game;
 		}
@@ -17888,7 +17972,16 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 	Game.Views.Item = Backbone.View.extend({
 		template: "games/item",
 		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul.
-		serialize: function() {return this.model.toJSON();} //render looks for this to manipulate model before passing to the template.
+		serialize: function() {
+			var game = this.model.toJSON();
+			if (this.model.get("team_1") !== null){
+				game.team_1 = _.isFunction(this.model.get("team_1").get) ? this.model.get("team_1").toJSON() : this.model.get("team_1");
+			}
+			if (this.model.get("team_1") !== null){
+				game.team_2 = _.isFunction(this.model.get("team_2").get) ? this.model.get("team_2").toJSON() : this.model.get("team_2");
+			}
+			return game;
+		} //render looks for this to manipulate model before passing to the template.
 	});
     Game.Views.Find = Backbone.View.extend({
         template: "games/find"
@@ -17920,6 +18013,15 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 		template: "games/detail",
 		render: function(layout) {
             var game = this.model.toJSON();
+            if (this.model.get("team_1") !== null){
+				game.team_1 = _.isFunction(this.model.get("team_1").get) ? this.model.get("team_1").toJSON() : this.model.get("team_1");
+			}
+			if (this.model.get("team_1") !== null){
+				game.team_2 = _.isFunction(this.model.get("team_2").get) ? this.model.get("team_2").toJSON() : this.model.get("team_2");
+			}
+			if (this.model.get("tournament") !== null){
+				game.tournament = _.isFunction(this.model.get("tournament").get) ? this.model.get("tournament").toJSON() : this.model.get("tournament");
+			} else {game.tournament = {name: ""};}
 			return layout(this).render(game);
 		},
 		initialize: function() {
@@ -17929,10 +18031,11 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 		},
         checkPermission: function() {
             // If the user is not logged in, redirect to login and disable the page transition
-            if (!app.api.is_logged_in()) {
+            /*if (!app.api.is_logged_in()) {
                 app.api.login();
                 return false;
-            }
+            }*/
+           return app.api.d_token();
          },
 		events: {
 			"click button.btrack_game": "checkPermission"
@@ -18020,7 +18123,14 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 		},
 		deleteGame: function(ev) {},
 		serialize: function() {
-			return this.model.toJSON();
+			var game = this.model.toJSON();
+			if (this.model.get("team_1") !== null){
+				game.team_1 = _.isFunction(this.model.get("team_1").get) ? this.model.get("team_1").toJSON() : this.model.get("team_1");
+			}
+			if (this.model.get("team_1") !== null){
+				game.team_2 = _.isFunction(this.model.get("team_2").get) ? this.model.get("team_2").toJSON() : this.model.get("team_2");
+			}
+			return game;
 		}
 	});
 	return Game;// Required, return the module for AMD compliance
@@ -18060,6 +18170,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			resp = Backbone.Model.prototype.parse(resp);
 			return resp;
 		},
+		//If a tournament is saved to the API does it care about the teams and games?
 		toJSON: function() {//get rid of tournteams
 			return _.clone(this.attributes);
 		},
@@ -18317,7 +18428,14 @@ function(require, app, Backbone, Leaguevine) {
 			return resp;
 		},
 		toJSON: function() {
-			return _.clone(this.attributes);
+			var tt = _.clone(this.attributes);
+			//delete tt.team;
+			//delete tt.tournament;
+			return tt;
+		},
+		associations: {
+			"team_id": "team",
+			"tournament_id": "tournament"
 		}
 	});
 	TournTeam.Collection = Backbone.Collection.extend({
@@ -18541,6 +18659,7 @@ define('modules/trackedgame',[
 
 /*
  * Chad's TODO list:
+ * -re-factor substitutions
  * -enable/disable buttons depending on state
  * -Player model needs a function that returns its formatted name from its attributes.
  */
@@ -18579,10 +18698,10 @@ function(require, app, Backbone) {
 		defaults: {
 			game: {},
 			gameevents: [],
-			onfield_1: [],
-			offfield_1: [],
-			onfield_2: [],
-			offfield_2: [],
+			roster_1: [],//TeamPlayer.Collection
+			roster_2: [],
+			field_status_1: {},//keys=player_id, values=1(onfield) or 0(offfield)
+			field_status_2: {},
             //previous_state: "blank",
 			current_state: "pulling",
 			is_over: false,
@@ -18597,26 +18716,15 @@ function(require, app, Backbone) {
 		toJSON: function() {//flatten the data so they are easy to read.
 			var temp = _.clone(this.attributes);
 			temp.game = this.get("game").toJSON();
-			temp.onfield_1 = this.get("onfield_1").toJSON();
-			temp.offfield_1 = this.get("offfield_1").toJSON();
-			temp.onfield_2 = this.get("onfield_2").toJSON();
-			temp.offfield_2 = this.get("offfield_2").toJSON();
 			temp.gameevents = this.get("gameevents").toJSON();
 			return temp;
 		},
 		
-		screens_list: [{b_class: ".sub_team_1", b_string: "Roster Screen"}, {b_class: ".sub_team_2", b_string: "Next Roster Screen"}, {b_class: ".t_game", b_string: "Action Screen"}],
+		screens_list: [{b_class: ".roster_1", b_string: "Roster1"}, {b_class: ".roster_2", b_string: "Roster2"}, {b_class: ".t_game", b_string: "Action"}],
 		rotate_visibility: function() {
 			var n_screens = this.screens_list.length;
 			var sc_ix = this.get("visible_screen");
 			this.set("visible_screen", sc_ix==n_screens-1 ? 0 : sc_ix + 1);
-			this.toggle_screens();
-		},
-		toggle_screens: function(){
-			var n_screens = this.screens_list.length;
-			for (var ix=0;ix<n_screens;ix++) {$(this.screens_list[ix].b_class).hide();}
-			$(this.screens_list[this.get("visible_screen")].b_class).show();
-            window.scrollTo(0, 5000); //Scroll to the bottom where the toggle button is
 		},
 		
 		setButtonHeight: function() { 
@@ -18682,6 +18790,8 @@ function(require, app, Backbone) {
 			51: {is_turnover: true, toggle_screen: false, last_player_as: 1, play_string: "ran out of time while marked by", next_player_as: 2, next_state: "picking_up"},
 			80: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "stepped on the field"},
 			81: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "stepped off the field"},
+			82: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "bravely stepped on the field"},
+			83: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "limped off the field"},
 			91: {is_turnover: false, toggle_screen: false, play_string: "Timeout", next_state: "picking_up"},
 			92: {is_turnover: false, toggle_screen: true, play_string: "Injury timeout", next_state: "picking_up"},
 			94: {is_turnover: false, toggle_screen: true, play_string: "End of period", next_state: "pulling"},
@@ -18760,6 +18870,11 @@ function(require, app, Backbone) {
 			
 		},
 		
+		injury_to: function(){
+			this.set("injury_to", true);
+			this.immediate_event(92);
+		},
+		
 		end_period: function(){
 			//the End Period button should be disabled if we are in an injury_to... but I will check for the state anywyay.
 			//if (this.get("current_state")=="pulling" && !this.get("injury_to")) {
@@ -18786,29 +18901,25 @@ function(require, app, Backbone) {
 			Backbone.history.navigate("games/"+this.get("game").id, true);
 		},
 		
-		add_removed_player_to_other_collection: function(model, collection, options){
-			//Determine which collection we will be swapping TO.
-			var team_ix = collection.team_id == this.get("game").get("team_1_id") ? 1 : 2;
-			var was_off = collection == this.get("offfield_"+team_ix);
-			var new_model = model.clone();
-			var event_needs_saving = true;
-			var event_type = 80;
-			if (was_off) {
-				//If onfield has < 7, add it, otherwise add it back to offield
-				if (this.get("onfield_"+team_ix).length<7){
-					this.get("onfield_"+team_ix).add(new_model);
-				} else {
-					this.get("offfield_"+team_ix).add(new_model);
-                    event_needs_saving = false;
-				}
-			} else {
-				event_type=event_type+1;
-				this.get("offfield_"+team_ix).add(new_model);
+		field_status_events: function(){
+			var sc_ix = this.get("visible_screen");//0 is roster1, 1 is roster2, 2 is action
+			if (sc_ix>0){//If the new screen is roster2 or action.
+				var old_game = JSON.parse(localStorage.getItem("trackedGame-"+this.get("game").id));
+				var old_status = old_game && old_game["field_status_"+sc_ix];
+				var tm_id = this.get("game").get("team_"+sc_ix+"_id");
+				var new_status = this.get("field_status_"+sc_ix);
+				_.each(new_status, function (value, key, list){
+					//console.log(key + " " + value);
+					if ((old_status===null && value==1) || (old_status && old_status[key]!=value)){
+						var event_type = 80;
+						if (value===0){event_type = event_type + 1;}
+						if (this.get("injury_to")){event_type = event_type + 2;}
+						var this_event = this.create_event();
+						this_event.set({type: event_type, player_1_id: key, player_1_team_id: tm_id});
+						this.save_event(this_event);
+					}
+				}, this);
 			}
-			if (this.get("injury_to")){event_type = event_type + 2;}
-			var this_event = this.create_event();
-			this_event.set({type: event_type, player_1_id: model.get("player_id"), player_1_team_id: model.get("team_id")});
-			if (event_needs_saving) {this.save_event(this_event);}
 		},
 		
 		save_event: function(event) {
@@ -18837,6 +18948,28 @@ function(require, app, Backbone) {
 		event_removed: function(model, collection, options){
 			//This is triggered when an event is successfully removed from the data store and then the events stack.
 			var last_event_meta = this.events_meta[model.get("type")];
+			
+			//undo substitution.
+			if (model.get("type")>= 80 && model.get("type")<=83){
+				//Instead we need to remove the tp from its current collection with silent:true
+				//and then add the tp to the other collection
+				var mv_pl_id = model.get("player_1_id"); //moved tp player_id
+				var mv_tm_id = model.get("player_1_team_id"); //moved team id. Is this used?
+				var team_ix = mv_tm_id == this.get("game").get("team_1_id") ? 1 : 2; //team index, 1 or 2
+				var my_status = this.get("field_status_"+team_ix);
+				my_status[mv_pl_id] = 1 - my_status[mv_pl_id];
+				this.trigger("change:field_status_"+team_ix);//So the view gets updated.
+			}
+			
+			//undo score
+			if (model.get("type")== 22){
+				var team_xx = this.get("team_in_possession_ix");
+				var game_model = this.get("game");
+				var team_score_string = "team_" + team_xx + "_score";
+				var last_score = game_model.get(team_score_string);
+				var new_score = last_score - 1;
+				game_model.set(team_score_string,new_score);
+			}
 			
 			if (last_event_meta.is_turnover){
 				this.set("team_in_possession_ix",3-this.get("team_in_possession_ix"));
@@ -18879,6 +19012,17 @@ function(require, app, Backbone) {
 				this.set("player_in_possession_id",event_meta.next_state == "receiving" ? event.get("player_" + event_meta.next_player_as + "_id"): NaN);
 			}
 			
+			//If the event is a sub off, and the substituting player had the disc, then make the next state picking up.
+			if ((event.get("type")==81 || event.get("type")==83) && event.get("player_1_id")==this.get("player_in_possession_id")){
+				this.set("current_state","picking_up");
+				this.set("player_in_possession_id",NaN);
+			}
+			
+			//If the event is not an injury timeout event or an injury substitution event, then we need to make sure injury timeout is off.
+			if (event.get("type") !== 82 && event.get("type")!==83 && event.get("type")!==92){
+				this.set("injury_to", false);
+			}
+			
 			this.save();
 		},
 		
@@ -18907,21 +19051,26 @@ function(require, app, Backbone) {
 			"track/:gameId": "trackGame"
 		},
 		trackGame: function (gameId) {
-            if (!app.api.is_logged_in()) {//Ensure that the user is logged in
-                app.api.login();
+            if (!app.api.d_token()) {//Ensure that the user is logged in
+                //app.api.login();
                 return;
             }
-			
+            
+            //Load required modules.
 			//var Team = require("modules/team");
 			var Game = require("modules/game");
 			var TeamPlayer = require("modules/teamplayer");
 			var GameEvent = require("modules/gameevent");
 			
+			//Instantiate the trackedgame.
 			var trackedgame = new TrackedGame.Model({id: gameId});
-			trackedgame.fetch(); //localStorage. localStorage requests are synchronous.
+			trackedgame.fetch(); //uses localStorage. localStorage requests are synchronous.
+			
+			//It's useful to know if the game has been tracked previously.
+			var was_tracked = !isNaN(trackedgame.get("period_number"));
 			
 			//Check to see if the game is over and if so ask if it should be enabled.
-			if (trackedgame.get("is_over")) {
+			if (was_tracked && trackedgame.get("is_over")) {
 				var undo_over = confirm("You previously marked this game as over. Press OK to resume taking stats.");
 				if (undo_over){
 					var events = trackedgame.get("gameevents");
@@ -18934,94 +19083,78 @@ function(require, app, Backbone) {
 				}
 			}
 			
-			//If we don't have a period number then assume it is the first and we are pulling to start.
-			if (isNaN(trackedgame.get("period_number"))){//Game has not yet started. Set it up now.
+			if (!was_tracked){//Game has not yet started. Set it up now.
 				trackedgame.set("period_number", 1);
 				trackedgame.set("current_state","pulling");
 			}
 			
 			/*
 			* Trackedgame has many child objects.
-			* These need to be the proper model types.
-			* These need to be refreshed from the data store.
+			* These need to be replaced with the proper Backbone models.
+			* These models need to be refreshed from the data store.
 			*/
 			
 			//.game
-			var newGame = new Game.Model(trackedgame.get("game"));
-			if (!trackedgame.get("game").id) {
-				newGame.id = gameId;
-			}
-			trackedgame.set("game", newGame, {silent:true});
+			trackedgame.set("game", new Game.Model(trackedgame.get("game")), {silent:true});
+			if (!was_tracked) {trackedgame.get("game").id = gameId;}
 			trackedgame.get("game").fetch();
-			//Game also has team_1 and team_2 objects that are not Backbone Models but could be.
+			//Game also has team_1 and team_2 objects that are not yet Backbone Models.
 			
-			//.onfield and .offfield
-			for (var ix=1;ix<3;ix++) {//Setup offfield or onfield with data from localStorage (or empty)
-				trackedgame.set("offfield_"+ix, new TeamPlayer.Collection(trackedgame.get("offfield_"+ix)));
-				trackedgame.set("onfield_"+ix, new TeamPlayer.Collection(trackedgame.get("onfield_"+ix)));
-			}
-			//.offfield and onfield require team_id before they can be fetched. See bindings below.
-			//TODO: Is there anyway for offfield to know its team id before game is fetched?
+			//roster_1 and roster_2. These require the team_x_id which only comes back after the game is fetched.
+			trackedgame.set("roster_1", new TeamPlayer.Collection(), {silent:true});
+			trackedgame.set("roster_2", new TeamPlayer.Collection(), {silent:true});
+			trackedgame.get("game").on("reset", function(){//We need the team ids before we can get the rosters.
+				for (var ix=1;ix<3;ix++){
+					_.extend(trackedgame.get("roster_"+ix),{team_id: trackedgame.get("game").get("team_"+ix+"_id")});
+					trackedgame.get("roster_"+ix).fetch();
+				}
+			});
 			
 			//.gameevents
 			trackedgame.set("gameevents",
 				new GameEvent.Collection(trackedgame.get("gameevents"),{game_id: gameId}));
-			//trackedgame.get("gameevents").fetch(); //TODO: Fetch gameevents once the API only returns events created by this user.
+			//trackedgame.get("gameevents").fetch(); //TODO: Fetch gameevents once the API is capable of returning events created by the user.
 			
 			/*
-			* MODEL BINDINGS.
+			* EXTRA MODEL BINDINGS.
 			*/
-			trackedgame.bind("change:current_state",trackedgame.update_state,trackedgame);
-			trackedgame.bind("change:is_over",trackedgame.save);
-			trackedgame.get("gameevents").bind("add",trackedgame.event_added,trackedgame);
-			trackedgame.get("gameevents").bind("remove",trackedgame.event_removed,trackedgame);
+			trackedgame.on("change:current_state",trackedgame.update_state,trackedgame);//update possession when the state changes.
+			trackedgame.on("change:is_over",trackedgame.save);//save the game when it is set to being over or not-over.
+			trackedgame.get("gameevents").on("add",trackedgame.event_added,trackedgame);
+			trackedgame.get("gameevents").on("remove",trackedgame.event_removed,trackedgame);
 			
-			
-			var game = trackedgame.get("game");
-			game.bind("change:team_1", function(){
-				if (game.get("team_1").name && !trackedgame.get("team_pulled_to_start_ix")){
+			trackedgame.get("game").on("change:team_1", function(){
+				if (trackedgame.get("game").get("team_1").name && !trackedgame.get("team_pulled_to_start_ix")){
 					trackedgame.start_period_pull();
 				}
 			});
 			
-			//I can't seem to setup the onfield and offfield fetches properly with loops so I will write it out manually.
-			game.bind("change:team_1_id", function(){
-				var onf = trackedgame.get("onfield_1");
-				var offf = trackedgame.get("offfield_1");
-				var team_id = game.get("team_1_id");
-				_.extend(onf,{team_id: team_id});
-				_.extend(offf,{team_id: team_id});
-				offf.fetch();
-				if (onf.length>0){onf.fetch();}
-			});
-			trackedgame.get("offfield_1").bind("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
-			trackedgame.get("onfield_1").bind("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
+			trackedgame.on("change:visible_screen", trackedgame.field_status_events);
+			trackedgame.get("roster_1").on("reset", function(collection, options){
+				var status_1 = _.clone(trackedgame.get("field_status_1"));
+				_.each(collection.models, function(tp, index, list){
+					if (status_1[tp.get("player_id")]===undefined){status_1[tp.get("player_id")] = 0;} 
+				}, this);
+				trackedgame.set("field_status_1", status_1, {silent:true});
+			}, this);
+			trackedgame.get("roster_2").on("reset", function(collection, options){
+				var status_2 = _.clone(trackedgame.get("field_status_2"));
+				_.each(collection.models, function(tp, index, list){
+					if (status_2[tp.get("player_id")]===undefined){status_2[tp.get("player_id")] = 0;} 
+				}, this);
+				trackedgame.set("field_status_2", status_2, {silent:true});
+			}, this);
 			
-			game.bind("change:team_2_id", function(){
-				var onf = trackedgame.get("onfield_2");
-				var offf = trackedgame.get("offfield_2");
-				var team_id = game.get("team_2_id");
-				_.extend(onf,{team_id: team_id});
-				_.extend(offf,{team_id: team_id});
-				offf.fetch();
-				if (onf.length>0){onf.fetch();}
-			});
-			trackedgame.get("offfield_2").bind("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
-			trackedgame.get("onfield_2").bind("remove",trackedgame.add_removed_player_to_other_collection,trackedgame);
-			
+			/*
+			* SET UP THE VIEWS
+			*/
 			var myLayout = app.router.useLayout("tracked_game");
 			myLayout.setViews({
-				".sub_team_1": new TrackedGame.Views.SubTeam({onfield: trackedgame.get("onfield_1"), offfield: trackedgame.get("offfield_"+1), game: trackedgame.get("game"), team_ix: 1}),
-				".sub_team_2": new TrackedGame.Views.SubTeam({onfield: trackedgame.get("onfield_2"), offfield: trackedgame.get("offfield_"+2), game: trackedgame.get("game"), team_ix: 2}),
-				//Game action of course requires the full trackedgame.
-				".t_game": new TrackedGame.Views.GameAction({model: trackedgame}),
-				".rotate_screen": new TrackedGame.Views.RotateButton({model: trackedgame})
+				".scoreboard": new TrackedGame.Views.Scoreboard({model: trackedgame}),//team names, score, possession indicator
+				".rotate_screen": new TrackedGame.Views.RotateButton({model: trackedgame}),//just a button, but changes its text so it is in a view
+				".main_section": new TrackedGame.Views.MainSection({model: trackedgame})//a container for either roster screen or action screen.
 			});
 			var callback = trackedgame.setButtonHeight;
-			//myLayout.render(function(el) {$("#main").html(el);});
-			//myLayout.render(function(el) {
-				//$("#main").html(el);
-			//}).then(function() {
 			myLayout.render().then(function(){
                 // Unbind any other bindings to the browser height
                 $(window).unbind("resize"); //Is there a better way to do this besides binding globally?
@@ -19029,8 +19162,6 @@ function(require, app, Backbone) {
                     callback();
                 });
                 callback();
-                
-                trackedgame.toggle_screens();
             });
 		}
 	});
@@ -19039,23 +19170,22 @@ function(require, app, Backbone) {
 	/*
 	* TrackedGame page view hierarchy:
 	* 
-	* sub_team_1 = SubTeam
-	*   - sub_on_field_area = RosterList
-	*     - many RosterItem
-	*   - sub_off_field_area = RosterList
-	*     - many RosterItem
-	* sub_team_2 = SubTeam. Same as above.
-	* t_game = GameAction
-	*   - scoreboard = Scoreboard
-	*		- undo_button
+	* .scoreboard = Scoreboard. Includes team names and scores. (possession indicator?)
+	* .rotate_screen = RotateButton. A button that rotates the visibility of the remaining screens.
+	* .main_section = MainSection. Will set its contents depending on which screen is visible.
+	*   Either roster for 1, roster for 2, or action
+	*   - roster = Roster
+	*     - roster_onfield_sum = RosterSum
+	*     - roster_area = RosterList
+	*       - many RosterItem
+	*   - t_game = GameAction
 	*   - play_by_play = PlayByPlay
 	*   - player_area = PlayerArea
-	*     - player_area_1 = TeamPlayerArea
+	*     - player_area_1 = TeamPlayerArea. Not visible if the other player_area is visible.
 	*       - many PlayerButton
-	*     - player_area_2 = TeamPlayerArea
+	*     - player_area_2 = TeamPlayerArea. Not visible if the other player_area is visible.
 	*       - many PlayerButton
 	*   - action_area = ActionArea
-	* rotate_button = RotateButton
 	*/
 
 	//
@@ -19063,81 +19193,123 @@ function(require, app, Backbone) {
 	//
 	
 	/*
-	* Parent view for the substitution screen. The layout has 2 of these.
+	* Scoreboard
 	*/
-	TrackedGame.Views.SubTeam = Backbone.View.extend({
-		initialize: function(){
-			this.options.game.bind("reset", function(){this.render();},this);
+	TrackedGame.Views.Scoreboard = Backbone.View.extend({
+		//this.model = trackedgame
+		template: "trackedgame/scoreboard",
+		initialize: function() {
+			this.model.get("game").on("change:team_1_score change:team_2_score", this.render, this);//Update the display when the score changes.
+			this.model.on("change:team_in_possession_ix", this.render, this);//Update the display when possession changes.
 		},
-		template: "trackedgame/game_substitution",
+		serialize: function() {
+			return this.model.toJSON();
+		}
+	});
+	
+	/*
+	* RotateButton
+	*/
+	TrackedGame.Views.RotateButton = Backbone.View.extend({
+		//this.model = trackedgame.
+		template: "trackedgame/rotate_button",
+		initialize: function() {			
+			this.model.on("change:visible_screen", this.render, this);
+		},
+		render: function(manage) {
+			var n_screens = this.model.screens_list.length;
+			var sc_ix = this.model.get("visible_screen");
+			var next_screen_text = "";
+			sc_ix = sc_ix == n_screens-1 ? 0 : sc_ix + 1;
+			return manage(this).render({next_screen: this.model.screens_list[sc_ix].b_string});
+		},
 		events: {
-			"click .game_over": "game_over"
+			"click .rotate": function() {this.model.rotate_visibility();}
+		}
+	});
+	
+	/*
+	* MainSection
+	*/
+	TrackedGame.Views.MainSection = Backbone.View.extend({
+		//tagName: "div",
+		initialize: function(){
+			this.model.on("change:visible_screen", this.render, this);//re-render when screens rotate.
 		},
-		game_over: function(ev){
-			this.model.game_over();
+		render: function(manage){
+			var sc_ix = this.model.get("visible_screen");
+			if (sc_ix<2){
+				this.setView(new TrackedGame.Views.Roster({model: this.model, team_ix: sc_ix+1}));
+			} else {
+				this.setView(new TrackedGame.Views.GameAction({model: this.model}));
+			}	
+			return manage(this).render();
+		}
+	});
+	
+	/*
+	* Parent view for the substitution screen. The layout has 2 of these.
+	* Each contains two subviews: the list of players and a single number indicating how many players are onfield.
+	* I'm using two subviews instead of putting everything in this view because I don't want the roster list to re-render when I update the number.
+	*/
+	TrackedGame.Views.Roster = Backbone.View.extend({
+		//passed this.model = trackedgame, and this.options.team_ix is the index of the team this view is used for.
+		template: "trackedgame/roster",
+		initialize: function() {
+			this.model.get("game").on("reset", this.render, this);
 		},
-		render: function(layout) {
-			var view = layout(this); //Get this view from the layout.
+		render: function(manage) {
 			this.setViews({
-				".sub_on_field_area": new TrackedGame.Views.RosterList({collection: this.options.onfield, remove_all_button: true}),
-				".sub_off_field_area": new TrackedGame.Views.RosterList({collection: this.options.offfield})
+				".roster_onfield_sum": new TrackedGame.Views.RosterSum({model: this.model, team_ix: this.options.team_ix}),
+				".roster_area": new TrackedGame.Views.RosterList({model: this.model, team_ix: this.options.team_ix})
 			});
-			return view.render({ team: this.options.game.get("team_"+this.options.team_ix)});
+			return manage(this).render({ team: this.model.get("game").get("team_"+this.options.team_ix)});
+		}
+	});
+	TrackedGame.Views.RosterSum = Backbone.View.extend({
+		template: "trackedgame/rostersum",
+		initialize: function() {
+			this.model.on("change:field_status_"+this.options.team_ix, this.render, this);
+		},
+		render: function(manage) {
+			var my_status = this.model.get("field_status_"+this.options.team_ix);
+			var n_onfield = 0;
+			_.each(my_status, function(value,key,list){n_onfield=n_onfield+value;});
+			return manage(this).render({onfield_sum: n_onfield});
 		}
 	});
 	TrackedGame.Views.RosterList = Backbone.View.extend({
-		initialize: function() {
-			this.collection.bind("reset", function(){
-				this.render();
-			}, this);
-			this.collection.bind("add", this.add_roster_item, this);
+		//this.model is trackedgame. this.options.team_ix is the team for this view.
+		initialize: function() {//Re-render the whole list whenever the fetch of teamplayers returns.
+			this.model.get("roster_"+this.options.team_ix).on("reset", this.render, this);
 		},
 		tagName: "ul",
-		//add_roster_item: function (model, collection, options){
-		add_roster_item: function (){
-			//I would love to simply add the views individually but this does not work currently with layoutmanager.
-			//https://github.com/tbranyen/backbone.layoutmanager/pull/47
-			//this.view("ul", new TrackedGame.Views.RosterItem({model: model}), true);
-			//This callback is being triggered twice for every press... I"m not sure why.
-			this.render();
-		},
-		render: function(layout){
-			var view = layout(this);
-			//this.$el.empty()
-			//view.cleanup();// call .cleanup() on all child views, and remove all appended views
-			this.collection.each(function(tp) {//for each teamplayer in the collection.
-				this.insertView(new TrackedGame.Views.RosterItem({model: tp}));
+		render: function(manage){
+			this.model.get("roster_"+this.options.team_ix).each(function(tp) {//for each teamplayer in the collection.
+				this.insertView(new TrackedGame.Views.RosterItem({model: tp, trackedgame: this.model, team_ix: this.options.team_ix}));
 			}, this);
-            if (this.options.remove_all_button) {
-                this.insertView(new TrackedGame.Views.RosterItemRemoveAll({}));
-            }
-			return view.render();
-		},
-		events: {
-			"click .roster_remove_all": "swap_all"
-		},
-		swap_all: function(ev){
-			this.collection.remove(this.collection.models);
-			this.render();
+			return manage(this).render();
 		}
 	});
 	TrackedGame.Views.RosterItem = Backbone.View.extend({
+		//this.model is the teamplayer. this.options.trackedgame, this.options.team_ix
 		template: "trackedgame/roster_item",
 		tagName: "li",
-		serialize: function() {
-			return this.model.toJSON();
+		render: function(manage){
+			return manage(this).render(this.model.toJSON()).then(function(el){
+				this.$el.toggleClass('onfield',this.options.trackedgame.get("field_status_"+this.options.team_ix)[this.model.get("player_id")]==1);
+			}, this);
 		},
 		events: {
-			"click": "remove_me"
+			"click": "toggle_me"
 		},
-		remove_me: function(ev) {
-			this.model.collection.remove(this.model);//remove the model from the collection
-			this.remove();//remove the view.
+		toggle_me: function(ev) {
+			var my_status = this.options.trackedgame.get("field_status_"+this.options.team_ix);
+			my_status[this.model.get("player_id")] = 1 - my_status[this.model.get("player_id")];
+			//this.options.trackedgame.set("field_status_"+this.options.team_ix, my_status);
+			this.options.trackedgame.trigger("change:field_status_"+this.options.team_ix);
+			this.render();
 		}
-	});
-	TrackedGame.Views.RosterItemRemoveAll = Backbone.View.extend({
-		template: "trackedgame/roster_item_remove_all",
-		tagName: "li"
 	});
     
     /*
@@ -19145,11 +19317,14 @@ function(require, app, Backbone) {
 	*/
 	TrackedGame.Views.GameAction = Backbone.View.extend({
 		//this.model = trackedgame
+		initialize: function() {
+			this.model.get("roster_1").on("reset", this.render, this);
+			this.model.get("roster_2").on("reset", this.render, this);
+		},
 		template: "trackedgame/game_action",
 		render: function(layout) {
 			var view = layout(this);
 			this.setViews({
-				".scoreboard": new TrackedGame.Views.Scoreboard({model: this.model}),
 				".playbyplay": new TrackedGame.Views.PlayByPlay({model: this.model}),
 				".player_area": new TrackedGame.Views.PlayerArea({model: this.model}),
 				".action_area": new TrackedGame.Views.ActionArea({model: this.model})
@@ -19159,44 +19334,13 @@ function(require, app, Backbone) {
 	});
 	
 	/*
-	View for Scoreboard
-	*/
-	TrackedGame.Views.Scoreboard = Backbone.View.extend({
-		//this.model = trackedgame
-		template: "trackedgame/scoreboard",
-		initialize: function() {
-			this.model.get("game").bind("change:team_1_score change:team_2_score", function() {this.render();}, this);
-			this.model.bind("change:team_in_possession_ix", function() {this.render();}, this);
-		},
-		//cleanup - unbind, etc.
-		serialize: function() {
-			return this.model.toJSON();
-		},
-		//render_helpers
-		show_previous_action: function(ev){
-			//TODO: Move this into its own play-by-play view and include the Undo button.
-			// Update the Previous Play: based on the last event.
-            var last_event = this.model.get("gameevents").at(this.model.get("gameevents").length-1);
-            var event_meta = this.model.events_meta[last_event.get("type")];
-            
-            var player_name = "";
-            if (event_meta.needs_player_name){
-				//TODO: Get player names from ids of last players.
-            }
-            
-            // Display the previous action 
-            this.$(".last_action").html(player_name + " " +  event_meta.play_string + ".");
-        }
-	});
-	
-	/*
 	* View for PlayByPlay
 	*/
 	TrackedGame.Views.PlayByPlay = Backbone.View.extend({
 		//this.model is trackedgame
 		template: "trackedgame/playbyplay",
-		initialize: function() {
-			this.model.get("gameevents").bind("add remove", function() {this.render();}, this);
+		initialize: function() {//Update the play-by-play when a game event is added or removed.
+			this.model.get("gameevents").on("add remove", function() {this.render();}, this);
 		},
 		//cleanup
 		render: function(layout) {
@@ -19212,8 +19356,8 @@ function(require, app, Backbone) {
 				var npix = _.has(event_meta,"next_player_as") ? event_meta.next_player_as : null;
 				var players = [];
 				if (lpix || npix){
-					var t1 = this.model.get("onfield_1").pluck("player");
-					var t2 = this.model.get("onfield_2").pluck("player");
+					var t1 = this.model.get("roster_1").pluck("player");
+					var t2 = this.model.get("roster_2").pluck("player");
 					players = _.union(t1,t2);
 				}
 				if (lpix==1 || npix==1){
@@ -19248,8 +19392,8 @@ function(require, app, Backbone) {
 		template: "trackedgame/player_area",
 		initialize: function() {
 			//I have moved the action prompt from the subview to here, because the action prompt is not team-specific.
-			this.model.bind("change:current_state", function() {this.render();}, this);//Update the action prompt.
-			this.model.bind("change:team_in_possession_ix", function() {this.show_teamplayer();}, this);//Update which player buttons to display.
+			this.model.on("change:current_state", function() {this.render();}, this);//Update the action prompt.
+			this.model.on("change:team_in_possession_ix", function() {this.show_teamplayer();}, this);//Update which player buttons to display.
 		},
 		render: function(layout) {
 			var view = layout(this);
@@ -19257,8 +19401,6 @@ function(require, app, Backbone) {
 				//Need to pass the full trackedgame to the children views because we need to bind to its attributes that are not yet backbone model's'
 				".player_area_1": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix: 1}),
 				".player_area_2": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix: 2})
-				//".player_area_1": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get("onfield_1"), model: this.model.get("game").get("team_1"), trackedgame: this.model}),
-				//".player_area_2": new TrackedGame.Views.TeamPlayerArea({collection: this.model.get("onfield_2"), model: this.model.get("game").get("team_2"), trackedgame: this.model})
 			});
 			return view.render({
 				//player_prompt: this.model.player_prompt_strings[this.model.get("current_state")]
@@ -19276,52 +19418,49 @@ function(require, app, Backbone) {
 		//this.model = trackedgame; this.options.team_ix = 1 or 2
 		template: "trackedgame/teamplayer_area",
 		initialize: function() {
-			//Specific players should only be added or removed on the substitution screen.
-			var ix = this.options.team_ix;
-			this.onf = this.model.get("onfield_"+ix);
-			this.onf.bind("add", function() {
-				this.render().then(function(el) {
-					this.model.setButtonHeight();
-				});
-			}, this);
-			//team is not a Backbone.Model yet. 
-			this.model.get("game").bind("change:team_"+this.options.team_ix,function(){this.render();}, this);//Team name will update when returned from db.
+			this.model.get("game").on("change:team_"+this.options.team_ix, this.render, this);//Team name will update when returned from db.
+			this.model.on("change:field_status_"+this.options.team_ix, this.render, this);//Change displayed player buttons
 		},
-		render: function(layout) { 
-			var view = layout(this);
-			var _this = this;
-			//this.$el.empty()
-			// call .cleanup() on all child views, and remove all appended views
-			//view.cleanup();
-			this.onf.each(function(tp) {
-				this.insertView("ul", new TrackedGame.Views.PlayerButton({
-					model: tp, trackedgame: _this.model
-				}));
+		render: function(manage) {
+			var my_status = this.model.get("field_status_"+this.options.team_ix);
+			var n_onfield = 0;
+			this.model.get("roster_"+this.options.team_ix).each(function(tp) {
+				if (my_status[tp.get("player_id")]){
+					n_onfield = n_onfield + 1;
+					this.insertView("ul", new TrackedGame.Views.PlayerButton({
+						model: tp, trackedgame: this.model
+					}));
+				}
 			}, this);
 			//insert unknown buttons for less than 8 players.
 			var TeamPlayer = require("modules/teamplayer");
-			for(var i=this.onf.length;i<8;i++){
+			for(var i=n_onfield;i<8;i++){
 				this.insertView("ul", new TrackedGame.Views.PlayerButton({
-					model: new TeamPlayer.Model({player: {id:NaN, last_name:"unknown"}}),
-					trackedgame: _this.model
+					model: new TeamPlayer.Model({
+						team_id: this.model.get("game").get("team_"+this.options.team_ix+"_id"),
+						player_id: NaN,
+						player: {id:NaN, last_name:"unknown"}}),
+					trackedgame: this.model
 				}));
 			}
 			var team = this.model.get("game").get("team_"+this.options.team_ix);
-			return view.render({ team: team });
+			return manage(this).render({ team: team }).then(function(el){
+				this.model.setButtonHeight();
+			}, this);
 		}
 	});
 	TrackedGame.Views.PlayerButton = Backbone.View.extend({
 		template: "trackedgame/player_button",
 		tagName: "li",
 		serialize: function() {
-			return this.model.toJSON();//TODO: Player model to generate name?
+			return this.model.toJSON();//TODO: player model itself should generate the name.
 		},
 		events: {
 			"click": "player_tap"
 		},
 		player_tap: function(ev){
-            var player_id = parseInt(this.$el.find("button.player").attr("id"),10);
-			this.options.trackedgame.player_tap(player_id);
+            //var player_id = parseInt(this.$el.find("button.player").attr("id"),10);
+			this.options.trackedgame.player_tap(this.model.get("player_id"));
 		}
 	});
 	
@@ -19332,8 +19471,8 @@ function(require, app, Backbone) {
 	TrackedGame.Views.ActionArea = Backbone.View.extend({
 		template: "trackedgame/action_area",
 		initialize: function() {			
-			this.model.bind("change:player_in_possession_id change:current_state change:period_number", function() {this.render();}, this);
-			this.model.bind("change:showing_alternate", this.show_action_buttons, this);//Which buttons are we showing?
+			this.model.on("change:player_in_possession_id change:current_state change:period_number", function() {this.render();}, this);
+			this.model.on("change:showing_alternate", this.show_action_buttons, this);//Which buttons are we showing?
 		},
 		render: function(layout) {
 			var view = layout(this);
@@ -19342,7 +19481,7 @@ function(require, app, Backbone) {
 			var pl_id = this.model.get("player_in_possession_id");
 			var team_ix = this.model.get("team_in_possession_ix");
 			if (pl_id){
-				var pl_model = _.find(this.model.get("onfield_" + team_ix).pluck("player"), function(pl_obj){return pl_obj.id == pl_id;});
+				var pl_model = _.find(this.model.get("roster_" + team_ix).pluck("player"), function(pl_obj){return pl_obj.id == pl_id;});
                 if (pl_model !== undefined) {
 					pl_string = pl_model.first_name[0] + ". " + pl_model.last_name + " ";
 					ac_string = "throws a:";
@@ -19399,29 +19538,11 @@ function(require, app, Backbone) {
 		throwaway: function(){this.model.immediate_event(32);},
 		unknown_turn: function(){this.model.immediate_event(30);},
 		timeout: function(){this.model.immediate_event(91);},
-		injury: function(){this.model.immediate_event(92);},
+		injury: function(){this.model.injury_to();},
 		end_of_period: function(){this.model.end_period();}
 	});
 	
-	TrackedGame.Views.RotateButton = Backbone.View.extend({
-		template: "trackedgame/rotate_button",
-		initialize: function() {			
-			this.model.bind("change:visible_screen", function() {this.render();}, this);
-		},
-		render: function(manage) {
-			var n_screens = this.model.screens_list.length;
-			var sc_ix = this.model.get("visible_screen");
-			var next_screen_text = "";
-			sc_ix = sc_ix == n_screens-1 ? 0 : sc_ix + 1;
-			return manage(this).render({next_screen: this.model.screens_list[sc_ix].b_string});
-		},
-		events: {
-			"click .rotate": "rotate_screen"
-		},
-		rotate_screen: function(){
-			this.model.rotate_visibility();
-		}
-	});
+	
 
 	return TrackedGame;
 });

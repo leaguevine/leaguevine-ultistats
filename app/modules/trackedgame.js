@@ -268,7 +268,7 @@ function(require, app, Backbone) {
 					//console.log(key + " " + value);
 					if ((old_status===null && value==1) || (old_status && old_status[key]!=value)){
 						var event_type = 80;
-						if (value==0){event_type = event_type + 1;}
+						if (value===0){event_type = event_type + 1;}
 						if (this.get("injury_to")){event_type = event_type + 2;}
 						var this_event = this.create_event();
 						this_event.set({type: event_type, player_1_id: key, player_1_team_id: tm_id});
@@ -319,9 +319,9 @@ function(require, app, Backbone) {
 			
 			//undo score
 			if (model.get("type")== 22){
-				var team_ix = this.get("team_in_possession_ix");
+				var team_xx = this.get("team_in_possession_ix");
 				var game_model = this.get("game");
-				var team_score_string = "team_" + team_ix + "_score";
+				var team_score_string = "team_" + team_xx + "_score";
 				var last_score = game_model.get(team_score_string);
 				var new_score = last_score - 1;
 				game_model.set(team_score_string,new_score);
@@ -549,8 +549,8 @@ function(require, app, Backbone) {
 	//
 	
 	/*
-	 * Scoreboard
-	 */
+	* Scoreboard
+	*/
 	TrackedGame.Views.Scoreboard = Backbone.View.extend({
 		//this.model = trackedgame
 		template: "trackedgame/scoreboard",
@@ -564,8 +564,8 @@ function(require, app, Backbone) {
 	});
 	
 	/*
-	 * RotateButton
-	 */
+	* RotateButton
+	*/
 	TrackedGame.Views.RotateButton = Backbone.View.extend({
 		//this.model = trackedgame.
 		template: "trackedgame/rotate_button",
@@ -581,12 +581,12 @@ function(require, app, Backbone) {
 		},
 		events: {
 			"click .rotate": function() {this.model.rotate_visibility();}
-		},
+		}
 	});
 	
 	/*
-	 * MainSection
-	 */
+	* MainSection
+	*/
 	TrackedGame.Views.MainSection = Backbone.View.extend({
 		//tagName: "div",
 		initialize: function(){
