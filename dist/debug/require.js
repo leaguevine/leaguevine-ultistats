@@ -18792,7 +18792,7 @@ function(require, app, Backbone) {
 			81: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "stepped off the field"},
 			82: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "bravely stepped on the field"},
 			83: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "limped off the field"},
-			91: {is_turnover: false, toggle_screen: false, play_string: "Timeout", next_state: "picking_up"},
+			91: {is_turnover: false, toggle_screen: false, play_string: "Timeout"},
 			92: {is_turnover: false, toggle_screen: true, play_string: "Injury timeout", next_state: "picking_up"},
 			94: {is_turnover: false, toggle_screen: true, play_string: "End of period", next_state: "pulling"},
 			98: {is_turnover: false, toggle_screen: false, play_string: "Game over"}
