@@ -1,70 +1,49 @@
 #Leaguevine Ultistats
-v0
+v0.5
 
 ###Current Status:
-I am approaching version 0.1. There is not much here, but the major accomplishment is that I am finally thinking about Ultistats and the Leaguevine API instead of thinking about javascript and frameworks and plugins, etc. 
-
-The app looks terrible and performs terribly. It looks terrible because I have yet to write any CSS. 
-It performs terribly because every single tap communicates with the API. This should be a non-issue after v0.6 when the app will use local storage.
+The app is in use by several people though it is still under heavy development.
 
 
-###Getting started locally.
+###Getting started locally - Method 1 - grunt-bbb
 1.  Download this repo.
-2.  Download and install [node.js](http://nodejs.org/)
+2.  Follow the [bbb](https://github.com/tbranyen/backbone-boilerplate) [instructions to install](https://github.com/tbranyen/backbone-boilerplate/wiki/Installation).
+    * Install npm
+    * Install [grunt-bbb](https://github.com/backbone-boilerplate/grunt-bbb)
 3.  Open a terminal/console, change to the directory where you downloaded the repo
 4.  
 ```
->node build server
+>bbb server
 ```
 5.  Navigate your browser to http://localhost:8000
-The app will not work on any other URL:port unless I change the app's registration in the Leaguevine API.
 
-The first time you use the app it will bring you to the Leaguevine site to get a token.
-Thereafter it will load the default page, which is currently set to /#teams.
+This won't work, at least not entirely. The problem is that I have pushState enabled and that requires rewrites.
+It is probably possible to modify grunt-bbb to enable rewrites. That's up to you.
+Alternatively, you can disable pushState and then prepend all of the links in this app with #.
 
-##Summary:
+###Getting started locally - Method 2 - Apache
+1.  Download this repo.
+2.  Set apache to serve this app's folder as webroot either directly or using vhosts (lots of good resources via google)
+3.  Enable rewrites.
+    * Make sure apache is configured to AllowOverride All
+    * Use the .htaccess file in this repo.
+4.  Point your browser to http://localhost (actually I use vhosts to serve out of http://ultistats.localhost)
+
+##Summary
 Leaguevine Ultistats (lvus) is a Web App targeting mobile devices for tracking gameplay statistics in the sport of Ultimate.
-It is in the very early stages of development. Development will proceed in stages as follows:
+It is in the early stages of development.
 
-1.  A simple read-only client with no user input. Requires constant communication with the Leaguevine API.
-2.  Enable adding/editing teams/players and tournaments/games.
-3.  Add the ability to track gameplay.
-4.  Work on the navigation bar.
-5.  Work on giving the app a clean and organized look.
-6.  Replace Backbone.Sync with a WebSQL local storage that also communicates with the API. (some of this already exists in google wspl)
-7.  Detect screen size and make the app work better with tablets, desktops, etc.
-8.  More browser compatibility using html and css techniques used by h5bp.com/mobile. Also add the bookmark bubble.
-
-Also in this directory you will be able to find some design documents, including
-
-*  Screen wireframes (preliminary version available)
-*  Model classes (available before v0.4 release)
-*  Controller classes (available before v0.4 release)
-*  State flow (available before v0.4 release)
-*  data UML (available before v0.4 release)
+##Build
+The recommended way to host this app is to first run a javascript build to combine, minify, and gzip all the javascript files. This is located under the 'dist' directory. To create a build under the 'dist' directory, run the following command:
+```
+> bbb release
+```
 
 ##Frameworks/Libraries
 This app is built atop the [Backbone.js framework](http://documentcloud.github.com/backbone/) which in turn depends on [Underscore.js](http://documentcloud.github.com/underscore/).
 Modules are loaded [asynchronously](http://requirejs.org/docs/whyamd.html) using [Require.js](http://requirejs.org/docs/api.html).
 I am using [@tbranyen](http://twitter.com/tbranyen)'s [Backbone-boilerplate](https://github.com/tbranyen/backbone-boilerplate) which includes a plugin to allow backbone and underscore to work with Require.
 Finally, laying out views on the page is assisted by tbranyen's [Backbone.LayoutManager](https://github.com/tbranyen/backbone.layoutmanager).
-
-###Ultistats-specific notes
-There are several ways to handle clicks/taps in a Backbone.js app
-
-1. HTML elements' .clicks are bound to a function AND
-    1. the function handles all data manipulation and rendering but never calls router.navigate(href) OR
-    2. the function handles some or no data manipulation and rendering then calls router.navigate(href).
-2.  HTML elements are themselves links and when the link is tapped or clicked
-    1. the linked URL is navigated to by the browser. This is the same as following a bookmark (or a link shared between friends) OR
-    2. the linked URL is intercepted, suppressed, and instead the relative URL is passed to router.navigate(href)
-
-Then, for 1.2, 2.1, and 2.2, a Router matches the URL to a function and the function performs some data manipulation and rendering.
-    
-1.1 is not an option for pages we want to be bookmarkable because 1.1 never updates the address bar. 2.1 is absolutely necessary.  
-We could use 2.1 exclusively by making every touchable thing a hyperlink but this is not performant because the browser would refresh the entire page for every tap.  
-Instead, to improve performance we will use 2.2 for navigation to any page that we want to be bookmarkable. This has the advantage of allowing 2.1 to work for these pages.
-Finally, for interaction that should not be bookmarkable (e.g., entering stats), we will use 1.1
 
 ###Connecting to the Leaguevine API
 This app comes with some default settings to automatically connect to the Leaguevine API. These defaults assume you will be serving these files at http://localhost:8000/ and that you wish to use the API client that Chad created. To serve this app at a different URL or to use your own client, you can create a localSettings.js file that sits in assets/js/plugins/. Here is an example file:

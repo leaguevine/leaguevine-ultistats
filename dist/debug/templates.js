@@ -45,7 +45,7 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/layouts/tracked_game.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="track substitution sub_team_1"></section>\n<section class="track substitution sub_team_2"></section>\n<section class="track t_game"></section>\n<section class="track rotate_screen"></section>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="track scoreboard"></section>\n<section class="track rotate_screen"></section>\n<section class="track main_section"></section>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/leaguevine/more_items.html'] = function(data) { return function (obj,_) {
@@ -181,11 +181,11 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/game_action.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="scoreboard"></div>\n<div class="playbyplay"></div>\n<div class="player_area"></div>\n<div class="action_area"></div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="playbyplay"></div>\n<div class="player_area"></div>\n<div class="action_area"></div>\n');}return __p.join('');
 }(data, _)};
 
-this['JST']['app/templates/trackedgame/game_substitution.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="track sub_page_wrapper">\n    <div class="sub_team_header">\n        <span class="sub_team_name">\n            ', team.name ,'\n        </span>\n    </div>\n    <div class="sub_wrapper">\n        <div class="sub_on_field_wrapper">\n        \t<div class="sub_on_field_title">On field</div>\n            <div class="sub_on_field_area"></div>\n        </div>\n        <div class="sub_off_field_wrapper">\n        \t<div class="sub_off_field_title">Off field</div>\n            <div class="sub_off_field_area"></div>\n        </div>\n    </div>\n    <div class="sub_buttons_area">\n        <button class="button game_over">End Game</button>\n    </div>\n</div>\n');}return __p.join('');
+this['JST']['app/templates/trackedgame/roster.html'] = function(data) { return function (obj,_) {
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="track roster_wrapper">\n    <div class="roster_team_header">\n        <span class="roster_team_name">\n            ', team.name ,'\n        </span>\n    </div>\n    <div class="roster_onfield_sum">\n    </div>\n    <div class="roster_wrapper">\n        <div class="roster_area"></div>\n    </div>\n</div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/playbyplay.html'] = function(data) { return function (obj,_) {
@@ -201,11 +201,7 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/roster_item.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="roster_player player" id="', player.id ,'">\n    <span class="player_name" id="', player.id ,'">', player.first_name ,' ', player.last_name ,'</span>\n    <span class="player_number" id="', player.id ,'">', number ,'</span>\n</button>\n');}return __p.join('');
-}(data, _)};
-
-this['JST']['app/templates/trackedgame/roster_item_remove_all.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="roster_remove_all">\n    <span>REMOVE ALL</span>\n</button>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="roster_player player" id="', player_id ,'">\n    <span class="player_name" id="', player_id ,'">', player.first_name ,' ', player.last_name ,'</span>\n    <span class="player_number" id="', player_id ,'">', number ,'</span>\n</button>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/rotate_button.html'] = function(data) { return function (obj,_) {
@@ -213,7 +209,7 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/scoreboard.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="score_area">\n    <div class="name team1"><span>', game.team_1.name ,'</div>\n    <div class="score team1"><span>', game.team_1_score ,'</div>\n    <div class="score team2"><span>', game.team_2_score ,'</div>\n    <div class="name team2"><span>', game.team_2.name ,'</div>\n</div>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="score_area">\n    <div class="name team1">', game.team_1.name ,'</div>\n    <div class="score team1">', game.team_1_score ,'</div>\n    <div class="score team2">', game.team_2_score ,'</div>\n    <div class="name team2">', game.team_2.name ,'</div>\n</div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/teamplayer_area.html'] = function(data) { return function (obj,_) {
@@ -222,4 +218,8 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 
 this['JST']['app/templates/trackedgame/ul.html'] = function(data) { return function (obj,_) {
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul></ul>');}return __p.join('');
+}(data, _)};
+
+this['JST']['app/templates/trackedgame/rostersum.html'] = function(data) { return function (obj,_) {
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<span class="roster_onfield_sum_value">', onfield_sum ,' players in</span>\n');}return __p.join('');
 }(data, _)};

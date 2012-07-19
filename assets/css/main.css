@@ -5,6 +5,10 @@
     min-height: 411px; /* Optimized for iOS */
 }
 
+.main_section {
+    padding-top: 40px;
+}
+
 /* ------------------- Lists ------------------- */
 ul {
     list-style: none;
@@ -512,13 +516,15 @@ table.stats {
    Game Tracking
    ========================================================================== */
 .scoreboard {
-    height: 25px;
+	position: absolute;
+    height: 40px;
+    width: 100%;
 }
     .scoreboard .name {
         float: left;
         width: 34%;
-        height: 10px;
-        padding: 5px;
+        height: 23px;
+        padding: 10px 5px;
         overflow: hidden;
         word-break: break-all;
         word-wrap: none;
@@ -528,13 +534,26 @@ table.stats {
         text-align: right;
     }
 
+    .scoreboard .divider {
+        width: 4%;
+    }
+
     .scoreboard .score {
         float: left;
         width: 12%;
-        padding-top: 5px;
-        padding-bottom: 5px;
+        padding-top: 10px;
+        padding-bottom: 10px;
         text-align: center;
     }
+    
+    .scoreboard .score_area {
+        width: 80%;
+        overflow: hidden;
+        word-break: break-all;
+        word-wrap: none;
+	    height: 40px;
+	    border-bottom: 1px solid #c3c3c3;
+	}
 
 .last_action_label {
     clear: both;
@@ -551,11 +570,9 @@ table.stats {
     color: #767676;
 }
 
-    .scoreboard .score_area {
-        height: 23px;
-        border-bottom: 1px solid #c3c3c3;
-    }
-
+#throw_prompt {
+    height: 35px;
+}
 
 .extra_actions,
 .player_area {
@@ -576,7 +593,7 @@ table.stats {
 .alternate_action,
 .main_action {
     position: absolute;
-    top: 60px;
+    top: 80px;
     left: 0px;
     width: 40%;
 }
@@ -586,9 +603,9 @@ table.stats {
 }
 
 .track {
+    position: absolute;
     height: 100%;
     display: block;
-    position: relative;
     height:auto;
     top:0;
     left:0;
@@ -715,7 +732,11 @@ table.stats {
         }
 
     .rotate_screen button.rotate{
-        margin-bottom: 10px;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 20%;
+        z-index: 900;
     }
 
 span.button_line_1,
@@ -753,15 +774,14 @@ span.button_line_2 {
     margin-top: 15px;
 }
 
-.sub_team_1,
-.sub_team_2,
+.roster_1,
+.roster_2,
 .t_game {
     z-index: 5;
 }
 
 /* ----------------------- Substitutions ----------------- */
-.sub_team_header {
-    border-bottom: 1px solid #c3c3c3;
+.roster_team_header {
     font-size: 15px;
     font-weight: bold;
     padding-bottom: 5px;
@@ -769,39 +789,54 @@ span.button_line_2 {
     text-align: center;
     width: 100%;
 }
-.sub_team_name {
+.roster_team_name {
     padding: 5px;
 }
 
-.sub_off_field_wrapper,
-.sub_on_field_wrapper {
+.roster_wrapper {
+    top: 45px;
     float: left;
-    width: 50%;
+    width: 100%;
+    margin: 0px;
 }
 
-.sub_on_field_title,
-.sub_off_field_title {
+.roster_title {
     padding: 5px;
 }
 
-.sub_off_field_area,
-.sub_on_field_area {
+.roster_area {
     text-align: center;
 }
 
-.sub_on_field_area button {
-    background: url(../img/icons/right_arrow_grey.png) 95% 50% no-repeat;
+.roster_onfield_sum {
+    position: relative;
+    width: 100%;
+    height: 20px;
+    text-align: center;
 }
 
-.sub_off_field_area button {
-    background: url(../img/icons/left_arrow_grey.png) 5% 50% no-repeat;
+.roster_area li {
+    float: left;
+    width: 33%;
 }
 
-.sub_page_wrapper button {
-    margin: 2px;
+.roster_area .onfield button{
+    border: 1px solid black;
+    color: white;
+    background-color: #08C;
 }
 
-.sub_buttons_area {
+.roster_area .onfield button .player_number{
+    color: white;
+}
+
+.roster_area button {
+    margin: 0px;
+    border-color: #DDDDDD;
+    background-color: transparent;
+}
+
+.roster_buttons_area {
     clear: both;
 }
 

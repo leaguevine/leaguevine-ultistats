@@ -270,10 +270,11 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 		},
         checkPermission: function() {
             // If the user is not logged in, redirect to login and disable the page transition
-            if (!app.api.is_logged_in()) {
+            /*if (!app.api.is_logged_in()) {
                 app.api.login();
                 return false;
-            }
+            }*/
+           return app.api.d_token();
          },
 		events: {
 			"click button.btrack_game": "checkPermission"
