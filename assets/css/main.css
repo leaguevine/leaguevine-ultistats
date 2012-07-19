@@ -5,6 +5,10 @@
     min-height: 411px; /* Optimized for iOS */
 }
 
+.main_section {
+    padding-top: 40px;
+}
+
 /* ------------------- Lists ------------------- */
 ul {
     list-style: none;
@@ -513,15 +517,14 @@ table.stats {
    ========================================================================== */
 .scoreboard {
 	position: absolute;
-    height: 30px;
-    width: 80%;
-    right: 20%;
+    height: 40px;
+    width: 100%;
 }
     .scoreboard .name {
         float: left;
-        width: 35%;
+        width: 34%;
         height: 23px;
-        padding: 5px;
+        padding: 10px 5px;
         overflow: hidden;
         word-break: break-all;
         word-wrap: none;
@@ -531,16 +534,24 @@ table.stats {
         text-align: right;
     }
 
+    .scoreboard .divider {
+        width: 4%;
+    }
+
     .scoreboard .score {
         float: left;
-        width: 13%;
-        padding-top: 5px;
-        padding-bottom: 5px;
+        width: 12%;
+        padding-top: 10px;
+        padding-bottom: 10px;
         text-align: center;
     }
     
     .scoreboard .score_area {
-	    height: 30px;
+        width: 80%;
+        overflow: hidden;
+        word-break: break-all;
+        word-wrap: none;
+	    height: 40px;
 	    border-bottom: 1px solid #c3c3c3;
 	}
 
@@ -557,6 +568,10 @@ table.stats {
     clear: both;
     text-align: center;
     color: #767676;
+}
+
+#throw_prompt {
+    height: 35px;
 }
 
 .extra_actions,
@@ -578,7 +593,7 @@ table.stats {
 .alternate_action,
 .main_action {
     position: absolute;
-    top: 60px;
+    top: 80px;
     left: 0px;
     width: 40%;
 }
@@ -588,6 +603,7 @@ table.stats {
 }
 
 .track {
+    position: absolute;
     height: 100%;
     display: block;
     height:auto;
@@ -716,9 +732,11 @@ table.stats {
         }
 
     .rotate_screen button.rotate{
-        margin-bottom: 10px;
-        float: right;
+        position: absolute;
+        top: 5px;
+        right: 5px;
         width: 20%;
+        z-index: 900;
     }
 
 span.button_line_1,
