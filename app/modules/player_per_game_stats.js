@@ -117,8 +117,8 @@ function(require, app, Backbone, Leaguevine) {
 		template: "playerstats/boxscore",
 		className: "playerstats-boxscore-wrapper",
         serialize: function() {//I think serialize is ignored if render is provided.
-        	var game = this.options.game.toJSON();
-        	if (this.options.game.get("team_1") !== null){
+			var game = this.options.game.toJSON();
+			if (this.options.game.get("team_1") !== null){
 				game.team_1 = _.isFunction(this.options.game.get("team_1").get) ? this.options.game.get("team_1").toJSON() : this.options.game.get("team_1");
 			}
 			if (this.options.game.get("team_1") !== null){
@@ -127,8 +127,8 @@ function(require, app, Backbone, Leaguevine) {
 			if (this.options.game.get("tournament") !== null){
 				game.tournament = _.isFunction(this.options.game.get("tournament").get) ? this.options.game.get("tournament").toJSON() : this.options.game.get("tournament");
 			}
-        	return game;
-    	},
+			return game;
+		},
 		render: function(layout) {
 			var view = layout(this);
 			//this.$el.empty()

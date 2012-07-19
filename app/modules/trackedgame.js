@@ -345,9 +345,9 @@ function(require, app, Backbone) {
 			
 			//undo score
 			if (model.get("type")== 22){
-				var team_ix = this.get("team_in_possession_ix");
+				var team_xx = this.get("team_in_possession_ix");
 				var game_model = this.get("game");
-				var team_score_string = "team_" + team_ix + "_score";
+				var team_score_string = "team_" + team_xx + "_score";
 				var last_score = game_model.get(team_score_string);
 				var new_score = last_score - 1;
 				game_model.set(team_score_string,new_score);
