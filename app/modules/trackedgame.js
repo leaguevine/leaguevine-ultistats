@@ -407,8 +407,8 @@ function(require, app, Backbone) {
 			"track/:gameId": "trackGame"
 		},
 		trackGame: function (gameId) {
-            if (!app.api.d_token()) {//Ensure that the user is logged in
-                //app.api.login();
+            if (!app.api.is_logged_in()) {//Ensure that the user is logged in
+                app.api.login();
                 return;
             }
             

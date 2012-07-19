@@ -120,7 +120,11 @@ function(app, Backbone) {
             }
         },
         is_logged_in: function() {//Returns true if the user is logged in and false if not
-            return (localStorage.getItem("auth_object") !== null);
+			if (!this.token) {
+				var stored_api = JSON.parse(localStorage.getItem("auth_object"));
+				_extend(this, stored_api);
+			}
+            return (this.token !== null);
         },
         login: function() {//Redirects a user to the login screen
             localStorage.setItem("login_redirect", Backbone.history.fragment);

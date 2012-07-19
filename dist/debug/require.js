@@ -499,10 +499,6 @@ this['JST']['app/templates/trackedgame/game_action.html'] = function(data) { ret
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="playbyplay"></div>\n<div class="player_area"></div>\n<div class="action_area"></div>\n');}return __p.join('');
 }(data, _)};
 
-this['JST']['app/templates/trackedgame/roster.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="track roster_wrapper">\n    <div class="roster_team_header">\n        <span class="roster_team_name">\n            ', team.name ,'\n        </span>\n    </div>\n    <div class="roster_onfield_sum">\n    </div>\n    <div class="roster_wrapper">\n        <div class="roster_area"></div>\n    </div>\n</div>\n');}return __p.join('');
-}(data, _)};
-
 this['JST']['app/templates/trackedgame/playbyplay.html'] = function(data) { return function (obj,_) {
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="last_action_area">\n    <div class="last_action_label">Previous Play:</div>\n    <div class="last_action">', playtext ,'</div>\n</div>\n');}return __p.join('');
 }(data, _)};
@@ -515,8 +511,16 @@ this['JST']['app/templates/trackedgame/player_button.html'] = function(data) { r
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="button player" id="', player.id ,'"><span class="player_name">', player.first_name ,' ', player.last_name ,'</span><span class="player_number">', number ,'</span></button>');}return __p.join('');
 }(data, _)};
 
+this['JST']['app/templates/trackedgame/roster.html'] = function(data) { return function (obj,_) {
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="track roster_wrapper">\n    <div class="roster_team_header">\n        <span class="roster_team_name">\n            ', team.name ,'\n        </span>\n    </div>\n    <div class="roster_onfield_sum">\n    </div>\n    <div class="roster_wrapper">\n        <div class="roster_area"></div>\n    </div>\n</div>\n');}return __p.join('');
+}(data, _)};
+
 this['JST']['app/templates/trackedgame/roster_item.html'] = function(data) { return function (obj,_) {
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="roster_player player" id="', player_id ,'">\n    <span class="player_name" id="', player_id ,'">', player.first_name ,' ', player.last_name ,'</span>\n    <span class="player_number" id="', player_id ,'">', number ,'</span>\n</button>\n');}return __p.join('');
+}(data, _)};
+
+this['JST']['app/templates/trackedgame/rostersum.html'] = function(data) { return function (obj,_) {
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<span class="roster_onfield_sum_value">', onfield_sum ,' players in</span>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/rotate_button.html'] = function(data) { return function (obj,_) {
@@ -533,10 +537,6 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 
 this['JST']['app/templates/trackedgame/ul.html'] = function(data) { return function (obj,_) {
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul></ul>');}return __p.join('');
-}(data, _)};
-
-this['JST']['app/templates/trackedgame/rostersum.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<span class="roster_onfield_sum_value">', onfield_sum ,' players in</span>\n');}return __p.join('');
 }(data, _)};
 
 /*!
@@ -15681,7 +15681,11 @@ function(app, Backbone) {
             }
         },
         is_logged_in: function() {//Returns true if the user is logged in and false if not
-            return (localStorage.getItem("auth_object") !== null);
+			if (!this.token) {
+				var stored_api = JSON.parse(localStorage.getItem("auth_object"));
+				_extend(this, stored_api);
+			}
+            return (this.token !== null);
         },
         login: function() {//Redirects a user to the login screen
             localStorage.setItem("login_redirect", Backbone.history.fragment);
@@ -19051,8 +19055,8 @@ function(require, app, Backbone) {
 			"track/:gameId": "trackGame"
 		},
 		trackGame: function (gameId) {
-            if (!app.api.d_token()) {//Ensure that the user is logged in
-                //app.api.login();
+            if (!app.api.is_logged_in()) {//Ensure that the user is logged in
+                app.api.login();
                 return;
             }
             
