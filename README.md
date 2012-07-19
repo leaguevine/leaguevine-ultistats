@@ -29,9 +29,15 @@ Alternatively, you can disable pushState and then prepend all of the links in th
     * Use the .htaccess file in this repo.
 4.  Point your browser to http://localhost (actually I use vhosts to serve out of http://ultistats.localhost)
 
-##Summary:
+##Summary
 Leaguevine Ultistats (lvus) is a Web App targeting mobile devices for tracking gameplay statistics in the sport of Ultimate.
 It is in the early stages of development.
+
+##Build
+The recommended way to host this app is to first run a javascript build to combine, minify, and gzip all the javascript files. This is located under the 'dist' directory. To create a build under the 'dist' directory, run the following command:
+```
+> bbb release
+```
 
 ##Frameworks/Libraries
 This app is built atop the [Backbone.js framework](http://documentcloud.github.com/backbone/) which in turn depends on [Underscore.js](http://documentcloud.github.com/underscore/).
