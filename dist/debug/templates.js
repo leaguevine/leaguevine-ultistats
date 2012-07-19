@@ -205,7 +205,7 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/rostersum.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<span class="roster_onfield_sum_value">', onfield_sum ,'</span>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<span class="roster_onfield_sum_value">', onfield_sum ,' Players In</span>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/rotate_button.html'] = function(data) { return function (obj,_) {

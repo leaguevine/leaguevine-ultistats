@@ -782,7 +782,6 @@ span.button_line_2 {
 
 /* ----------------------- Substitutions ----------------- */
 .roster_team_header {
-    border-bottom: 1px solid #c3c3c3;
     font-size: 15px;
     font-weight: bold;
     padding-bottom: 5px;
@@ -795,8 +794,10 @@ span.button_line_2 {
 }
 
 .roster_wrapper {
+    top: 45px;
     float: left;
     width: 100%;
+    margin: 0px;
 }
 
 .roster_title {
@@ -807,18 +808,32 @@ span.button_line_2 {
     text-align: center;
 }
 
+.roster_onfield_sum {
+    position: relative;
+    width: 100%;
+    height: 20px;
+    text-align: center;
+}
+
+.roster_area li {
+    float: left;
+    width: 33%;
+}
+
 .roster_area .onfield button{
-    background: url(../img/icons/right_arrow_grey.png) 95% 50% no-repeat;
-    border-style: solid;
+    border: 1px solid black;
+    color: white;
+    background-color: #08C;
+}
+
+.roster_area .onfield button .player_number{
+    color: white;
 }
 
 .roster_area button {
-    background: url(../img/icons/left_arrow_grey.png) 5% 50% no-repeat;
-    border-style: dashed;
-}
-
-.roster_wrapper button {
-    margin: 2px;
+    margin: 0px;
+    border-color: #DDDDDD;
+    background-color: transparent;
 }
 
 .roster_buttons_area {
