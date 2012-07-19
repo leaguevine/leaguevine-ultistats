@@ -85,10 +85,8 @@ function(app, $, Backbone, Leaguevine) {
             // Browser downloaded a new app cache.
             // Swap it in and reload the page to get the new code.
             window.applicationCache.swapCache();
-            if (confirm('A new version of this site is available. Would you like to load it? (highly recommended)')) {
-                $('body').html('Loading the new site...'); //Remove the current elements from the page to reduce confusion
-                window.location.reload(); //Completely reload the page and re-fetch everything
-            }
+            $('body').html('Loading the new site...'); //Remove the current elements from the page to reduce confusion
+            window.location.reload(); //Completely reload the page and re-fetch everything
         } else {
             // Manifest didn't changed. Nothing new to load.
         }
