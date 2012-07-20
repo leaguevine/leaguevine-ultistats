@@ -526,8 +526,8 @@ table.stats {
         height: 23px;
         padding: 10px 5px;
         overflow: hidden;
-        word-break: break-all;
         word-wrap: none;
+        white-space: nowrap;
     }
 
     .scoreboard .team1 {
@@ -665,6 +665,7 @@ table.stats {
                 display: block;
                 overflow: hidden;
                 white-space: nowrap;
+                height: 12px;
                 font-size: 10px;
                 color: #767676;
             }
