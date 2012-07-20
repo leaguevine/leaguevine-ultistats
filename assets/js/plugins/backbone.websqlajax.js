@@ -47,8 +47,11 @@
 				//Process each row from the SQL result and build an array of results.
 				for (i=0;i<len;i++) {
 					this_res = _.extend(JSON.parse(res.rows.item(i).value),res.rows.item(i));
-					this_res.time_created = new Date(res.rows.item(i).time_created).toISOString();
-					this_res.time_last_updated = new Date(res.rows.item(i).time_last_updated).toISOString();
+					//.replace(/-/g, "/")
+					var tc = res.rows.item(i).time_created;
+					var tlu = res.rows.item(i).time_last_updated;
+					this_res.time_created = new Date(_.isString(tc) ? tc.replace(/-/g, "/") : tc).toISOString();
+					this_res.time_last_updated = new Date(_.isString(tlu) ? tlu.replace(/-/g, "/") : tlu).toISOString();
 					delete this_res.value;
 					result.push(this_res);
 				}

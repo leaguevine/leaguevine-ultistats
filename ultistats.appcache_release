@@ -3,7 +3,8 @@ CACHE MANIFEST
 
 CACHE:
 # CSS
-/dist/release/index.css
+#/dist/release/index.css
+/assets/css/index.css
 
 # Images
 /assets/img/ajax-loader.gif

@@ -470,7 +470,7 @@ function(require, app, Backbone) {
 			trackedgame.get("game").bind("reset", function(){
 				var tp_off = new TeamPlayer.Collection([],{team_id: trackedgame.get("game").get("team_1_id")});
 				tp_off.fetch();
-				tp_off.bind("reset", function(collection, options) {
+				tp_off.on("reset", function(collection, options) {
 					var local_pl_ids = _.union(trackedgame.get("onfield_1").pluck("player_id"),trackedgame.get("offfield_1").pluck("player_id"));
 					var new_tps = _.reject(collection.models, function(tp){
 						return (_.indexOf(local_pl_ids, tp.get("player_id")) >= 0);
@@ -481,7 +481,7 @@ function(require, app, Backbone) {
 				});
 				var tp_off2 = new TeamPlayer.Collection([],{team_id: trackedgame.get("game").get("team_2_id")});
 				tp_off2.fetch();
-				tp_off2.bind("reset", function(collection, options) {
+				tp_off2.on("reset", function(collection, options) {
 					var local_pl_ids2 = _.union(trackedgame.get("onfield_2").pluck("player_id"),trackedgame.get("offfield_2").pluck("player_id"));
 					var new_tps2 = _.reject(collection.models, function(tp){
 						return (_.indexOf(local_pl_ids2, tp.get("player_id")) >= 0);
