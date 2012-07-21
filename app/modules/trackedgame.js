@@ -612,7 +612,10 @@ function(require, app, Backbone) {
 		//passed this.model = trackedgame, and this.options.team_ix is the index of the team this view is used for.
 		template: "trackedgame/roster",
 		initialize: function() {
-			this.model.get("game").on("reset", this.render, this);
+			this.model.get("game").on("reset", this.render, this);//Game should only be reset once per router call.
+		},
+		cleanup: function() {
+			this.model.get("game").off(null, null, this);
 		},
 		render: function(manage) {
 			this.setViews({
@@ -627,6 +630,9 @@ function(require, app, Backbone) {
 		initialize: function() {
 			this.model.on("change:field_status_"+this.options.team_ix, this.render, this);
 		},
+		cleanup: function() {
+			this.model.off(null, null, this);
+		},
 		render: function(manage) {
 			var my_status = this.model.get("field_status_"+this.options.team_ix);
 			var n_onfield = 0;
@@ -638,6 +644,9 @@ function(require, app, Backbone) {
 		//this.model is trackedgame. this.options.team_ix is the team for this view.
 		initialize: function() {//Re-render the whole list whenever the fetch of teamplayers returns.
 			this.model.get("roster_"+this.options.team_ix).on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.model.get("roster_"+this.options.team_ix).off(null, null, this);
 		},
 		tagName: "ul",
 		render: function(manage){
@@ -677,6 +686,10 @@ function(require, app, Backbone) {
 			this.model.get("roster_1").on("reset", this.render, this);
 			this.model.get("roster_2").on("reset", this.render, this);
 		},
+		cleanup: function() {
+			this.model.get("roster_1").off(null, null, this);
+			this.model.get("roster_2").off(null, null, this);
+		},
 		template: "trackedgame/game_action",
 		render: function(layout) {
 			var view = layout(this);
@@ -698,7 +711,9 @@ function(require, app, Backbone) {
 		initialize: function() {//Update the play-by-play when a game event is added or removed.
 			this.model.get("gameevents").on("add remove", function() {this.render();}, this);
 		},
-		//cleanup
+		cleanup: function() {
+			this.model.get("gameevents").off(null, null, this);
+		},
 		render: function(layout) {
 			var view = layout(this);
 			var playtext = "";
@@ -751,6 +766,9 @@ function(require, app, Backbone) {
 			this.model.on("change:current_state", function() {this.render();}, this);//Update the action prompt.
 			this.model.on("change:team_in_possession_ix", function() {this.show_teamplayer();}, this);//Update which player buttons to display.
 		},
+		cleanup: function() {
+			this.model.off(null, null, this);
+		},
 		render: function(layout) {
 			var view = layout(this);
 			this.setViews({
@@ -776,6 +794,10 @@ function(require, app, Backbone) {
 		initialize: function() {
 			this.model.get("game").on("change:team_"+this.options.team_ix, this.render, this);//Team name will update when returned from db.
 			this.model.on("change:field_status_"+this.options.team_ix, this.render, this);//Change displayed player buttons
+		},
+		cleanup: function() {
+			this.model.get("game").off(null, null, this);
+			this.model.off(null, null, this);
 		},
 		render: function(manage) {
 			var my_status = this.model.get("field_status_"+this.options.team_ix);
@@ -829,6 +851,9 @@ function(require, app, Backbone) {
 		initialize: function() {			
 			this.model.on("change:player_in_possession_id change:current_state change:period_number", function() {this.render();}, this);
 			this.model.on("change:showing_alternate", this.show_action_buttons, this);//Which buttons are we showing?
+		},
+		cleanup: function() {
+			this.model.off(null, null, this);
 		},
 		render: function(layout) {
 			var view = layout(this);

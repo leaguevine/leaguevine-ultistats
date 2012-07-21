@@ -122,6 +122,12 @@ function(require, app, Backbone, Leaguevine, Stats) {
          *          collection - A collection of team stat lines
          */
 		template: "teamstats/boxscore",
+		initialize: function() {
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.collection.off(null, null, this);
+		},
 		className: "stats-boxscore-wrapper",
 		render: function(layout) {
 			var view = layout(this);
@@ -133,11 +139,6 @@ function(require, app, Backbone, Leaguevine, Stats) {
                 this.insertView("table#team_per_game_stats", stat_line);
 			}, this);
 			return view.render();
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
 		}
 	});
 

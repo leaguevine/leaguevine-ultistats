@@ -98,6 +98,12 @@ function(require, app, Backbone, Leaguevine) {
 	});
 	GameEvent.Views.List = Backbone.View.extend({
 		template: "events/list",
+		initialize: function(){
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function(){
+			this.collection.off(null, null, this);
+		},
 		className: "events-wrapper",
 		render: function(layout) {
 			var view = layout(this);
@@ -110,9 +116,6 @@ function(require, app, Backbone, Leaguevine) {
 				}));
 			}, this);
 			return view.render();
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {this.render();}, this);
 		}
 	});	
 	

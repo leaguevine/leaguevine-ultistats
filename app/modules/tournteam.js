@@ -109,6 +109,12 @@ function(require, app, Backbone, Leaguevine) {
 	});
 	TournTeam.Views.TeamList = Backbone.View.extend({//Renders the standings for a tournament
 		template: "tournteams/list",
+		initialize: function(){
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function(){
+			this.collection.off(null, null, this);
+		},
 		className: "tournteams-wrapper",
 		render: function(layout) {
 			var view = layout(this);
@@ -121,9 +127,6 @@ function(require, app, Backbone, Leaguevine) {
 				}));
 			}, this);
 			return view.render({ count: this.collection.length });
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {this.render();}, this);
 		}
 	});
 	return TournTeam;

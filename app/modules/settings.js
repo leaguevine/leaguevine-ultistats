@@ -95,9 +95,10 @@ function(require, app, Backbone, Navigation) {
 	Settings.Views.List = Backbone.View.extend({
 		template: "settings/list",
 		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.collection.off(null, null, this);
 		},
 		render: function(layout){
 			var view = layout(this);

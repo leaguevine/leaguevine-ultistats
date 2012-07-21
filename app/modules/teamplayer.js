@@ -125,6 +125,12 @@ function(require, app, Backbone, Leaguevine) {
 	});
 	TeamPlayer.Views.PlayerList = Backbone.View.extend({
 		template: "teamplayers/playerlist",
+		initialize: function() {
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.collection.off(null, null, this);
+		},
 		className: "players-wrapper",
 		render: function(layout) {
 			var view = layout(this);
@@ -137,11 +143,6 @@ function(require, app, Backbone, Leaguevine) {
 				}));
 			}, this);
 			return view.render();
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
 		}
 	});
 	
@@ -152,6 +153,12 @@ function(require, app, Backbone, Leaguevine) {
 	});
 	TeamPlayer.Views.TeamList = Backbone.View.extend({
 		template: "teamplayers/playerlist",
+		initialize: function() {
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.collection.off(null, null, this);
+		},
 		className: "teams-wrapper",
 		render: function(layout) {
 			var view = layout(this);
@@ -164,11 +171,6 @@ function(require, app, Backbone, Leaguevine) {
 				}));
 			}, this);
 			return view.render();
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
 		}
 	});
 	

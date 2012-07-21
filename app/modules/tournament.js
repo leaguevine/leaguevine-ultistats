@@ -134,6 +134,14 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 	});
 	Tournament.Views.List = Backbone.View.extend({
 		template: "tournaments/list",
+		initialize: function() {
+			this.collection.on("reset", function() {
+				if (Backbone.history.fragment == "tournaments") {this.render();}
+			}, this);
+		},
+		cleanup: function() {
+			this.collection.off(null, null, this);
+		},
 		className: "tournaments-wrapper",
 		render: function(layout) {
 			var view = layout(this);
@@ -147,17 +155,16 @@ function(require, app, Backbone, Leaguevine, Navigation) {
             //Add a button at the end of the list that creates more items
             this.insertView("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
 			return view.render({ count: this.collection.length });
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {
-                if (Backbone.history.fragment == "tournaments") {
-                    this.render();
-                }
-			}, this);
 		}
 	});
 	Tournament.Views.Detail = Backbone.View.extend({
 		template: "tournaments/detail",
+		initialize: function() {
+			this.model.on("change", this.render, this);
+		},
+		cleanup: function(){
+			this.model.off(null, null, this);
+		},
 		render: function(layout) {
             var tournament = this.model.toJSON();
             // Create a human-readable date for this tournament
@@ -167,15 +174,18 @@ function(require, app, Backbone, Leaguevine, Navigation) {
                 tournament.start_date_string = start_date.toLocaleDateString();
             }
             return layout(this).render(tournament);
-		},
-		initialize: function() {
-			this.model.bind("change", function() {
-				this.render();
-			}, this);
 		}
 	});
 	Tournament.Views.Multilist = Backbone.View.extend({
 		template: "tournaments/multilist",
+		initialize: function() {
+			this.options.games.on("reset", this.render, this);
+			this.options.tournteams.on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.options.games.off(null, null, this);
+			this.options.tourteams.off(null, null, this);
+		},
 		events: {
 			"click .bstandings": "showStandings",
 			"click .bgames": "showGames"
@@ -242,10 +252,6 @@ function(require, app, Backbone, Leaguevine, Navigation) {
                 */
 				$(".lstandings").hide();
 			});
-		},
-		initialize: function() {
-			this.options.games.bind("reset", function() {this.render();}, this);
-			this.options.tournteams.bind("reset", function() {this.render();}, this);
 		}
 	});
 	

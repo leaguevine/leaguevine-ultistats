@@ -129,6 +129,12 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 	});
 	Player.Views.List = Backbone.View.extend({
 		template: "players/list",
+		initialize: function(){
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function(){
+			this.collection.off(null, null, this);
+		},
 		className: "players-wrapper",
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
@@ -143,29 +149,31 @@ function(require, app, Backbone, Leaguevine, Navigation) {
             //Add a button at the end of the list that creates more items
             this.insertView("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
 			return view.render({ count: this.collection.length });
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
 		}
 	});
 	Player.Views.Detail = Backbone.View.extend({
 		template: "players/detail",
+		initialize: function(){
+			this.model.on("change", this.render, this);
+		},
+		cleanup: function(){
+			this.model.off(null, null, this);
+		},
 		//We were passed a model on creation, so we have this.model
 		render: function(layout) {
 			// The model has not yet been filled by the fetch process if it was fetched just now
 			// We need to update the view once the data have changed.
 			return layout(this).render(this.model.toJSON());//toJSON OK here.
-		},
-		initialize: function() {
-			this.model.bind("change", function() {
-				this.render();
-			}, this);
 		}
 	});
 	Player.Views.Multilist = Backbone.View.extend({
 		template: "players/multilist",
+		initialize: function(){
+			this.options.teamplayers.on("reset", this.render, this);
+		},
+		cleanup: function(){
+			this.options.teamplayers.off(null, null, this);
+		},
 		events: {
 			"click .bteams": "showTeams"
 		},
@@ -179,9 +187,6 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 				".lteams": new TeamPlayer.Views.TeamList( {collection: this.options.teamplayers} )
 			});
 			return view.render();
-		},
-		initialize: function() {
-			this.options.teamplayers.bind("reset", function() {this.render();}, this);
 		}
 	});
 	return Player;// Required, return the module for AMD compliance

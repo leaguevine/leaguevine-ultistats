@@ -250,6 +250,12 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 	});
 	Game.Views.Detail = Backbone.View.extend({
 		template: "games/detail",
+		initialize: function() {
+			this.model.on("change", this.render, this);
+		},
+		cleanup: function() {
+			this.model.off(null, null, this);
+		},
 		render: function(layout) {
             var game = this.model.toJSON();
             if (this.model.get("team_1") !== null){
@@ -262,11 +268,6 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 				game.tournament = _.isFunction(this.model.get("tournament").get) ? this.model.get("tournament").toJSON() : this.model.get("tournament");
 			} else {game.tournament = {name: ""};}
 			return layout(this).render(game);
-		},
-		initialize: function() {
-			this.model.bind("change", function() {
-				this.render();
-			}, this);
 		},
         checkPermission: function() {
             // If the user is not logged in, redirect to login and disable the page transition
@@ -282,6 +283,12 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 	});
 	Game.Views.Multilist = Backbone.View.extend({
 		template: "games/multilist",
+		initialize: function(){
+			this.model.on("reset", this.render, this);
+		},
+		cleanup: function(){
+			this.model.off(null, null, this);
+		},
 		events: {
 			"click button.bteam_stats": "showTeamStats",
 			"click button.bplayer_stats": "showPlayerStats"
@@ -305,12 +312,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 				".lteam_stats": new TeamPerGameStats.Views.BoxScore( {collection: this.options.teamstats} )
 			});
 			return view.render();
-        },
-		initialize: function() {
-			this.model.bind("reset", function() {
-				this.render();
-			}, this);
-		}
+        }
 	});
 	
     Game.Views.Edit = Backbone.View.extend({
@@ -335,10 +337,14 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 	Game.Views.EditArea = Backbone.View.extend({
 		initialize: function() {
 			//We need to re-render whenever the game's team_1 or team_2 changes.
-			this.model.get("team_1").bind("change", function() {this.render();},this);
-			this.model.get("team_2").bind("change", function() {this.render();},this);
-			this.model.bind("change", function() {this.render();}, this);
-			
+			this.model.get("team_1").on("change", this.render, this);
+			this.model.get("team_2").on("change", this.render, this);
+			this.model.on("change", this.render, this);
+		},
+		cleanup: function() {
+			this.model.get("team_1").off(null, null, this);
+			this.model.get("team_2").off(null, null, this);
+			this.model.off(null, null, this);
 		},
 		template: "games/edit_area",
 		events: {

@@ -65,12 +65,13 @@ function(app, Backbone, Game) {
                 games_href: app.navigation.games_href,
                 settings_href: app.navigation.settings_href
             });
-		},
-		initialize: function() {
+		}
+		//I don't understand what the following does so I commented it out to see if anything breaks.
+		/*initialize: function() {
 			this.bind("change", function() {
 				this.render();
 			}, this);
-		}
+		}*/
 	});
     
     Navigation.Views.Titlebar = Backbone.View.extend({
@@ -92,6 +93,16 @@ function(app, Backbone, Game) {
          */
         
 		template: "navigation/titlebar",
+		initialize: function(){
+			if (this.model){
+				this.model.on("change", this.render, this);
+			}
+		},
+		cleanup: function(){
+			if (this.model){
+				this.model.off(null, null, this);
+			}
+		},
 		render: function(layout) {
 			var view = layout(this);
 			var my_class = this.options.model_class || null;
@@ -168,13 +179,6 @@ function(app, Backbone, Game) {
 				right_btn_txt: rbt,
 				right_btn_class: rbc
 			});
-		},
-		initialize: function() {
-			if (this.model){
-				this.model.bind("change", function() {
-					this.render();
-				}, this);
-			}
 		}
 	});
 
@@ -265,7 +269,10 @@ function(app, Backbone, Game) {
             this.right_btn_txt = this.options.right_btn_txt;
             this.right_btn_href = this.options.right_btn_href;
             */
-        }
+       },
+		cleanup: function() {
+			this.search_results.off(null, null, this);
+		}
     });
     
 	return Navigation;// Required, return the module for AMD compliance

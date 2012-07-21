@@ -185,6 +185,12 @@ function(app, Backbone, Leaguevine, Navigation) {
 	//
 	Team.Views.List = Backbone.View.extend({
 		template: "teams/list",
+		initialize: function() {
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.collection.off(null, null, this);
+		},
 		className: "teams-wrapper",
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
@@ -202,13 +208,6 @@ function(app, Backbone, Leaguevine, Navigation) {
             //Add a button at the end of the list that creates more items
             this.insertView("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
 			return view.render({ count: this.collection.length });
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() { 
-                //if (Backbone.history.fragment == "teams") {  //Comment out for now, so that Team.Views.List can be used with Game.Views.Edit
-                    this.render();
-                //}
-            }, this);
 		}
 	});
 	Team.Views.Item = Backbone.View.extend({
@@ -242,19 +241,32 @@ function(app, Backbone, Leaguevine, Navigation) {
 	Team.Views.Detail = Backbone.View.extend({
 		//We were passed a model on creation by Team.Router.showTeam(), so we have this.model
 		template: "teams/detail",
-                events: {
-                    "click .bcreategame": "createGame"
-                },
-                createGame: function(ev) {
-                    Backbone.history.navigate("newgame/"+this.model.get("id"), true);
-                },
+		initialize: function() {
+			this.model.on("change", this.render, this);
+		},
+		cleanup: function() {
+			this.model.off(null, null, this);
+		},
+        events: {
+            "click .bcreategame": "createGame"
+        },
+        createGame: function(ev) {
+            Backbone.history.navigate("newgame/"+this.model.get("id"), true);
+        },
 		serialize: function() {
 			return _.clone(this.model.attributes);
-		},
-		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
+		}
 	});
 	Team.Views.Multilist = Backbone.View.extend({
 		template: "teams/multilist",
+		initialize: function() {
+			this.options.teamplayers.on("reset", this.render, this);
+			this.options.games.on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.options.teamplayers.off(null, null, this);
+			this.options.games.off(null, null, this);
+		},
 		events: {
 			"click .bplayers": "showPlayers",
 			"click .bgames": "showGames"
@@ -284,21 +296,19 @@ function(app, Backbone, Leaguevine, Navigation) {
 				//But it might turn out to be a non-issue.
 				$(".lplayers").hide();
 			});
-		},
-		initialize: function() {
-			this.options.teamplayers.bind("reset", function() {this.render();}, this);
-			this.options.games.bind("reset", function() {this.render();}, this);
 		}
 	});
 	Team.Views.Edit = Backbone.View.extend({
 		initialize: function() {
-			this.model.on("reset", function() {this.render();}, this);
+			this.model.on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.model.off(null, null, this);
 		},
 		template: "teams/edit",
 		render: function(layout) {
             return layout(this).render(this.model.toJSON());
         },
-		//initialize: function() {this.model.bind("reset", function() {this.render();}, this);},
 		events: {
 			"click button.save": "saveModel",
 			"click button.delete": "deleteModel"

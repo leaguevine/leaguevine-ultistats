@@ -7,3 +7,9 @@ assets/js/plugins/jquery.ba-throttle-debounce.js
 
 # Ignore other temporary files
 ._*
+
+# Ignore appcache
+ultistats.appcache
+
+# Ignore .htaccess
+.htaccess

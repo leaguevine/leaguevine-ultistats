@@ -499,10 +499,6 @@ this['JST']['app/templates/trackedgame/game_action.html'] = function(data) { ret
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="playbyplay"></div>\n<div class="player_area"></div>\n<div class="action_area"></div>\n');}return __p.join('');
 }(data, _)};
 
-this['JST']['app/templates/trackedgame/roster.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="track roster_wrapper">\n    <div class="roster_team_header">\n        <span class="roster_team_name">\n            ', team.name ,'\n        </span>\n    </div>\n    <div class="roster_onfield_sum">\n    </div>\n    <div class="roster_wrapper">\n        <div class="roster_area"></div>\n    </div>\n</div>\n');}return __p.join('');
-}(data, _)};
-
 this['JST']['app/templates/trackedgame/playbyplay.html'] = function(data) { return function (obj,_) {
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="last_action_area">\n    <div class="last_action_label">Previous Play:</div>\n    <div class="last_action">', playtext ,'</div>\n</div>\n');}return __p.join('');
 }(data, _)};
@@ -513,6 +509,10 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 
 this['JST']['app/templates/trackedgame/player_button.html'] = function(data) { return function (obj,_) {
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="button player" id="', player.id ,'"><span class="player_name">', player.first_name ,' ', player.last_name ,'</span><span class="player_number">', number ,'</span></button>');}return __p.join('');
+}(data, _)};
+
+this['JST']['app/templates/trackedgame/roster.html'] = function(data) { return function (obj,_) {
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="track roster_wrapper">\n    <div class="roster_team_header">\n        <span class="roster_team_name">\n            ', team.name ,'\n        </span>\n    </div>\n    <div class="roster_onfield_sum">\n    </div>\n    <div class="roster_wrapper">\n        <div class="roster_area"></div>\n    </div>\n</div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/roster_item.html'] = function(data) { return function (obj,_) {
@@ -15776,12 +15776,13 @@ function(app, Backbone, Game) {
                 games_href: app.navigation.games_href,
                 settings_href: app.navigation.settings_href
             });
-		},
-		initialize: function() {
+		}
+		//I don't understand what the following does so I commented it out to see if anything breaks.
+		/*initialize: function() {
 			this.bind("change", function() {
 				this.render();
 			}, this);
-		}
+		}*/
 	});
     
     Navigation.Views.Titlebar = Backbone.View.extend({
@@ -15803,6 +15804,16 @@ function(app, Backbone, Game) {
          */
         
 		template: "navigation/titlebar",
+		initialize: function(){
+			if (this.model){
+				this.model.on("change", this.render, this);
+			}
+		},
+		cleanup: function(){
+			if (this.model){
+				this.model.off(null, null, this);
+			}
+		},
 		render: function(layout) {
 			var view = layout(this);
 			var my_class = this.options.model_class || null;
@@ -15879,13 +15890,6 @@ function(app, Backbone, Game) {
 				right_btn_txt: rbt,
 				right_btn_class: rbc
 			});
-		},
-		initialize: function() {
-			if (this.model){
-				this.model.bind("change", function() {
-					this.render();
-				}, this);
-			}
 		}
 	});
 
@@ -15976,7 +15980,10 @@ function(app, Backbone, Game) {
             this.right_btn_txt = this.options.right_btn_txt;
             this.right_btn_href = this.options.right_btn_href;
             */
-        }
+       },
+		cleanup: function() {
+			this.search_results.off(null, null, this);
+		}
     });
     
 	return Navigation;// Required, return the module for AMD compliance
@@ -16180,9 +16187,10 @@ function(require, app, Backbone, Navigation) {
 	Settings.Views.List = Backbone.View.extend({
 		template: "settings/list",
 		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.collection.off(null, null, this);
 		},
 		render: function(layout){
 			var view = layout(this);
@@ -16826,6 +16834,12 @@ function(require, app, Backbone, Leaguevine) {
 	});
 	TeamPlayer.Views.PlayerList = Backbone.View.extend({
 		template: "teamplayers/playerlist",
+		initialize: function() {
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.collection.off(null, null, this);
+		},
 		className: "players-wrapper",
 		render: function(layout) {
 			var view = layout(this);
@@ -16838,11 +16852,6 @@ function(require, app, Backbone, Leaguevine) {
 				}));
 			}, this);
 			return view.render();
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
 		}
 	});
 	
@@ -16853,6 +16862,12 @@ function(require, app, Backbone, Leaguevine) {
 	});
 	TeamPlayer.Views.TeamList = Backbone.View.extend({
 		template: "teamplayers/playerlist",
+		initialize: function() {
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.collection.off(null, null, this);
+		},
 		className: "teams-wrapper",
 		render: function(layout) {
 			var view = layout(this);
@@ -16865,11 +16880,6 @@ function(require, app, Backbone, Leaguevine) {
 				}));
 			}, this);
 			return view.render();
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
 		}
 	});
 	
@@ -17007,6 +17017,12 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 	});
 	Player.Views.List = Backbone.View.extend({
 		template: "players/list",
+		initialize: function(){
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function(){
+			this.collection.off(null, null, this);
+		},
 		className: "players-wrapper",
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
@@ -17021,29 +17037,31 @@ function(require, app, Backbone, Leaguevine, Navigation) {
             //Add a button at the end of the list that creates more items
             this.insertView("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
 			return view.render({ count: this.collection.length });
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
 		}
 	});
 	Player.Views.Detail = Backbone.View.extend({
 		template: "players/detail",
+		initialize: function(){
+			this.model.on("change", this.render, this);
+		},
+		cleanup: function(){
+			this.model.off(null, null, this);
+		},
 		//We were passed a model on creation, so we have this.model
 		render: function(layout) {
 			// The model has not yet been filled by the fetch process if it was fetched just now
 			// We need to update the view once the data have changed.
 			return layout(this).render(this.model.toJSON());//toJSON OK here.
-		},
-		initialize: function() {
-			this.model.bind("change", function() {
-				this.render();
-			}, this);
 		}
 	});
 	Player.Views.Multilist = Backbone.View.extend({
 		template: "players/multilist",
+		initialize: function(){
+			this.options.teamplayers.on("reset", this.render, this);
+		},
+		cleanup: function(){
+			this.options.teamplayers.off(null, null, this);
+		},
 		events: {
 			"click .bteams": "showTeams"
 		},
@@ -17057,9 +17075,6 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 				".lteams": new TeamPlayer.Views.TeamList( {collection: this.options.teamplayers} )
 			});
 			return view.render();
-		},
-		initialize: function() {
-			this.options.teamplayers.bind("reset", function() {this.render();}, this);
 		}
 	});
 	return Player;// Required, return the module for AMD compliance
@@ -17252,6 +17267,12 @@ function(app, Backbone, Leaguevine, Navigation) {
 	//
 	Team.Views.List = Backbone.View.extend({
 		template: "teams/list",
+		initialize: function() {
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.collection.off(null, null, this);
+		},
 		className: "teams-wrapper",
 		render: function(layout) {
 			var view = layout(this); //Get this view from the layout.
@@ -17269,13 +17290,6 @@ function(app, Backbone, Leaguevine, Navigation) {
             //Add a button at the end of the list that creates more items
             this.insertView("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
 			return view.render({ count: this.collection.length });
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() { 
-                //if (Backbone.history.fragment == "teams") {  //Comment out for now, so that Team.Views.List can be used with Game.Views.Edit
-                    this.render();
-                //}
-            }, this);
 		}
 	});
 	Team.Views.Item = Backbone.View.extend({
@@ -17309,19 +17323,32 @@ function(app, Backbone, Leaguevine, Navigation) {
 	Team.Views.Detail = Backbone.View.extend({
 		//We were passed a model on creation by Team.Router.showTeam(), so we have this.model
 		template: "teams/detail",
-                events: {
-                    "click .bcreategame": "createGame"
-                },
-                createGame: function(ev) {
-                    Backbone.history.navigate("newgame/"+this.model.get("id"), true);
-                },
+		initialize: function() {
+			this.model.on("change", this.render, this);
+		},
+		cleanup: function() {
+			this.model.off(null, null, this);
+		},
+        events: {
+            "click .bcreategame": "createGame"
+        },
+        createGame: function(ev) {
+            Backbone.history.navigate("newgame/"+this.model.get("id"), true);
+        },
 		serialize: function() {
 			return _.clone(this.model.attributes);
-		},
-		initialize: function() {this.model.bind("change", function() {this.render();}, this);}
+		}
 	});
 	Team.Views.Multilist = Backbone.View.extend({
 		template: "teams/multilist",
+		initialize: function() {
+			this.options.teamplayers.on("reset", this.render, this);
+			this.options.games.on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.options.teamplayers.off(null, null, this);
+			this.options.games.off(null, null, this);
+		},
 		events: {
 			"click .bplayers": "showPlayers",
 			"click .bgames": "showGames"
@@ -17351,21 +17378,19 @@ function(app, Backbone, Leaguevine, Navigation) {
 				//But it might turn out to be a non-issue.
 				$(".lplayers").hide();
 			});
-		},
-		initialize: function() {
-			this.options.teamplayers.bind("reset", function() {this.render();}, this);
-			this.options.games.bind("reset", function() {this.render();}, this);
 		}
 	});
 	Team.Views.Edit = Backbone.View.extend({
 		initialize: function() {
-			this.model.on("reset", function() {this.render();}, this);
+			this.model.on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.model.off(null, null, this);
 		},
 		template: "teams/edit",
 		render: function(layout) {
             return layout(this).render(this.model.toJSON());
         },
-		//initialize: function() {this.model.bind("reset", function() {this.render();}, this);},
 		events: {
 			"click button.save": "saveModel",
 			"click button.delete": "deleteModel"
@@ -17554,6 +17579,12 @@ function(require, app, Backbone, Leaguevine) {
          *          game - The game object you are rendering a box score for
          */
 		template: "playerstats/boxscore",
+		initialize: function(){
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function(){
+			this.collection.off(null, null, this);
+		},
 		className: "playerstats-boxscore-wrapper",
         serialize: function() {//I think serialize is ignored if render is provided.
 			var game = this.options.game.toJSON();
@@ -17588,15 +17619,16 @@ function(require, app, Backbone, Leaguevine) {
                 }
 			}, this);
 			return view.render();
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
 		}
 	});
     PlayerPerGameStats.Views.PlayerStatsList = Backbone.View.extend({
 		template: "playerstats/list",
+		initialize: function(){
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function(){
+			this.collection.off(null, null, this);
+		},
 		className: "stats_list_wrapper",
 		render: function(layout) {
 			var view = layout(this);
@@ -17609,11 +17641,6 @@ function(require, app, Backbone, Leaguevine) {
 				}));
 			}, this);
 			return view.render();
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
 		}
 	});
 
@@ -17744,6 +17771,12 @@ function(require, app, Backbone, Leaguevine, Stats) {
          *          collection - A collection of team stat lines
          */
 		template: "teamstats/boxscore",
+		initialize: function() {
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.collection.off(null, null, this);
+		},
 		className: "stats-boxscore-wrapper",
 		render: function(layout) {
 			var view = layout(this);
@@ -17755,11 +17788,6 @@ function(require, app, Backbone, Leaguevine, Stats) {
                 this.insertView("table#team_per_game_stats", stat_line);
 			}, this);
 			return view.render();
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
 		}
 	});
 
@@ -18018,6 +18046,12 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 	});
 	Game.Views.Detail = Backbone.View.extend({
 		template: "games/detail",
+		initialize: function() {
+			this.model.on("change", this.render, this);
+		},
+		cleanup: function() {
+			this.model.off(null, null, this);
+		},
 		render: function(layout) {
             var game = this.model.toJSON();
             if (this.model.get("team_1") !== null){
@@ -18030,11 +18064,6 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 				game.tournament = _.isFunction(this.model.get("tournament").get) ? this.model.get("tournament").toJSON() : this.model.get("tournament");
 			} else {game.tournament = {name: ""};}
 			return layout(this).render(game);
-		},
-		initialize: function() {
-			this.model.bind("change", function() {
-				this.render();
-			}, this);
 		},
         checkPermission: function() {
             // If the user is not logged in, redirect to login and disable the page transition
@@ -18050,6 +18079,12 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 	});
 	Game.Views.Multilist = Backbone.View.extend({
 		template: "games/multilist",
+		initialize: function(){
+			this.model.on("reset", this.render, this);
+		},
+		cleanup: function(){
+			this.model.off(null, null, this);
+		},
 		events: {
 			"click button.bteam_stats": "showTeamStats",
 			"click button.bplayer_stats": "showPlayerStats"
@@ -18073,12 +18108,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 				".lteam_stats": new TeamPerGameStats.Views.BoxScore( {collection: this.options.teamstats} )
 			});
 			return view.render();
-        },
-		initialize: function() {
-			this.model.bind("reset", function() {
-				this.render();
-			}, this);
-		}
+        }
 	});
 	
     Game.Views.Edit = Backbone.View.extend({
@@ -18103,10 +18133,14 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 	Game.Views.EditArea = Backbone.View.extend({
 		initialize: function() {
 			//We need to re-render whenever the game's team_1 or team_2 changes.
-			this.model.get("team_1").bind("change", function() {this.render();},this);
-			this.model.get("team_2").bind("change", function() {this.render();},this);
-			this.model.bind("change", function() {this.render();}, this);
-			
+			this.model.get("team_1").on("change", this.render, this);
+			this.model.get("team_2").on("change", this.render, this);
+			this.model.on("change", this.render, this);
+		},
+		cleanup: function() {
+			this.model.get("team_1").off(null, null, this);
+			this.model.get("team_2").off(null, null, this);
+			this.model.off(null, null, this);
 		},
 		template: "games/edit_area",
 		events: {
@@ -18279,6 +18313,14 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 	});
 	Tournament.Views.List = Backbone.View.extend({
 		template: "tournaments/list",
+		initialize: function() {
+			this.collection.on("reset", function() {
+				if (Backbone.history.fragment == "tournaments") {this.render();}
+			}, this);
+		},
+		cleanup: function() {
+			this.collection.off(null, null, this);
+		},
 		className: "tournaments-wrapper",
 		render: function(layout) {
 			var view = layout(this);
@@ -18292,17 +18334,16 @@ function(require, app, Backbone, Leaguevine, Navigation) {
             //Add a button at the end of the list that creates more items
             this.insertView("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
 			return view.render({ count: this.collection.length });
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {
-                if (Backbone.history.fragment == "tournaments") {
-                    this.render();
-                }
-			}, this);
 		}
 	});
 	Tournament.Views.Detail = Backbone.View.extend({
 		template: "tournaments/detail",
+		initialize: function() {
+			this.model.on("change", this.render, this);
+		},
+		cleanup: function(){
+			this.model.off(null, null, this);
+		},
 		render: function(layout) {
             var tournament = this.model.toJSON();
             // Create a human-readable date for this tournament
@@ -18312,15 +18353,18 @@ function(require, app, Backbone, Leaguevine, Navigation) {
                 tournament.start_date_string = start_date.toLocaleDateString();
             }
             return layout(this).render(tournament);
-		},
-		initialize: function() {
-			this.model.bind("change", function() {
-				this.render();
-			}, this);
 		}
 	});
 	Tournament.Views.Multilist = Backbone.View.extend({
 		template: "tournaments/multilist",
+		initialize: function() {
+			this.options.games.on("reset", this.render, this);
+			this.options.tournteams.on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.options.games.off(null, null, this);
+			this.options.tourteams.off(null, null, this);
+		},
 		events: {
 			"click .bstandings": "showStandings",
 			"click .bgames": "showGames"
@@ -18387,10 +18431,6 @@ function(require, app, Backbone, Leaguevine, Navigation) {
                 */
 				$(".lstandings").hide();
 			});
-		},
-		initialize: function() {
-			this.options.games.bind("reset", function() {this.render();}, this);
-			this.options.tournteams.bind("reset", function() {this.render();}, this);
 		}
 	});
 	
@@ -18508,6 +18548,12 @@ function(require, app, Backbone, Leaguevine) {
 	});
 	TournTeam.Views.TeamList = Backbone.View.extend({//Renders the standings for a tournament
 		template: "tournteams/list",
+		initialize: function(){
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function(){
+			this.collection.off(null, null, this);
+		},
 		className: "tournteams-wrapper",
 		render: function(layout) {
 			var view = layout(this);
@@ -18520,9 +18566,6 @@ function(require, app, Backbone, Leaguevine) {
 				}));
 			}, this);
 			return view.render({ count: this.collection.length });
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {this.render();}, this);
 		}
 	});
 	return TournTeam;
@@ -18628,6 +18671,12 @@ function(require, app, Backbone, Leaguevine) {
 	});
 	GameEvent.Views.List = Backbone.View.extend({
 		template: "events/list",
+		initialize: function(){
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function(){
+			this.collection.off(null, null, this);
+		},
 		className: "events-wrapper",
 		render: function(layout) {
 			var view = layout(this);
@@ -18640,9 +18689,6 @@ function(require, app, Backbone, Leaguevine) {
 				}));
 			}, this);
 			return view.render();
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {this.render();}, this);
 		}
 	});	
 	
@@ -19263,7 +19309,10 @@ function(require, app, Backbone) {
 		//passed this.model = trackedgame, and this.options.team_ix is the index of the team this view is used for.
 		template: "trackedgame/roster",
 		initialize: function() {
-			this.model.get("game").on("reset", this.render, this);
+			this.model.get("game").on("reset", this.render, this);//Game should only be reset once per router call.
+		},
+		cleanup: function() {
+			this.model.get("game").off(null, null, this);
 		},
 		render: function(manage) {
 			this.setViews({
@@ -19278,6 +19327,9 @@ function(require, app, Backbone) {
 		initialize: function() {
 			this.model.on("change:field_status_"+this.options.team_ix, this.render, this);
 		},
+		cleanup: function() {
+			this.model.off(null, null, this);
+		},
 		render: function(manage) {
 			var my_status = this.model.get("field_status_"+this.options.team_ix);
 			var n_onfield = 0;
@@ -19289,6 +19341,9 @@ function(require, app, Backbone) {
 		//this.model is trackedgame. this.options.team_ix is the team for this view.
 		initialize: function() {//Re-render the whole list whenever the fetch of teamplayers returns.
 			this.model.get("roster_"+this.options.team_ix).on("reset", this.render, this);
+		},
+		cleanup: function() {
+			this.model.get("roster_"+this.options.team_ix).off(null, null, this);
 		},
 		tagName: "ul",
 		render: function(manage){
@@ -19328,6 +19383,10 @@ function(require, app, Backbone) {
 			this.model.get("roster_1").on("reset", this.render, this);
 			this.model.get("roster_2").on("reset", this.render, this);
 		},
+		cleanup: function() {
+			this.model.get("roster_1").off(null, null, this);
+			this.model.get("roster_2").off(null, null, this);
+		},
 		template: "trackedgame/game_action",
 		render: function(layout) {
 			var view = layout(this);
@@ -19349,7 +19408,9 @@ function(require, app, Backbone) {
 		initialize: function() {//Update the play-by-play when a game event is added or removed.
 			this.model.get("gameevents").on("add remove", function() {this.render();}, this);
 		},
-		//cleanup
+		cleanup: function() {
+			this.model.get("gameevents").off(null, null, this);
+		},
 		render: function(layout) {
 			var view = layout(this);
 			var playtext = "";
@@ -19402,6 +19463,9 @@ function(require, app, Backbone) {
 			this.model.on("change:current_state", function() {this.render();}, this);//Update the action prompt.
 			this.model.on("change:team_in_possession_ix", function() {this.show_teamplayer();}, this);//Update which player buttons to display.
 		},
+		cleanup: function() {
+			this.model.off(null, null, this);
+		},
 		render: function(layout) {
 			var view = layout(this);
 			this.setViews({
@@ -19427,6 +19491,10 @@ function(require, app, Backbone) {
 		initialize: function() {
 			this.model.get("game").on("change:team_"+this.options.team_ix, this.render, this);//Team name will update when returned from db.
 			this.model.on("change:field_status_"+this.options.team_ix, this.render, this);//Change displayed player buttons
+		},
+		cleanup: function() {
+			this.model.get("game").off(null, null, this);
+			this.model.off(null, null, this);
 		},
 		render: function(manage) {
 			var my_status = this.model.get("field_status_"+this.options.team_ix);
@@ -19480,6 +19548,9 @@ function(require, app, Backbone) {
 		initialize: function() {			
 			this.model.on("change:player_in_possession_id change:current_state change:period_number", function() {this.render();}, this);
 			this.model.on("change:showing_alternate", this.show_action_buttons, this);//Which buttons are we showing?
+		},
+		cleanup: function() {
+			this.model.off(null, null, this);
 		},
 		render: function(layout) {
 			var view = layout(this);

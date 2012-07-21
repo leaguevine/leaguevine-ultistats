@@ -115,6 +115,12 @@ function(require, app, Backbone, Leaguevine) {
          *          game - The game object you are rendering a box score for
          */
 		template: "playerstats/boxscore",
+		initialize: function(){
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function(){
+			this.collection.off(null, null, this);
+		},
 		className: "playerstats-boxscore-wrapper",
         serialize: function() {//I think serialize is ignored if render is provided.
 			var game = this.options.game.toJSON();
@@ -149,15 +155,16 @@ function(require, app, Backbone, Leaguevine) {
                 }
 			}, this);
 			return view.render();
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
 		}
 	});
     PlayerPerGameStats.Views.PlayerStatsList = Backbone.View.extend({
 		template: "playerstats/list",
+		initialize: function(){
+			this.collection.on("reset", this.render, this);
+		},
+		cleanup: function(){
+			this.collection.off(null, null, this);
+		},
 		className: "stats_list_wrapper",
 		render: function(layout) {
 			var view = layout(this);
@@ -170,11 +177,6 @@ function(require, app, Backbone, Leaguevine) {
 				}));
 			}, this);
 			return view.render();
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
 		}
 	});
 
