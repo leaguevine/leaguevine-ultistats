@@ -554,6 +554,7 @@ function(require, app, Backbone) {
 	TrackedGame.Views.Scoreboard = Backbone.View.extend({
 		//this.model = trackedgame
 		template: "trackedgame/scoreboard",
+		tagName: "score_area",
 		initialize: function() {
 			this.model.get("game").on("change:team_1_score change:team_2_score", this.render, this);//Update the display when the score changes.
 			this.model.on("change:team_in_possession_ix", this.render, this);//Update the display when possession changes.
@@ -568,9 +569,14 @@ function(require, app, Backbone) {
 	*/
 	TrackedGame.Views.RotateButton = Backbone.View.extend({
 		//this.model = trackedgame.
+		tagName: "button",
+		className: "rotate",
 		template: "trackedgame/rotate_button",
 		initialize: function() {			
 			this.model.on("change:visible_screen", this.render, this);
+		},
+		cleanup: function() {
+			this.model.off(null, null, this);
 		},
 		render: function(manage) {
 			var n_screens = this.model.screens_list.length;
@@ -580,7 +586,9 @@ function(require, app, Backbone) {
 			return manage(this).render({next_screen: this.model.screens_list[sc_ix].b_string});
 		},
 		events: {
-			"click .rotate": function() {this.model.rotate_visibility();}
+			"click": function() {
+				this.model.rotate_visibility();
+			}
 		}
 	});
 	
@@ -589,17 +597,30 @@ function(require, app, Backbone) {
 	*/
 	TrackedGame.Views.MainSection = Backbone.View.extend({
 		//tagName: "div",
+		template: "trackedgame/main",
 		initialize: function(){
-			this.model.on("change:visible_screen", this.render, this);//re-render when screens rotate.
+			this.model.on("change:visible_screen", this.set_visibility, this);//re-render when screens rotate.
 		},
 		render: function(manage){
+			this.setViews({
+				".roster_1": new TrackedGame.Views.Roster({model: this.model, team_ix: 1}),
+				".roster_2": new TrackedGame.Views.Roster({model: this.model, team_ix: 2}),
+				".action": new TrackedGame.Views.GameAction({model: this.model})
+			});
+			return manage(this).render().then(function(){this.set_visibility();},this);
+		},
+		set_visibility: function(){
+			this.$(".roster_1").hide();
+			this.$(".roster_2").hide();
+			this.$(".action").hide();
 			var sc_ix = this.model.get("visible_screen");
-			if (sc_ix<2){
-				this.setView(new TrackedGame.Views.Roster({model: this.model, team_ix: sc_ix+1}));
-			} else {
-				this.setView(new TrackedGame.Views.GameAction({model: this.model}));
-			}	
-			return manage(this).render();
+			if (sc_ix==0){
+				this.$(".roster_1").show();
+			} else if (sc_ix==1){
+				this.$(".roster_2").show();
+			} else if (sc_ix==2){
+				this.$(".action").show();
+			}
 		}
 	});
 	
@@ -611,6 +632,7 @@ function(require, app, Backbone) {
 	TrackedGame.Views.Roster = Backbone.View.extend({
 		//passed this.model = trackedgame, and this.options.team_ix is the index of the team this view is used for.
 		template: "trackedgame/roster",
+		className: "roster_wrapper",
 		initialize: function() {
 			this.model.get("game").on("reset", this.render, this);//Game should only be reset once per router call.
 		},
@@ -626,7 +648,9 @@ function(require, app, Backbone) {
 		}
 	});
 	TrackedGame.Views.RosterSum = Backbone.View.extend({
-		template: "trackedgame/rostersum",
+		template: "trackedgame/roster_sum",
+		tagName: "span",
+		className: "roster_onfield_sum_value",
 		initialize: function() {
 			this.model.on("change:field_status_"+this.options.team_ix, this.render, this);
 		},
@@ -661,9 +685,7 @@ function(require, app, Backbone) {
 		template: "trackedgame/roster_item",
 		tagName: "li",
 		render: function(manage){
-			return manage(this).render(this.model.toJSON()).then(function(el){
-				this.$el.toggleClass('onfield',this.options.trackedgame.get("field_status_"+this.options.team_ix)[this.model.get("player_id")]==1);
-			}, this);
+			return manage(this).render(this.model.toJSON()).then(function(el){this.set_status();}, this);
 		},
 		events: {
 			"click": "toggle_me"
@@ -673,7 +695,10 @@ function(require, app, Backbone) {
 			my_status[this.model.get("player_id")] = 1 - my_status[this.model.get("player_id")];
 			//this.options.trackedgame.set("field_status_"+this.options.team_ix, my_status);
 			this.options.trackedgame.trigger("change:field_status_"+this.options.team_ix);
-			this.render();
+			this.set_status();
+		},
+		set_status: function(){
+			this.$el.toggleClass('onfield',this.options.trackedgame.get("field_status_"+this.options.team_ix)[this.model.get("player_id")]==1);
 		}
 	});
     
@@ -682,6 +707,7 @@ function(require, app, Backbone) {
 	*/
 	TrackedGame.Views.GameAction = Backbone.View.extend({
 		//this.model = trackedgame
+		template: "trackedgame/game_action",
 		initialize: function() {
 			this.model.get("roster_1").on("reset", this.render, this);
 			this.model.get("roster_2").on("reset", this.render, this);
@@ -690,7 +716,6 @@ function(require, app, Backbone) {
 			this.model.get("roster_1").off(null, null, this);
 			this.model.get("roster_2").off(null, null, this);
 		},
-		template: "trackedgame/game_action",
 		render: function(layout) {
 			var view = layout(this);
 			this.setViews({
@@ -708,6 +733,7 @@ function(require, app, Backbone) {
 	TrackedGame.Views.PlayByPlay = Backbone.View.extend({
 		//this.model is trackedgame
 		template: "trackedgame/playbyplay",
+		className: "last_action_area",
 		initialize: function() {//Update the play-by-play when a game event is added or removed.
 			this.model.get("gameevents").on("add remove", function() {this.render();}, this);
 		},
@@ -762,38 +788,53 @@ function(require, app, Backbone) {
 		//this.model is trackedgame
 		template: "trackedgame/player_area",
 		initialize: function() {
-			//I have moved the action prompt from the subview to here, because the action prompt is not team-specific.
-			this.model.on("change:current_state", function() {this.render();}, this);//Update the action prompt.
-			this.model.on("change:team_in_possession_ix", function() {this.show_teamplayer();}, this);//Update which player buttons to display.
+			this.model.on("change:visible_screen", function(){
+				var sc_ix = this.model.get("visible_screen");
+				if (sc_ix==2){
+					this.render();
+				}
+			}, this);
+			this.model.on("change:team_in_possession_ix", function() {this.set_teamplayer_visibility();}, this);//Update which player buttons to display.
 		},
 		cleanup: function() {
 			this.model.off(null, null, this);
 		},
-		render: function(layout) {
-			var view = layout(this);
+		render: function(manage) {
 			this.setViews({
 				//Need to pass the full trackedgame to the children views because we need to bind to its attributes that are not yet backbone model's'
+				".player_prompt": new TrackedGame.Views.PlayerActionPrompt({model: this.model}),
 				".player_area_1": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix: 1}),
 				".player_area_2": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix: 2})
 			});
-			return view.render({
-				//player_prompt: this.model.player_prompt_strings[this.model.get("current_state")]
-				player_prompt: this.model.game_states[this.model.get("current_state")].player_prompt
-			}).then(function(el) {
-				this.show_teamplayer();
-			});
+			return manage(this).render().then(function(el) {this.set_teamplayer_visibility();}, this);
 		},
-		show_teamplayer: function () {
+		set_teamplayer_visibility: function () {
 			this.$(".player_area_"+(3-this.model.get("team_in_possession_ix"))).hide();
 			this.$(".player_area_"+this.model.get("team_in_possession_ix")).show();
 		}
+	});
+	TrackedGame.Views.PlayerActionPrompt = Backbone.View.extend({
+		template: "trackedgame/player_action_prompt",
+		className: "player_prompt_action",
+		initialize: function() {
+			this.model.on("change:current_state", this.render, this);//Update the action prompt.
+		},
+		cleanup: function() {
+			this.model.off(null, null, this);
+		},
+		render: function(manage){
+			return manage(this).render({player_prompt: this.model.game_states[this.model.get("current_state")].player_prompt});
+		}
+		//serialize: {player_prompt: this.model.game_states[this.model.get("current_state")].player_prompt}
 	});
 	TrackedGame.Views.TeamPlayerArea = Backbone.View.extend({
 		//this.model = trackedgame; this.options.team_ix = 1 or 2
 		template: "trackedgame/teamplayer_area",
 		initialize: function() {
 			this.model.get("game").on("change:team_"+this.options.team_ix, this.render, this);//Team name will update when returned from db.
-			this.model.on("change:field_status_"+this.options.team_ix, this.render, this);//Change displayed player buttons
+			//Re-rendering is expensive, so we won't do it for every player swap, but we will do it
+			//whenever we change visibility to show this screen.
+			//this.model.on("change:field_status_"+this.options.team_ix, this.render, this);//Change displayed player buttons
 		},
 		cleanup: function() {
 			this.model.get("game").off(null, null, this);
@@ -849,7 +890,7 @@ function(require, app, Backbone) {
 	TrackedGame.Views.ActionArea = Backbone.View.extend({
 		template: "trackedgame/action_area",
 		initialize: function() {			
-			this.model.on("change:player_in_possession_id change:current_state change:period_number", function() {this.render();}, this);
+			this.model.on("change:player_in_possession_id change:current_state change:period_number", this.render, this);
 			this.model.on("change:showing_alternate", this.show_action_buttons, this);//Which buttons are we showing?
 		},
 		cleanup: function() {
