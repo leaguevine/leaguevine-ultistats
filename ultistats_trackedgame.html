@@ -1,110 +1,133 @@
-<section class="track scoreboard">
-	<div class="score_area">
-		<div class="name team1"><%= game.team_1.name %></div>
-		<div class="score team1"><%= game.team_1_score %></div>
-		<div class="score team2"><%= game.team_2_score %></div>
-		<div class="name team2"><%= game.team_2.name %></div>
-	</div>
-</section>
-
-<section class="track rotate_screen">
-	<button class="rotate"><%= next_screen %></button>
-</section>
-
-<section class="track main_section">
-<div>
-	<section class="roster_1">
-		<div class="roster_wrapper">
-			<div class="roster_team_header">
-				<span class="roster_team_name">
-					<%= team.name %>
-				</span>
-			</div>
-			<div class="roster_onfield_sum">
-				<span class="roster_onfield_sum_value">
-					<%= onfield_sum %> players in
-				</span>
-			</div>
-			<div class="roster_area">
-				<ul>
-					<li>
-						<button class="roster_player player" id="<%= player_id %>">
-							<span class="player_name" id="<%= player_id %>"><%= player.first_name %> <%= player.last_name %></span>
-							<span class="player_number" id="<%= player_id %>"><%= number %></span>
-						</button>
-					</li>
-				</ul>
-			</div>
+<div id="layout" class="layout tracked_game">
+	
+	<section class="track scoreboard">
+		<div class="score_area">
+			<div class="name team1"><%= game.team_1.name %></div>
+			<div class="score team1"><%= game.team_1_score %></div>
+			<div class="score team2"><%= game.team_2_score %></div>
+			<div class="name team2"><%= game.team_2.name %></div>
 		</div>
 	</section>
-	<section class="roster_2"></section>
-	<section class="action">
-		<div>
-			<div class="playbyplay">
-				<div class="last_action_area">
-					<div class="last_action_label">Previous Play:</div>
-					<div class="last_action"><%= playtext %></div>
-				</div>
-			</div>
-			<div class="player_area">
-				<div>
-					<div class="player_prompt">
-						<div class="player_prompt_action"><%= player_prompt %></div>
+	
+	<section class="track rotate_screen">
+		<button class="rotate"><%= next_screen %></button>
+	</section>
+	
+	<section class="track main_section">
+		<div class="main_section_wrapper">
+			<section class="roster_1">
+				<div class="roster_wrapper">
+					<div class="roster_team_header">
+						<span class="roster_team_name">
+							<%= team.name %>
+						</span>
 					</div>
-					<div class="player_area_1">
-						<ul class="player_buttons">
+					<div class="roster_onfield_sum">
+						<span class="roster_onfield_sum_value">
+							<%= onfield_sum %> players in
+						</span>
+					</div>
+					<div class="roster_quick">
+						<ul>
 							<li>
-								<button class="button player" id="<%= player.id %>">
-									<span class="player_name"><%= player.first_name %> <%= player.last_name %></span>
-									<span class="player_number"><%= number %></span>
+								<button class="clear_roster">
+									<span>Clear</span>
+								</button>
+							</li>
+							<li>
+								<button class="last_oline" disabled="disabled">
+									<span>Last O-Line</span>
+								</button>
+							</li>
+							<li>
+								<button class="last_dline" disabled="disabled">
+									<span>Last D-Line</span>
 								</button>
 							</li>
 						</ul>
-						<div class="offense_teamname"><p><%= team.name %></p></div>
 					</div>
-					<div class="player_area_2"></div>
-				</div>
-			</div>
-			<div class="action_area">
-				<div>
-					<div class="buttons main_action">
-						<div id="throw_prompt" class="action_prompt">
-							<div class="action_prompt_player">
-								<%= player_string %>
-							</div>
-							<div class="action_prompt_action">
-								<%= action_string %>
-							</div>
-						</div>
-						<button class="button completion">Complete Pass</button>
-						<button class="button dropped_pass">Dropped pass</button>
-						<button class="button defd_pass">D'ed Pass</button>
-						<button class="button throwaway">
-							<span class="button_line_1">Untouched</span> 
-							<span class="button_line_2">Throwaway</span>
-						</button>
-						<button class="button score">Score</button>
-					</div>
-					<div class="buttons alternate_action">
-						<div id="alternate_action_prompt" class="action_prompt">
-							<div class="action_prompt_action">What happened?</div>
-						</div>
-						<button class="button unknown_turn">Unknown Turn</button>
-						<button class="button stall">Stall</button>
-						<!-- Removed for simplicity for the first version 
-							<button class="button foul">Foul/Violation</button>
-						-->
-						<button class="button injury">Injury</button>
-						<button class="button timeout">Timeout</button>
-						<button class="button end_of_period">End of Period <%= per_num %></button>
-					</div>
-					<div class="buttons extra_actions">
-						<button class="button misc">Misc</button>
-						<button class="button undo">Undo</button>
+					<div class="roster_area">
+						<ul>
+							<li>
+								<button class="roster_player player" id="<%= player_id %>">
+									<span class="player_name" id="<%= player_id %>"><%= player.first_name %> <%= player.last_name %></span>
+									<span class="player_number" id="<%= player_id %>"><%= number %></span>
+								</button>
+							</li>
+							...
+						</ul>
 					</div>
 				</div>
-			</div>
+			</section>
+			<section class="roster_2"></section>
+			<section class="action">
+				<div class="action_wrapper">
+					<div class="playbyplay">
+						<div class="last_action_area">
+							<div class="last_action_label">Previous Play:</div>
+							<div class="last_action"><%= playtext %></div>
+						</div>
+					</div>
+					<div class="player_area">
+						<div>
+							<div class="player_prompt">
+								<div class="player_prompt_action"><%= player_prompt %></div>
+							</div>
+							<div class="player_area_1">
+								<ul class="player_buttons">
+									<li>
+										<button class="button player" id="<%= player.id %>">
+											<span class="player_name"><%= player.first_name %> <%= player.last_name %></span>
+											<span class="player_number"><%= number %></span>
+										</button>
+									</li>
+								</ul>
+								<div class="offense_teamname"><p><%= team.name %></p></div>
+							</div>
+							<div class="player_area_2"></div>
+						</div>
+					</div>
+					<div class="action_area">
+						<div>
+							<div class="buttons main_action">
+								<div id="throw_prompt" class="action_prompt">
+									<div class="action_prompt_player">
+										<%= player_string %>
+									</div>
+									<div class="action_prompt_action">
+										<%= action_string %>
+									</div>
+								</div>
+								<button class="button completion">Complete Pass</button>
+								<button class="button dropped_pass">Dropped pass</button>
+								<button class="button defd_pass">D'ed Pass</button>
+								<button class="button throwaway">
+									<span class="button_line_1">Untouched</span> 
+									<span class="button_line_2">Throwaway</span>
+								</button>
+								<button class="button score">Score</button>
+							</div>
+							<div class="buttons alternate_action">
+								<div id="alternate_action_prompt" class="action_prompt">
+									<div class="action_prompt_action">What happened?</div>
+								</div>
+								<button class="button unknown_turn">Unknown Turn</button>
+								<button class="button stall">Stall</button>
+								<!-- Removed for simplicity for the first version 
+									<button class="button foul">Foul/Violation</button>
+								-->
+								<button class="button injury">Injury</button>
+								<button class="button timeout">Timeout</button>
+								<button class="button end_of_period">End of Period <%= per_num %></button>
+							</div>
+							<div class="buttons extra_actions">
+								<button class="button misc">Misc</button>
+								<button class="button undo">Undo</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
 		</div>
 	</section>
 </div>
-</section>

@@ -510,6 +510,9 @@ function(require, app, Backbone) {
 				".rotate_screen": new TrackedGame.Views.RotateButton({model: trackedgame}),//just a button, but changes its text so it is in a view
 				".main_section": new TrackedGame.Views.MainSection({model: trackedgame})//a container for either roster screen or action screen.
 			});
+			/*myLayout.insertView(new TrackedGame.Views.Scoreboard({model: trackedgame}));//team names, score, possession indicator
+			myLayout.insertView(new TrackedGame.Views.RotateButton({model: trackedgame}));//just a button, but changes its text so it is in a view
+			myLayout.insertView(new TrackedGame.Views.MainSection({model: trackedgame}));//a container for either roster screen or action screen.*/
 			var callback = trackedgame.setButtonHeight;
 			myLayout.render().then(function(){
                 // Unbind any other bindings to the browser height
@@ -554,7 +557,7 @@ function(require, app, Backbone) {
 	TrackedGame.Views.Scoreboard = Backbone.View.extend({
 		//this.model = trackedgame
 		template: "trackedgame/scoreboard",
-		tagName: "score_area",
+		className: "score_area",
 		initialize: function() {
 			this.model.get("game").on("change:team_1_score change:team_2_score", this.render, this);//Update the display when the score changes.
 			this.model.on("change:team_in_possession_ix", this.render, this);//Update the display when possession changes.
@@ -598,6 +601,7 @@ function(require, app, Backbone) {
 	TrackedGame.Views.MainSection = Backbone.View.extend({
 		//tagName: "div",
 		template: "trackedgame/main",
+		className: "main_section_wrapper",
 		initialize: function(){
 			this.model.on("change:visible_screen", this.set_visibility, this);//re-render when screens rotate.
 		},
@@ -645,6 +649,18 @@ function(require, app, Backbone) {
 				".roster_area": new TrackedGame.Views.RosterList({model: this.model, team_ix: this.options.team_ix})
 			});
 			return manage(this).render({ team: this.model.get("game").get("team_"+this.options.team_ix)});
+		},
+		events: {
+			"click .clear_roster": "clear_roster"
+		},
+		clear_roster: function(ev){
+			var my_status = this.model.get("field_status_"+this.options.team_ix);
+			_.each(my_status, function(value,key,list){
+				my_status[key]=0;
+			});
+			//this.model.set("field_status_"+this.options.team_ix);
+			this.model.trigger("change:field_status_"+this.options.team_ix);
+			this.model.trigger("arbitrary_trigger_"+this.options.team_ix);
 		}
 	});
 	TrackedGame.Views.RosterSum = Backbone.View.extend({
@@ -668,9 +684,11 @@ function(require, app, Backbone) {
 		//this.model is trackedgame. this.options.team_ix is the team for this view.
 		initialize: function() {//Re-render the whole list whenever the fetch of teamplayers returns.
 			this.model.get("roster_"+this.options.team_ix).on("reset", this.render, this);
+			this.model.on("arbitrary_trigger_"+this.options.team_ix, this.render, this);
 		},
 		cleanup: function() {
 			this.model.get("roster_"+this.options.team_ix).off(null, null, this);
+			this.model.off(null, null, this);
 		},
 		tagName: "ul",
 		render: function(manage){
@@ -708,6 +726,7 @@ function(require, app, Backbone) {
 	TrackedGame.Views.GameAction = Backbone.View.extend({
 		//this.model = trackedgame
 		template: "trackedgame/game_action",
+		className: "action_wrapper",
 		initialize: function() {
 			this.model.get("roster_1").on("reset", this.render, this);
 			this.model.get("roster_2").on("reset", this.render, this);
