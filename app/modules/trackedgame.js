@@ -58,7 +58,9 @@ function(require, app, Backbone) {
 			roster_2: [],
 			field_status_1: {},//keys=player_id, values=1(onfield) or 0(offfield)
 			field_status_2: {},
-            //previous_state: "blank",
+			saved_status_1: {"last_o": null, "last_d": null},
+			saved_status_2: {"last_o": null, "last_d": null},
+			//previous_state: "blank",
 			current_state: "pulling",
 			is_over: false,
 			period_number: NaN,
@@ -275,6 +277,16 @@ function(require, app, Backbone) {
 						this.save_event(this_event);
 					}
 				}, this);
+				if (this.get("current_state")==="pulling"){
+					//Save the status to o or d-line
+					var dline_ix = this.get("team_in_possession_ix");
+					var saved_status = this.get("saved_status_"+sc_ix);
+					saved_status[sc_ix === dline_ix ? "last_d": "last_o"] = _.clone(new_status);
+					//this.set("saved_status_"+sc_ix, saved_status);
+					this.trigger("change:saved_status_"+sc_ix);
+					this.save();
+				}
+				
 			}
 		},
 		
@@ -639,19 +651,29 @@ function(require, app, Backbone) {
 		className: "roster_wrapper",
 		initialize: function() {
 			this.model.get("game").on("reset", this.render, this);//Game should only be reset once per router call.
+			this.model.on("change:saved_status_"+this.options.team_ix, this.set_last_visibility, this);
 		},
 		cleanup: function() {
 			this.model.get("game").off(null, null, this);
+			this.model.off(null, null, this);
 		},
 		render: function(manage) {
 			this.setViews({
 				".roster_onfield_sum": new TrackedGame.Views.RosterSum({model: this.model, team_ix: this.options.team_ix}),
 				".roster_area": new TrackedGame.Views.RosterList({model: this.model, team_ix: this.options.team_ix})
 			});
-			return manage(this).render({ team: this.model.get("game").get("team_"+this.options.team_ix)});
+			return manage(this).render({ team: this.model.get("game").get("team_"+this.options.team_ix)}).then(function(){
+				this.set_last_visibility();
+			});
+		},
+		set_last_visibility: function(){
+			this.$(".last_o").toggle(this.model.get("saved_status_"+this.options.team_ix)["last_o"]!==null);
+			this.$(".last_d").toggle(this.model.get("saved_status_"+this.options.team_ix)["last_d"]!==null);
 		},
 		events: {
-			"click .clear_roster": "clear_roster"
+			"click .clear_roster": "clear_roster",
+			"click .last_o": "last_o",
+			"click .last_d": "last_d"
 		},
 		clear_roster: function(ev){
 			var my_status = this.model.get("field_status_"+this.options.team_ix);
@@ -659,6 +681,26 @@ function(require, app, Backbone) {
 				my_status[key]=0;
 			});
 			//this.model.set("field_status_"+this.options.team_ix);
+			this.model.trigger("change:field_status_"+this.options.team_ix);
+			this.model.trigger("arbitrary_trigger_"+this.options.team_ix);
+		},
+		last_o: function(ev){
+			this.do_saved_status(this.model.get("saved_status_"+this.options.team_ix)["last_o"]);
+		},
+		last_d: function(ev){
+			this.do_saved_status(this.model.get("saved_status_"+this.options.team_ix)["last_d"]);
+		},
+		do_saved_status: function(saved_status){
+			//It is possible that a saved status does not include all players.
+			//Therefore we need to clear the roster, then step through the saved status and set any
+			//matching players' status
+			var my_status = this.model.get("field_status_"+this.options.team_ix);
+			_.each(my_status, function(value,key,list){
+				my_status[key]=0;
+			});
+			_.each(saved_status, function(value, key, list){
+				my_status[key]=value;
+			});
 			this.model.trigger("change:field_status_"+this.options.team_ix);
 			this.model.trigger("arbitrary_trigger_"+this.options.team_ix);
 		}

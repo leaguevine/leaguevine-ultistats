@@ -812,8 +812,13 @@ span.button_line_2 {
     text-align: center;
 }
 
+.roster_quick ul {
+	float: left;
+	width: 100%;
+}
+
 .roster_quick li {
-    float: left;
+	float: left;
     width: 33%;
 }
 
