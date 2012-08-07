@@ -630,7 +630,7 @@ function(require, app, Backbone) {
 			this.$(".roster_2").hide();
 			this.$(".action").hide();
 			var sc_ix = this.model.get("visible_screen");
-			if (sc_ix==0){
+			if (sc_ix === 0){
 				this.$(".roster_1").show();
 			} else if (sc_ix==1){
 				this.$(".roster_2").show();
@@ -667,8 +667,8 @@ function(require, app, Backbone) {
 			});
 		},
 		set_last_visibility: function(){
-			this.$(".last_o").toggle(this.model.get("saved_status_"+this.options.team_ix)["last_o"]!==null);
-			this.$(".last_d").toggle(this.model.get("saved_status_"+this.options.team_ix)["last_d"]!==null);
+			this.$(".last_o").toggle(this.model.get("saved_status_"+this.options.team_ix).last_o !== null);
+			this.$(".last_d").toggle(this.model.get("saved_status_"+this.options.team_ix).last_d !== null);
 		},
 		events: {
 			"click .clear_roster": "clear_roster",
@@ -685,10 +685,10 @@ function(require, app, Backbone) {
 			this.model.trigger("arbitrary_trigger_"+this.options.team_ix);
 		},
 		last_o: function(ev){
-			this.do_saved_status(this.model.get("saved_status_"+this.options.team_ix)["last_o"]);
+			this.do_saved_status(this.model.get("saved_status_"+this.options.team_ix).last_o);
 		},
 		last_d: function(ev){
-			this.do_saved_status(this.model.get("saved_status_"+this.options.team_ix)["last_d"]);
+			this.do_saved_status(this.model.get("saved_status_"+this.options.team_ix).last_d);
 		},
 		do_saved_status: function(saved_status){
 			//It is possible that a saved status does not include all players.
