@@ -113,7 +113,9 @@ function(app, Backbone) {
                 _.extend(this,stored_api);
             }
             if (!this.token) {
-                return this.login();
+                //return this.login();
+                this.login();
+                return false;
             }
             else {
                 return this.token;
@@ -124,12 +126,12 @@ function(app, Backbone) {
 				var stored_api = JSON.parse(localStorage.getItem("auth_object"));
 				_.extend(this, stored_api);
 			}
-            return (this.token !== null);
+            return (this.token !== null && this.token !== undefined);
         },
         login: function() {//Redirects a user to the login screen
             localStorage.setItem("login_redirect", Backbone.history.fragment);
             window.location.href = this.base + "&client_id=" + this.client_id + "&redirect_uri=" + this.redirect_uri;
-            return false;
+            //return false;
         },
         logout: function() {//Logs a user out by removing the locally stored token
             localStorage.removeItem("auth_object");
