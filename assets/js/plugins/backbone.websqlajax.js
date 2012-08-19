@@ -1,5 +1,28 @@
 /**
  * Backbone WebSQL Adapter + AJAX Syncing v0.0
+ * 
+ * Applications built upon the backbone boilerplate will generally
+ * instantiate models in one of several ways:
+ * -a fetch on a collection
+ * -the id is provided (e.g. in the URL hash recognized by a router)
+ * -the model is created by the user
+ * 
+ * Fetching on a collection:
+ * my_class_collection = new Class.Collection();
+ * my_class_collection.fetch(); //sets a success callback to collection.add/reset with the xhr (see below)
+ * Backbone.WebSQLAjaxSync.call(my_class_collection, 'read', my_class_collection, options) //options.success contains above success callback
+ * my_class_collection.store.findAll(my_class_collection, success, error) //success goes through the SQL result row-by-row, then the above success, then Backbone.ajaxQueue.prequeue(method,model,options)
+ * my_class_collection.store._executeSql("SELECT COALESCE(id, local_id) as id, local_id, value, time_created, time_last_updated FROM "+ my_class_collection.store.tableName,[], success, error);
+ * this.db.transaction(function(tx) {tx.executeSql(SQL, params, success, error);});
+ * //Then the success callbacks.
+ * Backbone.WebSQLAjaxSync.success(tx, res); //builds result row-by-row
+ *  my_class_collection[options.add ? 'add' : 'reset'](my_class_collection.parse(result, xhr), options);
+ *  Backbone.ajaxQueue.prequeue(method,model,options)
+ * //Prequeue prepares the model(s) for remote sync (checks ids and association ids to make sure they are not local_ids)
+ * //it sets the success callback, then sends it to the queue
+ * this.queue(function(){return Backbone.sync(method, model, options);});
+ * //If Backbone.sync is successful
+ * iterate through remote objects, adding remote objects
  */
 
 (function(window) {
@@ -38,6 +61,7 @@
 		//The following gets called whenever the initial db request returns.
 		var success = function (tx, res) {
 			
+			//TODO: Why do we need an id?
 			if (!model.id){model.id=model.get("local_id");}
 			
 			//res.rows is empty for anything except find or findall, I think.
@@ -75,10 +99,23 @@
 			options.error(error);//TODO: Does this work if there is more than 1 error callback?
 		};
 		
-		//Before we send the SQL statement and the above callbacks, we need to clean up the model.
-		//The model's .id might be a local_id if it was created locally, we need to make sure it exists only as model.get("local_id")
-		if (!model.models && model.id && !model.has("local_id") && _.isString(model.id) && model.id.indexOf("local_id") ==0){model.set("local_id",model.id);}
-		if (model.id && model.id==model.get("local_id")) {model.unset(model.idAttribute, {silent: true});}
+		/*
+		 * Locally created models will have a local_id.
+		 * Models that have been persisted remotely will have an id (happens during ajax success)
+		 * But sometimes the model has not been created locally and not persisted remotely yet,
+		 * and the application requires an id so we will have inserted our .local_id into .id
+		 * We need to unset .id if it is actually from local_id so other methods don't think this
+		 * has been persisted remotely.
+		 */
+		if (model.id && model.id==model.get("local_id")) {
+			model.unset(model.idAttribute, {silent: true});
+		}
+		
+		/*
+		 * In the case that the model has been created from a router, we will not
+		 * yet know if it has already been persisted locally. We can do a SELECT to
+		 * find it, but if it does not exist then we should create it.
+		 */
 		
 		//Send out the SQL request.
 		switch(method) {
@@ -121,7 +158,7 @@
 			//local_id will be used until object is created in API
 			//and local_id will later be used to look up the real id for associations.
 			tx.executeSql("CREATE TABLE IF NOT EXISTS " + tableName + 
-				" (id INTEGER UNIQUE, local_id UNIQUE, value, time_created INTEGER, time_last_updated INTEGER)",[],success, error);
+				" (id UNIQUE, local_id UNIQUE, value, time_created INTEGER, time_last_updated INTEGER)",[],success, error);
 		});
 	};
 
@@ -167,7 +204,7 @@
 			} else {stmnt += ", datetime('now')";}
 			stmnt += ")"
 			
-			if (!model.id){model.id=local_id;}
+			if (!model.id){model.id=local_id;} //If we don't have an id, set it to be the local_id
 			//console.log(model.id);
 			this._executeSql(stmnt,parms, success, error);
 		},
@@ -184,9 +221,7 @@
 		},
 	
 		find: function (model, success, error) {
-			//console.log("sql find");
 			//model will have been stripped of id if it matches local_id
-			//There may be times when we have id but not local_id?
 			var stmnt = "SELECT COALESCE(id, local_id) AS id, local_id, value, time_created, time_last_updated FROM "+this.tableName+" WHERE local_id=?";
 			var parms = [model.get("local_id")];
 			if (model.id) {
@@ -310,9 +345,18 @@
 			return callback;
 		},
 		prequeue: function(method, model, options){
-			//TODO: model may or may not be alive in the app. If not, and it was persisted as JSON, 
- 			//then it won't be a model class so .set etc might not work.
- 			//Is it possible to save the class name to the queue so that we can create a new model/collection on queue access?
+			/*
+			 * Check to see if the model's associated ids are local_ids, and if so, try to update them.
+			 * Clean the model.id and its associated ids so that none are local_ids.
+			 * Set the success callback and then enqueue the object.
+			 */
+			
+			
+			/*
+			 * TODO: model may or may not be alive in the app. If not, and it was persisted as JSON,
+			 * then it won't be a model class so .set etc might not work.
+			 * Is it possible to save the class name to the queue so that we can create a new model/collection on queue access? 
+			 */
 	 			
  			//Process associations. e.g., make sure that team.season_id is a real id and not a local_id.
  			if ((method=="create" || method=="update") && model.associations!==undefined && _.isObject(model.associations)){
@@ -336,6 +380,8 @@
  			
  			//Remove any local_id from the model before syncing with remote.
 	      	if (model.id && (model.id==model.get("local_id") || ("" + model.id).indexOf("local_id")==0)) {model.unset(model.idAttribute, {silent: true});}
+	      	
+	      	
 			//Describe the success callback when the API call returns.
 	      	//TODO: Handle errors.
 	      	options.success = function(resp, status, xhr){
@@ -349,44 +395,41 @@
 	      			remote_objs = [remote_objs];
       			}
       			
-      			//iterate through remote_objs. How many remote_objs do we get for methods that aren't fetch?
-      			var was_added = false; //used below to make sure we trigger 'reset' if any models have been added.
+      			//iterate through remote_objs. Probably only works for fetch
       			var matched_model;
+      			var models_to_add = [];
       			_.each(remote_objs, function(remote_obj){//for each result from API
-      				//Do we have a local model with a matching id?
-      				if (matched_model = model.models ? model.get(remote_obj.id) : (model.id==remote_obj.id && model)) {
-      					//Assume remote is newer unless we have proof otherwise.
-      					var local_is_newer = false;
+      				//Try to find a local model (either model, or a member of model.models) with a matching id.
+      				matched_model = model.models ? model.get(remote_obj.id) : (model.id==remote_obj.id && model);
+  					if (matched_model){//If the model was matched then merge data from matched_model and remote_obj
+      					var remote_is_newer = true;//Assume remote is newer unless we have proof otherwise.
       					//Compare the dates, if remote_obj has dates.
       					if (remote_obj.time_created || remote_obj.time_last_updated){
       						var local_created = new Date(matched_model.get("time_created"));
       						var local_updated = new Date(matched_model.get("time_last_updated"));
       						var remote_created = new Date(remote_obj.time_created);
       						var remote_updated = new Date(remote_obj.time_last_updated);
-      						local_is_newer = Math.max.apply(null,[local_created,local_updated]) > Math.max.apply(null,[remote_created,remote_updated]);
+      						var local_latest = Math.max.apply(null,[local_created,local_updated]);
+      						remote_is_newer = isNaN(local_latest) || Math.max.apply(null,[remote_created,remote_updated]) >= local_latest;
       					}
-      					if (local_is_newer) {
-      						console.log("TODO: merge matched_model onto remote_obj");
-      						//Don't merge id.
+      					if (remote_is_newer) {
+      						matched_model.set(remote_obj);//Set all of the attributes. fires "change"
+      						if (model.get("local_id" !== undefined)) {//If this is already stored locally, it'll have a local_id
+      							model.store.update(matched_model);
+      						} else {
+      							model.store.create(matched_model, false, false);
+      						}
       					}
-      					matched_model.set(remote_obj);
-	      				model.store.update(matched_model);
-      				} else {//We do not have a local model with matching id then create into the store
-      					if (model.models) {
+      				}
+      				else {//We do not have a local model with matching id then create into the store
+      					if (model.models) {//if this was a collection...
 		      				var new_model = model._prepareModel(remote_obj, {});
-		      				new_model.set("time_created", new Date().toISOString());
-		      				new_model.set("time_last_updated", new Date().toISOString());
-		      				//add to the collection.
-		      				if (model.models.length>0 && !was_added) {
-		      					model.add(remote_obj);
+		      				if (!(remote_obj.time_created || remote_obj.time_last_updated)){
+		      					new_model.set("time_created", new Date().toISOString());
+		      					new_model.set("time_last_updated", new Date().toISOString());
 		      				}
-		      				else {
-		      					model.add(remote_obj,{silent: true});
-		      					was_added = true;
-		      				}
-		      				
-		      			} else {
-		      				//Under what circumstances would a single model do a fetch, and then get a response from the API that did not match?
+		      				models_to_add.push(new_model);
+		      			} else {//Under what circumstances would a single model do a fetch, and then get a response from the API that did not match?
 		      				console.log("you should never see this text");
 		      				new_model = model.clone();
 		      				new_model.clear({silent: true});
@@ -395,8 +438,10 @@
 		      			model.store.create(new_model,false,false);
 	      			}
 	      		});
+	      		if (model.models && models_to_add.length>0) {
+	      			model.add(models_to_add, {silent: true});
+	      		}
 		        model.trigger("reset");
-	      		//else {model.set(remote_model);}
       		};
       		this.queue(function(){return Backbone.sync(method, model, options);});
 		}
