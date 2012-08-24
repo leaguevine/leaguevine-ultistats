@@ -247,12 +247,14 @@
 			var stmnt = "UPDATE " + this.tableName + " SET value=?, time_last_updated=datetime('now')";
 			var parms = [value]
 			if (real_id) {
-				stmnt += ", id = " + model.id;
+				stmnt += ", id = ";
+				stmnt += "\"" + model.id + "\"";
 			}
 			stmnt += " WHERE local_id=?";
 			parms.push(model.get("local_id"));
 			if (real_id) {
-				stmnt += " OR id = " + model.id;
+				stmnt += " OR id = ";
+				stmnt += "\"" + model.id + "\"";
 			}
 			this._executeSql(stmnt,parms, success, error);
 		},
@@ -369,6 +371,7 @@
  				});
  			}
  			
+ 			
 			//Describe the success callback for when the ajax call returns.
 	      	options.success = function(resp, status, xhr){
 	      		/*
@@ -385,6 +388,10 @@
 	      			remote_objs = [remote_objs];
       			}
       			
+      			if (method=="create" && remote_objs.length==1) {
+ 					model.id = remote_objs[0].id;
+ 				}
+	      		
       			//Iterate through remote_objs.
       			var matched_model; //use this to hold the in-app model that matches resp[x]
       			var models_to_add = [];//Build an array of models
@@ -403,11 +410,11 @@
       						remote_is_newer = isNaN(local_latest) || Math.max.apply(null,[remote_created,remote_updated]) >= local_latest;
       					}
       					if (remote_is_newer) {
-      						matched_model.set(remote_obj);//Set all of the attributes. TODO: fires "change". Should this be silent?
-      						if (model.get("local_id") !== undefined) {//If this is already stored locally, it'll have a local_id
-      							model.store.update(matched_model, false, false);
+      						matched_model.set(remote_obj, {silent: true});//Set all of the attributes.
+      						if (matched_model.get("local_id") !== undefined) {//If this is already stored locally, it'll have a local_id
+      							matched_model.store.update(matched_model, false, false);
       						} else {
-      							model.store.create(matched_model, false, false);
+      							matched_model.store.create(matched_model, false, false);
       						}
       					}
       				}
@@ -423,13 +430,12 @@
 		      				new_model.set(remote_obj);
 		      				model.store.create(new_model,false,false);
 		      			}
-		      			
 	      			}
 	      		});
 	      		if (model.models && models_to_add.length>0) {
 	      			model.add(models_to_add, {silent: true});
 	      		}
-		        model.trigger("reset");
+		        model.trigger("reset", model);
       		};
       		this.queue(function(){
       			//A database call may have set model.id with local_id. If so, remove it here, because it'll confuse remote storage.

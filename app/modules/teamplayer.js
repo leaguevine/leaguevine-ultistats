@@ -6,9 +6,9 @@ define([
   "backbone",
 
   // Modules
-  "modules/leaguevine"//,
+  "modules/leaguevine",
   
-  //"plugins/backbone.websqlajax"
+  "plugins/backbone.websqlajax"
 ],
 function(require, app, Backbone, Leaguevine) {
     
@@ -33,7 +33,7 @@ function(require, app, Backbone, Leaguevine) {
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Model.prototype.parse(resp);
-			this.set("id", this.team_id + "/" + this.player_id);
+			resp.id = resp.team_id + "/" + resp.player_id;
 			return resp;
 		},
 		toJSON: function() {
@@ -43,8 +43,8 @@ function(require, app, Backbone, Leaguevine) {
 			//delete tp.player;
 			return tp;
 		},
-		//sync: Backbone.WebSQLAjaxSync,
-		//store: new Backbone.WebSQLStore("teamplayer"),
+		sync: Backbone.WebSQLAjaxSync,
+		store: new Backbone.WebSQLStore("teamplayer"),
 		associations: {
 			"team_id": "team",
 			"player_id": "player"
@@ -55,8 +55,8 @@ function(require, app, Backbone, Leaguevine) {
 	//
 	TeamPlayer.Collection = Backbone.Collection.extend({
 		model: TeamPlayer.Model,
-		//sync: Backbone.WebSQLAjaxSync,
-		//store: new Backbone.WebSQLStore("teamplayer"),
+		sync: Backbone.WebSQLAjaxSync,
+		store: new Backbone.WebSQLStore("teamplayer"),
 		urlRoot: Leaguevine.API.root + "team_players",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
@@ -108,6 +108,12 @@ function(require, app, Backbone, Leaguevine) {
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Collection.prototype.parse(resp);
+			_.map(resp, function(resp_){
+				resp_ = Backbone.Model.prototype.parse(resp_);
+				resp_.id = resp_.team_id + "/" + resp_.player_id;
+				return resp_;
+			});
+			//
 			/*var _this = this;
 			if (this.team_id){resp = _.filter(resp, function(obj){
 				return obj.team_id == _this.team_id;
