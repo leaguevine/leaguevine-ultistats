@@ -44,6 +44,7 @@ This app is built atop the [Backbone.js framework](http://documentcloud.github.c
 Modules are loaded [asynchronously](http://requirejs.org/docs/whyamd.html) using [Require.js](http://requirejs.org/docs/api.html).
 I am using [@tbranyen](http://twitter.com/tbranyen)'s [Backbone-boilerplate](https://github.com/tbranyen/backbone-boilerplate) which includes a plugin to allow backbone and underscore to work with Require.
 Finally, laying out views on the page is assisted by tbranyen's [Backbone.LayoutManager](https://github.com/tbranyen/backbone.layoutmanager).
+Some more backbone documentation can be found [here](https://github.com/addyosmani/backbone-fundamentals/).
 
 ###Connecting to the Leaguevine API
 This app comes with some default settings to automatically connect to the Leaguevine API. These defaults assume you will be serving these files at http://localhost:8000/ and that you wish to use the API client that Chad created. To serve this app at a different URL or to use your own client, you can create a localSettings.js file that sits in assets/js/plugins/. Here is an example file:
