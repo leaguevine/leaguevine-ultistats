@@ -23,6 +23,8 @@
  * this.queue(function(){return Backbone.sync(method, model, options);});
  * //If Backbone.sync is successful
  * iterate through remote objects, adding remote objects
+ * 
+ * Also check out http://coenraets.org/blog/2012/05/simple-offline-data-synchronization-for-mobile-web-and-phonegap-applications/
  */
 
 (function(window) {
@@ -168,8 +170,8 @@
 			stmnt += "local_id, value, time_created, time_last_updated) VALUES (";
 			
 			if (real_id){
-				stmnt += "?, ";
-				parms.push(model.id);
+				stmnt += "\"" + model.id + "\", ";
+				//parms.push(model.id);
 			}
 			stmnt += "?, ?";
 			parms.push(model.get("local_id"));
@@ -222,7 +224,7 @@
 			}
 			if (real_id) {
 				if (model.get("local_id")) { stmnt += " OR "; }
-				stmnt += "id = " + model.id;
+				stmnt += "id = \"" + model.id + "\"";
 			}
 			this._executeSql(stmnt, parms, success, error);
 		},
@@ -409,14 +411,20 @@
       						var local_latest = Math.max.apply(null,[local_created,local_updated]);
       						remote_is_newer = isNaN(local_latest) || Math.max.apply(null,[remote_created,remote_updated]) >= local_latest;
       					}
+      					local_obj = matched_model.toJSON();
       					if (remote_is_newer) {
-      						matched_model.set(remote_obj, {silent: true});//Set all of the attributes.
-      						if (matched_model.get("local_id") !== undefined) {//If this is already stored locally, it'll have a local_id
-      							matched_model.store.update(matched_model, false, false);
-      						} else {
-      							matched_model.store.create(matched_model, false, false);
-      						}
+      						//console.log(local_obj.local_id);
+      						_.extend(local_obj, remote_obj);
+      						matched_model.set(local_obj, {silent: true});
+      					} else {
+      						_.extend(remote_obj, local_obj);
+      						matched_model.set(remote_obj, {silent: true});
       					}
+  						if (matched_model.get("local_id") !== undefined) {//If this is already stored locally, it'll have a local_id
+  							matched_model.store.update(matched_model, false, false);
+  						} else {
+  							matched_model.store.create(matched_model, false, false);
+  						}
       				}
       				else {//We do not have a local model with matching id then create into the store
       					if (model.models) {//if this was a collection...

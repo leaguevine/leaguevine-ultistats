@@ -108,6 +108,19 @@ function(require, app, Backbone, Leaguevine) {
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Collection.prototype.parse(resp);
+			//The websql plugin doesn't know how to sort, meaning we'll get back every teamplayer in the db.
+			//We need to weed them out here.
+			var _this = this;
+			if (this.team_id) {
+				resp = _.filter(resp, function(obj){
+					return obj.team_id == _this.team_id;
+				});
+			}
+			if (this.player_id) {
+				resp = _this.filter(resp, function(obj){
+					return obj.player_id == _this.player_id;
+				});
+			}
 			_.map(resp, function(resp_){
 				resp_ = Backbone.Model.prototype.parse(resp_);
 				resp_.id = resp_.team_id + "/" + resp_.player_id;
