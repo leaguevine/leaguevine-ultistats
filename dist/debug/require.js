@@ -316,7 +316,7 @@ var requirejs, require, define;
 this['JST'] = this['JST'] || {};
 
 this['JST']['app/templates/games/detail.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="game_detail">\n    <div id="team1">\n        <div id="team1_name"><a href="/teams/', team_1.id ,'">', team_1.name ,'</a></div>\n        <div id="team1_score"><span>', team_1_score ,'</span></div>\n    </div>\n    <div id="team2">\n        <div id="team2_name"><a href="/teams/', team_2.id ,'">', team_2.name ,'</a></div>\n        <div id="team2_score"><span>', team_2_score ,'</span></div>\n    </div>\n    <div class="start_time">\n        <span>', start_time_string ,'</span>\n    </div>\n    <div class="game_tournament">\n        <span>'); if (tournament) { ;__p.push('', tournament.name ,''); } ;__p.push('</span>\n    </div>\n    <div>\n        <form action="/track/', id ,'">\n            <button class="button btrack_game">Take Stats</button>\n        </form>\n    </div>\n</div>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="game_detail">\n    <div id="team1">\n        <div id="team1_name"><a href="/teams/', team_1.id ,'">', team_1.name ,'</a></div>\n        <div id="team1_score"><span>', team_1_score ,'</span></div>\n    </div>\n    <div id="team2">\n        <div id="team2_name"><a href="/teams/', team_2.id ,'">', team_2.name ,'</a></div>\n        <div id="team2_score"><span>', team_2_score ,'</span></div>\n    </div>\n    <div class="start_time">\n        <span>', start_time_string ,'</span>\n    </div>\n    <div class="game_tournament">\n        <span>'); if (tournament) { ;__p.push('', tournament.name ,''); } ;__p.push('</span>\n    </div>\n    <div>\n        <form action="/', track ,'/', id ,'">\n            <button class="button btrack_game">Take Stats</button>\n        </form>\n    </div>\n</div>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/games/edit.html'] = function(data) { return function (obj,_) {
@@ -491,6 +491,10 @@ this['JST']['app/templates/tournteams/team.html'] = function(data) { return func
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td>\n    <a href=\'teams/', team.id ,'\'>', team.name ,'</a>\n</td>\n<td>\n    ', seed ,'\n</td>\n<td>\n    ', final_standing ,'\n</td>\n');}return __p.join('');
 }(data, _)};
 
+this['JST']['app/templates/trackbasic/main.html'] = function(data) { return function (obj,_) {
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="trackbasic">\n    <div id="team1">\n        <div id="team1_name"><a href="/teams/', team_1.id ,'">', team_1.name ,'</a></div>\n        <div id="team1_score"><span>', team_1_score ,'</span></div>\n        <button class="team_1 decrement">-</button>\n        <button class="team_1 increment">+</button>\n    </div>\n    <div id="team2">\n        <div id="team2_name"><a href="/teams/', team_2.id ,'">', team_2.name ,'</a></div>\n        <div id="team2_score"><span>', team_2_score ,'</span></div>\n        <button class="team_2 decrement">-</button>\n        <button class="team_2 increment">+</button>\n    </div>\n</div>');}return __p.join('');
+}(data, _)};
+
 this['JST']['app/templates/trackedgame/action_area.html'] = function(data) { return function (obj,_) {
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons main_action">\n    <div id="throw_prompt" class="action_prompt">\n        <div class="action_prompt_player">\n            ', player_string ,'\n        </div>\n        <div class="action_prompt_action">\n            ', action_string ,'\n        </div>\n    </div>\n    <button class="button completion">Complete Pass</button>\n\t<button class="button dropped_pass">Dropped pass</button>\n\t<button class="button defd_pass">D\'ed Pass</button>\n    <button class="button throwaway">\n        <span class="button_line_1">Untouched</span> \n        <span class="button_line_2">Throwaway</span>\n    </button>\n    <button class="button score">Score</button>\n</div>\n<div class="buttons alternate_action">\n    <div id="alternate_action_prompt" class="action_prompt">\n        <div class="action_prompt_action">What happened?</div>\n    </div>\n\t<button class="button unknown_turn">Unknown Turn</button>\n\t<button class="button stall">Stall</button>\n    <!-- Removed for simplicity for the first version \n        <button class="button foul">Foul/Violation</button>\n    -->\n\t<button class="button injury">Injury</button>\n\t<button class="button timeout">Timeout</button>\n\t<button class="button end_of_period">End of Period ', per_num ,'</button>\n</div>\n<div class="buttons extra_actions">\n    <button class="button misc">Misc</button>\n    <button class="button undo">Undo</button>\n</div>\n');}return __p.join('');
 }(data, _)};
@@ -499,12 +503,16 @@ this['JST']['app/templates/trackedgame/game_action.html'] = function(data) { ret
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="playbyplay"></div>\n<div class="player_area"></div>\n<div class="action_area"></div>\n');}return __p.join('');
 }(data, _)};
 
-this['JST']['app/templates/trackedgame/roster.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="roster_team_header">\n    <span class="roster_team_name">\n        ', team.name ,'\n    </span>\n</div>\n<div class="roster_onfield_sum"></div>\n<div class="roster_quick">\n\t<ul>\n\t\t<li>\n\t\t\t<button class="clear_roster">\n\t\t\t\t<span>Clear</span>\n\t\t\t</button>\n\t\t</li>\n\t\t<li>\n\t\t\t<button class="last_o">\n\t\t\t\t<span>Last O-Line</span>\n\t\t\t</button>\n\t\t</li>\n\t\t<li>\n\t\t\t<button class="last_d">\n\t\t\t\t<span>Last D-Line</span>\n\t\t\t</button>\n\t\t</li>\n\t</ul>\n</div>\n<div class="roster_area"></div>');}return __p.join('');
+this['JST']['app/templates/trackedgame/main.html'] = function(data) { return function (obj,_) {
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="roster_1"></section>\n<section class="roster_2"></section>\n<section class="action"></section>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/playbyplay.html'] = function(data) { return function (obj,_) {
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="last_action_label">Previous Play:</div>\n<div class="last_action">', playtext ,'</div>');}return __p.join('');
+}(data, _)};
+
+this['JST']['app/templates/trackedgame/player_action_prompt.html'] = function(data) { return function (obj,_) {
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('', player_prompt ,'');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/player_area.html'] = function(data) { return function (obj,_) {
@@ -515,12 +523,16 @@ this['JST']['app/templates/trackedgame/player_button.html'] = function(data) { r
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="button player" id="', player.id ,'"><span class="player_name">', player.first_name ,' ', player.last_name ,'</span><span class="player_number">', number ,'</span></button>');}return __p.join('');
 }(data, _)};
 
+this['JST']['app/templates/trackedgame/roster.html'] = function(data) { return function (obj,_) {
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="roster_team_header">\n    <span class="roster_team_name">\n        ', team.name ,'\n    </span>\n</div>\n<div class="roster_onfield_sum"></div>\n<div class="roster_quick">\n\t<ul>\n\t\t<li>\n\t\t\t<button class="clear_roster">\n\t\t\t\t<span>Clear</span>\n\t\t\t</button>\n\t\t</li>\n\t\t<li>\n\t\t\t<button class="last_o">\n\t\t\t\t<span>Last O-Line</span>\n\t\t\t</button>\n\t\t</li>\n\t\t<li>\n\t\t\t<button class="last_d">\n\t\t\t\t<span>Last D-Line</span>\n\t\t\t</button>\n\t\t</li>\n\t</ul>\n</div>\n<div class="roster_area"></div>');}return __p.join('');
+}(data, _)};
+
 this['JST']['app/templates/trackedgame/roster_item.html'] = function(data) { return function (obj,_) {
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="roster_player player" id="', player_id ,'">\n    <span class="player_name" id="', player_id ,'">', player.first_name ,' ', player.last_name ,'</span>\n    <span class="player_number" id="', player_id ,'">', number ,'</span>\n</button>\n');}return __p.join('');
 }(data, _)};
 
-this['JST']['app/templates/trackedgame/main.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="roster_1"></section>\n<section class="roster_2"></section>\n<section class="action"></section>');}return __p.join('');
+this['JST']['app/templates/trackedgame/roster_sum.html'] = function(data) { return function (obj,_) {
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('', onfield_sum ,' players in\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/rotate_button.html'] = function(data) { return function (obj,_) {
@@ -533,14 +545,6 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 
 this['JST']['app/templates/trackedgame/teamplayer_area.html'] = function(data) { return function (obj,_) {
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="player_buttons"></ul>\n<div class="offense_teamname"><p>', team.name ,'</p></div>\n');}return __p.join('');
-}(data, _)};
-
-this['JST']['app/templates/trackedgame/player_action_prompt.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('', player_prompt ,'');}return __p.join('');
-}(data, _)};
-
-this['JST']['app/templates/trackedgame/roster_sum.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('', onfield_sum ,' players in\n');}return __p.join('');
 }(data, _)};
 
 /*!
@@ -16119,6 +16123,13 @@ function(require, app, Backbone, Navigation) {
 			"name": "Battery Usage",
 			"type": "Scale",
 			"value": 0
+		},
+		{
+			"order": 4,
+			"name": "Stats Entry:",
+			"type": "Select",
+			"value": "detailed",
+			"option_list": ["score only", "detailed"] //TODO: players and scores
 		}
 	];
 	
@@ -16249,6 +16260,31 @@ function(require, app, Backbone, Navigation) {
 
 /**
  * Backbone WebSQL Adapter + AJAX Syncing v0.0
+ * 
+ * Applications built upon the backbone boilerplate will generally
+ * instantiate models in one of several ways:
+ * -a fetch on a collection
+ * -the id is provided (e.g. in the URL hash recognized by a router)
+ * -the model is created by the user
+ * 
+ * Fetching on a collection:
+ * my_class_collection = new Class.Collection();
+ * my_class_collection.fetch(); //sets a success callback to collection.add/reset with the xhr (see below)
+ * Backbone.WebSQLAjaxSync.call(my_class_collection, 'read', my_class_collection, options) //options.success contains above success callback
+ * my_class_collection.store.findAll(my_class_collection, success, error) //success goes through the SQL result row-by-row, then the above success, then Backbone.ajaxQueue.prequeue(method,model,options)
+ * my_class_collection.store._executeSql("SELECT COALESCE(id, local_id) as id, local_id, value, time_created, time_last_updated FROM "+ my_class_collection.store.tableName,[], success, error);
+ * this.db.transaction(function(tx) {tx.executeSql(SQL, params, success, error);});
+ * //Then the success callbacks.
+ * Backbone.WebSQLAjaxSync.success(tx, res); //builds result row-by-row
+ *  my_class_collection[options.add ? 'add' : 'reset'](my_class_collection.parse(result, xhr), options);
+ *  Backbone.ajaxQueue.prequeue(method,model,options)
+ * //Prequeue prepares the model(s) for remote sync (checks ids and association ids to make sure they are not local_ids)
+ * //it sets the success callback, then sends it to the queue
+ * this.queue(function(){return Backbone.sync(method, model, options);});
+ * //If Backbone.sync is successful
+ * iterate through remote objects, adding remote objects
+ * 
+ * Also check out http://coenraets.org/blog/2012/05/simple-offline-data-synchronization-for-mobile-web-and-phonegap-applications/
  */
 
 (function(window) {
@@ -16278,36 +16314,33 @@ function(require, app, Backbone, Navigation) {
 	// ====== [ Backbone.sync WebSQL implementation ] ======
 	
 	Backbone.WebSQLAjaxSync = function (method, model, options) {
+		
 		if (!model.store && !(model.collection && model.collection.store)){
 			console.log("websqlajax sync specified but no store specified.");
 		}
 		
+		var is_solo = !model.models;
 		var store = model.store || model.collection.store, success, error;
 		
-		//The following gets called whenever the initial db request returns.
+		//Set the db request callbacks.
 		var success = function (tx, res) {
-			
-			if (!model.id){model.id=model.get("local_id");}
-			
-			//res.rows is empty for anything except find or findall, I think.
 			var len = res.rows.length,result=[], i, this_res;
-			if (len > 0) {
+			if (len > 0) {//res.rows is empty for anything except find or findall, I think.
 				result = [];
-				//Process each row from the SQL result and build an array of results.
-				for (i=0;i<len;i++) {
+				for (i=0;i<len;i++) {//Process each row from the SQL result and build an array of results.
 					this_res = _.extend(JSON.parse(res.rows.item(i).value),res.rows.item(i));
-					//.replace(/-/g, "/")
 					var tc = res.rows.item(i).time_created;
 					var tlu = res.rows.item(i).time_last_updated;
-					this_res.time_created = new Date(_.isString(tc) ? tc.replace(/-/g, "/") : tc).toISOString();
+					this_res.time_created = new Date(_.isString(tc) ? tc.replace(/-/g, "/") : tc).toISOString();//safari hacks
 					this_res.time_last_updated = new Date(_.isString(tlu) ? tlu.replace(/-/g, "/") : tlu).toISOString();
-					delete this_res.value;
-					result.push(this_res);
+					delete this_res.value;//value already in this_res root attributes
+					result.push(this_res);//build the array.
 				}
-			}
-			//If the fetch/etc request came from a model, then the callback expects an object, not an array.
-			if (!model.models && result.length==1) {result=result[0];}
-			
+			}/* else if (is_solo && method == "read"){//We did a single-model find, but got no results.
+				//Let the ajax fetch handle creating it in the local database.
+			}*/
+			//If the fetch/etc request came from a solo model, then the callback expects an object, not an array.
+			if (is_solo && result.length==1) {result=result[0];}
 			//Return the result of the initial WebSQL request to the app as quickly as possible by passing it as an argument to options.success
 			//(options.success is the callback generated by Model (or Collection) .fetch)
 			$.when(options.success(result)).then(
@@ -16324,19 +16357,24 @@ function(require, app, Backbone, Navigation) {
 			options.error(error);//TODO: Does this work if there is more than 1 error callback?
 		};
 		
-		//Before we send the SQL statement and the above callbacks, we need to clean up the model.
-		//The model's .id might be a local_id if it was created locally, we need to make sure it exists only as model.get("local_id")
-		if (!model.models && model.id && !model.has("local_id") && _.isString(model.id) && model.id.indexOf("local_id") ==0){model.set("local_id",model.id);}
-		if (model.id && model.id==model.get("local_id")) {model.unset(model.idAttribute, {silent: true});}
+		/*
+		 * TODO: In the case that the model has been created from a router, we will not
+		 * yet know if it has already been persisted locally.
+		 */
 		
 		//Send out the SQL request.
 		switch(method) {
 			case "read":
-				((model.id || model.get("local_id")) ? store.find(model,success,error) : store.findAll(model, success, error));
+				if (!is_solo){//This is a collection.
+					store.findAll(model, success, error);
+				} else if (model.get("local_id") || model.id){
+					//If we have a model.id or model.get("local_id"), then we might be able to find a match in the database.
+					//We might only have id if the model was created from a router.
+					//We might only have a local_id if it has not yet be synchronized.
+					store.find(model, success, error);
+				}
 				break;
 			case "create":
-				model.set("time_created",new Date().toISOString());
-  				model.set("time_last_updated",new Date().toISOString());
 				store.create(model,success,error);
 				break;
 			case "update":
@@ -16367,32 +16405,33 @@ function(require, app, Backbone, Navigation) {
 			if (initErrorCallback) initErrorCallback();
 		};
 		db.transaction (function(tx) {
-			//local_id will be used until object is created in API
-			//and local_id will later be used to look up the real id for associations.
 			tx.executeSql("CREATE TABLE IF NOT EXISTS " + tableName + 
-				" (id INTEGER UNIQUE, local_id UNIQUE, value, time_created INTEGER, time_last_updated INTEGER)",[],success, error);
+				" (id UNIQUE, local_id UNIQUE, value, time_created INTEGER, time_last_updated INTEGER)",[],success, error);
+			//local_id is used as .id in the app until the objected gets an id from the API.
+			//local_id might also be used to find out real ids of associated objects.
 		});
 	};
 
 	_.extend(Backbone.WebSQLStore.prototype,{
-		//model.id will have been stripped if model.id is the same as local_id
-		create: function (model,success,error) {
-			//Create might be called either by the API return or by the app making a new model.
+		
+		create: function (model,success,error) {//Create might be called either by the API return or by the app making a new model.
+			var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
 			var local_id = guid();
 			local_id = "local_id_" + local_id;
 			model.set("local_id",local_id);
 			
 			var stmnt = "INSERT INTO " + this.tableName + " (";
+			//var stmnt = "INSERT OR REPLACE INTO " + this.tableName + " (";//This will replace all of the db attributes with the passed attributes.
 			var parms = [];
 			
-			if (model.id){
+			if (real_id){
 				stmnt += "id, ";
 			}
 			stmnt += "local_id, value, time_created, time_last_updated) VALUES (";
 			
-			if (model.id){
-				stmnt += "?, ";
-				parms.push(model.id);
+			if (real_id){
+				stmnt += "\"" + model.id + "\", ";
+				//parms.push(model.id);
 			}
 			stmnt += "?, ?";
 			parms.push(model.get("local_id"));
@@ -16407,53 +16446,56 @@ function(require, app, Backbone, Navigation) {
 			
 			if (model.get("time_created")){
 				stmnt += ", ?";
-				parms.push(Date.parse(model.get("time_created")));
-			} else {stmnt += ", datetime('now')";}
+				parms.push(Date.parse(model.get("time_created")));//not necessary if create gives a result.
+			} else {
+				stmnt += ", datetime('now')";
+				model.set("time_created", new Date().toISOString());//not necessary if create gives a result.
+			}
 			
 			if (model.get("time_last_updated")){
 				stmnt += ", ?";
 				parms.push(Date.parse(model.get("time_last_updated")));
-			} else {stmnt += ", datetime('now')";}
+			} else {
+				stmnt += ", datetime('now')";
+				model.set("time_last_updated", new Date().toISOString());
+			}
 			stmnt += ")"
 			
-			if (!model.id){model.id=local_id;}
-			//console.log(model.id);
 			this._executeSql(stmnt,parms, success, error);
 		},
 	
 		destroy: function (model, success, error) {
-			//console.log("sql destroy");
+			var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
 			var stmnt = "DELETE FROM "+this.tableName+" WHERE local_id=?";
 			var parms = [model.get("local_id")];
-			if (model.id) {
-				stmnt += " OR id=?";
-				parms.push(model.id);
+			if (real_id) {
+				stmnt += " OR id = " + model.id;
 			}
 			this._executeSql(stmnt,parms,success, error);
 		},
 	
 		find: function (model, success, error) {
-			//console.log("sql find");
-			//model will have been stripped of id if it matches local_id
-			//There may be times when we have id but not local_id?
-			var stmnt = "SELECT COALESCE(id, local_id) AS id, local_id, value, time_created, time_last_updated FROM "+this.tableName+" WHERE local_id=?";
-			var parms = [model.get("local_id")];
-			if (model.id) {
-				stmnt += " OR id=?";
-				parms.push(model.id);
+			var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
+			var stmnt = "SELECT COALESCE(id, local_id) AS id, local_id, value, time_created, time_last_updated FROM "+this.tableName+" WHERE ";
+			var parms = [];
+			if (model.get("local_id")){
+				stmnt += "local_id=?";
+				parms.push(model.get("local_id"));
+			}
+			if (real_id) {
+				if (model.get("local_id")) { stmnt += " OR "; }
+				stmnt += "id = \"" + model.id + "\"";
 			}
 			this._executeSql(stmnt, parms, success, error);
 		},
 	
 		findAll: function (model, success,error) {
-			//console.log("sql findAll");
 			//TODO: Handle the case when model has search criteria. This should be done in the model-specific store.
 			this._executeSql("SELECT COALESCE(id, local_id) as id, local_id, value, time_created, time_last_updated FROM "+this.tableName,[], success, error);
-			//this._executeSql("SELECT id, value FROM "+this.tableName,[], success, error);			
 		},
-	
+		
 		update: function (model, success, error) {
-			//console.log("sql update")
+			var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
 			//Clean id, local_id, time_created, and time_last_updated from the stringified version of the model, as those will be stored in separate columns.
 			var value = model.toJSON();
 			delete value.id;
@@ -16466,15 +16508,15 @@ function(require, app, Backbone, Navigation) {
 			//this._executeSql("UPDATE "+this.tableName+" SET value=? WHERE id=?",[JSON.stringify(model.toJSON()),model.id], success, error);
 			var stmnt = "UPDATE " + this.tableName + " SET value=?, time_last_updated=datetime('now')";
 			var parms = [value]
-			if (model.id) {
-				stmnt += ", id=?";
-				parms.push(model.id);
+			if (real_id) {
+				stmnt += ", id = ";
+				stmnt += "\"" + model.id + "\"";
 			}
 			stmnt += " WHERE local_id=?";
 			parms.push(model.get("local_id"));
-			if (model.id) {
-				stmnt += " OR id=?";
-				parms.push(model.id);
+			if (real_id) {
+				stmnt += " OR id = ";
+				stmnt += "\"" + model.id + "\"";
 			}
 			this._executeSql(stmnt,parms, success, error);
 		},
@@ -16559,9 +16601,17 @@ function(require, app, Backbone, Navigation) {
 			return callback;
 		},
 		prequeue: function(method, model, options){
-			//TODO: model may or may not be alive in the app. If not, and it was persisted as JSON, 
- 			//then it won't be a model class so .set etc might not work.
- 			//Is it possible to save the class name to the queue so that we can create a new model/collection on queue access?
+			/*
+			 * Check to see if the model's associated ids are local_ids, and if so, try to update them.
+			 * Clean the model.id and its associated ids so that none are local_ids.
+			 * Set the success callback and then enqueue the object.
+			 */
+			
+			/*
+			 * TODO: model may or may not be alive in the app. If not, and it was persisted as JSON,
+			 * then it won't be a model class so .set etc might not work.
+			 * Is it possible to save the class name to the queue so that we can create a new model/collection on queue access? 
+			 */
 	 			
  			//Process associations. e.g., make sure that team.season_id is a real id and not a local_id.
  			if ((method=="create" || method=="update") && model.associations!==undefined && _.isObject(model.associations)){
@@ -16571,8 +16621,8 @@ function(require, app, Backbone, Navigation) {
  					if (_.isString(model.get(this_key)) && model.get(this_key).indexOf("local_id")==0){
  						//The associated object has a local_id for id. We need to check table_name for its updated id.
  						var store = new Backbone.WebSQLStore(table_name);
- 						//var stmnt = "SELECT COALESCE(id, local_id) AS id FROM "+table_name+" WHERE local_id="+model.get(this_key);
- 						var stmnt = "SELECT COALESCE(id, local_id) AS id FROM "+table_name+" WHERE id="+model.get(this_key);
+ 						var stmnt = "SELECT id FROM "+table_name+" WHERE local_id="+model.get(this_key);
+ 						//var stmnt = "SELECT COALESCE(id, local_id) AS id FROM "+table_name+" WHERE id="+model.get(this_key);
  						store._executeSql(stmnt,[], function(tx,result) {
  							if (result.rows.length>0){
  								//console.log("new id set");
@@ -16583,71 +16633,85 @@ function(require, app, Backbone, Navigation) {
  				});
  			}
  			
- 			//Remove any local_id from the model before syncing with remote.
-	      	if (model.id && (model.id==model.get("local_id") || ("" + model.id).indexOf("local_id")==0)) {model.unset(model.idAttribute, {silent: true});}
-			//Describe the success callback when the API call returns.
-	      	//TODO: Handle errors.
+ 			
+			//Describe the success callback for when the ajax call returns.
 	      	options.success = function(resp, status, xhr){
-	      		//TODO: Handle delete.
-	      		//Replace the success callback.
-	      		//merge attributes, set last_updated, and save merged version in local db
-	      		remote_objs = model.parse(resp,xhr);
+	      		/*
+	      		 * This will be called after a successful ajax call to the API.
+	      		 * We only expect a useful response if we're doing a fetch.
+	      		 * TODO: Handle errors.
+	      		 * TODO: Handle deleted object.
+	      		 */
+	      		
 	      		//remote_objs might be an array or a single object. Make it always an array.
+	      		remote_objs = model.parse(resp,xhr);
 	      		if (remote_objs && !(remote_objs instanceof Array)){
-	      			model.id=remote_objs.id;//Useful for create method's return
+	      			//model.id=remote_objs.id;//What does this do?
 	      			remote_objs = [remote_objs];
       			}
       			
-      			//iterate through remote_objs. How many remote_objs do we get for methods that aren't fetch?
-      			var was_added = false; //used below to make sure we trigger 'reset' if any models have been added.
-      			var matched_model;
+      			if (method=="create" && remote_objs.length==1) {
+ 					model.id = remote_objs[0].id;
+ 				}
+	      		
+      			//Iterate through remote_objs.
+      			var matched_model; //use this to hold the in-app model that matches resp[x]
+      			var models_to_add = [];//Build an array of models
       			_.each(remote_objs, function(remote_obj){//for each result from API
-      				//Do we have a local model with a matching id?
-      				if (matched_model = model.models ? model.get(remote_obj.id) : (model.id==remote_obj.id && model)) {
-      					//Assume remote is newer unless we have proof otherwise.
-      					var local_is_newer = false;
+      				//Try to find a local model (either model, or a member of model.models) with a matching id.
+      				matched_model = model.models ? model.get(remote_obj.id) : (model.id==remote_obj.id && model);
+  					if (matched_model){//If the model was matched then merge data from matched_model and remote_obj
+      					var remote_is_newer = true;//Assume remote is newer unless we have proof otherwise.
       					//Compare the dates, if remote_obj has dates.
       					if (remote_obj.time_created || remote_obj.time_last_updated){
       						var local_created = new Date(matched_model.get("time_created"));
       						var local_updated = new Date(matched_model.get("time_last_updated"));
       						var remote_created = new Date(remote_obj.time_created);
       						var remote_updated = new Date(remote_obj.time_last_updated);
-      						local_is_newer = Math.max.apply(null,[local_created,local_updated]) > Math.max.apply(null,[remote_created,remote_updated]);
+      						var local_latest = Math.max.apply(null,[local_created,local_updated]);
+      						remote_is_newer = isNaN(local_latest) || Math.max.apply(null,[remote_created,remote_updated]) >= local_latest;
       					}
-      					if (local_is_newer) {
-      						console.log("TODO: merge matched_model onto remote_obj");
-      						//Don't merge id.
+      					local_obj = matched_model.toJSON();
+      					if (remote_is_newer) {
+      						//console.log(local_obj.local_id);
+      						_.extend(local_obj, remote_obj);
+      						matched_model.set(local_obj, {silent: true});
+      					} else {
+      						_.extend(remote_obj, local_obj);
+      						matched_model.set(remote_obj, {silent: true});
       					}
-      					matched_model.set(remote_obj);
-	      				model.store.update(matched_model);
-      				} else {//We do not have a local model with matching id then create into the store
-      					if (model.models) {
+  						if (matched_model.get("local_id") !== undefined) {//If this is already stored locally, it'll have a local_id
+  							matched_model.store.update(matched_model, false, false);
+  						} else {
+  							matched_model.store.create(matched_model, false, false);
+  						}
+      				}
+      				else {//We do not have a local model with matching id then create into the store
+      					if (model.models) {//if this was a collection...
 		      				var new_model = model._prepareModel(remote_obj, {});
-		      				new_model.set("time_created", new Date().toISOString());
-		      				new_model.set("time_last_updated", new Date().toISOString());
-		      				//add to the collection.
-		      				if (model.models.length>0 && !was_added) {
-		      					model.add(remote_obj);
-		      				}
-		      				else {
-		      					model.add(remote_obj,{silent: true});
-		      					was_added = true;
-		      				}
-		      				
-		      			} else {
-		      				//Under what circumstances would a single model do a fetch, and then get a response from the API that did not match?
+		      				model.store.create(new_model,false,false);
+		      				models_to_add.push(new_model);
+		      			} else {//Under what circumstances would a single model do a fetch, and then get a response from the API that did not match?
 		      				console.log("you should never see this text");
-		      				new_model = model.clone();
+		      				var new_model = model.clone();
 		      				new_model.clear({silent: true});
 		      				new_model.set(remote_obj);
+		      				model.store.create(new_model,false,false);
 		      			}
-		      			model.store.create(new_model,false,false);
 	      			}
 	      		});
-		        model.trigger("reset");
-	      		//else {model.set(remote_model);}
+	      		if (model.models && models_to_add.length>0) {
+	      			model.add(models_to_add, {silent: true});
+	      		}
+		        model.trigger("reset", model);
       		};
-      		this.queue(function(){return Backbone.sync(method, model, options);});
+      		this.queue(function(){
+      			//A database call may have set model.id with local_id. If so, remove it here, because it'll confuse remote storage.
+		      	if (model.id && (model.id==model.get("local_id") || ("" + model.id).indexOf("local_id")==0)) {
+		      		model.unset(model.idAttribute, {silent: true});
+	      		}
+      			return Backbone.sync(method, model, options);
+  			});
 		}
 	};
 	
@@ -16707,7 +16771,9 @@ define('modules/teamplayer',[
   "backbone",
 
   // Modules
-  "modules/leaguevine"
+  "modules/leaguevine",
+  
+  "plugins/backbone.websqlajax"
 ],
 function(require, app, Backbone, Leaguevine) {
     
@@ -16732,6 +16798,7 @@ function(require, app, Backbone, Leaguevine) {
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Model.prototype.parse(resp);
+			resp.id = resp.team_id + "/" + resp.player_id;
 			return resp;
 		},
 		toJSON: function() {
@@ -16741,6 +16808,8 @@ function(require, app, Backbone, Leaguevine) {
 			//delete tp.player;
 			return tp;
 		},
+		sync: Backbone.WebSQLAjaxSync,
+		store: new Backbone.WebSQLStore("teamplayer"),
 		associations: {
 			"team_id": "team",
 			"player_id": "player"
@@ -16751,6 +16820,8 @@ function(require, app, Backbone, Leaguevine) {
 	//
 	TeamPlayer.Collection = Backbone.Collection.extend({
 		model: TeamPlayer.Model,
+		sync: Backbone.WebSQLAjaxSync,
+		store: new Backbone.WebSQLStore("teamplayer"),
 		urlRoot: Leaguevine.API.root + "team_players",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
@@ -16802,6 +16873,25 @@ function(require, app, Backbone, Leaguevine) {
 		},
 		parse: function(resp, xhr) {
 			resp = Backbone.Collection.prototype.parse(resp);
+			//The websql plugin doesn't know how to sort, meaning we'll get back every teamplayer in the db.
+			//We need to weed them out here.
+			var _this = this;
+			if (this.team_id) {
+				resp = _.filter(resp, function(obj){
+					return obj.team_id == _this.team_id;
+				});
+			}
+			if (this.player_id) {
+				resp = _this.filter(resp, function(obj){
+					return obj.player_id == _this.player_id;
+				});
+			}
+			_.map(resp, function(resp_){
+				resp_ = Backbone.Model.prototype.parse(resp_);
+				resp_.id = resp_.team_id + "/" + resp_.player_id;
+				return resp_;
+			});
+			//
 			/*var _this = this;
 			if (this.team_id){resp = _.filter(resp, function(obj){
 				return obj.team_id == _this.team_id;
@@ -18055,6 +18145,8 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 			if (this.model.get("tournament") !== null){
 				game.tournament = _.isFunction(this.model.get("tournament").get) ? this.model.get("tournament").toJSON() : this.model.get("tournament");
 			} else {game.tournament = {name: ""};}
+			var track_mode = JSON.parse(localStorage.getItem("settings-Stats Entry:"));
+			game.track = (track_mode && track_mode.value == "score only") ? "basic" : "track";
 			return layout(this).render(game);
 		},
         checkPermission: function() {
@@ -19719,6 +19811,85 @@ function(require, app, Backbone) {
 	return TrackedGame;
 });
 
+define('modules/trackbasic',[
+	"require",
+	"app",
+	// Libs
+	"backbone",
+	// Modules
+	"modules/leaguevine",
+	"modules/navigation",
+	"modules/game"
+],
+function(require, app, Backbone, Leaguevine) {
+	
+	var TrackBasic = app.module();
+	
+	TrackBasic.Router = Backbone.Router.extend({
+		routes : {
+			"basic/:gameId": "trackGame"
+		},
+		trackGame: function (gameId) {
+            if (!app.api.is_logged_in()) {//Ensure that the user is logged in
+                app.api.login();
+                return;
+            }
+            
+            //Load required modules.
+			var Game = require("modules/game");
+            var Navigation = require("modules/navigation");
+            
+			//Prepare the data.
+			var game = new Game.Model({id: gameId});
+			game.fetch();
+			
+			var myLayout = app.router.useLayout("main");
+			myLayout.setViews({
+				".navbar": new Navigation.Views.Navbar({href: "/editgame/"+gameId, name: "Edit"}),
+				".titlebar": new Navigation.Views.Titlebar({model_class: "game", level: "show", model: game}),
+				".content_1": new TrackBasic.Views.Main( {model: game})
+			});
+			myLayout.render();
+		}
+	});
+	TrackBasic.router = new TrackBasic.Router();// INITIALIZE ROUTER
+
+	//
+	// VIEWS
+	//
+	TrackBasic.Views.Main = Backbone.View.extend({
+		template: "trackbasic/main",
+		initialize: function() {
+			this.model.on("change", this.render, this);//RESET?
+		},
+		cleanup: function() {
+			this.model.off(null, null, this);
+		},
+		render: function(layout) {
+            var game = this.model.toJSON();
+            if (this.model.get("team_1") !== null){
+				game.team_1 = _.isFunction(this.model.get("team_1").get) ? this.model.get("team_1").toJSON() : this.model.get("team_1");
+			}
+			if (this.model.get("team_1") !== null){
+				game.team_2 = _.isFunction(this.model.get("team_2").get) ? this.model.get("team_2").toJSON() : this.model.get("team_2");
+			}
+			return layout(this).render(game);
+		},
+		events: {
+			"click button": "changeScore"
+       },
+       changeScore: function(ev){
+			var classlist = ev.srcElement.classList;
+			var attr_name = classlist[0] + "_score";
+			var og_score = this.model.get(attr_name);
+			var score_modifier = classlist[1] == "increment" ? 1 : -1;
+			this.model.set(attr_name, og_score + score_modifier);
+			this.model.save();
+       }
+	});
+	return TrackBasic;// Required, return the module for AMD compliance
+});
+
 require([
 	"app",
 
@@ -19741,7 +19912,8 @@ require([
 	"modules/game",
 	"modules/tournament",
 	"modules/gameevent",
-	"modules/trackedgame"
+	"modules/trackedgame",
+	"modules/trackbasic"
 ],
 /*
  * The following callback is called after the dependices are loaded.

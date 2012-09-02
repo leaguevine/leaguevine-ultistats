@@ -15,10 +15,9 @@ RewriteRule ^games/(.*)$ $1 [NC,L]
 RewriteRule ^settings/(.*)$ $1 [NC,L]
 RewriteRule ^players/(.*)$ $1 [NC,L]
 RewriteRule ^track/(.*)$ $1 [NC,L]
-
-# Map resources to release distribution
-RewriteRule ^app/(.*)$ dist/release/$1 [NC,L]
-RewriteRule ^assets/js/libs/(.*)$ dist/release/$1 [NC,L]
+RewriteRule ^basic/(.*)$ $1 [NC,L]
+RewriteRule ^app/(.*)$ app/$1 [NC,L]
+RewriteRule ^assets/(.*)$ assets/$1 [NC,L]
 
 # These conditions ensure that the file does not exist and that the current
 # request URI is not the index.

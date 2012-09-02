@@ -35,6 +35,13 @@ function(require, app, Backbone, Navigation) {
 			"name": "Battery Usage",
 			"type": "Scale",
 			"value": 0
+		},
+		{
+			"order": 4,
+			"name": "Stats Entry:",
+			"type": "Select",
+			"value": "detailed",
+			"option_list": ["score only", "detailed"] //TODO: players and scores
 		}
 	];
 	

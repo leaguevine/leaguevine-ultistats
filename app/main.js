@@ -20,7 +20,8 @@ require([
 	"modules/game",
 	"modules/tournament",
 	"modules/gameevent",
-	"modules/trackedgame"
+	"modules/trackedgame",
+	"modules/trackbasic"
 ],
 /*
  * The following callback is called after the dependices are loaded.

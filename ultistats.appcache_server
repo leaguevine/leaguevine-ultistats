@@ -55,6 +55,7 @@ CACHE:
 /app/modules/tournament.js
 /app/modules/tournteam.js
 /app/modules/trackedgame.js
+/app/modules/trackbasic.js
 
 NETWORK:
 *

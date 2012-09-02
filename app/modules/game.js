@@ -267,6 +267,8 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 			if (this.model.get("tournament") !== null){
 				game.tournament = _.isFunction(this.model.get("tournament").get) ? this.model.get("tournament").toJSON() : this.model.get("tournament");
 			} else {game.tournament = {name: ""};}
+			var track_mode = JSON.parse(localStorage.getItem("settings-Stats Entry:"));
+			game.track = (track_mode && track_mode.value == "score only") ? "basic" : "track";
 			return layout(this).render(game);
 		},
         checkPermission: function() {
