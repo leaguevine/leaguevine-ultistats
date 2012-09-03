@@ -9,6 +9,7 @@ define([
   "modules/game",
   "modules/player",
   "modules/gameevent",
+  "modules/game_score",
   
   "plugins/backbone.localStorage"
 ],
@@ -74,7 +75,7 @@ function(require, app, Backbone) {
 		toJSON: function() {//flatten the data so they are easy to read.
 			var temp = _.clone(this.attributes);
 			temp.game = this.get("game").toJSON();
-			temp.gameevents = this.get("gameevents").toJSON();
+			temp.gameevents = _.isFunction(this.get("gameevents").get) ? this.get("gameevents").toJSON() : this.get("gameevents");
 			return temp;
 		},
 		
@@ -416,7 +417,8 @@ function(require, app, Backbone) {
 	//
 	TrackedGame.Router = Backbone.Router.extend({
 		routes : {
-			"track/:gameId": "trackGame"
+			"track/:gameId": "trackGame",
+			"basic/:gameId": "basicGame"
 		},
 		trackGame: function (gameId) {
             if (!app.api.is_logged_in()) {//Ensure that the user is logged in
@@ -534,6 +536,46 @@ function(require, app, Backbone) {
                 });
                 callback();
             });
+		},
+		basicGame: function(gameId){
+			if (!app.api.is_logged_in()) {//Ensure that the user is logged in
+                app.api.login();
+                return;
+            }
+            
+            //Load required modules.
+			var Game = require("modules/game");
+			
+			//Instantiate the trackedgame.
+			var trackedgame = new TrackedGame.Model({id: gameId});
+			trackedgame.fetch(); //uses localStorage. localStorage requests are synchronous.
+			
+			//It's useful to know if the game has been tracked previously.
+			var was_tracked = !isNaN(trackedgame.get("period_number"));
+			if (!was_tracked){//Game has not yet started. Set it up now.
+				trackedgame.set("period_number", 1);
+				trackedgame.set("current_state","pulling");
+			}
+			
+			//.game
+			trackedgame.set("game", new Game.Model(trackedgame.get("game")), {silent:true});
+			if (!was_tracked) {trackedgame.get("game").id = gameId;}
+			trackedgame.get("game").fetch();
+			//Game also has team_1 and team_2 objects that are not yet Backbone Models.
+						
+			/*
+			* EXTRA MODEL BINDINGS.
+			*/
+			trackedgame.on("change:is_over",trackedgame.save);//save the game when it is set to being over or not-over.
+			
+			/*
+			* SET UP THE VIEWS
+			*/
+			var myLayout = app.router.useLayout("tracked_game");
+			myLayout.setViews({
+				".scoreboard": new TrackedGame.Views.Scoreboard({model: trackedgame}),//team names, score, possession indicator
+				".main_section": new TrackedGame.Views.Basic({model: trackedgame})
+			});
 		}
 	});
 	TrackedGame.router = new TrackedGame.Router();// INITIALIZE ROUTER
@@ -577,6 +619,40 @@ function(require, app, Backbone) {
 		serialize: function() {
 			return this.model.toJSON();
 		}
+	});
+	/*
+	* Basic (scores only)
+	*/
+	TrackedGame.Views.Basic = Backbone.View.extend({
+		template: "trackedgame/basic",
+		initialize: function() {
+			this.model.get("game").on("change:team_1_score change:team_2_score", this.render, this);//Update the display when the score changes.
+			this.model.on("change:team_in_possession_ix", this.render, this);//Update the display when possession changes.
+		},
+		serialize: function() {
+			return this.model.toJSON();
+		},
+		events: {
+			"click button": "changeScore"
+       },
+       changeScore: function(ev){
+			var classlist = ev.srcElement.classList;
+			var is_team_1 = classlist[0] == "team_1";
+			var game = this.model.get("game").toJSON();
+			var score_modifier = classlist[1] == "increment" ? 1 : -1;
+			if (is_team_1 == "1"){game.team_1_score = game.team_1_score + score_modifier;}
+			else {game.team_2_score = game.team_2_score + score_modifier};
+			
+			var GameScore = require("modules/game_score");
+			var score = new GameScore.Model({
+				game_id: this.model.id,
+				team_1_score: game.team_1_score,
+				team_2_score: game.team_2_score
+			});
+			score.save();
+			this.model.get("game").set(game);
+			this.model.save();
+       }
 	});
 	
 	/*

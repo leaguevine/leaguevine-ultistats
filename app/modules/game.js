@@ -46,8 +46,10 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 			resp = Backbone.Model.prototype.parse(resp);
 			return resp;
 		},
+		//reserve toJSON for storage...
+		//game_id, start_time, season_id, team_1_id, team_2_id
+		//Use toJSON2 for rendering.
 		toJSON: function() {
-			//TODO: Remove attributes that are not stored (gameevents)
 			var game = _.clone(this.attributes);
 
             // Add a formatted start time 
