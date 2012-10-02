@@ -16,6 +16,16 @@
   <!-- Main container -->
   <div role="main" id="main"></div>
   <div id="page_loading_area"><img src="assets/img/ajax-loader.gif" /></div>
+  <!-- Detect if WebSQL is supported, then maybe redirect the user to a WebSQL plugin -->
+  <script type="text/javascript">
+	if (!window.openDatabase){
+		var r = confirm("Web SQL not detected. Please use a browser which supports Web SQL or click OK to be redirected to a Web SQL plugin for Firefox.");
+		if (r==true){
+			window.location.href = "https://addons.mozilla.org/en-US/firefox/addon/html5-websql-for-firefox/";
+		}
+	}  	
+  </script>
+  
   <!-- Optional local settings specific to the installation's environment -->
   <script type="text/javascript" src="assets/js/plugins/localSettings.js"></script>
   <!-- Application source -->
