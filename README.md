@@ -4,8 +4,30 @@ v0.5
 ###Current Status:
 The app is in use by several people though it is still under heavy development.
 
+###Getting started locally - Method 1 - Apache
+1.  Download this repo.
+2.  Update your system's httpd.conf to point to the leaguevine-ultistats directory. To open httpd.conf you need to use sudo:
+```
+> sudo vi /etc/apache2/httpd.conf
+```
+You need to change the DocumentRoot setting in two places within this file. Here's an example:
+```
+DocumentRoot "/Users/username/Documents/leaguevine-ultistats"
+<Directory "/Users/username/Documents/leaguevine-ultistats">
+...
+</Directory>
+```
+3.  Start the apache server. Doing so will automatically use the .htaccess file that comes with this repository.
+```
+> sudo apachectl -k start
+```
+4.  Point your browser to http://localhost (if you're using vhosts, you might serve out of http://ultistats.localhost)
 
-###Getting started locally - Method 1 - grunt-bbb
+###Getting started locally - Method 2 - grunt-bbb
+Please note that this won't work, at least not entirely. The problem is that pushState is enabled and that requires rewrites.
+It is probably possible to modify grunt-bbb to enable rewrites. That's up to you.
+Alternatively, you can disable pushState and then prepend all of the links in this app with #. Here are some basic instructions, that will at least get you close:
+
 1.  Download this repo.
 2.  Follow the [bbb](https://github.com/tbranyen/backbone-boilerplate) [instructions to install](https://github.com/tbranyen/backbone-boilerplate/wiki/Installation).
     * Install npm
@@ -16,18 +38,6 @@ The app is in use by several people though it is still under heavy development.
 >bbb server
 ```
 5.  Navigate your browser to http://localhost:8000
-
-This won't work, at least not entirely. The problem is that I have pushState enabled and that requires rewrites.
-It is probably possible to modify grunt-bbb to enable rewrites. That's up to you.
-Alternatively, you can disable pushState and then prepend all of the links in this app with #.
-
-###Getting started locally - Method 2 - Apache
-1.  Download this repo.
-2.  Set apache to serve this app's folder as webroot either directly or using vhosts (lots of good resources via google)
-3.  Enable rewrites.
-    * Make sure apache is configured to AllowOverride All
-    * Use the .htaccess file in this repo.
-4.  Point your browser to http://localhost (actually I use vhosts to serve out of http://ultistats.localhost)
 
 ##Summary
 Leaguevine Ultistats (lvus) is a Web App targeting mobile devices for tracking gameplay statistics in the sport of Ultimate.
