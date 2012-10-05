@@ -17,6 +17,10 @@ DocumentRoot "/Users/username/Documents/leaguevine-ultistats"
 ...
 </Directory>
 ```
+Next, you need to change the AllowOverride setting. To do this, make sure this line exists in the httpd.conf file:
+```
+AllowOverride All
+```
 3.  Start the apache server. Doing so will automatically use the .htaccess file that comes with this repository.
 ```
 > sudo apachectl -k start
