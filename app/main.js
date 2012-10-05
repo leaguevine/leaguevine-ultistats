@@ -85,6 +85,7 @@ function(app, $, Backbone, Leaguevine) {
         if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
             // Browser downloaded a new app cache.
             // Swap it in and reload the page to get the new code.
+            window.applicationCache.update();
             window.applicationCache.swapCache();
             $('body').html('A new (better) version of this app is now loading...'); //Remove the current elements from the page to reduce confusion
             window.location.reload(); //Completely reload the page and re-fetch everything
