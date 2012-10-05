@@ -491,12 +491,12 @@ this['JST']['app/templates/tournteams/team.html'] = function(data) { return func
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td>\n    <a href=\'teams/', team.id ,'\'>', team.name ,'</a>\n</td>\n<td>\n    ', seed ,'\n</td>\n<td>\n    ', final_standing ,'\n</td>\n');}return __p.join('');
 }(data, _)};
 
-this['JST']['app/templates/trackbasic/main.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="trackbasic">\n    <div id="team1">\n        <div id="team1_name"><a href="/teams/', team_1.id ,'">', team_1.name ,'</a></div>\n        <div id="team1_score"><span>', team_1_score ,'</span></div>\n        <button class="team_1 decrement">-</button>\n        <button class="team_1 increment">+</button>\n    </div>\n    <div id="team2">\n        <div id="team2_name"><a href="/teams/', team_2.id ,'">', team_2.name ,'</a></div>\n        <div id="team2_score"><span>', team_2_score ,'</span></div>\n        <button class="team_2 decrement">-</button>\n        <button class="team_2 increment">+</button>\n    </div>\n</div>');}return __p.join('');
-}(data, _)};
-
 this['JST']['app/templates/trackedgame/action_area.html'] = function(data) { return function (obj,_) {
 var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons main_action">\n    <div id="throw_prompt" class="action_prompt">\n        <div class="action_prompt_player">\n            ', player_string ,'\n        </div>\n        <div class="action_prompt_action">\n            ', action_string ,'\n        </div>\n    </div>\n    <button class="button completion">Complete Pass</button>\n\t<button class="button dropped_pass">Dropped pass</button>\n\t<button class="button defd_pass">D\'ed Pass</button>\n    <button class="button throwaway">\n        <span class="button_line_1">Untouched</span> \n        <span class="button_line_2">Throwaway</span>\n    </button>\n    <button class="button score">Score</button>\n</div>\n<div class="buttons alternate_action">\n    <div id="alternate_action_prompt" class="action_prompt">\n        <div class="action_prompt_action">What happened?</div>\n    </div>\n\t<button class="button unknown_turn">Unknown Turn</button>\n\t<button class="button stall">Stall</button>\n    <!-- Removed for simplicity for the first version \n        <button class="button foul">Foul/Violation</button>\n    -->\n\t<button class="button injury">Injury</button>\n\t<button class="button timeout">Timeout</button>\n\t<button class="button end_of_period">End of Period ', per_num ,'</button>\n</div>\n<div class="buttons extra_actions">\n    <button class="button misc">Misc</button>\n    <button class="button undo">Undo</button>\n</div>\n');}return __p.join('');
+}(data, _)};
+
+this['JST']['app/templates/trackedgame/basic.html'] = function(data) { return function (obj,_) {
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="trackbasic">\n    <div id="team1">\n        <button class="team_1 decrement">-</button>\n        <button class="team_1 increment">+</button>\n    </div>\n    <div id="team2">\n        <button class="team_2 decrement">-</button>\n        <button class="team_2 increment">+</button>\n    </div>\n</div>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/game_action.html'] = function(data) { return function (obj,_) {
@@ -17924,8 +17924,10 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 			resp = Backbone.Model.prototype.parse(resp);
 			return resp;
 		},
+		//reserve toJSON for storage...
+		//game_id, start_time, season_id, team_1_id, team_2_id
+		//Use toJSON2 for rendering.
 		toJSON: function() {
-			//TODO: Remove attributes that are not stored (gameevents)
 			var game = _.clone(this.attributes);
 
             // Add a formatted start time 
@@ -18779,6 +18781,46 @@ function(require, app, Backbone, Leaguevine) {
 	return GameEvent;// Required, return the module for AMD compliance
 });
 
+define('modules/game_score',[
+  "require",
+  "app",
+
+  // Libs
+  "backbone",
+
+  // Modules
+  "modules/leaguevine",
+  "modules/navigation",
+  
+  "plugins/backbone.websqlajax"
+],
+function(require, app, Backbone, Leaguevine) {
+	
+	var GameScore = app.module();
+	
+	GameScore.Model = Backbone.Model.extend({
+		defaults: {
+			game_id: null,
+			team_1_score: null,
+			team_2_score: null
+		},
+		sync: Backbone.WebSQLAjaxSync,
+		store: new Backbone.WebSQLStore("game_score"),
+		associations: {
+			"game_id": "game"
+		},
+		urlRoot: Leaguevine.API.root + "game_scores",
+		parse: function(resp, xhr) {
+			resp = Backbone.Model.prototype.parse(resp);
+			return resp;
+		},
+		toJSON: function() {
+			return _.clone(this.attributes);
+		}
+	});
+	return GameScore;// Required, return the module for AMD compliance
+});
+
 define('modules/trackedgame',[
 	"require",
   "app",
@@ -18790,6 +18832,7 @@ define('modules/trackedgame',[
   "modules/game",
   "modules/player",
   "modules/gameevent",
+  "modules/game_score",
   
   "plugins/backbone.localStorage"
 ],
@@ -18855,7 +18898,7 @@ function(require, app, Backbone) {
 		toJSON: function() {//flatten the data so they are easy to read.
 			var temp = _.clone(this.attributes);
 			temp.game = this.get("game").toJSON();
-			temp.gameevents = this.get("gameevents").toJSON();
+			temp.gameevents = _.isFunction(this.get("gameevents").get) ? this.get("gameevents").toJSON() : this.get("gameevents");
 			return temp;
 		},
 		
@@ -19197,7 +19240,8 @@ function(require, app, Backbone) {
 	//
 	TrackedGame.Router = Backbone.Router.extend({
 		routes : {
-			"track/:gameId": "trackGame"
+			"track/:gameId": "trackGame",
+			"basic/:gameId": "basicGame"
 		},
 		trackGame: function (gameId) {
             if (!app.api.is_logged_in()) {//Ensure that the user is logged in
@@ -19315,6 +19359,46 @@ function(require, app, Backbone) {
                 });
                 callback();
             });
+		},
+		basicGame: function(gameId){
+			if (!app.api.is_logged_in()) {//Ensure that the user is logged in
+                app.api.login();
+                return;
+            }
+            
+            //Load required modules.
+			var Game = require("modules/game");
+			
+			//Instantiate the trackedgame.
+			var trackedgame = new TrackedGame.Model({id: gameId});
+			trackedgame.fetch(); //uses localStorage. localStorage requests are synchronous.
+			
+			//It's useful to know if the game has been tracked previously.
+			var was_tracked = !isNaN(trackedgame.get("period_number"));
+			if (!was_tracked){//Game has not yet started. Set it up now.
+				trackedgame.set("period_number", 1);
+				trackedgame.set("current_state","pulling");
+			}
+			
+			//.game
+			trackedgame.set("game", new Game.Model(trackedgame.get("game")), {silent:true});
+			if (!was_tracked) {trackedgame.get("game").id = gameId;}
+			trackedgame.get("game").fetch();
+			//Game also has team_1 and team_2 objects that are not yet Backbone Models.
+						
+			/*
+			* EXTRA MODEL BINDINGS.
+			*/
+			trackedgame.on("change:is_over",trackedgame.save);//save the game when it is set to being over or not-over.
+			
+			/*
+			* SET UP THE VIEWS
+			*/
+			var myLayout = app.router.useLayout("tracked_game");
+			myLayout.setViews({
+				".scoreboard": new TrackedGame.Views.Scoreboard({model: trackedgame}),//team names, score, possession indicator
+				".main_section": new TrackedGame.Views.Basic({model: trackedgame})
+			});
 		}
 	});
 	TrackedGame.router = new TrackedGame.Router();// INITIALIZE ROUTER
@@ -19358,6 +19442,40 @@ function(require, app, Backbone) {
 		serialize: function() {
 			return this.model.toJSON();
 		}
+	});
+	/*
+	* Basic (scores only)
+	*/
+	TrackedGame.Views.Basic = Backbone.View.extend({
+		template: "trackedgame/basic",
+		initialize: function() {
+			this.model.get("game").on("change:team_1_score change:team_2_score", this.render, this);//Update the display when the score changes.
+			this.model.on("change:team_in_possession_ix", this.render, this);//Update the display when possession changes.
+		},
+		serialize: function() {
+			return this.model.toJSON();
+		},
+		events: {
+			"click button": "changeScore"
+       },
+       changeScore: function(ev){
+			var classlist = ev.srcElement.classList;
+			var is_team_1 = classlist[0] == "team_1";
+			var game = this.model.get("game").toJSON();
+			var score_modifier = classlist[1] == "increment" ? 1 : -1;
+			if (is_team_1 == "1"){game.team_1_score = game.team_1_score + score_modifier;}
+			else {game.team_2_score = game.team_2_score + score_modifier;}
+			
+			var GameScore = require("modules/game_score");
+			var score = new GameScore.Model({
+				game_id: this.model.id,
+				team_1_score: game.team_1_score,
+				team_2_score: game.team_2_score
+			});
+			score.save();
+			this.model.get("game").set(game);
+			this.model.save();
+       }
 	});
 	
 	/*
@@ -19811,85 +19929,6 @@ function(require, app, Backbone) {
 	return TrackedGame;
 });
 
-define('modules/trackbasic',[
-	"require",
-	"app",
-	// Libs
-	"backbone",
-	// Modules
-	"modules/leaguevine",
-	"modules/navigation",
-	"modules/game"
-],
-function(require, app, Backbone, Leaguevine) {
-	
-	var TrackBasic = app.module();
-	
-	TrackBasic.Router = Backbone.Router.extend({
-		routes : {
-			"basic/:gameId": "trackGame"
-		},
-		trackGame: function (gameId) {
-            if (!app.api.is_logged_in()) {//Ensure that the user is logged in
-                app.api.login();
-                return;
-            }
-            
-            //Load required modules.
-			var Game = require("modules/game");
-            var Navigation = require("modules/navigation");
-            
-			//Prepare the data.
-			var game = new Game.Model({id: gameId});
-			game.fetch();
-			
-			var myLayout = app.router.useLayout("main");
-			myLayout.setViews({
-				".navbar": new Navigation.Views.Navbar({href: "/editgame/"+gameId, name: "Edit"}),
-				".titlebar": new Navigation.Views.Titlebar({model_class: "game", level: "show", model: game}),
-				".content_1": new TrackBasic.Views.Main( {model: game})
-			});
-			myLayout.render();
-		}
-	});
-	TrackBasic.router = new TrackBasic.Router();// INITIALIZE ROUTER
-
-	//
-	// VIEWS
-	//
-	TrackBasic.Views.Main = Backbone.View.extend({
-		template: "trackbasic/main",
-		initialize: function() {
-			this.model.on("change", this.render, this);//RESET?
-		},
-		cleanup: function() {
-			this.model.off(null, null, this);
-		},
-		render: function(layout) {
-            var game = this.model.toJSON();
-            if (this.model.get("team_1") !== null){
-				game.team_1 = _.isFunction(this.model.get("team_1").get) ? this.model.get("team_1").toJSON() : this.model.get("team_1");
-			}
-			if (this.model.get("team_1") !== null){
-				game.team_2 = _.isFunction(this.model.get("team_2").get) ? this.model.get("team_2").toJSON() : this.model.get("team_2");
-			}
-			return layout(this).render(game);
-		},
-		events: {
-			"click button": "changeScore"
-       },
-       changeScore: function(ev){
-			var classlist = ev.srcElement.classList;
-			var attr_name = classlist[0] + "_score";
-			var og_score = this.model.get(attr_name);
-			var score_modifier = classlist[1] == "increment" ? 1 : -1;
-			this.model.set(attr_name, og_score + score_modifier);
-			this.model.save();
-       }
-	});
-	return TrackBasic;// Required, return the module for AMD compliance
-});
-
 require([
 	"app",
 
@@ -19912,8 +19951,8 @@ require([
 	"modules/game",
 	"modules/tournament",
 	"modules/gameevent",
-	"modules/trackedgame",
-	"modules/trackbasic"
+	"modules/game_score",
+	"modules/trackedgame"
 ],
 /*
  * The following callback is called after the dependices are loaded.
@@ -19977,6 +20016,7 @@ function(app, $, Backbone, Leaguevine) {
         if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
             // Browser downloaded a new app cache.
             // Swap it in and reload the page to get the new code.
+            window.applicationCache.update();
             window.applicationCache.swapCache();
             $('body').html('A new (better) version of this app is now loading...'); //Remove the current elements from the page to reduce confusion
             window.location.reload(); //Completely reload the page and re-fetch everything
