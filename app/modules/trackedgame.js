@@ -641,7 +641,7 @@ function(require, app, Backbone) {
 			var game = this.model.get("game").toJSON();
 			var score_modifier = classlist[1] == "increment" ? 1 : -1;
 			if (is_team_1 == "1"){game.team_1_score = game.team_1_score + score_modifier;}
-			else {game.team_2_score = game.team_2_score + score_modifier};
+			else {game.team_2_score = game.team_2_score + score_modifier;}
 			
 			var GameScore = require("modules/game_score");
 			var score = new GameScore.Model({
