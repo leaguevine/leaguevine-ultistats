@@ -1,127 +1,104 @@
-/**
- * Backbone-tastypie.js 0.1
- * (c) 2011 Paul Uithol
- * 
- * Backbone-tastypie may be freely distributed under the MIT license.
- * Add or override Backbone.js functionality, for compatibility with django-tastypie.
- */
-(function( undefined ) {
-	// Backbone.noConflict support. Save local copy of Backbone object.
-	var Backbone = window.Backbone;
-	Backbone.Tastypie = {
-		doGetOnEmptyPostResponse: true,
-		doGetOnEmptyPutResponse: false,
-	};
+(function($, _, Backbone) {
+    Backbone.Tastypie = {
+        defaultLimit: 20
+    };
 
-	/**
-	 * Override Backbone's sync function, to do a GET upon receiving a HTTP CREATED.
-	 * This requires 2 requests to do a create, so you may want to use some other method in production.
-	 * Modified from http://joshbohde.com/blog/backbonejs-and-django
-	 */
-	Backbone.oldSync = Backbone.sync;
-	Backbone.sync = function( method, model, options ) {
+    Backbone.Tastypie.Model = Backbone.Model.extend({
+        idAttribute: 'resource_uri',
 
-		if (method === 'create' || method === 'update' || method == 'delete'){
-			options.headers = _.extend({
-				'Authorization': 'bearer ' + Backbone.API.d_token()
-			}, options.headers);
-		}
+        url: function() {
+            var url = getValue(this, 'urlRoot') || getValue(this.collection, 'urlRoot') || urlError();
+            
+            if (this.isNew())
+                return url;
 
-		if ( ( method === 'create' && Backbone.Tastypie.doGetOnEmptyPostResponse ) ||
-			( method === 'update' && Backbone.Tastypie.doGetOnEmptyPutResponse ) ) {
-			var dfd = new $.Deferred();
-			
-			// Set up 'success' handling
-			dfd.done( options.success );
-			options.success = function( resp, status, xhr ) {
-				// If create is successful but doesn't return a response, fire an extra GET.
-				// Otherwise, resolve the deferred (which triggers the original 'success' callbacks).
-				if ( !resp && ( xhr.status === 201 || xhr.status === 202 || xhr.status === 204 ) ) { // 201 CREATED, 202 ACCEPTED or 204 NO CONTENT; response null or empty.
-					var location = xhr.getResponseHeader( 'Location' ) || model.id;
-					return $.ajax( {
-						   url: location,
-						   success: dfd.resolve,
-						   error: dfd.reject
-						});
-				}
-				else {
-					return dfd.resolveWith( options.context || options, [ resp, status, xhr ] );
-				}
-			};
-			
-			// Set up 'error' handling
-			dfd.fail( options.error );
-			options.error = function( xhr, status, resp ) {
-				dfd.rejectWith( options.context || options, [ xhr, status, resp ] );
-			};
-			
-			// Make the request, make it accessibly by assigning it to the 'request' property on the deferred
-			dfd.request = Backbone.oldSync( method, model, options );
-			return dfd;
-		}
-		
-		return Backbone.oldSync( method, model, options );
-	};
+            return this.get('resource_uri');
+        },
+        _getId: function() {
+            if (this.has('id'))
+                return this.get('id');
 
-	//Backbone.Model.prototype.idAttribute = 'resource_uri';
-	
-	Backbone.Model.prototype.url = function() {
-		// Use the id if possible
-		var url = this.attributes && this.get("resource_uri");
-		
-		// If there's no idAttribute, use the 'urlRoot'. Fallback to try to have the collection construct a url.
-		// Explicitly add the 'id' attribute if the model has one.
-		if ( !url ) {
-			url = this.urlRoot;
-			url = url || this.collection && ( _.isFunction( this.collection.url ) ? this.collection.url() : this.collection.url );
+            return _.chain(this.get('resource_uri').split('/')).compact().last().value();
+        }
+    });
 
-			if ( url && _.has(this,"id") && this.id != undefined) {
-				url = addSlash( url ) + this.id;
-			}
-		}
+    Backbone.Tastypie.Collection = Backbone.Collection.extend({
+        constructor: function(models, options) {
+            Backbone.Collection.prototype.constructor.apply(this, arguments);
 
-		url = url && addSlash( url );
-		
-		return url || null;
-	};
-	
-	/**
-	 * Return the first entry in 'data.objects' if it exists and is an array, or else just plain 'data'.
-	 */
-	Backbone.Model.prototype.parse = function( data ) {
-		return data && data.objects && ( _.isArray( data.objects ) ? data.objects[ 0 ] : data.objects ) || data;
-	};
-	
-	/**
-	 * Return 'data.objects' if it exists.
-	 * If present, the 'data.meta' object is assigned to the 'collection.meta' var.
-	 */
-	Backbone.Collection.prototype.parse = function( resp, xhr ) {
-		if ( resp && resp.meta ) {
-			this.meta = resp.meta;
-		}
-		
-		return resp.objects || resp;
-	};
-	
-	Backbone.Collection.prototype.url = function( models ) {
-		var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-		url = url && addSlash( url );
-		
-		// Build a url to retrieve a set of models. This assume the last part of each model's idAttribute
-		// (set to 'resource_uri') contains the model's id.
-		if ( models && models.length ) {
-			var ids = _.map( models, function( model ) {
-					var parts = _.compact( model.id.split( '/' ) );
-					return parts[ parts.length - 1 ];
-				});
-			url += 'set/' + ids.join( ';' ) + '/';
-		}
-		
-		return url || null;
-	};
+            this.meta = {};
+            this.filters = {
+                limit: Backbone.Tastypie.defaultLimit,
+                offset: 0
+            };
 
-	var addSlash = function( str ) {
-		return str + ( ( str.length > 0 && str.charAt( str.length - 1 ) === '/' ) ? '' : '/' );
-	}
-})();
+            if (options && options.filters)
+                _.extend(this.filters, options.filters);
+        },
+        url: function(models) {
+            var url = this.urlRoot;
+
+            if (models) {
+                var ids = _.map(models, function(model) {
+                    return model._getId();
+                });
+
+                url += 'set/' + ids.join(';') + '/';
+            }
+
+            return url + this._getQueryString();
+        },
+        parse: function(response) {
+            if (response && response.meta)
+                this.meta = response.meta;
+
+            return response && response.objects;
+        },
+        fetchNext: function(options) {
+            options = options || {};
+            options.add = true;
+
+            this.filters.limit = this.meta.limit;
+            this.filters.offset = this.meta.offset + this.meta.limit;
+
+            if (this.filters.offset > this.meta.total_count)
+                this.filters.offset = this.meta.total_count;
+
+            return this.fetch.call(this, options);
+        },
+        fetchPrevious: function(options) {
+            options = options || {};
+            options.add = true;
+            options.at = 0;
+
+            this.filters.limit = this.meta.limit;
+            this.filters.offset = this.meta.offset - this.meta.limit;
+
+            if (this.filters.offset < 0){
+                this.filters.limit += this.filters.offset;
+                this.filters.offset = 0;
+            }
+
+            return this.fetch.call(this, options);
+        },
+        _getQueryString: function() {
+            if (!this.filters)
+                return '';
+
+            return '?' + $.param(this.filters);
+        }
+    });
+
+    // Helper function from Backbone to get a value from a Backbone
+    // object as a property or as a function.
+    var getValue = function(object, prop) {
+        if ((object && object[prop]))
+            return _.isFunction(object[prop]) ? object[prop]() : object[prop];
+    };
+
+    // Helper function from Backbone that raises error when a model's
+    // url cannot be determined.
+    var urlError = function() {
+        throw new Error('A "url" property or function must be specified');
+    };
+})(window.$, window._, window.Backbone);

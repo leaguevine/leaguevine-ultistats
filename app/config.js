@@ -41,6 +41,10 @@ require.config({
 		
 		"plugins/backbone.websqlajax": {
 			deps: ["backbone"]
+		},
+		
+		"plugins/backbone_offline": {
+			deps: ["backbone"]
 		}
 	}
 });
