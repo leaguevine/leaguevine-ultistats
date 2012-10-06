@@ -7,6 +7,7 @@ require.config({
 		// JavaScript folders
 		libs: "../assets/js/libs",
 		plugins: "../assets/js/plugins",
+		vendor: "../assets/vendor",
 
 		// Libraries
 		jquery: "../assets/js/libs/jquery",
@@ -15,12 +16,12 @@ require.config({
 	},
 
 	shim: {
-		
+		// Backbone library depends on lodash and jQuery.
 		backbone: {
 			deps: ["lodash", "jquery"],
 			exports: "Backbone"
 		},
-    
+		// Backbone.LayoutManager depends on Backbone.
 		"plugins/backbone.layoutmanager": {
 			deps: ["backbone"],
 			exports: "Backbone.LayoutManager"
