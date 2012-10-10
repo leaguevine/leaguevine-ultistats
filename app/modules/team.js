@@ -274,13 +274,13 @@ function(app, Backbone, Leaguevine, Navigation) {
 		showPlayers: function(ev){
 			$(".lgames").hide();
 			$(".lplayers").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bgames").removeClass("is_active");
             $("button.bplayers").addClass("is_active");
 		},
 		showGames: function(ev){
 			$(".lplayers").hide();
 			$(".lgames").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bplayers").removeClass("is_active");
             $("button.bgames").addClass("is_active");
 		},
 		render: function(layout) {

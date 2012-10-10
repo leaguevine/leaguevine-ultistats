@@ -199,7 +199,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			$(".lpools").hide();
 			$(".lstandings").hide();
             $(".lgames").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bstandings").removeClass("is_active");
             $("button.bgames").addClass("is_active");
         },
 		showStandings: function(ev){
@@ -207,9 +207,8 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			$(".lpools").hide();
 			$(".lgames").hide();
 			$(".lstandings").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bgames").removeClass("is_active");
             $("button.bstandings").addClass("is_active");
-			//console.log("TODO: Show Standings");
 		},
         /* 
         // Don't show these yet. To enable showing pools and brackets, we 

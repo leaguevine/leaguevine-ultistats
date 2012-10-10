@@ -300,13 +300,13 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 		showTeamStats: function(ev){
 			$(".lplayer_stats").hide();
 			$(".lteam_stats").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bplayer_stats").removeClass("is_active");
             $("button.bteam_stats").addClass("is_active");
 		},
 		showPlayerStats: function(ev){
 			$(".lteam_stats").hide();
 			$(".lplayer_stats").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bteam_stats").removeClass("is_active");
             $("button.bplayer_stats").addClass("is_active");
 		},
 		render: function(layout) {
