@@ -12,7 +12,8 @@ define([
   "modules/player_per_game_stats",
   "modules/team_per_game_stats",
   
-  "plugins/backbone.websqlajax"
+  // Plugins
+  "plugins/backbone-tastypie"
 ],
 function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStats, TeamPerGameStats) {
 	
@@ -34,8 +35,6 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 			start_time: ""
 			//pool, swiss_round, bracket
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("game"),
 		associations: {
 			"tournament_id": "tournament",
 			"team_1_id": "team",
@@ -79,8 +78,6 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 	
 	Game.Collection = Backbone.Collection.extend({
 		model: Game.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("game"),
 		comparator: function(game) {// Define how items in the collection will be sorted.
 			return game.get("start_time");
 		},

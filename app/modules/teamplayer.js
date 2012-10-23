@@ -6,9 +6,7 @@ define([
   "backbone",
 
   // Modules
-  "modules/leaguevine",
-  
-  "plugins/backbone.websqlajax"
+  "modules/leaguevine"
 ],
 function(require, app, Backbone, Leaguevine) {
     
@@ -43,8 +41,6 @@ function(require, app, Backbone, Leaguevine) {
 			//delete tp.player;
 			return tp;
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("teamplayer"),
 		associations: {
 			"team_id": "team",
 			"player_id": "player"
@@ -55,8 +51,6 @@ function(require, app, Backbone, Leaguevine) {
 	//
 	TeamPlayer.Collection = Backbone.Collection.extend({
 		model: TeamPlayer.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("teamplayer"),
 		urlRoot: Leaguevine.API.root + "team_players",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );

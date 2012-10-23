@@ -9,9 +9,7 @@ define([
   "modules/leaguevine",
   "modules/navigation",
   "modules/tournteam",
-  "modules/game",
-  
-  "plugins/backbone.websqlajax"
+  "modules/game"
 ],
 function(require, app, Backbone, Leaguevine, Navigation) {
     
@@ -35,15 +33,11 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 		//If a tournament is saved to the API does it care about the teams and games?
 		toJSON: function() {//get rid of tournteams
 			return _.clone(this.attributes);
-		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("tournament")
+		}
 	});
 	
 	Tournament.Collection = Backbone.Collection.extend({
 		model: Tournament.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("tournament"),
 		urlRoot: Leaguevine.API.root + "tournaments",
         url: function(models) {
             var url = this.urlRoot || ( models && models.length && models[0].urlRoot );

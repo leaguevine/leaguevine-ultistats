@@ -8,9 +8,7 @@ define([
   // Modules
   "modules/leaguevine",
   "modules/navigation",
-  "modules/teamplayer",
-  
-  "plugins/backbone.websqlajax"
+  "modules/teamplayer"
 ],
 function(require, app, Backbone, Leaguevine, Navigation) {
     
@@ -31,8 +29,6 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			weight: "",
 			teamplayers: {}//used to get to teams that this player belongs to.
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("player"),
 		urlRoot: Leaguevine.API.root + "players",
 		parse: function(resp, xhr) {
 			resp = Backbone.Model.prototype.parse(resp);
@@ -50,8 +46,6 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 	//
 	Player.Collection = Backbone.Collection.extend({
 		model: Player.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("player"),
 		comparator: function(player) {// Define how items in the collection will be sorted.
 			return player.get("last_name").toLowerCase();
 		},
