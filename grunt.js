@@ -41,6 +41,18 @@ module.exports = function(grunt) {
       ]
     },
 
+    // The handlebars task compiles all application templates into JavaScript
+    // functions using Handlebars templating engine.
+    //
+    // Since this task defaults to writing to the same file as the jst task,
+    // edit the debug task replacing jst with handlebars.
+    //
+    // The concat task depends on this file to exist, so if you decide to
+    // remove this, ensure concat is updated accordingly.
+    handlebars: {
+      "dist/debug/templates.js": ["app/templates/**/*.html"]
+    },
+
     // The concatenate task is used here to merge the almond require/define
     // shim and the templates into the application code.  It's named
     // dist/debug/require.js, because we want to only load one script file in
@@ -169,7 +181,12 @@ module.exports = function(grunt) {
       name: "config",
 
       // Do not wrap everything in an IIFE.
-      wrap: false
+      wrap: false,
+
+      // Build Handlebars runtime, instead of full version.
+      paths: {
+        handlebars: "../assets/js/libs/handlebars.runtime-1.0.0.beta"
+      }
     },
 
     // The headless QUnit testing environment is provided for "free" by Grunt.

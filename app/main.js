@@ -10,24 +10,13 @@ require([
  * once everything has finished loading.
  */
 function(app, Router) {
+	// Define your master router on the application namespace and trigger all
+	// navigation from this instance.
 	app.router = new Router();
 	
 	// Trigger the initial route and enable HTML5 History API support, set the
 	// root folder to '/' by default.  Change in app.js.
 	Backbone.history.start({ pushState: true, root: app.root });
-
-	// Treat the jQuery ready function as the entry point to the application.
-	// Inside this function, kick-off all initialization, everything up to this
-	// point should be definitions.
-	$(function() {
-		// Define your master router on the application namespace and trigger all
-		// navigation from this instance.
-		app.router = new Router(); //Necessary to catch default route.
-		app.api = Leaguevine.API; //This will be useful if we ever use another API.
-
-		// Trigger the initial route and enable HTML5 History API support
-		Backbone.history.start({ pushState: true });
-	});
 	
     window.applicationCache.addEventListener('updateready', function(e) {
         if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
@@ -62,5 +51,5 @@ function(app, Router) {
 			// calls this anyways.  The fragment is sliced from the root.
 			Backbone.history.navigate(href.attr, true);
 		}
-	});	
+	});
 });

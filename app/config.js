@@ -1,50 +1,41 @@
 // Set the require.js configuration for your application.
 require.config({
-	// Initialize the application with the main application file
-	deps: ["main"], //Will call main.js as soon as require() is defined.
 
-	paths: { //Tell require.js where to find scripts
-		// JavaScript folders
-		libs: "../assets/js/libs",
-		plugins: "../assets/js/plugins",
-		vendor: "../assets/vendor",
+  // Initialize the application with the main application file.
+  deps: ["main"],
 
-		// Libraries
-		jquery: "../assets/js/libs/jquery",
-		lodash: "../assets/js/libs/lodash",
-		backbone: "../assets/js/libs/backbone"
-	},
+  paths: {
+    // JavaScript folders.
+    libs: "../assets/js/libs",
+    plugins: "../assets/js/plugins",
+    vendor: "../assets/vendor",
 
-	shim: {
-		// Backbone library depends on lodash and jQuery.
-		backbone: {
-			deps: ["lodash", "jquery"],
-			exports: "Backbone"
-		},
-		// Backbone.LayoutManager depends on Backbone.
-		"plugins/backbone.layoutmanager": {
-			deps: ["backbone"],
-			exports: "Backbone.LayoutManager"
-		},
+    // Libraries.
+    jquery: "../assets/js/libs/jquery",
+    lodash: "../assets/js/libs/lodash",
+    backbone: "../assets/js/libs/backbone",
+    handlebars: "../assets/js/libs/handlebars-1.0.0.beta.6"
+  },
 
-		"plugins/backbone.localStorage": {
-			deps: ["backbone"]
-		},
-		
-		"plugins/backbone-tastypie": {
-			deps: ["backbone"]
-		},
-		
-		"plugins/spinner": {
-			deps: ["jquery"]
-		},
-		
-		"plugins/backbone.websqlajax": {
-			deps: ["backbone"]
-		},
-		
-		"plugins/backbone_offline": {
-			deps: ["backbone"]
-		}
+  shim: {
+    // Backbone library depends on lodash and jQuery.
+    backbone: {
+      deps: ["lodash", "jquery"],
+      exports: "Backbone"
+    },
+
+    // Handlebars has no dependencies.
+    handlebars: {
+      exports: "Handlebars"
+    },
+    
+    // Backbone.LayoutManager depends on Backbone.
+    "plugins/backbone.layoutmanager": ["backbone"],
+
+    "plugins/backbone_offline": {
+		deps: ["backbone"]
 	}
+		
+  }
+
 });
