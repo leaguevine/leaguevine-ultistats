@@ -1,16 +1,16 @@
 <div id="title_body">
-    <h1 id="title_txt"><div id="title_txt_inner"><span><%= title %></span></div></h1>
-    <div id="title_left_btn" class="btn <%= left_btn_class %>">
+    <h1 id="title_txt"><div id="title_txt_inner"><span>{{title}}</span></div></h1>
+    <div id="title_left_btn" class="btn {{left_btn_class}}">
         <div id="title_left_pointer"><span></span></div>
-        <a href="<%= left_btn_href %>">
+        <a href="{{left_btn_href}}">
             <span></span>
-            <p><%= left_btn_txt %></p>
+            <p>{{left_btn_txt}}</p>
         </a>
     </div>
-    <div id="title_right_btn" class="btn <%= right_btn_class %>">
-        <a href="<%= right_btn_href %>">
+    <div id="title_right_btn" class="btn {{right_btn_class}}">
+        <a href="{{right_btn_href}}">
             <span>&nbsp</span>
-            <p><%= right_btn_txt %></p>
+            <p>{{right_btn_txt}}</p>
         </a>
     </div>
 </div>

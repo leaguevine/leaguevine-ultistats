@@ -1,6 +1,9 @@
 define([
   // Application.
-  "app"
+  "app",
+  
+  // Module-specific routers
+  "modules/team"
 ],
 
 function(app) {

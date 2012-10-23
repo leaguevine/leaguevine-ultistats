@@ -1,33 +1,33 @@
 <ul class="navbar-list">
     <li>
-        <a href="<%= teams_href %>" class="teams <%= teams_class %>">
+        <a href="{{teams_href}}" class="teams{{teams_class}}">
             Teams
             <div>
-                <img <% if (teams_class == "currently_viewed") { %>src="/assets/img/icons/teams_list_white.png"<% } else { %>src="/assets/img/icons/teams_list.png"<% } %>>
+                <img />
             </div>
         </a>
     </li>
     <li>
-        <a href="<%= tournaments_href %>" class="tournaments <%= tournaments_class %>">
+        <a href="{{tournaments_href}}" class="tournaments {{tournaments_class}}">
             Tournaments
             <div>
-                <img <% if (tournaments_class == "currently_viewed") { %>src="/assets/img/icons/tournaments_icon_white.png"<% } else { %>src="/assets/img/icons/tournaments_icon.png"<% } %>>
+                <img />
             </div>
         </a>
     </li>
     <li>
-        <a href="<%= games_href %>" class="games <%= games_class %>">
+        <a href="{{games_href}}" class="games {{games_class}}">
             Games
             <div>
-                <img <% if (games_class == "currently_viewed") { %>src="/assets/img/icons/games_icon_white.png"<% } else { %>src="/assets/img/icons/games_icon.png"<% } %>>
+                <img />
             </div>
         </a>
     </li>
     <li>
-        <a href="<%= settings_href %>" class="settings <%= settings_class %>">
+        <a href="{{settings_href}}" class="settings {{settings_class}}">
             Settings
             <div>
-                <img <% if (settings_class == "currently_viewed") { %>src="/assets/img/icons/settings_gear_white.png"<% } else { %>src="/assets/img/icons/settings_gear.png"<% } %>>
+                <img />
             </div>
         </a>
     </li>

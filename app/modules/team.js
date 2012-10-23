@@ -7,10 +7,9 @@ define([
   // Modules
   "modules/leaguevine",
   "modules/navigation",
-  "modules/teamplayer",
-  "modules/game",
   
-  "plugins/backbone.websqlajax"	
+  // Plugins
+  "plugins/backbone-tastypie",
 ],
 
 function(app, Backbone, Leaguevine, Navigation) {
@@ -20,7 +19,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 	//
 	// MODEL
 	//
-	Team.Model = Backbone.Model.extend({
+	Team.Model = Backbone.Tastypie.Model.extend({
 		defaults: {// Include defaults for any attribute that will be rendered.
 			//id: "",//id is used as href in template so we need default.
 			name: "",
@@ -30,11 +29,6 @@ function(app, Backbone, Leaguevine, Navigation) {
 			teamplayers: [],
 			games: []
 		},
-		urlRoot: Leaguevine.API.root + "teams",
-		parse: function(resp, xhr) {
-			resp = Backbone.Model.prototype.parse(resp);
-			return resp;
-		},
 		toJSON: function() {
 			var temp = _.clone(this.attributes);
 			//delete temp.teamplayers;
@@ -42,38 +36,15 @@ function(app, Backbone, Leaguevine, Navigation) {
 			//delete temp.season;
 			return temp;
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("team"),
 		associations: {"season_id": "season"}
 	});
   
 	//
 	// COLLECTION
 	//
-	Team.Collection = Backbone.Collection.extend({
+	Team.Collection = Backbone.Tastypie.Collection.extend({
 		model: Team.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("team"),
-		urlRoot: Leaguevine.API.root + "teams",
-		url: function(models) {
-			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += "/?";
-			if ( models && models.length ) {
-				url += "&team_ids=" + JSON.stringify(models.pluck("id"));
-			}
-            if (this.name) {
-                url += "&name=" + this.name;
-            }
-			if (this.season_id) {
-				url += "&season_id=" + this.season_id;
-			}
-			url += "&limit=30";
-            url += "&order_by=%5Bname,-season_id%5D";
-            url += "&fields=%5Bid%2Cinfo%2Cname%2Cseason_id%2Cseason%2Cshort_name%2Ctime_created%2Ctime_last_updated%5D";
-			return url;
-		},
-		//TODO: I should override parse if I want to filter team's returned from DB. e.g. this would be useful for
-		//filtering results shown on the "Teams" page if a season is already set. Setting the season in "Settings" comes first.
+		urlRoot: Leaguevine.API.root + "teams/",
 		comparator: function(team) {// Define how items in the collection will be sorted.
 			if (team.season && team.season.name) {return team.get("name").toLowerCase() + team.season.name.toLowerCase();}
             else {return team.get("name").toLowerCase();}
@@ -115,7 +86,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 
 			//var Search = require("modules/search"); If that module is an argument to this module's function then it does not need to be required again.
 			// Prepare the layout/view(s)
-			var myLayout = app.router.useLayout("main");// Get the layout from a layout cache.
+			var myLayout = app.useLayout("layouts/main");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar({}),
@@ -147,7 +118,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 			games.fetch();
 			//team.set("games", games);
 			
-			var myLayout = app.router.useLayout("main");// Get the layout. Has .navbar, .detail, .list_children
+			var myLayout = app.useLayout("main");// Get the layout. Has .navbar, .detail, .list_children
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar(),
 				".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "show", model: team}),
@@ -168,7 +139,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 				team.id=teamId;
                 team.fetch(); //Fetch this team instance
 			}
-			var myLayout = app.router.useLayout("main");
+			var myLayout = app.useLayout("main");
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar(),
 				".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "edit", model: team}),
@@ -192,9 +163,11 @@ function(app, Backbone, Leaguevine, Navigation) {
 			this.collection.off(null, null, this);
 		},
 		className: "teams-wrapper",
-		render: function(layout) {
-			var view = layout(this); //Get this view from the layout.
-			var filter_by = this.collection.name ? this.collection.name : "";
+		data: function(){
+			return {count: this.collection.length};
+		},
+		beforeRender: function(layout) {
+			var filter_by = this.collection.name || "";
 			var tap_method = this.options.tap_method;
 			this.collection.each(function(team) {//for each team in the collection.
 				//Do collection filtering here
@@ -207,7 +180,6 @@ function(app, Backbone, Leaguevine, Navigation) {
 			}, this);
             //Add a button at the end of the list that creates more items
             this.insertView("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
-			return view.render({ count: this.collection.length });
 		}
 	});
 	Team.Views.Item = Backbone.View.extend({
@@ -216,7 +188,7 @@ function(app, Backbone, Leaguevine, Navigation) {
             "click": "team_tap_method"
         },
 		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul by the list's render function.
-		serialize: function() {
+		data: function() {
             // Add a couple attributes to the team for displaying
             var team = _.clone(this.model.attributes);
             team.season_name = "";

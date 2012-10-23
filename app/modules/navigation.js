@@ -1,13 +1,8 @@
 define([
   "app",
-
-  // Libs
   "backbone",
-
-  // Plugins
-  "plugins/backbone.layoutmanager"
 ],
-function(app, Backbone, Game) {
+function(app, Backbone) {
     
 	var Navigation = app.module();
 
@@ -21,57 +16,27 @@ function(app, Backbone, Game) {
         settings_href: "/settings"
     };
 	
-	Navigation.Views.Navbar = Backbone.View.extend({
+	Navigation.Views.Navbar = Backbone.LayoutView.extend({
 		template: "navigation/navbar",
-		//className: "navbar-wrapper",
-		//href: "",
-		//name: "",
-		currently_viewed: "",
-		render: function(layout) {
-			var view = layout(this);
-			// Initialize the classes for the currently viewed navigation button
-            var tournaments_class = "";
-            var teams_class = "";
-            var games_class = "";
-            var settings_class = "";
-            var currently_viewed = "currently_viewed";
-            var fragment = Backbone.history.fragment;
-            if (fragment.indexOf("tournament") != -1) { // If the current URL is a tournament URL
-                tournaments_class = currently_viewed;
-                app.navigation.tournaments_href = fragment;
-            } 
-            else if (fragment.indexOf("team") != -1) { // If the current URL is a team URL
-                teams_class = currently_viewed;
-                app.navigation.teams_href = fragment;
-            } 
-            else if (fragment.indexOf("games") != -1) {
-                games_class = currently_viewed;
-                app.navigation.games_href = fragment;
-            }
-            else if (fragment.indexOf("settings") != -1) {
-                settings_class = currently_viewed;
-                app.navigation.settings_href = fragment;
-            }
-        
-			return view.render({
-                //href: this.options.href, 
-                //name: this.options.name, 
-                tournaments_class: tournaments_class,
-                teams_class: teams_class,
-                games_class: games_class,
-                settings_class: settings_class,
+		beforeRender: function() {
+			var fragment = Backbone.history.fragment;
+			app.navigation.tournaments_href = fragment.indexOf("tournament") != -1 ? fragment : app.navigation.tournaments_href;
+			app.navigation.teams_href = fragment.indexOf("team") != -1 ? fragment : app.navigation.teams_href;
+			app.navigation.games_href = fragment.indexOf("games") != -1 ? fragment : app.navigation.games_href;
+			app.navigation.settings_href = fragment.indexOf("settings") != -1 ? fragment : app.navigation.settings_href;
+		},
+		data: function () {
+			return {
+				tournaments_class: Backbone.history.fragment.indexOf("tournament") != -1 ? "currently_viewed" : "",
+                teams_class: Backbone.history.fragment.indexOf("team") != -1 ? "currently_viewed" : "",
+                games_class: Backbone.history.fragment.indexOf("games") != -1 ? "currently_viewed" : "",
+                settings_class: Backbone.history.fragment.indexOf("settings") != -1 ? "currently_viewed" : "",
                 tournaments_href: app.navigation.tournaments_href,
                 teams_href: app.navigation.teams_href,
                 games_href: app.navigation.games_href,
                 settings_href: app.navigation.settings_href
-            });
+			};
 		}
-		//I don't understand what the following does so I commented it out to see if anything breaks.
-		/*initialize: function() {
-			this.bind("change", function() {
-				this.render();
-			}, this);
-		}*/
 	});
     
     Navigation.Views.Titlebar = Backbone.View.extend({
@@ -103,13 +68,11 @@ function(app, Backbone, Game) {
 				this.model.off(null, null, this);
 			}
 		},
-		render: function(layout) {
-			var view = layout(this);
+		data: function(){
 			var my_class = this.options.model_class || null;
 			var my_level = this.options.level || null;
-			var my_title; //Title is from the dict if list, else it is
-			var list_titles = {"team": "Teams", "game": "Games", "tournament": "Tournaments", "player": "Players", "setting": "Settings"}; 
-			if (my_level === "list"){my_title = list_titles[my_class];}
+			var my_title;
+			if (my_level === "list"){my_title = this.title_meta[my_class].title;}
 			else if (my_level === "edit"){my_title = this.model.isNew() ? "Create" : "Edit";}
 			else if (my_level == "show"){
 				if (my_class === "player"){
@@ -120,8 +83,6 @@ function(app, Backbone, Game) {
 			} else {my_title = "";}
 
 			var lbc, lbh, lbt, rbc, rbh, rbt;
-			//var list_hrefs = {"team": "#teams", "game": "#games", "tournament": "#tournaments", "player": "#players", "setting": "#settings"};
-			var list_hrefs = {"team": "/teams", "game": "/games", "tournament": "/tournaments", "player": "/players", "setting": "/settings"};
 			if (my_level === "list"){
 				//Left button does not exist for list level.
 				lbc = "disabled";
@@ -134,8 +95,8 @@ function(app, Backbone, Game) {
 			} else if (my_level === "show"){
 				//Left button is back to the list if we are viewing an item.
 				lbc = "back";
-				lbh = list_hrefs[my_class];
-				lbt = list_titles[my_class];
+				lbh = this.title_meta[my_class].href;
+				lbt = this.title_meta[my_class].title;
 				//Right button is Edit if we are viewing an item.
 				rbc = ""; //No class for the 'edit' button.
 				rbh = "/edit" + my_class + "/" + this.model.id;
@@ -143,7 +104,7 @@ function(app, Backbone, Game) {
 			} else if (my_level === "edit"){
 				//Left button is 'cancel' if we are editing.
 				lbc = "back";
-				lbh = list_hrefs[my_class];
+				lbh = this.title_meta[my_class].href;
 				if (!this.model.isNew()){
 					lbh = lbh + "/" + this.model.id;
 				}
@@ -164,13 +125,13 @@ function(app, Backbone, Game) {
 			}
 			if (my_level === "show" && my_class === "game"){
 				rbc = "disabled"; //We do not hav a way to edit games.
-			if (this.model.get("tournament_id")){
-				lbh = "/tournaments/" + this.model.get("tournament_id");
-				lbt = this.model.get("tournament").name ? this.model.get("tournament").name : "Tournament";
-			} else {lbc = "disabled";}//We do not have a generic list of games.
+				if (this.model.get("tournament_id")){
+					lbh = "/tournaments/" + this.model.get("tournament_id");
+					lbt = this.model.get("tournament").name ? this.model.get("tournament").name : "Tournament";
+				} else {lbc = "disabled";}//We do not have a generic list of games.
 			}
-
-			return view.render({href: "",
+			
+			return {
 				title: my_title,
 				left_btn_href: lbh,
 				left_btn_txt: lbt,
@@ -178,7 +139,14 @@ function(app, Backbone, Game) {
 				right_btn_href: rbh,
 				right_btn_txt: rbt,
 				right_btn_class: rbc
-			});
+			};
+		},
+		title_meta: {
+			"team": {"title": "Teams", "href": "/teams"},
+			"game": {"title": "Games", "href": "/games"},
+			"tournament": {"title": "Tournaments", "href": "/tournaments"},
+			"player": {"title": "Players", "href": "/players"},
+			"setting": {"title": "Settings", "href": "/settings"}
 		}
 	});
 
@@ -231,26 +199,16 @@ function(app, Backbone, Game) {
 			this.search_results.fetch(); //When the fetch returns it will cause this.search_results to merge with this.collection  
 			this.collection.trigger("reset");//Trigger a reset immediately so the already-present data are curated immediately.
 		},
-		render: function(manage) {
-			//var temp_collection = {};
-			//Leaguevine.Utils.concat_collections(this.collection, this.search_results);
+		data: function(){
+			return {search_object_name: this.options.search_object_name};
+		},
+		beforeRender: function() {
 			this.setView(".object_list_area", new this.options.ViewsListClass({collection: this.collection, tap_method: this.options.tap_method}));
-            return manage(this).render({
-                search_object_name: this.options.search_object_name
-                /*right_btn_class: this.options.right_btn_class,
-                right_btn_txt: this.options.right_btn_txt,
-                right_btn_href: this.options.right_btn_href,*/
-            })/*.then(function(el) {
-                $(".object_list_area").html(el);
-                //This should only be necessary for views that have no template, no setViews, or other view setting mechanism
-                //In this case it is probably causing a (slow) double-render
-            })*/;
         },
 		initialize: function() {
 			this.search_results = new this.options.CollectionClass();
 			this.search_results.bind("reset", function() {
 				this.concat_collections(this.collection, this.search_results);
-				//Leaguevine.Utils.concat_collections(this.collection, this.search_results);
 			}, this);
 			/*We could bind to reset here to re-render this whole thing.
 			Instead we bind to reset in the module's .Views.List

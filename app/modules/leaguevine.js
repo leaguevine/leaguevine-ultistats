@@ -69,7 +69,7 @@ function(app, Backbone) {
         initialize: function() {
             this.collection = this.options.collection;
         },
-        serialize: function() {
+        data: function() {
             // Determine how many items will be fetched with the next call and return this context so we can display it
             var context = {};
             if (this.collection.meta && this.collection.meta.next) {
