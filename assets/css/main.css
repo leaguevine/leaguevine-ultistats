@@ -205,14 +205,16 @@ th, td {
     position: absolute;
     text-shadow: 0 -1px 0 rgba(0,0,0, 0.4);
     text-align: center;
-    overflow: hidden;
-    white-space: nowrap;
     width: 100%;
 }
-    #title_txt span {
-        padding-left: 115px;
-        padding-right: 115px;
-    }
+
+#title_txt_inner {
+    overflow: hidden;
+    word-wrap: break-word;
+    white-space: nowrap;
+    margin: 0 auto;
+    max-width: 55%;
+}
 
 .titlebar .disabled{
     display: none;
@@ -455,6 +457,10 @@ table.stats {
     float: left;
     font-size: 20px;
     font-weight: bold;
+    max-width: 90%;
+    overflow: hidden;
+    word-wrap: break-word;
+    white-space: nowrap;
 }
 
     #team1_name a, 
@@ -486,9 +492,12 @@ table.stats {
 .game_list_team_name {
     clear: both;
     float: left;
-    width: 60%;
     font-weight: bold;
+    width: 70%;
     font-size: 13px;
+    overflow: hidden;
+    word-wrap: break-word;
+    white-space: nowrap;
 }
 
 .game_list_team_score {
@@ -864,12 +873,12 @@ span.button_line_2 {
 /* ------------------ Standings --------------------- */
 #tournament_standings {
     width: 100%;
-    margin: 15px;
     font-size: 14px;
 }
 
 #tournament_standings th {
     text-align: left;
+    padding: 15px;
 }
 
 #tournament_standings tr {
@@ -878,6 +887,7 @@ span.button_line_2 {
 
 #tournament_standings td {
     text-align: left;
+    padding-left: 15px;
 }
 
 /* =============================================================================
