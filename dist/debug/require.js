@@ -376,7 +376,7 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/navigation/titlebar.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="title_body">\n    <h1 id="title_txt"><span>', title ,'</span></h1>\n    <div id="title_left_btn" class="btn ', left_btn_class ,'">\n        <div id="title_left_pointer"><span></span></div>\n        <a href="', left_btn_href ,'">\n            <span></span>\n            <p>', left_btn_txt ,'</p>\n        </a>\n    </div>\n    <div id="title_right_btn" class="btn ', right_btn_class ,'">\n        <a href="', right_btn_href ,'">\n            <span>&nbsp</span>\n            <p>', right_btn_txt ,'</p>\n        </a>\n    </div>\n</div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="title_body">\n    <h1 id="title_txt"><div id="title_txt_inner"><span>', title ,'</span></div></h1>\n    <div id="title_left_btn" class="btn ', left_btn_class ,'">\n        <div id="title_left_pointer"><span></span></div>\n        <a href="', left_btn_href ,'">\n            <span></span>\n            <p>', left_btn_txt ,'</p>\n        </a>\n    </div>\n    <div id="title_right_btn" class="btn ', right_btn_class ,'">\n        <a href="', right_btn_href ,'">\n            <span>&nbsp</span>\n            <p>', right_btn_txt ,'</p>\n        </a>\n    </div>\n</div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/players/detail.html'] = function(data) { return function (obj,_) {
@@ -15727,6 +15727,18 @@ function(app, Backbone, Game) {
         games_href: "/games",
         settings_href: "/settings"
     };
+    var teams_href = localStorage.getItem('teams_href');
+    var tournaments_href = localStorage.getItem('tournaments_href');
+    var games_href = localStorage.getItem('games_href');
+    if (teams_href) {
+        app.navigation.teams_href = teams_href;
+    }
+    if (tournaments_href) {
+        app.navigation.tournaments_href = tournaments_href;
+    }
+    if (games_href) {
+        app.navigation.games_href = games_href;
+    }
 	
 	Navigation.Views.Navbar = Backbone.View.extend({
 		template: "navigation/navbar",
@@ -15746,14 +15758,17 @@ function(app, Backbone, Game) {
             if (fragment.indexOf("tournament") != -1) { // If the current URL is a tournament URL
                 tournaments_class = currently_viewed;
                 app.navigation.tournaments_href = fragment;
+                localStorage.setItem('tournaments_href', fragment);
             } 
             else if (fragment.indexOf("team") != -1) { // If the current URL is a team URL
                 teams_class = currently_viewed;
                 app.navigation.teams_href = fragment;
+                localStorage.setItem('teams_href', fragment);
             } 
             else if (fragment.indexOf("games") != -1) {
                 games_class = currently_viewed;
                 app.navigation.games_href = fragment;
+                localStorage.setItem('games_href', fragment);
             }
             else if (fragment.indexOf("settings") != -1) {
                 settings_class = currently_viewed;
@@ -17438,13 +17453,13 @@ function(app, Backbone, Leaguevine, Navigation) {
 		showPlayers: function(ev){
 			$(".lgames").hide();
 			$(".lplayers").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bgames").removeClass("is_active");
             $("button.bplayers").addClass("is_active");
 		},
 		showGames: function(ev){
 			$(".lplayers").hide();
 			$(".lgames").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bplayers").removeClass("is_active");
             $("button.bgames").addClass("is_active");
 		},
 		render: function(layout) {
@@ -18178,13 +18193,13 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 		showTeamStats: function(ev){
 			$(".lplayer_stats").hide();
 			$(".lteam_stats").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bplayer_stats").removeClass("is_active");
             $("button.bteam_stats").addClass("is_active");
 		},
 		showPlayerStats: function(ev){
 			$(".lteam_stats").hide();
 			$(".lplayer_stats").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bteam_stats").removeClass("is_active");
             $("button.bplayer_stats").addClass("is_active");
 		},
 		render: function(layout) {
@@ -18464,7 +18479,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			$(".lpools").hide();
 			$(".lstandings").hide();
             $(".lgames").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bstandings").removeClass("is_active");
             $("button.bgames").addClass("is_active");
         },
 		showStandings: function(ev){
@@ -18472,9 +18487,8 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			$(".lpools").hide();
 			$(".lgames").hide();
 			$(".lstandings").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bgames").removeClass("is_active");
             $("button.bstandings").addClass("is_active");
-			//console.log("TODO: Show Standings");
 		},
         /* 
         // Don't show these yet. To enable showing pools and brackets, we 
