@@ -28,11 +28,15 @@ require.config({
     handlebars: {
       exports: "Handlebars"
     },
-    
-    // Backbone.LayoutManager depends on Backbone.
-    "plugins/backbone.layoutmanager": ["backbone"],
 
     "plugins/backbone_offline": {
+		deps: ["backbone"]
+	},
+	
+	// Backbone.LayoutManager depends on Backbone.
+    "plugins/backbone.layoutmanager": ["backbone"],
+	
+	"plugins/backbone-tastypie": {
 		deps: ["backbone"]
 	}
 		

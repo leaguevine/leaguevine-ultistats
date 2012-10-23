@@ -6,7 +6,10 @@ define([
   "backbone",
 
   // Modules
-  "modules/leaguevine"
+  "modules/leaguevine",
+  
+  // Plugins
+  "plugins/backbone-tastypie"
 ],
 function(require, app, Backbone, Leaguevine) {
     
@@ -15,7 +18,7 @@ function(require, app, Backbone, Leaguevine) {
 	//
 	// MODEL
 	//
-	TeamPlayer.Model = Backbone.Model.extend({
+	TeamPlayer.Model = Backbone.Tastypie.Model.extend({
 		defaults: {
 			number: null,
 			team_id: null,
@@ -23,19 +26,8 @@ function(require, app, Backbone, Leaguevine) {
 			player_id: null,
 			player: {last_name: "", first_name: ""}
 		},
-		urlRoot: Leaguevine.API.root + "team_players",
-		//TODO: override URL to /team_players/team_id/player_id/
-		url: function(models) {
-			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += "/?";
-		},
-		parse: function(resp, xhr) {
-			resp = Backbone.Model.prototype.parse(resp);
-			resp.id = resp.team_id + "/" + resp.player_id;
-			return resp;
-		},
+		urlRoot: Leaguevine.API.root + "team_players/",
 		toJSON: function() {
-			//TODO: Remove attributes that are not stored
 			var tp = _.clone(this.attributes);
 			//delete tp.team;
 			//delete tp.player;
@@ -49,49 +41,19 @@ function(require, app, Backbone, Leaguevine) {
 	//
 	// COLLECTION
 	//
-	TeamPlayer.Collection = Backbone.Collection.extend({
+	TeamPlayer.Collection = Backbone.Tastypie.Collection.extend({
 		model: TeamPlayer.Model,
-		urlRoot: Leaguevine.API.root + "team_players",
-		url: function(models) {
-			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += "/?";
-			if (this.team_id) {
-				url += "team_ids=%5B" + this.team_id + "%5D&";
-			} else if (this.models && this.models.length) {
-				url += "team_ids=%5B" + this.models[0].get("team").id + "%5D&";
-			}
-			//If we already have a list of players, 
-			if (this.player_id) {url += "player_ids=%5B" + this.player_id + "%5D&";}
-			else if (this.models && this.models.length) {
-				url += "player_ids=%5B";
-				_.each(this.models, function(tp) {
-					url = url + tp.get("player").id + ",";
-				});
-				url = url.substr(0,url.length-1) + "%5D&";
-			}
-            url += "limit=50&"; //Make sure we grab all of the players. Omitting this defaults to 20 players
-            url += "fields=%5Bnumber%2Cplayer%2Cplayer_id%2Cteam%2Cteam_id%2Ctime_created%2Ctime_last_updated%5D&";
-			return url.substr(0,url.length-1);
-		},
+		urlRoot: Leaguevine.API.root + "team_players/",
 		comparator: function(teamplayer) {// Define how items in the collection will be sorted.
 			//Build an object containing different string representations.
-			var temp_player = teamplayer.get("player");
+			var temp_player = _.isFunction(teamplayer.get("player").get) ? teamplayer.get("player").toJSON() : teamplayer.get("player");
 			var this_obj = {"number": teamplayer.get("number")};
-			if (_.isFunction(temp_player.get)) {//If this is a proper model.
-				_.extend(this_obj,{
-					"first_name": temp_player.get("first_name").toLowerCase(),
-					"last_name": temp_player.get("last_name").toLowerCase(),
-					"nick_name": temp_player.get("nickname").toLowerCase(),
-					"full_name": temp_player.get("last_name").toLowerCase() + temp_player.get("first_name").toLowerCase()[0]
-				});
-			} else {//If this is a JSON object.
-				_.extend(this_obj,{
-					"first_name": temp_player.first_name.toLowerCase(),
-					"last_name": temp_player.last_name.toLowerCase(),
-					"nick_name": temp_player.nickname.toLowerCase(),
-					"full_name": temp_player.last_name.toLowerCase() + temp_player.first_name.toLowerCase()[0]
-				});
-			}
+			_.extend(this_obj,{
+				"first_name": temp_player.first_name.toLowerCase(),
+				"last_name": temp_player.last_name.toLowerCase(),
+				"nick_name": temp_player.nickname ? temp_player.nickname.toLowerCase() : "",
+				"full_name": temp_player.last_name.toLowerCase() + temp_player.first_name.toLowerCase()[0]
+			});
 			var sort_setting = JSON.parse(localStorage.getItem("settings-Sort players by:"));
 			if (sort_setting){
 				if (sort_setting.value == "nick name"){return this_obj.nick_name;}
@@ -141,7 +103,7 @@ function(require, app, Backbone, Leaguevine) {
 	TeamPlayer.Views.Player = Backbone.View.extend({
 		template: "teamplayers/player",
 		tagName: "li",
-		serialize: function() {return _.clone(this.model.attributes);}
+		data: function() {return _.clone(this.model.attributes);}
 	});
 	TeamPlayer.Views.PlayerList = Backbone.View.extend({
 		template: "teamplayers/playerlist",
@@ -152,24 +114,19 @@ function(require, app, Backbone, Leaguevine) {
 			this.collection.off(null, null, this);
 		},
 		className: "players-wrapper",
-		render: function(layout) {
-			var view = layout(this);
-			//this.$el.empty()
-			// call .cleanup() on all child views, and remove all appended views
-			//view.cleanup();
+		beforeRender: function(layout) {
 			this.collection.each(function(teamplayer) {
 				this.insertView("ul", new TeamPlayer.Views.Player({
 					model: teamplayer
 				}));
 			}, this);
-			return view.render();
 		}
 	});
 	
 	TeamPlayer.Views.Team = Backbone.View.extend({
 		template: "teamplayers/team",
 		tagName: "li",
-		serialize: function() {return _.clone(this.model.attributes);}
+		data: function() {return _.clone(this.model.attributes);}
 	});
 	TeamPlayer.Views.TeamList = Backbone.View.extend({
 		template: "teamplayers/playerlist",
@@ -180,17 +137,12 @@ function(require, app, Backbone, Leaguevine) {
 			this.collection.off(null, null, this);
 		},
 		className: "teams-wrapper",
-		render: function(layout) {
-			var view = layout(this);
-			//this.$el.empty()
-			// call .cleanup() on all child views, and remove all appended views
-			//view.cleanup();
+		beforeRender: function(layout) {
 			this.collection.each(function(teamplayer) {
 				this.insertView("ul", new TeamPlayer.Views.Team({
 					model: teamplayer
 				}));
 			}, this);
-			return view.render();
 		}
 	});
 	

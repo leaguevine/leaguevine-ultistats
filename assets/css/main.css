@@ -186,8 +186,8 @@ th, td {
 /*
  * Moving conditional CSS logic from navbar.html to here.
  */
-	.navbar ul.navbar-list a.teams.currently_viewed img {content:url("/assets/img/icons/teams_list_white.png");}
 	.navbar ul.navbar-list a.teams img {content:url("/assets/img/icons/teams_list.png");}
+	.navbar ul.navbar-list a.teams.currently_viewed img {content:url("/assets/img/icons/teams_list_white.png");}
 	.navbar ul.navbar-list a.tournaments img {content:url("/assets/img/icons/tournaments_icon.png");}
 	.navbar ul.navbar-list a.tournaments.currently_viewed img {content:url("/assets/img/icons/tournaments_icon_white.png");}
 	.navbar ul.navbar-list a.games img {content:url("/assets/img/icons/games_icon.png");}

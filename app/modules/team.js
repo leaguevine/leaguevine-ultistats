@@ -7,9 +7,11 @@ define([
   // Modules
   "modules/leaguevine",
   "modules/navigation",
+  "modules/game",
+  "modules/teamplayer",
   
   // Plugins
-  "plugins/backbone-tastypie",
+  "plugins/backbone-tastypie"
 ],
 
 function(app, Backbone, Leaguevine, Navigation) {
@@ -29,6 +31,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 			teamplayers: [],
 			games: []
 		},
+		urlRoot: Leaguevine.API.root + "teams/",
 		toJSON: function() {
 			var temp = _.clone(this.attributes);
 			//delete temp.teamplayers;
@@ -118,7 +121,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 			games.fetch();
 			//team.set("games", games);
 			
-			var myLayout = app.useLayout("main");// Get the layout. Has .navbar, .detail, .list_children
+			var myLayout = app.useLayout("layouts/main");// Get the layout. Has .navbar, .detail, .list_children
 			myLayout.setViews({
 				".navbar": new Navigation.Views.Navbar(),
 				".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "show", model: team}),
@@ -225,7 +228,7 @@ function(app, Backbone, Leaguevine, Navigation) {
         createGame: function(ev) {
             Backbone.history.navigate("newgame/"+this.model.get("id"), true);
         },
-		serialize: function() {
+		data: function() {
 			return _.clone(this.model.attributes);
 		}
 	});
@@ -233,11 +236,9 @@ function(app, Backbone, Leaguevine, Navigation) {
 		template: "teams/multilist",
 		initialize: function() {
 			this.options.teamplayers.on("reset", this.render, this);
-			this.options.games.on("reset", this.render, this);
 		},
 		cleanup: function() {
 			this.options.teamplayers.off(null, null, this);
-			this.options.games.off(null, null, this);
 		},
 		events: {
 			"click .bplayers": "showPlayers",
@@ -255,19 +256,18 @@ function(app, Backbone, Leaguevine, Navigation) {
             $("button.bplayers").removeClass("is_active");
             $("button.bgames").addClass("is_active");
 		},
-		render: function(layout) {
-			var view = layout(this); //Get this view from the layout.
+		beforeRender: function(){
 			var Game = require("modules/game");
 			var TeamPlayer = require("modules/teamplayer");
 			this.setViews({
 				".lgames": new Game.Views.List( {collection: this.options.games} ),
 				".lplayers": new TeamPlayer.Views.PlayerList( {collection: this.options.teamplayers} )
 			});
-			return view.render().then(function(el) {
-				//I'd rather the render function only do this once, instead of everytime the data are reset
-				//But it might turn out to be a non-issue.
-				$(".lplayers").hide();
-			});
+		},
+		afterRender: function() {
+			//I'd rather the render function only do this once, instead of everytime the data are reset
+			//But it might turn out to be a non-issue.
+			$(".lplayers").hide();
 		}
 	});
 	Team.Views.Edit = Backbone.View.extend({
@@ -278,9 +278,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 			this.model.off(null, null, this);
 		},
 		template: "teams/edit",
-		render: function(layout) {
-            return layout(this).render(this.model.toJSON());
-        },
+		//data: function() {return {this.model};},
 		events: {
 			"click button.save": "saveModel",
 			"click button.delete": "deleteModel"
