@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2012-10-05:v2
+# 2012-10-10:v14
 
 CACHE:
 # CSS
@@ -27,12 +27,15 @@ CACHE:
 # JS libraries
 /assets/js/libs/almond.js
 /assets/js/libs/backbone.js
+/assets/js/libs/handlebars.runtime-1.0.0.beta.js
+/assets/js/libs/handlebars-1.0.0.beta.6.js
 /assets/js/libs/jquery.js
 /assets/js/libs/lodash.js
 /assets/js/libs/require.js
-/assets/js/plugins/backbone-tastypie.js
+/assets/js/plugins/backbone_offline.js
 /assets/js/plugins/backbone.layoutmanager.js
 /assets/js/plugins/backbone.localStorage.js
+/assets/js/plugins/backbone-tastypie.js
 /assets/js/plugins/localSettings.js
 /assets/js/plugins/spinner.js
 
