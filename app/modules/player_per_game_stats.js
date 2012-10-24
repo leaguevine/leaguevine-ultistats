@@ -6,11 +6,12 @@ define([
   "backbone",
 
   // Modules
-  "modules/leaguevine",
-  "modules/stats"
+  "modules/stats",
+  
+  "plugins/localSettings"
 ],
 
-function(require, app, Backbone, Leaguevine) {
+function(require, app, Backbone) {
 	
 	var PlayerPerGameStats = app.module();
 	
@@ -49,7 +50,7 @@ function(require, app, Backbone, Leaguevine) {
 		},
         idAttribute: "player_id", // The unique identifier in a collection is a player. A player who is on both
                                   // teams in the same game could cause problems here.
-		urlRoot: Leaguevine.API.root + "stats/ultimate/player_stats_per_game",
+		urlRoot: Backbone.localSettings.root + "stats/ultimate/player_stats_per_game",
 		
 		toJSON: function(){
 			var ppgs = _.clone(this.attributes);
@@ -64,7 +65,7 @@ function(require, app, Backbone, Leaguevine) {
 	//
 	PlayerPerGameStats.Collection = Backbone.Collection.extend({
 		model: PlayerPerGameStats.Model,
-		urlRoot: Leaguevine.API.root + "stats/ultimate/player_stats_per_game",
+		urlRoot: Backbone.localSettings.root + "stats/ultimate/player_stats_per_game",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
 			url += "/?";

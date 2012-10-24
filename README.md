@@ -61,6 +61,9 @@ Finally, laying out views on the page is assisted by tbranyen's [Backbone.Layout
 Some more backbone documentation can be found [here](https://github.com/addyosmani/backbone-fundamentals/).
 
 ###Connecting to the Leaguevine API
+Look in plugins/localSettings to specify the API connection
+
+----
 This app comes with some default settings to automatically connect to the Leaguevine API. These defaults assume you will be serving these files at http://localhost:8000/ and that you wish to use the API client that Chad created. To serve this app at a different URL or to use your own client, you can create a localSettings.js file that sits in assets/js/plugins/. Here is an example file:
 
     /* localSettings.js */

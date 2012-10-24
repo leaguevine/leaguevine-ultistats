@@ -6,21 +6,22 @@ define([
   "backbone",
 
   // Modules
-  "modules/leaguevine",
+  "modules/helper",
   "modules/navigation",
   "modules/team",
   "modules/player_per_game_stats",
   "modules/team_per_game_stats",
   
   // Plugins
+  "plugins/localSettings",
   "plugins/backbone-tastypie"
 ],
-function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStats, TeamPerGameStats) {
+function(require, app, Backbone, Helper, Navigation, Team, PlayerPerGameStats, TeamPerGameStats) {
 	
 	var Game = app.module();
 	
 	Game.Model = Backbone.Tastypie.Model.extend({
-		urlRoot: Leaguevine.API.root + "games/",
+		urlRoot: Backbone.localSettings.root + "games/",
 		defaults: {
 			//id: "",
 			season_id: null,
@@ -66,16 +67,16 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 	
 	Game.Collection = Backbone.Tastypie.Collection.extend({
 		model: Game.Model,
-		urlRoot: Leaguevine.API.root + "games/",
+		urlRoot: Backbone.localSettings.root + "games/",
 		associations: [
 			//the name of the association is the name of the passed-in option
 			//within the association, the the type helps to determine how to structure the search string
 			//and the search_filter is what string to add to the URL.
 			{"name": "models", "type": "to_many", "search_filter": "game_ids"},
-			{"name": "season_id", "type": "to_one", "search_filter": "season_id"},
-			{"name": "tournament_id", "type": "to_one", "search_filter": "tournament_id"},
-			{"name": "team_1_id", "type": "to_many", "search_filter": "team_ids"},
-			{"name": "team_2_id", "type": "to_many", "search_filter": "team_ids"}
+			{"name": "season", "type": "to_one", "search_filter": "season_id"},
+			{"name": "tournament", "type": "to_one", "search_filter": "tournament_id"},
+			{"name": "team_1", "type": "to_many", "search_filter": "team_ids"},
+			{"name": "team_2", "type": "to_many", "search_filter": "team_ids"}
 		],
 		initialize: function(models, options) {
 			if (options) {
@@ -153,7 +154,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 				var placeholder_team = new Team.Model({name: "Select opponent from list below:"});
 				var this_game = new Game.Model({team_1_id: teamId, team_1: this_team, team_2: placeholder_team});
 				//this_game.fetch(); Game is not persisted yet so it cannot be fetched.
-                var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
+                var teams = new Team.Collection([],{season_id: Backbone.localSettings.season_id});
                 teams.fetch();
                 myLayout.setView(".titlebar", new Navigation.Views.Titlebar({model_class: "game", level: "edit", model: this_game}));
                 myLayout.setView(".content_1", new Game.Views.Edit({model: this_game, teams: teams}));
@@ -198,7 +199,7 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 				}));
 			}, this);
             //Add a button at the end of the list that creates more items
-            this.insertView("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
+            this.insertView("ul", new Helper.Views.MoreItems({collection: this.collection}));
 		},
 		data: function (){
 			return {count: this.collection.length};

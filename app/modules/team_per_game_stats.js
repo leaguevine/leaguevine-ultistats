@@ -6,11 +6,12 @@ define([
   "backbone",
 
   // Modules
-  "modules/leaguevine",
-  "modules/stats"
+  "modules/stats",
+  
+  "plugins/localSettings"
 ],
 
-function(require, app, Backbone, Leaguevine, Stats) {
+function(require, app, Backbone, Stats) {
 	
 	var TeamPerGameStats = app.module();
 	
@@ -55,7 +56,7 @@ function(require, app, Backbone, Leaguevine, Stats) {
             wins: ""
         },
         idAttribute: "team_id", // The unique identifier in a collection is a team. 
-        urlRoot: Leaguevine.API.root + "stats/ultimate/team_stats_per_game",
+        urlRoot: Backbone.localSettings.root + "stats/ultimate/team_stats_per_game",
 		toJSON: function() {
 			obj = _.clone(this.attributes);
             comp_percent_float = parseFloat(obj.completion_percent); //Convert to float
@@ -73,7 +74,7 @@ function(require, app, Backbone, Leaguevine, Stats) {
 	//
 	TeamPerGameStats.Collection = Backbone.Collection.extend({
 		model: TeamPerGameStats.Model,
-		urlRoot: Leaguevine.API.root + "stats/ultimate/team_stats_per_game",
+		urlRoot: Backbone.localSettings.root + "stats/ultimate/team_stats_per_game",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
 			url += "/?";

@@ -3,13 +3,12 @@ define([
   "app",
 
   // Libs
-  "backbone",
+  "backbone"
 
   // Modules
-  "modules/leaguevine"
 ],
 
-function(require, app, Backbone, Leaguevine) {
+function(require, app, Backbone) {
     
 	var Stats = app.module();
 

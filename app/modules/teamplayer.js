@@ -4,14 +4,14 @@ define([
 
   // Libs
   "backbone",
-
+  
   // Modules
-  "modules/leaguevine",
   
   // Plugins
+  "plugins/localSettings",
   "plugins/backbone-tastypie"
 ],
-function(require, app, Backbone, Leaguevine) {
+function(require, app, Backbone) {
     
 	var TeamPlayer = app.module();
 	
@@ -19,6 +19,7 @@ function(require, app, Backbone, Leaguevine) {
 	// MODEL
 	//
 	TeamPlayer.Model = Backbone.Tastypie.Model.extend({
+		urlRoot: Backbone.localSettings.root + "team_players/",
 		defaults: {
 			number: null,
 			team_id: null,
@@ -26,7 +27,6 @@ function(require, app, Backbone, Leaguevine) {
 			player_id: null,
 			player: {last_name: "", first_name: ""}
 		},
-		urlRoot: Leaguevine.API.root + "team_players/",
 		toJSON: function() {
 			var tp = _.clone(this.attributes);
 			//delete tp.team;
@@ -43,13 +43,10 @@ function(require, app, Backbone, Leaguevine) {
 	//
 	TeamPlayer.Collection = Backbone.Tastypie.Collection.extend({
 		model: TeamPlayer.Model,
-		urlRoot: Leaguevine.API.root + "team_players/",
+		urlRoot: Backbone.localSettings.root + "team_players/",
 		associations: [
-			//the name of the association is the name of the passed-in option
-			//within the association, the the type helps to determine how to structure the search string
-			//and the search_filter is what string to add to the URL.
-			{"name": "player_id", "type": "to_many", "search_filter": "player_ids"},
-			{"name": "team_id", "type": "to_many", "search_filter": "team_ids"},
+			{"name": "player", "type": "to_many", "search_filter": "player_ids"},
+			{"name": "team", "type": "to_many", "search_filter": "team_ids"},
 			{"name": "number", "type": "to_one", "search_filter": "number"}
 		],
 		initialize: function(models, options) {

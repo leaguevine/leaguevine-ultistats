@@ -38,6 +38,10 @@ require.config({
 	
 	"plugins/backbone-tastypie": {
 		deps: ["backbone"]
+	},
+	
+	"plugins/localSettings": {
+		deps: ["backbone"] 
 	}
 		
   }

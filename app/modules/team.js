@@ -5,16 +5,17 @@ define([
   "backbone",
   
   // Modules
-  "modules/leaguevine",
+  "modules/helper",
   "modules/navigation",
   "modules/game",
   "modules/teamplayer",
   
   // Plugins
-  "plugins/backbone-tastypie"
+  "plugins/backbone-tastypie",
+  "plugins/localSettings"
 ],
 
-function(app, Backbone, Leaguevine, Navigation) {
+function(app, Backbone, Helper, Navigation) {
 
 	var Team = app.module();
 	
@@ -22,7 +23,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 	// MODEL
 	//
 	Team.Model = Backbone.Tastypie.Model.extend({
-		urlRoot: Leaguevine.API.root + "teams/",
+		urlRoot: Backbone.localSettings.root + "teams/",
 		defaults: {// Include defaults for any attribute that will be rendered.
 			//id: "",//id is used as href in template so we need default.
 			name: "",
@@ -31,9 +32,6 @@ function(app, Backbone, Leaguevine, Navigation) {
 			season_id: null,
 			teamplayers: [],
 			games: []
-		},
-		associations: {
-			"games": {"type": "one_to_many", "search_filter": "team_ids"}//need inverse on game
 		},
 		toJSON: function() {
 			var temp = _.clone(this.attributes);
@@ -50,7 +48,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 	//
 	Team.Collection = Backbone.Tastypie.Collection.extend({
 		model: Team.Model,
-		urlRoot: Leaguevine.API.root + "teams/",
+		urlRoot: Backbone.localSettings.root + "teams/",
 		comparator: function(team) {// Define how items in the collection will be sorted.
 			if (team.season && team.season.name) {return team.get("name").toLowerCase() + team.season.name.toLowerCase();}
             else {return team.get("name").toLowerCase();}
@@ -81,12 +79,12 @@ function(app, Backbone, Leaguevine, Navigation) {
 		routes : {
 			"teams": "listTeams", //List all teams.
 			"teams/:teamId": "showTeam", //Show detail for one team.
-			"newteam": "editTeam",
-			"editteam/:teamId": "editTeam"
+			"teams/new/": "editTeam",
+			"teams/:teamId/edit/": "editTeam"
 		},
 		listTeams: function () {//Route for all teams.
 			// Prepare the data.
-			var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
+			var teams = new Team.Collection([],{season_id: Backbone.localSettings.season_id});
 			//var teams = new Team.Collection();//No defaults?
 			teams.fetch();
 
@@ -102,7 +100,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 				ViewsListClass: Team.Views.List,
 				search_object_name: "team"
 			}));
-			myLayout.setView(".content_2", new Leaguevine.Views.Empty());//#myLayout.views[".content_2"].remove();
+			myLayout.setView(".content_2", new Helper.Views.Empty());//#myLayout.views[".content_2"].remove();
 			myLayout.render();
 		},
 		showTeam: function (teamId) {
@@ -112,12 +110,12 @@ function(app, Backbone, Leaguevine, Navigation) {
             team.fetch();
 
 			var TeamPlayer = require("modules/teamplayer");
-			var teamplayers = new TeamPlayer.Collection([],{team_id: team.get("id")});
+			var teamplayers = new TeamPlayer.Collection([],{team: team});
 			teamplayers.fetch();
 			//team.set("teamplayers", teamplayers);
 			
 			var Game = require("modules/game");
-			var games = new Game.Collection([],{team_1_id: team.get("id")});
+			var games = new Game.Collection([],{team_1: team});
 			games.fetch();
 			//team.set("games", games);
 			
@@ -145,7 +143,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 				".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "edit", model: team}),
 				".content_1": new Team.Views.Edit({model: team})
 			});
-			//myLayout.render(function(el) {$("#main").html(el);});
+			myLayout.setView(".content_2", new Helper.Views.Empty());//#myLayout.views[".content_2"].remove();
 			myLayout.render();
 		}
 	});
@@ -179,7 +177,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 				}
 			}, this);
             //Add a button at the end of the list that creates more items
-            this.insertView("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
+            this.insertView("ul", new Helper.Views.MoreItems({collection: this.collection}));
 		}
 	});
 	Team.Views.Item = Backbone.LayoutView.extend({

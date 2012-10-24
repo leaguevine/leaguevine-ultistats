@@ -92,7 +92,7 @@ function(app, Backbone) {
 				lbt = "";
 				//Right button is new/add for list
 				rbc = "add";
-				rbh = "/new" + my_class;
+				rbh = this.title_meta[my_class].href + "/new/";
 				rbt = "";//Doesn't matter because it'll be a plus button.
 			} else if (my_level === "show"){
 				//Left button is back to the list if we are viewing an item.
@@ -101,7 +101,7 @@ function(app, Backbone) {
 				lbt = this.title_meta[my_class].title;
 				//Right button is Edit if we are viewing an item.
 				rbc = ""; //No class for the 'edit' button.
-				rbh = "/edit" + my_class + "/" + this.model.id;
+				rbh = this.title_meta[my_class].href + "/" + this.model.id + "/edit/";
 				rbt = "Edit";
 			} else if (my_level === "edit"){
 				//Left button is 'cancel' if we are editing.
@@ -127,7 +127,7 @@ function(app, Backbone) {
 			}
 			if (my_level === "show" && my_class === "game"){
 				rbc = "disabled"; //We do not hav a way to edit games.
-				if (this.model.get("tournament_id")){
+				if (this.model.get("tournament_id")){//so game can backup into tournament.
 					lbh = "/tournaments/" + this.model.get("tournament_id");
 					lbt = this.model.get("tournament").name ? this.model.get("tournament").name : "Tournament";
 				} else {lbc = "disabled";}//We do not have a generic list of games.

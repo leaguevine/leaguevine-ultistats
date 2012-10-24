@@ -4,16 +4,17 @@
     };
 
     Backbone.Tastypie.Model = Backbone.Model.extend({
-        idAttribute: 'resource_uri',
+        //idAttribute: 'resource_uri',
 
         url: function() {
             var url = getValue(this, 'urlRoot') || getValue(this.collection, 'urlRoot') || urlError();
             
-            if (this.isNew()){
-            	return this.has('id') ? url += this.get("id") + '/' : url;
-            }
+			if (this.has('id')){//TODO: Use sid, else it's local
+				return url += this.id + '/';
+			} else {
+				return this.get('resource_uri');
+			}
 
-            return this.get('resource_uri');
         },
         _getId: function() {
             if (this.has('id'))
@@ -51,7 +52,7 @@
             	} else if (this.options[ao.name]) {//normal associations passed in options
             		filter_add += '&' + ao.search_filter + '=';
             		if (ao.type === "to_many"){filter_add += '%5B';}
-            		filter_add += this.options[ao.name];
+            		filter_add += this.options[ao.name].id;
             		if (ao.type === "to_many"){filter_add += '%5D';}
             	}
             	
