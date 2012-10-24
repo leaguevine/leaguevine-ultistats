@@ -9,8 +9,9 @@
         url: function() {
             var url = getValue(this, 'urlRoot') || getValue(this.collection, 'urlRoot') || urlError();
             
-            if (this.isNew())
-                return url;
+            if (this.isNew()){
+            	return this.has('id') ? url += this.get("id") + '/' : url;
+            }
 
             return this.get('resource_uri');
         },
@@ -37,16 +38,34 @@
         },
         url: function(models) {
             var url = this.urlRoot;
-
+            
+            var filter_add = '';
+            _.each(this.associations, function (ao){
+            	if (ao.name === "models") {//special case for models
+            		if (this.models.length>0){
+            			var ids = _.map(models, function(model) {
+            				return model._getId();
+            			});
+            			filter_add += '&' + ao.search_filter + '=%5B' + ids.join('%2C') + '%5D';
+            		}
+            	} else if (this.options[ao.name]) {//normal associations passed in options
+            		filter_add += '&' + ao.search_filter + '=';
+            		if (ao.type === "to_many"){filter_add += '%5B';}
+            		filter_add += this.options[ao.name];
+            		if (ao.type === "to_many"){filter_add += '%5D';}
+            	}
+            	
+            }, this);
+            /*
             if (models) {
                 var ids = _.map(models, function(model) {
                     return model._getId();
                 });
 
                 url += 'set/' + ids.join(';') + '/';
-            }
+            }*/
 
-            return url + this._getQueryString();
+            return url + this._getQueryString() + filter_add;
         },
         parse: function(response) {
             if (response && response.meta)

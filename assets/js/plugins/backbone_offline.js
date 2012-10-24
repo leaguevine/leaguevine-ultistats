@@ -165,7 +165,7 @@
         }
         if (!options.local) {
           item.set({
-            updated_at: (new Date()).toJSON(),
+            time_last_updated: (new Date()).toJSON(),
             dirty: true
           });
         }
@@ -349,7 +349,7 @@
       };
 
       Sync.prototype.updateItem = function(item, model) {
-        if ((new Date(model.get('updated_at'))) < (new Date(item.updated_at))) {
+        if ((new Date(model.get('time_last_updated'))) < (new Date(item.time_last_updated))) {
           delete item.id;
           return model.save(item, {
             local: true

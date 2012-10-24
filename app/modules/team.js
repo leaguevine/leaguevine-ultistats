@@ -22,6 +22,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 	// MODEL
 	//
 	Team.Model = Backbone.Tastypie.Model.extend({
+		urlRoot: Leaguevine.API.root + "teams/",
 		defaults: {// Include defaults for any attribute that will be rendered.
 			//id: "",//id is used as href in template so we need default.
 			name: "",
@@ -31,7 +32,9 @@ function(app, Backbone, Leaguevine, Navigation) {
 			teamplayers: [],
 			games: []
 		},
-		urlRoot: Leaguevine.API.root + "teams/",
+		associations: {
+			"games": {"type": "one_to_many", "search_filter": "team_ids"}//need inverse on game
+		},
 		toJSON: function() {
 			var temp = _.clone(this.attributes);
 			//delete temp.teamplayers;
@@ -91,18 +94,15 @@ function(app, Backbone, Leaguevine, Navigation) {
 			// Prepare the layout/view(s)
 			var myLayout = app.useLayout("layouts/main");// Get the layout from a layout cache.
 			// Layout from cache might have different views set. Let's (re-)set them now.
-			myLayout.setViews({
-				".navbar": new Navigation.Views.Navbar({}),
-				".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "list"}),
-				".content_1": new Navigation.Views.SearchableList({
-					collection: teams, 
-					CollectionClass: Team.Collection, 
-					ViewsListClass: Team.Views.List, 
-					//right_btn_class: "", right_btn_txt: "Create", right_btn_href: "#newteam",
-					search_object_name: "team"
-				})
-			});
-			//myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+			myLayout.setView(".navbar", new Navigation.Views.Navbar());
+			myLayout.setView(".titlebar", new Navigation.Views.Titlebar({model_class: "team", level: "list"}));
+			myLayout.setView(".content_1", new Navigation.Views.SearchableList({
+				collection: teams,
+				CollectionClass: Team.Collection,
+				ViewsListClass: Team.Views.List,
+				search_object_name: "team"
+			}));
+			myLayout.setView(".content_2", new Leaguevine.Views.Empty());//#myLayout.views[".content_2"].remove();
 			myLayout.render();
 		},
 		showTeam: function (teamId) {
@@ -112,23 +112,20 @@ function(app, Backbone, Leaguevine, Navigation) {
             team.fetch();
 
 			var TeamPlayer = require("modules/teamplayer");
-			var teamplayers = new TeamPlayer.Collection([],{team_id: team.id});
+			var teamplayers = new TeamPlayer.Collection([],{team_id: team.get("id")});
 			teamplayers.fetch();
 			//team.set("teamplayers", teamplayers);
 			
 			var Game = require("modules/game");
-			var games = new Game.Collection([],{team_1_id: team.id});
+			var games = new Game.Collection([],{team_1_id: team.get("id")});
 			games.fetch();
 			//team.set("games", games);
 			
 			var myLayout = app.useLayout("layouts/main");// Get the layout. Has .navbar, .detail, .list_children
-			myLayout.setViews({
-				".navbar": new Navigation.Views.Navbar(),
-				".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "show", model: team}),
-				".content_1": new Team.Views.Detail( {model: team}),
-				".content_2": new Team.Views.Multilist({ teamplayers: teamplayers, games: games})
-			});
-			//myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+			myLayout.setView(".navbar", new Navigation.Views.Navbar());
+			myLayout.setView(".titlebar", new Navigation.Views.Titlebar({model_class: "team", level: "show", model: team}));
+			myLayout.setView(".content_1", new Team.Views.Detail( {model: team}));
+			myLayout.setView(".content_2", new Team.Views.Multilist({ teamplayers: teamplayers, games: games}));
 			myLayout.render();
 		},
 		editTeam: function (teamId) {
@@ -157,7 +154,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 	//
 	// VIEWS
 	//
-	Team.Views.List = Backbone.View.extend({
+	Team.Views.List = Backbone.LayoutView.extend({
 		template: "teams/list",
 		initialize: function() {
 			this.collection.on("reset", this.render, this);
@@ -185,7 +182,7 @@ function(app, Backbone, Leaguevine, Navigation) {
             this.insertView("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
 		}
 	});
-	Team.Views.Item = Backbone.View.extend({
+	Team.Views.Item = Backbone.LayoutView.extend({
 		template: "teams/item",
         events: {
             "click": "team_tap_method"
@@ -213,7 +210,7 @@ function(app, Backbone, Leaguevine, Navigation) {
             }
         }
 	});
-	Team.Views.Detail = Backbone.View.extend({
+	Team.Views.Detail = Backbone.LayoutView.extend({
 		//We were passed a model on creation by Team.Router.showTeam(), so we have this.model
 		template: "teams/detail",
 		initialize: function() {
@@ -232,7 +229,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 			return _.clone(this.model.attributes);
 		}
 	});
-	Team.Views.Multilist = Backbone.View.extend({
+	Team.Views.Multilist = Backbone.LayoutView.extend({
 		template: "teams/multilist",
 		initialize: function() {
 			this.options.teamplayers.on("reset", this.render, this);
@@ -270,7 +267,7 @@ function(app, Backbone, Leaguevine, Navigation) {
 			$(".lplayers").hide();
 		}
 	});
-	Team.Views.Edit = Backbone.View.extend({
+	Team.Views.Edit = Backbone.LayoutView.extend({
 		initialize: function() {
 			this.model.on("reset", this.render, this);
 		},

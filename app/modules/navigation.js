@@ -39,7 +39,7 @@ function(app, Backbone) {
 		}
 	});
     
-    Navigation.Views.Titlebar = Backbone.View.extend({
+    Navigation.Views.Titlebar = Backbone.LayoutView.extend({
         /* Usage:
          *      options:
          *			model_class - (required) One of 'team', 'game', 'tournament', 'player', 'setting'
@@ -79,7 +79,9 @@ function(app, Backbone) {
 					var this_first = this.model.get("first_name") || "";
 					var this_last = this.model.get("last_name") || "";
 					my_title = this_first + " " + this_last;
-				} else {my_title = this.model.get("name") || "";}
+				} else {
+					my_title = this.model.get("name") || "";
+				}
 			} else {my_title = "";}
 
 			var lbc, lbh, lbt, rbc, rbh, rbt;
@@ -150,7 +152,7 @@ function(app, Backbone) {
 		}
 	});
 
-    Navigation.Views.SearchableList = Backbone.View.extend({
+    Navigation.Views.SearchableList = Backbone.LayoutView.extend({
 		/*Usage:
 		*	required arguments:
 		*		collection - Collection of models

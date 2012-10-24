@@ -44,6 +44,20 @@ function(require, app, Backbone, Leaguevine) {
 	TeamPlayer.Collection = Backbone.Tastypie.Collection.extend({
 		model: TeamPlayer.Model,
 		urlRoot: Leaguevine.API.root + "team_players/",
+		associations: [
+			//the name of the association is the name of the passed-in option
+			//within the association, the the type helps to determine how to structure the search string
+			//and the search_filter is what string to add to the URL.
+			{"name": "player_id", "type": "to_many", "search_filter": "player_ids"},
+			{"name": "team_id", "type": "to_many", "search_filter": "team_ids"},
+			{"name": "number", "type": "to_one", "search_filter": "number"}
+		],
+		initialize: function(models, options) {
+			if (options) { this.options = options;
+				/*if (options.team_id) {this.team_id = options.team_id;}
+				if (options.player_id) {this.player_id = options.player_id;}*/
+			}
+		},
 		comparator: function(teamplayer) {// Define how items in the collection will be sorted.
 			//Build an object containing different string representations.
 			var temp_player = _.isFunction(teamplayer.get("player").get) ? teamplayer.get("player").toJSON() : teamplayer.get("player");
@@ -61,43 +75,7 @@ function(require, app, Backbone, Leaguevine) {
 				else if (sort_setting.value == "last name"){return this_obj.last_name;}
 			}
 			return this_obj.full_name;
-		},
-		parse: function(resp, xhr) {
-			resp = Backbone.Collection.prototype.parse(resp);
-			//The websql plugin doesn't know how to sort, meaning we'll get back every teamplayer in the db.
-			//We need to weed them out here.
-			var _this = this;
-			if (this.team_id) {
-				resp = _.filter(resp, function(obj){
-					return obj.team_id == _this.team_id;
-				});
-			}
-			if (this.player_id) {
-				resp = _this.filter(resp, function(obj){
-					return obj.player_id == _this.player_id;
-				});
-			}
-			_.map(resp, function(resp_){
-				resp_ = Backbone.Model.prototype.parse(resp_);
-				resp_.id = resp_.team_id + "/" + resp_.player_id;
-				return resp_;
-			});
-			//
-			/*var _this = this;
-			if (this.team_id){resp = _.filter(resp, function(obj){
-				return obj.team_id == _this.team_id;
-			});}
-			if (this.player_id){resp = _.filter(resp, function(obj){
-				return obj.player_id == _this.player_id;
-			});}*/
-			return resp;
-		},
-		initialize: function(models, options) {
-			if (options) {
-				if (options.team_id) {this.team_id = options.team_id;}
-				if (options.player_id) {this.player_id = options.player_id;}
-			}
-		}
+		}		
 	});
 	
 	TeamPlayer.Views.Player = Backbone.View.extend({

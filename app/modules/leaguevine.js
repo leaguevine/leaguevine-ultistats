@@ -100,6 +100,9 @@ function(app, Backbone) {
             });
         }
     });
+    Leaguevine.Views.Empty = Backbone.View.extend({
+    	tagName: "div"
+    });
 
 	Leaguevine.API = {	
         root: "http://api.playwithlv.com/v1/",
