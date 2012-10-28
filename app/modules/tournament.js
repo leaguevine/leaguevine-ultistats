@@ -36,14 +36,14 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 		toJSON: function() {//get rid of tournteams
 			return _.clone(this.attributes);
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("tournament")
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("tournament")
 	});
 	
 	Tournament.Collection = Backbone.Collection.extend({
 		model: Tournament.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("tournament"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("tournament"),
 		urlRoot: Leaguevine.API.root + "tournaments",
         url: function(models) {
             var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
