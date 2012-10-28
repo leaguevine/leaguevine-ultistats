@@ -16823,8 +16823,8 @@ function(require, app, Backbone, Leaguevine) {
 			//delete tp.player;
 			return tp;
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("teamplayer"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("teamplayer"),
 		associations: {
 			"team_id": "team",
 			"player_id": "player"
@@ -16835,8 +16835,8 @@ function(require, app, Backbone, Leaguevine) {
 	//
 	TeamPlayer.Collection = Backbone.Collection.extend({
 		model: TeamPlayer.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("teamplayer"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("teamplayer"),
 		urlRoot: Leaguevine.API.root + "team_players",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
@@ -17016,8 +17016,8 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			weight: "",
 			teamplayers: {}//used to get to teams that this player belongs to.
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("player"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("player"),
 		urlRoot: Leaguevine.API.root + "players",
 		parse: function(resp, xhr) {
 			resp = Backbone.Model.prototype.parse(resp);
@@ -17035,8 +17035,8 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 	//
 	Player.Collection = Backbone.Collection.extend({
 		model: Player.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("player"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("player"),
 		comparator: function(player) {// Define how items in the collection will be sorted.
 			return player.get("last_name").toLowerCase();
 		},
@@ -17221,8 +17221,8 @@ function(app, Backbone, Leaguevine, Navigation) {
 			//delete temp.season;
 			return temp;
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("team"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("team"),
 		associations: {"season_id": "season"}
 	});
   
@@ -17231,8 +17231,8 @@ function(app, Backbone, Leaguevine, Navigation) {
 	//
 	Team.Collection = Backbone.Collection.extend({
 		model: Team.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("team"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("team"),
 		urlRoot: Leaguevine.API.root + "teams",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
@@ -17927,8 +17927,8 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 			start_time: ""
 			//pool, swiss_round, bracket
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("game"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("game"),
 		associations: {
 			"tournament_id": "tournament",
 			"team_1_id": "team",
@@ -17972,8 +17972,8 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 	
 	Game.Collection = Backbone.Collection.extend({
 		model: Game.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("game"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("game"),
 		comparator: function(game) {// Define how items in the collection will be sorted.
 			return game.get("start_time");
 		},
@@ -18315,15 +18315,15 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 		//If a tournament is saved to the API does it care about the teams and games?
 		toJSON: function() {//get rid of tournteams
 			return _.clone(this.attributes);
-		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("tournament")
+		}
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("tournament")
 	});
 	
 	Tournament.Collection = Backbone.Collection.extend({
 		model: Tournament.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("tournament"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("tournament"),
 		urlRoot: Leaguevine.API.root + "tournaments",
         url: function(models) {
             var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
@@ -18701,8 +18701,8 @@ function(require, app, Backbone, Leaguevine) {
 			player_3_team_id: NaN,
 			int_1: NaN
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("gameevent"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("gameevent"),
 		associations: {
 			"game_id": "game",
 			"player_1_id": "player",
@@ -18731,8 +18731,8 @@ function(require, app, Backbone, Leaguevine) {
 	});
 	GameEvent.Collection = Backbone.Collection.extend({
 		model: GameEvent.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("gameevent"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("gameevent"),
 		urlRoot: Leaguevine.API.root + "events",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
@@ -18818,8 +18818,8 @@ function(require, app, Backbone, Leaguevine) {
 			team_1_score: null,
 			team_2_score: null
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("game_score"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("game_score"),
 		associations: {
 			"game_id": "game"
 		},

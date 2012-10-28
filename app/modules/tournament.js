@@ -35,7 +35,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 		//If a tournament is saved to the API does it care about the teams and games?
 		toJSON: function() {//get rid of tournteams
 			return _.clone(this.attributes);
-		},
+		}
 		//sync: Backbone.WebSQLAjaxSync,
 		//store: new Backbone.WebSQLStore("tournament")
 	});
