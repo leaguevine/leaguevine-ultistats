@@ -467,13 +467,15 @@ function(require, app, Backbone) {
 			//.game
 			trackedgame.set("game", new Game.Model(trackedgame.get("game")), {silent:true});
 			if (!was_tracked) {trackedgame.get("game").id = gameId;}
-			trackedgame.get("game").fetch();
+			trackedgame.get("game").fetch({success: function(){
+				trackedgame.get("game").trigger("change");
+			}});
 			//Game also has team_1 and team_2 objects that are not yet Backbone Models.
 			
 			//roster_1 and roster_2. These require the team_x_id which only comes back after the game is fetched.
 			trackedgame.set("roster_1", new TeamPlayer.Collection(), {silent:true});
 			trackedgame.set("roster_2", new TeamPlayer.Collection(), {silent:true});
-			trackedgame.get("game").on("reset", function(){//We need the team ids before we can get the rosters.
+			trackedgame.get("game").on("change", function(){//We need the team ids before we can get the rosters.
 				for (var ix=1;ix<3;ix++){
 					_.extend(trackedgame.get("roster_"+ix),{team_id: trackedgame.get("game").get("team_"+ix+"_id")});
 					trackedgame.get("roster_"+ix).fetch();
