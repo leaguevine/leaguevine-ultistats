@@ -33,7 +33,9 @@ function(app, Backbone) {
 
     Leaguevine.Router = Backbone.Router.extend({
 
+        //http://local.ultistats.com/expires_in=157680000&token_type=bearer&access_token=22db8beda6&scope=universal
         routes: {
+            "expires_:hash": "token_received",
             "access_:hash": "token_received",
             "error_description:hash": "login_error"
         },
@@ -105,28 +107,28 @@ function(app, Backbone) {
         root: "http://api.playwithlv.com/v1/",
         base: "http://playwithlv.com/oauth2/authorize/?response_type=token&scope=universal",
         client_id: "ab9a5a75a96924bcdda7ee94f9c7ca",
-        redirect_uri: "http://ultistats.localhost/",
+        redirect_uri: "http://local.ultistats.com/",
         season_id: null,
         d_token: function() {//Modules will reference this dynamic token
-            if (!this.token) {
+            if (!this.access_token) {
                 var stored_api = JSON.parse(localStorage.getItem("auth_object")); //Pull our token out of local storage if it exists.
                 _.extend(this,stored_api);
             }
-            if (!this.token) {
+            if (!this.access_token) {
                 //return this.login();
                 this.login();
                 return false;
             }
             else {
-                return this.token;
+                return this.access_token;
             }
         },
         is_logged_in: function() {//Returns true if the user is logged in and false if not
-            if (!this.token) {
+            if (!this.access_token) {
                 var stored_api = JSON.parse(localStorage.getItem("auth_object"));
                 _.extend(this, stored_api);
             }
-            return (this.token !== null && this.token !== undefined);
+            return (this.access_token !== null && this.access_token !== undefined);
         },
         login: function() {//Redirects a user to the login screen
             localStorage.setItem("login_redirect", Backbone.history.fragment);
@@ -135,7 +137,7 @@ function(app, Backbone) {
         },
         logout: function() {//Logs a user out by removing the locally stored token
             localStorage.removeItem("auth_object");
-            this.token = undefined;
+            this.access_token = undefined;
         }
     };
 

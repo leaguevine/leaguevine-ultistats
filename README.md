@@ -3,6 +3,13 @@ v0.5
 
 ###Current Status:
 The app is in use by several people though it is still under heavy development.
+The biggest problem is syncing the data between offline and online.
+There are several solutions in development but none of them are production ready.
+[1](https://github.com/pxlpl/backbone.offline)
+[2](https://github.com/Ask11/backbone.offline)
+And my own used in this project.
+
+I will wait for the first two to develop a little while I try another route.
 
 ###Getting started locally - Method 1 - Apache
 1.  Download this repo.
@@ -37,7 +44,7 @@ Alternatively, you can disable pushState and then prepend all of the links in th
     * Install npm
     * Install [grunt-bbb](https://github.com/backbone-boilerplate/grunt-bbb)
 3.  Open a terminal/console, change to the directory where you downloaded the repo
-4.  
+4.
 ```
 >bbb server
 ```

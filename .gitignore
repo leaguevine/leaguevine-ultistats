@@ -13,3 +13,4 @@ ultistats.appcache
 
 # Ignore .htaccess
 .htaccess
+/.settings
