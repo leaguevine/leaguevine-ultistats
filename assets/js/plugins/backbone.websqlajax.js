@@ -36,8 +36,7 @@
         return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
     };
 
-    //TODO: is_online isn't being used right now.
-/*    var is_online = function () {
+    var is_online = function () {
         if (navigator && navigator.onLine !== undefined) {
             return navigator.onLine;
         }
@@ -50,7 +49,7 @@
         catch(e) {
             return false;
         }
-    };*/
+    };
 
 
     // Define the sync first. Then below define the store(s).
@@ -333,14 +332,15 @@
         },
         request: function(callback) {
             var _this = this;
-            //if (is_online()) {
+            if (is_online()) {
                 return (callback()).then(function() {
                     return _this.requestNext();
                 });
-                //} else {
-                    //this.requests.unshift(callback);
-                    //return setTimeout(this.requestNext(),10000);
-                    //}
+            } else {
+                _this.requests.unshift(callback);
+                //TODO: unshift works, but when this.requestNext is called, this.requests is empty.
+                setTimeout(function(){_this.requestNext();},10000);
+            }
         },
         queue: function(callback) {
             if (!this.enabled) {
