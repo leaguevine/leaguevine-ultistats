@@ -35,7 +35,9 @@
     var guid = function() {
         return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
     };
-    var is_online = function () {
+
+    //TODO: is_online isn't being used right now.
+/*    var is_online = function () {
         if (navigator && navigator.onLine !== undefined) {
             return navigator.onLine;
         }
@@ -48,7 +50,8 @@
         catch(e) {
             return false;
         }
-    };
+    };*/
+
 
     // Define the sync first. Then below define the store(s).
     // ====== [ Backbone.sync WebSQL implementation ] ======
@@ -60,9 +63,11 @@
         }
 
         var is_solo = !model.models;
-        var store = model.store || model.collection.store, success, error;
+        var store = model.store || model.collection.store;
 
-        //Set the db request callbacks.
+        //Set the db request callbacks for success and error
+        //These are passed as arguments to each store.method
+
         var success = function (tx, res) {
             var len = res.rows.length,result=[], i, this_res;
             if (len > 0) {//res.rows is empty for anything except find or findall, I think.
@@ -97,17 +102,19 @@
             options.error(error);//TODO: Does this work if there is more than 1 error callback?
         };
 
+
         /*
          * TODO: In the case that the model has been created from a router, we will not
          * yet know if it has already been persisted locally.
          */
 
-        //Send out the SQL request.
+
+        //Send out the appropriate SQL request.
         switch(method) {
         case "read":
-            if (!is_solo){//This is a collection.
+            if (!is_solo){//This is a collection, so findAall
                 store.findAll(model, success, error);
-            } else if (model.get("local_id") || model.id){
+            } else if (model.get("local_id") || model.id){//This is not a collection, and we have some identifier.
                 //If we have a model.id or model.get("local_id"), then we might be able to find a match in the database.
                 //We might only have id if the model was created from a router.
                 //We might only have a local_id if it has not yet be synchronized.
@@ -128,7 +135,9 @@
         }
     };
 
+    //Get a reference to the local database. This will also create the local database if it does not already exist.
     var db = openDatabase("ultistats", "", "Leaguevine-ultistats db", 1024*1024*5);//5th parameter can be create callback.
+
     // ====== [ Default WebSQLStore ] ======
     // Use this store if you do not need a more specific store (see below).
     // Specify the store in the model definition.
@@ -136,7 +145,7 @@
     Backbone.WebSQLStore = function (tableName, initSuccessCallback, initErrorCallback) {
         var success, error;
         this.tableName = tableName;
-        this.db = db;
+        this.db = db; //attach the global db to this store.
         success = function (tx,res) {
             if(initSuccessCallback) initSuccessCallback();
         };
@@ -152,91 +161,104 @@
         });
     };
 
+    //Add more methods to our store.
     _.extend(Backbone.WebSQLStore.prototype,{
 
         create: function (model,success,error) {//Create might be called either by the API return or by the app making a new model.
-            var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
+
+            //real_id = model.id if it exists and it is not a local id, else false
+            var real_id = (model.id &&
+                    (model.id!=model.get("local_id") &&
+                            ("" + model.id).indexOf("local_id")!=0));
+
             var local_id = guid();
             local_id = "local_id_" + local_id;
             model.set("local_id",local_id);
 
-            var stmnt = "INSERT INTO " + this.tableName + " (";
-            //var stmnt = "INSERT OR REPLACE INTO " + this.tableName + " (";//This will replace all of the db attributes with the passed attributes.
-            var parms = [];
+            //SQL statement with placeholders.
+            var create_stmnt = "INSERT INTO  %(table_name)s" + //What about insert or replace into?
+                    " (%(id_col)s local_id, value, time_created, time_last_updated)" +
+                    " VALUES (%(id_val)s ?, ?, %(tc_val)s, %(tlu_val)s)";
+            var fill_stmnt = {//how to fill the placeholders.
+                table_name: this.tableName,
+                id_col: real_id ? "id, " : "",
+                id_val: real_id ? "\"" + model.id + "\", " : "",//TODO: use ?, and add the parm.
+                tc_val: model.get("time_created") ? ", ?" : ", datetime('now')",
+                tlu_val: model.get("time_last_updated") ? ", ?" : ", datetime('now')"
+            };
+            var stmnt = sprintf(create_stmnt, fill_stmnt);
 
-            if (real_id){
-                stmnt += "id, ";
-            }
-            stmnt += "local_id, value, time_created, time_last_updated) VALUES (";
-
-            if (real_id){
-                stmnt += "\"" + model.id + "\", ";
-                //parms.push(model.id);
-            }
-            stmnt += "?, ?";
-            parms.push(model.get("local_id"));
-            //Clean id, local_id, time_created, and time_last_updated from the stringified version of the model, as those will be stored in separate columns.
+            //Get the model's current data into a JSON string
+            //, except id, local_id, time_created and time_last_updated.
             var value = model.toJSON();
             delete value.id;
             delete value.local_id;
             delete value.time_created;
             delete value.time_last_updated;
             value = JSON.stringify(value);
-            parms.push(value);
 
+            //The statement ?s will be filled with parms.
+            var parms = [];
+            parms.push(model.get("local_id"));
+            parms.push(value);
             if (model.get("time_created")){
-                stmnt += ", ?";
                 parms.push(Date.parse(model.get("time_created")));//not necessary if create gives a result.
             } else {
-                stmnt += ", datetime('now')";
                 model.set("time_created", new Date().toISOString());//not necessary if create gives a result.
             }
-
             if (model.get("time_last_updated")){
-                stmnt += ", ?";
                 parms.push(Date.parse(model.get("time_last_updated")));
             } else {
-                stmnt += ", datetime('now')";
                 model.set("time_last_updated", new Date().toISOString());
             }
-            stmnt += ")";
 
-            this._executeSql(stmnt,parms, success, error);
-        },
-
-        destroy: function (model, success, error) {
-            var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
-            var stmnt = "DELETE FROM "+this.tableName+" WHERE local_id=?";
-            var parms = [model.get("local_id")];
-            if (real_id) {
-                stmnt += " OR id = " + model.id;
-            }
-            this._executeSql(stmnt,parms,success, error);
-        },
-
-        find: function (model, success, error) {
-            var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
-            var stmnt = "SELECT COALESCE(id, local_id) AS id, local_id, value, time_created, time_last_updated FROM "+this.tableName+" WHERE ";
-            var parms = [];
-            if (model.get("local_id")){
-                stmnt += "local_id=?";
-                parms.push(model.get("local_id"));
-            }
-            if (real_id) {
-                if (model.get("local_id")) { stmnt += " OR "; }
-                stmnt += "id = \"" + model.id + "\"";
-            }
             this._executeSql(stmnt, parms, success, error);
         },
 
+        //To delete...
+        destroy: function (model, success, error) {
+            var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
+            var create_stmnt = "DELETE FROM %(table_name)" +
+                    "WHERE local_id=? %(id_criterion)s";
+            var fill_stmnt = {
+                    table_name: this.tableName,
+                    id_criterion: real_id ? " OR id = ?" : ""
+            };
+            var stmnt = sprintf(create_stmnt, fill_stmnt);
+            var parms = [model.get("local_id")];
+            this._executeSql(stmnt, parms, success, error);
+        },
+
+        //To find a single model.
+        find: function (model, success, error) {
+            var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
+            var create_stmnt = "SELECT COALESCE(id, local_id) AS id, local_id, value, time_created, time_last_updated" +
+                    " FROM %(table_name)s" +
+                    " WHERE %(lid)s %(or)s %(rid)s";
+            var fill_stmnt = {
+                    table_name: this.tableName,
+                    lid: model.get("local_id") ? "local_id=?" : "",
+                    or: model.get("local_id") && real_id ? " OR " : "",
+                    rid: real_id ? "id = ?" : ""
+            };
+            var stmnt = sprintf(create_stmnt, fill_stmnt);
+            var parms = [];
+            if (model.get("local_id")){parms.push(model.get("local_id"));}
+            if (real_id){parms.push(model.id);}
+            this._executeSql(stmnt, parms, success, error);
+        },
+
+        //To find an array of models.
         findAll: function (model, success,error) {
             //TODO: Handle the case when model has search criteria. This should be done in the model-specific store.
             this._executeSql("SELECT COALESCE(id, local_id) as id, local_id, value, time_created, time_last_updated FROM "+this.tableName,[], success, error);
         },
 
+        //To save changes...
         update: function (model, success, error) {
             var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
-            //Clean id, local_id, time_created, and time_last_updated from the stringified version of the model, as those will be stored in separate columns.
+
+            //Cleaned and stringified version of the model.
             var value = model.toJSON();
             delete value.id;
             delete value.local_id;
@@ -245,25 +267,28 @@
             value = JSON.stringify(value);
 
             //Build the statement and parms
-            //this._executeSql("UPDATE "+this.tableName+" SET value=? WHERE id=?",[JSON.stringify(model.toJSON()),model.id], success, error);
-            var stmnt = "UPDATE " + this.tableName + " SET value=?, time_last_updated=datetime('now')";
+            var create_stmnt = "UPDATE %(table_name)s" +
+                    " SET value=?, time_last_update=datetime('now') %(id_col)s" +
+                    " WHERE local_id=? %(id_where)s";
+            var fill_stmnt = {
+                table_name: this.tableName,
+                id_col: real_id ? ", id = ?" : "",
+                id_where: real_id ? " OR id = ?" : ""
+            };
+            var stmnt = sprintf(create_stmnt, fill_stmnt);
+
             var parms = [value];
-            if (real_id) {
-                stmnt += ", id = ";
-                stmnt += "\"" + model.id + "\"";
-            }
-            stmnt += " WHERE local_id=?";
+            if (real_id) {parms.push(model.id);}
             parms.push(model.get("local_id"));
-            if (real_id) {
-                stmnt += " OR id = ";
-                stmnt += "\"" + model.id + "\"";
-            }
-            this._executeSql(stmnt,parms, success, error);
+            if (real_id){parms.push(model.id);}
+
+            this._executeSql(stmnt, parms, success, error);
         },
 
+        //TODO: Why does this function do nothing? It is never called?
         _save: function (model, success, error) {
-            //console.log("sql _save");
-            var id = (model.id || model.attributes.id);
+            console.log("sql _save");
+            //var id = (model.id || model.attributes.id);
             this.db.transaction(function(tx) {
                 tx.executeSql("");
             });
@@ -283,6 +308,7 @@
             });
         }
     });
+ // ====== [ END WebSQLStore ] ======
 
     // TODO: Create model-specific stores for improved performance.
 
