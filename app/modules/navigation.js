@@ -20,6 +20,18 @@ function(app, Backbone, Game) {
         games_href: "/games",
         settings_href: "/settings"
     };
+    var teams_href = localStorage.getItem('teams_href');
+    var tournaments_href = localStorage.getItem('tournaments_href');
+    var games_href = localStorage.getItem('games_href');
+    if (teams_href) {
+        app.navigation.teams_href = teams_href;
+    }
+    if (tournaments_href) {
+        app.navigation.tournaments_href = tournaments_href;
+    }
+    if (games_href) {
+        app.navigation.games_href = games_href;
+    }
 
     Navigation.Views.Navbar = Backbone.View.extend({
         template: "navigation/navbar",
@@ -39,14 +51,17 @@ function(app, Backbone, Game) {
             if (fragment.indexOf("tournament") != -1) { // If the current URL is a tournament URL
                 tournaments_class = currently_viewed;
                 app.navigation.tournaments_href = fragment;
+                localStorage.setItem('tournaments_href', fragment);
             }
             else if (fragment.indexOf("team") != -1) { // If the current URL is a team URL
                 teams_class = currently_viewed;
                 app.navigation.teams_href = fragment;
+                localStorage.setItem('teams_href', fragment);
             }
             else if (fragment.indexOf("games") != -1) {
                 games_class = currently_viewed;
                 app.navigation.games_href = fragment;
+                localStorage.setItem('games_href', fragment);
             }
             else if (fragment.indexOf("settings") != -1) {
                 settings_class = currently_viewed;

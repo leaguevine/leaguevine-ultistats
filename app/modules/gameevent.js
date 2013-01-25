@@ -28,8 +28,8 @@ function(require, app, Backbone, Leaguevine) {
 			player_3_team_id: NaN,
 			int_1: NaN
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("gameevent"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("gameevent"),
 		associations: {
 			"game_id": "game",
 			"player_1_id": "player",
@@ -58,8 +58,8 @@ function(require, app, Backbone, Leaguevine) {
 	});
 	GameEvent.Collection = Backbone.Collection.extend({
 		model: GameEvent.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("gameevent"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("gameevent"),
 		urlRoot: Leaguevine.API.root + "events",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );

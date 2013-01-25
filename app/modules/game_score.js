@@ -21,8 +21,8 @@ function(require, app, Backbone, Leaguevine) {
 			team_1_score: null,
 			team_2_score: null
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("game_score"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("game_score"),
 		associations: {
 			"game_id": "game"
 		},

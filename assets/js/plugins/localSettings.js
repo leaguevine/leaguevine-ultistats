@@ -8,4 +8,4 @@ var localSettings = {
             //token: "b3abaadef8", //Optionally pass a working token to bypass the entire oauth process
         }
     }
-}
+};

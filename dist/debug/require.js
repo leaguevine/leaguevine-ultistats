@@ -376,7 +376,7 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/navigation/titlebar.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="title_body">\n    <h1 id="title_txt"><span>', title ,'</span></h1>\n    <div id="title_left_btn" class="btn ', left_btn_class ,'">\n        <div id="title_left_pointer"><span></span></div>\n        <a href="', left_btn_href ,'">\n            <span></span>\n            <p>', left_btn_txt ,'</p>\n        </a>\n    </div>\n    <div id="title_right_btn" class="btn ', right_btn_class ,'">\n        <a href="', right_btn_href ,'">\n            <span>&nbsp</span>\n            <p>', right_btn_txt ,'</p>\n        </a>\n    </div>\n</div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="title_body">\n    <h1 id="title_txt"><div id="title_txt_inner"><span>', title ,'</span></div></h1>\n    <div id="title_left_btn" class="btn ', left_btn_class ,'">\n        <div id="title_left_pointer"><span></span></div>\n        <a href="', left_btn_href ,'">\n            <span></span>\n            <p>', left_btn_txt ,'</p>\n        </a>\n    </div>\n    <div id="title_right_btn" class="btn ', right_btn_class ,'">\n        <a href="', right_btn_href ,'">\n            <span>&nbsp</span>\n            <p>', right_btn_txt ,'</p>\n        </a>\n    </div>\n</div>\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/players/detail.html'] = function(data) { return function (obj,_) {
@@ -15727,6 +15727,18 @@ function(app, Backbone, Game) {
         games_href: "/games",
         settings_href: "/settings"
     };
+    var teams_href = localStorage.getItem('teams_href');
+    var tournaments_href = localStorage.getItem('tournaments_href');
+    var games_href = localStorage.getItem('games_href');
+    if (teams_href) {
+        app.navigation.teams_href = teams_href;
+    }
+    if (tournaments_href) {
+        app.navigation.tournaments_href = tournaments_href;
+    }
+    if (games_href) {
+        app.navigation.games_href = games_href;
+    }
 	
 	Navigation.Views.Navbar = Backbone.View.extend({
 		template: "navigation/navbar",
@@ -15746,14 +15758,17 @@ function(app, Backbone, Game) {
             if (fragment.indexOf("tournament") != -1) { // If the current URL is a tournament URL
                 tournaments_class = currently_viewed;
                 app.navigation.tournaments_href = fragment;
+                localStorage.setItem('tournaments_href', fragment);
             } 
             else if (fragment.indexOf("team") != -1) { // If the current URL is a team URL
                 teams_class = currently_viewed;
                 app.navigation.teams_href = fragment;
+                localStorage.setItem('teams_href', fragment);
             } 
             else if (fragment.indexOf("games") != -1) {
                 games_class = currently_viewed;
                 app.navigation.games_href = fragment;
+                localStorage.setItem('games_href', fragment);
             }
             else if (fragment.indexOf("settings") != -1) {
                 settings_class = currently_viewed;
@@ -16808,8 +16823,8 @@ function(require, app, Backbone, Leaguevine) {
 			//delete tp.player;
 			return tp;
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("teamplayer"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("teamplayer"),
 		associations: {
 			"team_id": "team",
 			"player_id": "player"
@@ -16820,8 +16835,8 @@ function(require, app, Backbone, Leaguevine) {
 	//
 	TeamPlayer.Collection = Backbone.Collection.extend({
 		model: TeamPlayer.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("teamplayer"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("teamplayer"),
 		urlRoot: Leaguevine.API.root + "team_players",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
@@ -17001,8 +17016,8 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			weight: "",
 			teamplayers: {}//used to get to teams that this player belongs to.
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("player"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("player"),
 		urlRoot: Leaguevine.API.root + "players",
 		parse: function(resp, xhr) {
 			resp = Backbone.Model.prototype.parse(resp);
@@ -17020,8 +17035,8 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 	//
 	Player.Collection = Backbone.Collection.extend({
 		model: Player.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("player"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("player"),
 		comparator: function(player) {// Define how items in the collection will be sorted.
 			return player.get("last_name").toLowerCase();
 		},
@@ -17206,8 +17221,8 @@ function(app, Backbone, Leaguevine, Navigation) {
 			//delete temp.season;
 			return temp;
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("team"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("team"),
 		associations: {"season_id": "season"}
 	});
   
@@ -17216,8 +17231,8 @@ function(app, Backbone, Leaguevine, Navigation) {
 	//
 	Team.Collection = Backbone.Collection.extend({
 		model: Team.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("team"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("team"),
 		urlRoot: Leaguevine.API.root + "teams",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
@@ -17438,13 +17453,13 @@ function(app, Backbone, Leaguevine, Navigation) {
 		showPlayers: function(ev){
 			$(".lgames").hide();
 			$(".lplayers").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bgames").removeClass("is_active");
             $("button.bplayers").addClass("is_active");
 		},
 		showGames: function(ev){
 			$(".lplayers").hide();
 			$(".lgames").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bplayers").removeClass("is_active");
             $("button.bgames").addClass("is_active");
 		},
 		render: function(layout) {
@@ -17912,8 +17927,8 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 			start_time: ""
 			//pool, swiss_round, bracket
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("game"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("game"),
 		associations: {
 			"tournament_id": "tournament",
 			"team_1_id": "team",
@@ -17957,8 +17972,8 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 	
 	Game.Collection = Backbone.Collection.extend({
 		model: Game.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("game"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("game"),
 		comparator: function(game) {// Define how items in the collection will be sorted.
 			return game.get("start_time");
 		},
@@ -18178,13 +18193,13 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
 		showTeamStats: function(ev){
 			$(".lplayer_stats").hide();
 			$(".lteam_stats").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bplayer_stats").removeClass("is_active");
             $("button.bteam_stats").addClass("is_active");
 		},
 		showPlayerStats: function(ev){
 			$(".lteam_stats").hide();
 			$(".lplayer_stats").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bteam_stats").removeClass("is_active");
             $("button.bplayer_stats").addClass("is_active");
 		},
 		render: function(layout) {
@@ -18300,15 +18315,15 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 		//If a tournament is saved to the API does it care about the teams and games?
 		toJSON: function() {//get rid of tournteams
 			return _.clone(this.attributes);
-		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("tournament")
+		}
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("tournament")
 	});
 	
 	Tournament.Collection = Backbone.Collection.extend({
 		model: Tournament.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("tournament"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("tournament"),
 		urlRoot: Leaguevine.API.root + "tournaments",
         url: function(models) {
             var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
@@ -18464,7 +18479,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			$(".lpools").hide();
 			$(".lstandings").hide();
             $(".lgames").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bstandings").removeClass("is_active");
             $("button.bgames").addClass("is_active");
         },
 		showStandings: function(ev){
@@ -18472,9 +18487,8 @@ function(require, app, Backbone, Leaguevine, Navigation) {
 			$(".lpools").hide();
 			$(".lgames").hide();
 			$(".lstandings").show();
-            $(".list_children button").removeClass("is_active");
+            $("button.bgames").removeClass("is_active");
             $("button.bstandings").addClass("is_active");
-			//console.log("TODO: Show Standings");
 		},
         /* 
         // Don't show these yet. To enable showing pools and brackets, we 
@@ -18687,8 +18701,8 @@ function(require, app, Backbone, Leaguevine) {
 			player_3_team_id: NaN,
 			int_1: NaN
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("gameevent"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("gameevent"),
 		associations: {
 			"game_id": "game",
 			"player_1_id": "player",
@@ -18717,8 +18731,8 @@ function(require, app, Backbone, Leaguevine) {
 	});
 	GameEvent.Collection = Backbone.Collection.extend({
 		model: GameEvent.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("gameevent"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("gameevent"),
 		urlRoot: Leaguevine.API.root + "events",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
@@ -18804,8 +18818,8 @@ function(require, app, Backbone, Leaguevine) {
 			team_1_score: null,
 			team_2_score: null
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("game_score"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("game_score"),
 		associations: {
 			"game_id": "game"
 		},
@@ -19290,13 +19304,15 @@ function(require, app, Backbone) {
 			//.game
 			trackedgame.set("game", new Game.Model(trackedgame.get("game")), {silent:true});
 			if (!was_tracked) {trackedgame.get("game").id = gameId;}
-			trackedgame.get("game").fetch();
+			trackedgame.get("game").fetch({success: function(){
+				trackedgame.get("game").trigger("change");
+			}});
 			//Game also has team_1 and team_2 objects that are not yet Backbone Models.
 			
 			//roster_1 and roster_2. These require the team_x_id which only comes back after the game is fetched.
 			trackedgame.set("roster_1", new TeamPlayer.Collection(), {silent:true});
 			trackedgame.set("roster_2", new TeamPlayer.Collection(), {silent:true});
-			trackedgame.get("game").on("reset", function(){//We need the team ids before we can get the rosters.
+			trackedgame.get("game").on("change", function(){//We need the team ids before we can get the rosters.
 				for (var ix=1;ix<3;ix++){
 					_.extend(trackedgame.get("roster_"+ix),{team_id: trackedgame.get("game").get("team_"+ix+"_id")});
 					trackedgame.get("roster_"+ix).fetch();

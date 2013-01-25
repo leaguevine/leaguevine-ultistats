@@ -42,8 +42,8 @@ function(app, Backbone, Leaguevine, Navigation) {
 			//delete temp.season;
 			return temp;
 		},
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("team"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("team"),
 		associations: {"season_id": "season"}
 	});
   
@@ -52,8 +52,8 @@ function(app, Backbone, Leaguevine, Navigation) {
 	//
 	Team.Collection = Backbone.Collection.extend({
 		model: Team.Model,
-		sync: Backbone.WebSQLAjaxSync,
-		store: new Backbone.WebSQLStore("team"),
+		//sync: Backbone.WebSQLAjaxSync,
+		//store: new Backbone.WebSQLStore("team"),
 		urlRoot: Leaguevine.API.root + "teams",
 		url: function(models) {
 			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
