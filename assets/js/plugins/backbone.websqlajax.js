@@ -165,100 +165,90 @@
     _.extend(Backbone.WebSQLStore.prototype,{
 
         create: function (model,success,error) {//Create might be called either by the API return or by the app making a new model.
-
-            //real_id = model.id if it exists and it is not a local id, else false
             var real_id = (model.id &&
                     (model.id!=model.get("local_id") &&
                             ("" + model.id).indexOf("local_id")!=0));
-
             var local_id = guid();
             local_id = "local_id_" + local_id;
             model.set("local_id",local_id);
 
-            //SQL statement with placeholders.
-            var create_stmnt = "INSERT INTO  %(table_name)s" + //What about insert or replace into?
-                    " (%(id_col)s local_id, value, time_created, time_last_updated)" +
-                    " VALUES (%(id_val)s ?, ?, %(tc_val)s, %(tlu_val)s)";
-            var fill_stmnt = {//how to fill the placeholders.
-                table_name: this.tableName,
-                id_col: real_id ? "id, " : "",
-                id_val: real_id ? "\"" + model.id + "\", " : "",//TODO: use ?, and add the parm.
-                tc_val: model.get("time_created") ? ", ?" : ", datetime('now')",
-                tlu_val: model.get("time_last_updated") ? ", ?" : ", datetime('now')"
-            };
-            var stmnt = sprintf(create_stmnt, fill_stmnt);
+            var stmnt = "INSERT INTO " + this.tableName + " (";
+            //var stmnt = "INSERT OR REPLACE INTO " + this.tableName + " (";//This will replace all of the db attributes with the passed attributes.
+            var parms = [];
 
-            //Get the model's current data into a JSON string
-            //, except id, local_id, time_created and time_last_updated.
+            if (real_id){
+                stmnt += "id, ";
+            }
+            stmnt += "local_id, value, time_created, time_last_updated) VALUES (";
+
+            if (real_id){
+                stmnt += "\"" + model.id + "\", ";
+                //parms.push(model.id);
+            }
+            stmnt += "?, ?";
+            parms.push(model.get("local_id"));
+            //Clean id, local_id, time_created, and time_last_updated from the stringified version of the model, as those will be stored in separate columns.
             var value = model.toJSON();
             delete value.id;
             delete value.local_id;
             delete value.time_created;
             delete value.time_last_updated;
             value = JSON.stringify(value);
-
-            //The statement ?s will be filled with parms.
-            var parms = [];
-            parms.push(model.get("local_id"));
             parms.push(value);
+
             if (model.get("time_created")){
+                stmnt += ", ?";
                 parms.push(Date.parse(model.get("time_created")));//not necessary if create gives a result.
             } else {
+                stmnt += ", datetime('now')";
                 model.set("time_created", new Date().toISOString());//not necessary if create gives a result.
             }
+
             if (model.get("time_last_updated")){
+                stmnt += ", ?";
                 parms.push(Date.parse(model.get("time_last_updated")));
             } else {
+                stmnt += ", datetime('now')";
                 model.set("time_last_updated", new Date().toISOString());
             }
+            stmnt += ")";
 
-            this._executeSql(stmnt, parms, success, error);
+            this._executeSql(stmnt,parms, success, error);
         },
 
-        //To delete...
         destroy: function (model, success, error) {
             var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
-            var create_stmnt = "DELETE FROM %(table_name)" +
-                    "WHERE local_id=? %(id_criterion)s";
-            var fill_stmnt = {
-                    table_name: this.tableName,
-                    id_criterion: real_id ? " OR id = ?" : ""
-            };
-            var stmnt = sprintf(create_stmnt, fill_stmnt);
+            var stmnt = "DELETE FROM "+this.tableName+" WHERE local_id=?";
             var parms = [model.get("local_id")];
-            this._executeSql(stmnt, parms, success, error);
+            if (real_id) {
+                stmnt += " OR id = " + model.id;
+            }
+            this._executeSql(stmnt,parms,success, error);
         },
 
-        //To find a single model.
         find: function (model, success, error) {
             var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
-            var create_stmnt = "SELECT COALESCE(id, local_id) AS id, local_id, value, time_created, time_last_updated" +
-                    " FROM %(table_name)s" +
-                    " WHERE %(lid)s %(or)s %(rid)s";
-            var fill_stmnt = {
-                    table_name: this.tableName,
-                    lid: model.get("local_id") ? "local_id=?" : "",
-                    or: model.get("local_id") && real_id ? " OR " : "",
-                    rid: real_id ? "id = ?" : ""
-            };
-            var stmnt = sprintf(create_stmnt, fill_stmnt);
+            var stmnt = "SELECT COALESCE(id, local_id) AS id, local_id, value, time_created, time_last_updated FROM "+this.tableName+" WHERE ";
             var parms = [];
-            if (model.get("local_id")){parms.push(model.get("local_id"));}
-            if (real_id){parms.push(model.id);}
+            if (model.get("local_id")){
+                stmnt += "local_id=?";
+                parms.push(model.get("local_id"));
+            }
+            if (real_id) {
+                if (model.get("local_id")) { stmnt += " OR "; }
+                stmnt += "id = \"" + model.id + "\"";
+            }
             this._executeSql(stmnt, parms, success, error);
         },
 
-        //To find an array of models.
         findAll: function (model, success,error) {
             //TODO: Handle the case when model has search criteria. This should be done in the model-specific store.
             this._executeSql("SELECT COALESCE(id, local_id) as id, local_id, value, time_created, time_last_updated FROM "+this.tableName,[], success, error);
         },
 
-        //To save changes...
         update: function (model, success, error) {
             var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
-
-            //Cleaned and stringified version of the model.
+            //Clean id, local_id, time_created, and time_last_updated from the stringified version of the model, as those will be stored in separate columns.
             var value = model.toJSON();
             delete value.id;
             delete value.local_id;
@@ -267,22 +257,20 @@
             value = JSON.stringify(value);
 
             //Build the statement and parms
-            var create_stmnt = "UPDATE %(table_name)s" +
-                    " SET value=?, time_last_update=datetime('now') %(id_col)s" +
-                    " WHERE local_id=? %(id_where)s";
-            var fill_stmnt = {
-                table_name: this.tableName,
-                id_col: real_id ? ", id = ?" : "",
-                id_where: real_id ? " OR id = ?" : ""
-            };
-            var stmnt = sprintf(create_stmnt, fill_stmnt);
-
+            //this._executeSql("UPDATE "+this.tableName+" SET value=? WHERE id=?",[JSON.stringify(model.toJSON()),model.id], success, error);
+            var stmnt = "UPDATE " + this.tableName + " SET value=?, time_last_updated=datetime('now')";
             var parms = [value];
-            if (real_id) {parms.push(model.id);}
+            if (real_id) {
+                stmnt += ", id = ";
+                stmnt += "\"" + model.id + "\"";
+            }
+            stmnt += " WHERE local_id=?";
             parms.push(model.get("local_id"));
-            if (real_id){parms.push(model.id);}
-
-            this._executeSql(stmnt, parms, success, error);
+            if (real_id) {
+                stmnt += " OR id = ";
+                stmnt += "\"" + model.id + "\"";
+            }
+            this._executeSql(stmnt,parms, success, error);
         },
 
         //TODO: Why does this function do nothing? It is never called?

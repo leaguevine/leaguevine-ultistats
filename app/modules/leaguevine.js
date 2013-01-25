@@ -10,17 +10,17 @@ define([
 ],
 
 function(app, Backbone) {
-	/*
-	* This module defines the API properties.
-	*/
+    /*
+    * This module defines the API properties.
+    */
 
-	// Create a new module
-	var Leaguevine = app.module();
+    // Create a new module
+    var Leaguevine = app.module();
 
-	Leaguevine.Utils = {};
-	Leaguevine.Utils.concat_collections = function(c1, c2) {
+    Leaguevine.Utils = {};
+    Leaguevine.Utils.concat_collections = function(c1, c2) {
         //Concatenates collections c1 and c2, making sure we remove any duplicate entries from c2 before appending
-        
+
         var models = _.reject(c2.models, function(model) {
             return c1.pluck("id").indexOf(model.get("id")) != -1;
         });
@@ -31,41 +31,43 @@ function(app, Backbone) {
         c1.reset(_.union(c1.models, models));
    };
 
-	Leaguevine.Router = Backbone.Router.extend({
-		
-		routes: {
-			"access_:hash": "token_received",
-            "error_description:hash": "login_error"
-		},
-		
-		token_received: function(hash) {//route matched by oauth/:hash
-			hash = hash.split("&"); //break the URL hash into its segments.
-			_.each(hash, function(element){ //For each segment...
-				var pair = element.split("="); //Get the key and value.
-				var temp_obj = {};
-				temp_obj[pair[0]]=pair[1]; //Put the key and value into a temp object.
-				_.extend(app.api,temp_obj); //Extend/overwrite our app.api with the key/value of the temp object.
-			});
+    Leaguevine.Router = Backbone.Router.extend({
 
-			//After token is received, navigate to the href that was saved earlier
-			localStorage.setItem("auth_object", JSON.stringify(app.api));
+        //http://local.ultistats.com/expires_in=157680000&token_type=bearer&access_token=22db8beda6&scope=universal
+        routes: {
+            "expires_:hash": "token_received",
+            "access_:hash": "token_received",
+            "error_description:hash": "login_error"
+        },
+
+        token_received: function(hash) {//route matched by oauth/:hash
+            hash = hash.split("&"); //break the URL hash into its segments.
+            _.each(hash, function(element){ //For each segment...
+                var pair = element.split("="); //Get the key and value.
+                var temp_obj = {};
+                temp_obj[pair[0]]=pair[1]; //Put the key and value into a temp object.
+                _.extend(app.api,temp_obj); //Extend/overwrite our app.api with the key/value of the temp object.
+            });
+
+            //After token is received, navigate to the href that was saved earlier
+            localStorage.setItem("auth_object", JSON.stringify(app.api));
             //window.location.href = "#" + localStorage.getItem("login_redirect");
             window.location.href = localStorage.getItem("login_redirect");
             return false;
-		},
+        },
         login_error: function(hash) {
             Backbone.history.navigate("settings", true); //Redirect to the settings page where there is a prompt to log in again
          }
 
-	});
+    });
     Leaguevine.router = new Leaguevine.Router();// INITIALIZE ROUTER
 
     Leaguevine.Views.MoreItems = Backbone.View.extend({
-		template: "leaguevine/more_items",
+        template: "leaguevine/more_items",
             events: {
                 click: "fetch_more_items"
             },
-		tagName: "li",
+        tagName: "li",
         initialize: function() {
             this.collection = this.options.collection;
         },
@@ -76,7 +78,7 @@ function(app, Backbone) {
                 var limit = this.collection.meta.limit;
                 if (limit + this.collection.length > this.collection.meta.total_count) {
                     // If we are almost at the end of the list of items
-                    context.num_items = this.collection.meta.total_count - this.collection.length; 
+                    context.num_items = this.collection.meta.total_count - this.collection.length;
                 } else {
                     context.num_items = this.collection.meta.limit;
                 }
@@ -101,32 +103,32 @@ function(app, Backbone) {
         }
     });
 
-	Leaguevine.API = {	
+    Leaguevine.API = {
         root: "http://api.playwithlv.com/v1/",
         base: "http://playwithlv.com/oauth2/authorize/?response_type=token&scope=universal",
-        client_id: "9f30036f95850b185ccbfd66ab54fb",
-        redirect_uri: "http://ultistats.localhost/",
+        client_id: "ab9a5a75a96924bcdda7ee94f9c7ca",
+        redirect_uri: "http://local.ultistats.com/",
         season_id: null,
-        d_token: function() {//Modules will reference this dynamic token			
-            if (!this.token) {
+        d_token: function() {//Modules will reference this dynamic token
+            if (!this.access_token) {
                 var stored_api = JSON.parse(localStorage.getItem("auth_object")); //Pull our token out of local storage if it exists.
                 _.extend(this,stored_api);
             }
-            if (!this.token) {
+            if (!this.access_token) {
                 //return this.login();
                 this.login();
                 return false;
             }
             else {
-                return this.token;
+                return this.access_token;
             }
         },
         is_logged_in: function() {//Returns true if the user is logged in and false if not
-			if (!this.token) {
-				var stored_api = JSON.parse(localStorage.getItem("auth_object"));
-				_.extend(this, stored_api);
-			}
-            return (this.token !== null && this.token !== undefined);
+            if (!this.access_token) {
+                var stored_api = JSON.parse(localStorage.getItem("auth_object"));
+                _.extend(this, stored_api);
+            }
+            return (this.access_token !== null && this.access_token !== undefined);
         },
         login: function() {//Redirects a user to the login screen
             localStorage.setItem("login_redirect", Backbone.history.fragment);
@@ -135,17 +137,17 @@ function(app, Backbone) {
         },
         logout: function() {//Logs a user out by removing the locally stored token
             localStorage.removeItem("auth_object");
-            this.token = undefined;
+            this.access_token = undefined;
         }
     };
 
-    if (typeof localSettings != "undefined" && 
-        typeof localSettings.Leaguevine != "undefined" && 
+    if (typeof localSettings != "undefined" &&
+        typeof localSettings.Leaguevine != "undefined" &&
         typeof localSettings.Leaguevine.API != "undefined") {
         _.extend(Leaguevine.API, localSettings.Leaguevine.API);
     }
-    
+
     Backbone.API = Leaguevine.API;
-		
-	return Leaguevine;
+
+    return Leaguevine;
 });
