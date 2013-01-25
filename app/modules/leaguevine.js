@@ -35,6 +35,7 @@ function(app, Backbone) {
 
         //http://local.ultistats.com/expires_in=157680000&token_type=bearer&access_token=22db8beda6&scope=universal
         routes: {
+            "token_:hash": "token_received",
             "expires_:hash": "token_received",
             "access_:hash": "token_received",
             "error_description:hash": "login_error"
@@ -42,6 +43,12 @@ function(app, Backbone) {
 
         token_received: function(hash) {//route matched by oauth/:hash
             hash = hash.split("&"); //break the URL hash into its segments.
+          //Restore the matched part of the url
+            var pair0 = hash[0].split("=");
+            pair0[0] = pair0[0] == "type" ? "token_" + pair0[0] : pair0;
+            pair0[0] = pair0[0] == "in" ? "expires_" + pair0[0] : pair0;
+            pair0[0] = pair0[0] == "token" ? "access_" + pair0[0] : pair0;
+            hash[0] = pair0[0] + "=" + pair0[1];
             _.each(hash, function(element){ //For each segment...
                 var pair = element.split("="); //Get the key and value.
                 var temp_obj = {};
