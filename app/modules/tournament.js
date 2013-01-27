@@ -184,7 +184,7 @@ function(require, app, Backbone, Leaguevine, Navigation) {
         },
         cleanup: function() {
             this.options.games.off(null, null, this);
-            this.options.tourteams.off(null, null, this);
+            this.options.tournteams.off(null, null, this);
         },
         events: {
             "click .bstandings": "showStandings",
