@@ -5,15 +5,15 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/games/edit.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="edit_area"></section>\n<section class="team_search_list"></section>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="edit_area"></section>\r\n<section class="team_search_list"></section>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/games/edit_area.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<form>\n    <label>Team 1:</label>\n    <h3 id="team1_txt"><span>', team_1.name ,'</span></h3>\n    <label>Team 2:</label>\n    <h3 id="team2_txt"><span>', team_2.name ,'</span></h3>\n    <label>Start Time:</label>\n    <input type="text" id="start_time" name="start_time" value="', start_time ,'" />\n    <button class="save">Save</button>\n    <button class="delete">Delete</button>\n</form>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<form>\r\n    <label>Team 1:</label>\r\n    <h3 id="team1_txt"><span>', team_1.name ,'</span></h3>\r\n    <label>Team 2:</label>\r\n    <h3 id="team2_txt"><span>', team_2.name ,'</span></h3>\r\n    <label>Start Time:</label>\r\n    <input type="text" id="start_time" name="start_time" value="', start_time ,'" />\r\n    <button class="save">Save</button>\r\n    <button class="delete">Delete</button>\r\n</form>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/games/find.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="game_find_detail">\n    <form action="/teams">\n    <h2>Get started</h2>\n    <p>To get started, find or create your team.</p>\n        <button class="button">Find your team</button>\n    </form>\n    <form action="/tournaments">\n    <p>Or, search for your game by tournament</p>\n        <button class="button">Find your tournament</button>\n    </form>\n</div>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="game_find_detail">\r\n    <form action="/teams">\r\n    <h2>Get started</h2>\r\n    <p>To get started, find or create your team.</p>\r\n        <button class="button">Find your team</button>\r\n    </form>\r\n    <form action="/tournaments">\r\n    <p>Or, search for your game by tournament</p>\r\n        <button class="button">Find your tournament</button>\r\n    </form>\r\n</div>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/games/item.html'] = function(data) { return function (obj,_) {
@@ -21,15 +21,15 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/games/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="games-list obj-list"></ul>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="games-list obj-list"></ul>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/games/multilist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\n    <table>\n        <tr>\n            <td>\n                <button class="button bplayer_stats is_active">Player Stats</button>\n            </td>\n            <td>\n                <button class="button bteam_stats">Team Stats</button>\n            </td>\n        </tr>\n    </table>\n</div>\n<div class="list lteam_stats"></div>\n<div class="list lplayer_stats"></div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\r\n    <table>\r\n        <tr>\r\n            <td>\r\n                <button class="button bplayer_stats is_active">Player Stats</button>\r\n            </td>\r\n            <td>\r\n                <button class="button bteam_stats">Team Stats</button>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n<div class="list lteam_stats"></div>\r\n<div class="list lplayer_stats"></div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/layouts/div.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div></div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div></div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/layouts/main.html'] = function(data) { return function (obj,_) {
@@ -65,35 +65,35 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/players/detail.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<!--\n<ul>\n\t<li> DOB: ', birth_date ,'</li>\n\t<li> Height: ', height ,' cm</li>\n\t<li> Weight: ', weight ,' kg?</li>\n</ul>\n-->\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<!--\r\n<ul>\r\n\t<li> DOB: ', birth_date ,'</li>\r\n\t<li> Height: ', height ,' cm</li>\r\n\t<li> Weight: ', weight ,' kg?</li>\r\n</ul>\r\n-->\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/players/item.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<a href=\'/players/', id ,'\'>\n    ', number ,' \n    ', first_name ,' \n    '); if (nickname) { ;__p.push('"', nickname ,'"'); } ;__p.push('\n    ', last_name ,'\n</a>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<a href=\'/players/', id ,'\'>\r\n    ', number ,' \r\n    ', first_name ,' \r\n    '); if (nickname) { ;__p.push('"', nickname ,'"'); } ;__p.push('\r\n    ', last_name ,'\r\n</a>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/players/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="players-list obj-list"></ul>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="players-list obj-list"></ul>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/players/multilist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\n\t<button class="button bteams is_active">Teams</button>\n</div>\n<div class="list lteams"></div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\r\n\t<button class="button bteams is_active">Teams</button>\r\n</div>\r\n<div class="list lteams"></div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/playerstats/boxscore.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="player_per_game_stats_1" class="playerstats_list stats">\n    <tr class="table_name">\n        <td colspan=8 width="100%" >', team_1.name ,'</td>\n    </tr>\n    <tr class="column_headers">\n        <th width="40%" class="table_first_item">\n            PLAYER\n        </th>\n        <th width="12%">\n            COMP\n        </th>\n        <th width="8%">\n            PT\n        </th>\n        <th width="8%">\n            AST\n        </th>\n        <th width="8%">\n            Ds\n        </th>\n        <th width="8%">\n            TO\n        </th>\n        <th width="8%">\n            +/-\n        </th>\n        <th width="8%">\n            GLS\n        </th>\n    </th>\n</table>\n\n<table id="player_per_game_stats_2" class="playerstats_list stats">\n    <tr class="table_name">\n        <td colspan=8 width="100%" >', team_2.name ,'</td>\n    </tr>\n    <tr class="column_headers">\n        <th width="40%" class="table_first_item">\n            PLAYER\n        </th>\n        <th width="12%">\n            COMP\n        </th>\n        <th width="8%">\n            PT\n        </th>\n        <th width="8%">\n            AST\n        </th>\n        <th width="8%">\n            Ds\n        </th>\n        <th width="8%">\n            TO\n        </th>\n        <th width="8%">\n            +/-\n        </th>\n        <th width="8%">\n            GLS\n        </th>\n    </th>\n</table>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="player_per_game_stats_1" class="playerstats_list stats">\r\n    <tr class="table_name">\r\n        <td colspan=8 width="100%" >', team_1.name ,'</td>\r\n    </tr>\r\n    <tr class="column_headers">\r\n        <th width="40%" class="table_first_item">\r\n            PLAYER\r\n        </th>\r\n        <th width="12%">\r\n            COMP\r\n        </th>\r\n        <th width="8%">\r\n            PT\r\n        </th>\r\n        <th width="8%">\r\n            AST\r\n        </th>\r\n        <th width="8%">\r\n            Ds\r\n        </th>\r\n        <th width="8%">\r\n            TO\r\n        </th>\r\n        <th width="8%">\r\n            +/-\r\n        </th>\r\n        <th width="8%">\r\n            GLS\r\n        </th>\r\n    </th>\r\n</table>\r\n\r\n<table id="player_per_game_stats_2" class="playerstats_list stats">\r\n    <tr class="table_name">\r\n        <td colspan=8 width="100%" >', team_2.name ,'</td>\r\n    </tr>\r\n    <tr class="column_headers">\r\n        <th width="40%" class="table_first_item">\r\n            PLAYER\r\n        </th>\r\n        <th width="12%">\r\n            COMP\r\n        </th>\r\n        <th width="8%">\r\n            PT\r\n        </th>\r\n        <th width="8%">\r\n            AST\r\n        </th>\r\n        <th width="8%">\r\n            Ds\r\n        </th>\r\n        <th width="8%">\r\n            TO\r\n        </th>\r\n        <th width="8%">\r\n            +/-\r\n        </th>\r\n        <th width="8%">\r\n            GLS\r\n        </th>\r\n    </th>\r\n</table>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/playerstats/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table class="playerstats-list">\n    <tr>\n        <th width="60%">\n            Player\n        </th>\n        <th width="10%">\n            Goals\n        </th>\n        <th width="10%">\n            Assists\n        </th>\n        <th width="10%">\n            Ds\n        </th>\n        <th width="10%">\n            Turns\n        </th>\n    </th>\n</table>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table class="playerstats-list">\r\n    <tr>\r\n        <th width="60%">\r\n            Player\r\n        </th>\r\n        <th width="10%">\r\n            Goals\r\n        </th>\r\n        <th width="10%">\r\n            Assists\r\n        </th>\r\n        <th width="10%">\r\n            Ds\r\n        </th>\r\n        <th width="10%">\r\n            Turns\r\n        </th>\r\n    </th>\r\n</table>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/playerstats/per_game_stat_line.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td class="table_first_item">\n    <a href="players/', player.id ,'">', player.first_name ,' '); if (player.nickname) { ;__p.push('"'); } ;__p.push('', player.nickname ,''); if (player.nickname) { ;__p.push('"'); } ;__p.push(' ', player.last_name ,'</a>\n</td>\n<td>\n    ', completed_passes_thrown ,'/', passes_thrown ,'\n</td>\n<td>\n    ', points_played ,'\n</td>\n<td>\n    ', goals_thrown ,'\n</td>\n<td>\n    ', ds ,'\n</td>\n<td>\n    ', turnovers ,'\n</td>\n<td>\n    ', plus_minus ,'\n</td>\n<td>\n    ', goals_caught ,'\n</td>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td class="table_first_item">\r\n    <a href="players/', player.id ,'">', player.first_name ,' '); if (player.nickname) { ;__p.push('"'); } ;__p.push('', player.nickname ,''); if (player.nickname) { ;__p.push('"'); } ;__p.push(' ', player.last_name ,'</a>\r\n</td>\r\n<td>\r\n    ', completed_passes_thrown ,'/', passes_thrown ,'\r\n</td>\r\n<td>\r\n    ', points_played ,'\r\n</td>\r\n<td>\r\n    ', goals_thrown ,'\r\n</td>\r\n<td>\r\n    ', ds ,'\r\n</td>\r\n<td>\r\n    ', turnovers ,'\r\n</td>\r\n<td>\r\n    ', plus_minus ,'\r\n</td>\r\n<td>\r\n    ', goals_caught ,'\r\n</td>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/settings/detail.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push(''); if (logged_in) { ;__p.push('\n<div id="logout_area">\n    <h2>You are logged in</h2>\n    <button id="logout" href="#">Log out</button>\n</div>\n'); } else { ;__p.push('\n<div id="logout_area">\n    <h2>Please log in</h2>\n    <button id="login" href="#">Log in</button>\n</div>\n'); } ;__p.push('\n<div id="battery_usage_area">\n    <h2>Set battery usage</h2>\n    <p>Sorry, this feature is not available at this time.</p>\n</div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push(''); if (logged_in) { ;__p.push('\r\n<div id="logout_area">\r\n    <h2>You are logged in</h2>\r\n    <button id="logout" href="#">Log out</button>\r\n</div>\r\n'); } else { ;__p.push('\r\n<div id="logout_area">\r\n    <h2>Please log in</h2>\r\n    <button id="login" href="#">Log in</button>\r\n</div>\r\n'); } ;__p.push('\r\n<div id="battery_usage_area">\r\n    <h2>Set battery usage</h2>\r\n    <p>Sorry, this feature is not available at this time.</p>\r\n</div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/settings/list.html'] = function(data) { return function (obj,_) {
@@ -113,7 +113,7 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/teamplayers/playerlist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="players-list obj-list"></ul>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="players-list obj-list"></ul>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teamplayers/team.html'] = function(data) { return function (obj,_) {
@@ -121,7 +121,7 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/teamplayers/teamlist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="teams-list"></ul>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="teams-list"></ul>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teams/detail.html'] = function(data) { return function (obj,_) {
@@ -137,23 +137,23 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/teams/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="team-list obj-list"></ul>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="team-list obj-list"></ul>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teams/multilist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\n    <table>\n        <tr>\n            <td>\n                <button class="button bgames is_active">Games</button>\n            </td>\n            <td>\n                <button class="button bplayers">Players</button>\n            </td>\n        </tr>\n    </table>\n</div>\n<div class="list lgames"></div>\n<div class="list lplayers"></div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\r\n    <table>\r\n        <tr>\r\n            <td>\r\n                <button class="button bgames is_active">Games</button>\r\n            </td>\r\n            <td>\r\n                <button class="button bplayers">Players</button>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n<div class="list lgames"></div>\r\n<div class="list lplayers"></div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teamstats/boxscore.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="team_per_game_stats" class="teamstats_list stats">\n    <tr class="table_name">\n        <td colspan=8 width="100%" >Team Stats</td>\n    </tr>\n    <tr class="column_headers">\n        <th width="40%" class="table_first_item">\n            TEAM\n        </th>\n        <th width="14%">\n            COMP\n        </th>\n        <th width="14%">\n            COMP%\n        </th>\n        <th width="8">\n            Ds\n        </th>\n        <th width="8%">\n            DRP\n        </th>\n        <th width="8%">\n            TA\n        </th>\n        <th width="8%">\n            TO\n        </th>\n    </th>\n</table>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="team_per_game_stats" class="teamstats_list stats">\r\n    <tr class="table_name">\r\n        <td colspan=8 width="100%" >Team Stats</td>\r\n    </tr>\r\n    <tr class="column_headers">\r\n        <th width="40%" class="table_first_item">\r\n            TEAM\r\n        </th>\r\n        <th width="14%">\r\n            COMP\r\n        </th>\r\n        <th width="14%">\r\n            COMP%\r\n        </th>\r\n        <th width="8">\r\n            Ds\r\n        </th>\r\n        <th width="8%">\r\n            DRP\r\n        </th>\r\n        <th width="8%">\r\n            TA\r\n        </th>\r\n        <th width="8%">\r\n            TO\r\n        </th>\r\n    </th>\r\n</table>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teamstats/per_game_stat_line.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td class="table_first_item">\n    <a href="teams/', team.id ,'">', team.name ,'</a>\n</td>\n<td>\n    ', completed_passes_thrown ,'/', passes_thrown ,'\n</td>\n<td>\n    ', completion_percent ,'\n</td>\n<td>\n    ', ds ,'\n</td>\n<td>\n    ', drops ,'\n</td>\n<td>\n    ', throwaways ,'\n</td>\n<td>\n    ', turnovers ,'\n</td>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td class="table_first_item">\r\n    <a href="teams/', team.id ,'">', team.name ,'</a>\r\n</td>\r\n<td>\r\n    ', completed_passes_thrown ,'/', passes_thrown ,'\r\n</td>\r\n<td>\r\n    ', completion_percent ,'\r\n</td>\r\n<td>\r\n    ', ds ,'\r\n</td>\r\n<td>\r\n    ', drops ,'\r\n</td>\r\n<td>\r\n    ', throwaways ,'\r\n</td>\r\n<td>\r\n    ', turnovers ,'\r\n</td>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/tournaments/detail.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="tournament_start_date"><span>', start_date_string ,'</span></div>\n<div>', info ,'</div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="tournament_start_date"><span>', start_date_string ,'</span></div>\r\n<div>', info ,'</div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/tournaments/item.html'] = function(data) { return function (obj,_) {
@@ -161,39 +161,39 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/tournaments/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="tournament-list obj-list"></ul>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="tournament-list obj-list"></ul>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/tournaments/multilist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\n    <table>\n        <tr>\n            <td>\n                <button class="button bgames is_active">Games</button>\n            </td>\n            <td>\n                <button class="button bstandings">Standings</button>\n            </td>\n            <!--\n            <td>\n                <button class="button bpools">Pools</button>\n            </td>\n            <td>\n                <button class="button bbrackets">Brackets</button>\n            </td>\n            -->\n        </tr>\n    </table>\n</div>\n<div class="list lgames"></div>\n<div class="list lstandings"></div>\n<!--\n<div class="list lpools"></div>\n<div class="list lbrackets"></div>\n-->\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\r\n    <table>\r\n        <tr>\r\n            <td>\r\n                <button class="button bgames is_active">Games</button>\r\n            </td>\r\n            <td>\r\n                <button class="button bstandings">Standings</button>\r\n            </td>\r\n            <!--\r\n            <td>\r\n                <button class="button bpools">Pools</button>\r\n            </td>\r\n            <td>\r\n                <button class="button bbrackets">Brackets</button>\r\n            </td>\r\n            -->\r\n        </tr>\r\n    </table>\r\n</div>\r\n<div class="list lgames"></div>\r\n<div class="list lstandings"></div>\r\n<!--\r\n<div class="list lpools"></div>\r\n<div class="list lbrackets"></div>\r\n-->\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/tournteams/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="tournament_standings" class="tournteam-list">\n    <tr>\n        <th width="70%">\n            Team\n        </th>\n        <th width="15%">\n            Seed\n        </th>\n        <th width="15%">\n            Finish\n        </th>\n    </th>\n</table>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="tournament_standings" class="tournteam-list">\r\n    <tr>\r\n        <th width="70%">\r\n            Team\r\n        </th>\r\n        <th width="15%">\r\n            Seed\r\n        </th>\r\n        <th width="15%">\r\n            Finish\r\n        </th>\r\n    </th>\r\n</table>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/tournteams/team.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td>\n    <a href=\'teams/', team.id ,'\'>', team.name ,'</a>\n</td>\n<td>\n    ', seed ,'\n</td>\n<td>\n    ', final_standing ,'\n</td>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td>\r\n    <a href=\'teams/', team.id ,'\'>', team.name ,'</a>\r\n</td>\r\n<td>\r\n    ', seed ,'\r\n</td>\r\n<td>\r\n    ', final_standing ,'\r\n</td>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/action_area.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons main_action">\n    <div id="throw_prompt" class="action_prompt">\n        <div class="action_prompt_player">\n            ', player_string ,'\n        </div>\n        <div class="action_prompt_action">\n            ', action_string ,'\n        </div>\n    </div>\n    <button class="button completion">Complete Pass</button>\n\t<button class="button dropped_pass">Dropped pass</button>\n\t<button class="button defd_pass">D\'ed Pass</button>\n    <button class="button throwaway">\n        <span class="button_line_1">Untouched</span> \n        <span class="button_line_2">Throwaway</span>\n    </button>\n    <button class="button score">Score</button>\n</div>\n<div class="buttons alternate_action">\n    <div id="alternate_action_prompt" class="action_prompt">\n        <div class="action_prompt_action">What happened?</div>\n    </div>\n\t<button class="button unknown_turn">Unknown Turn</button>\n\t<button class="button stall">Stall</button>\n    <!-- Removed for simplicity for the first version \n        <button class="button foul">Foul/Violation</button>\n    -->\n\t<button class="button injury">Injury</button>\n\t<button class="button timeout">Timeout</button>\n\t<button class="button end_of_period">End of Period ', per_num ,'</button>\n</div>\n<div class="buttons extra_actions">\n    <button class="button misc">Misc</button>\n    <button class="button undo">Undo</button>\n</div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons main_action">\r\n    <div id="throw_prompt" class="action_prompt">\r\n        <div class="action_prompt_player">\r\n            ', player_string ,'\r\n        </div>\r\n        <div class="action_prompt_action">\r\n            ', action_string ,'\r\n        </div>\r\n    </div>\r\n    <button class="button completion">Complete Pass</button>\r\n\t<button class="button dropped_pass">Dropped pass</button>\r\n\t<button class="button defd_pass">D\'ed Pass</button>\r\n    <button class="button throwaway">\r\n        <span class="button_line_1">Untouched</span> \r\n        <span class="button_line_2">Throwaway</span>\r\n    </button>\r\n    <button class="button score">Score</button>\r\n</div>\r\n<div class="buttons alternate_action">\r\n    <div id="alternate_action_prompt" class="action_prompt">\r\n        <div class="action_prompt_action">What happened?</div>\r\n    </div>\r\n\t<button class="button unknown_turn">Unknown Turn</button>\r\n\t<button class="button stall">Stall</button>\r\n    <!-- Removed for simplicity for the first version \r\n        <button class="button foul">Foul/Violation</button>\r\n    -->\r\n\t<button class="button injury">Injury</button>\r\n\t<button class="button timeout">Timeout</button>\r\n\t<button class="button end_of_period">End of Period ', per_num ,'</button>\r\n</div>\r\n<div class="buttons extra_actions">\r\n    <button class="button misc">Misc</button>\r\n    <button class="button undo">Undo</button>\r\n</div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/basic.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="trackbasic">\n    <div id="team1">\n        <button class="team_1 decrement">-</button>\n        <button class="team_1 increment">+</button>\n    </div>\n    <div id="team2">\n        <button class="team_2 decrement">-</button>\n        <button class="team_2 increment">+</button>\n    </div>\n</div>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="trackbasic">\r\n    <div id="team1">\r\n        <button class="team_1 decrement">-</button>\r\n        <button class="team_1 increment">+</button>\r\n    </div>\r\n    <div id="team2">\r\n        <button class="team_2 decrement">-</button>\r\n        <button class="team_2 increment">+</button>\r\n    </div>\r\n</div>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/game_action.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="playbyplay"></div>\n<div class="player_area"></div>\n<div class="action_area"></div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="playbyplay"></div>\r\n<div class="player_area"></div>\r\n<div class="action_area"></div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/main.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="roster_1"></section>\n<section class="roster_2"></section>\n<section class="action"></section>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="roster_1"></section>\r\n<section class="roster_2"></section>\r\n<section class="action"></section>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/playbyplay.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="last_action_label">Previous Play:</div>\n<div class="last_action">', playtext ,'</div>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="last_action_label">Previous Play:</div>\r\n<div class="last_action">', playtext ,'</div>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/player_action_prompt.html'] = function(data) { return function (obj,_) {
@@ -201,7 +201,7 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/player_area.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="player_prompt"></div>\n<div class="player_area_1"></div>\n<div class="player_area_2"></div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="player_prompt"></div>\r\n<div class="player_area_1"></div>\r\n<div class="player_area_2"></div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/player_button.html'] = function(data) { return function (obj,_) {
@@ -209,25 +209,25 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/roster.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="roster_team_header">\n    <span class="roster_team_name">\n        ', team.name ,'\n    </span>\n</div>\n<div class="roster_onfield_sum"></div>\n<div class="roster_quick">\n\t<ul>\n\t\t<li>\n\t\t\t<button class="clear_roster">\n\t\t\t\t<span>Clear</span>\n\t\t\t</button>\n\t\t</li>\n\t\t<li>\n\t\t\t<button class="last_o">\n\t\t\t\t<span>Last O-Line</span>\n\t\t\t</button>\n\t\t</li>\n\t\t<li>\n\t\t\t<button class="last_d">\n\t\t\t\t<span>Last D-Line</span>\n\t\t\t</button>\n\t\t</li>\n\t</ul>\n</div>\n<div class="roster_area"></div>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="roster_team_header">\r\n    <span class="roster_team_name">\r\n        ', team.name ,'\r\n    </span>\r\n</div>\r\n<div class="roster_onfield_sum"></div>\r\n<div class="roster_quick">\r\n\t<ul>\r\n\t\t<li>\r\n\t\t\t<button class="clear_roster">\r\n\t\t\t\t<span>Clear</span>\r\n\t\t\t</button>\r\n\t\t</li>\r\n\t\t<li>\r\n\t\t\t<button class="last_o">\r\n\t\t\t\t<span>Last O-Line</span>\r\n\t\t\t</button>\r\n\t\t</li>\r\n\t\t<li>\r\n\t\t\t<button class="last_d">\r\n\t\t\t\t<span>Last D-Line</span>\r\n\t\t\t</button>\r\n\t\t</li>\r\n\t</ul>\r\n</div>\r\n<div class="roster_area"></div>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/roster_item.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="roster_player player" id="', player_id ,'">\n    <span class="player_name" id="', player_id ,'">', player.first_name ,' ', player.last_name ,'</span>\n    <span class="player_number" id="', player_id ,'">', number ,'</span>\n</button>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="roster_player player" id="', player_id ,'">\r\n    <span class="player_name" id="', player_id ,'">', player.first_name ,' ', player.last_name ,'</span>\r\n    <span class="player_number" id="', player_id ,'">', number ,'</span>\r\n</button>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/roster_sum.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('', onfield_sum ,' players in\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('', onfield_sum ,' players in\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/rotate_button.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('', next_screen ,'\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('', next_screen ,'\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/scoreboard.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="name team1">', game.team_1.name ,'</div>\n<div class="score team1">', game.team_1_score ,'</div>\n<div class="score team2">', game.team_2_score ,'</div>\n<div class="name team2">', game.team_2.name ,'</div>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="name team1">', game.team_1.name ,'</div>\r\n<div class="score team1">', game.team_1_score ,'</div>\r\n<div class="score team2">', game.team_2_score ,'</div>\r\n<div class="name team2">', game.team_2.name ,'</div>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/teamplayer_area.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="player_buttons"></ul>\n<div class="offense_teamname"><p>', team.name ,'</p></div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="player_buttons"></ul>\r\n<div class="offense_teamname"><p>', team.name ,'</p></div>\r\n');}return __p.join('');
 }(data, _)};

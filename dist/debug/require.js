@@ -320,15 +320,15 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/games/edit.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="edit_area"></section>\n<section class="team_search_list"></section>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="edit_area"></section>\r\n<section class="team_search_list"></section>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/games/edit_area.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<form>\n    <label>Team 1:</label>\n    <h3 id="team1_txt"><span>', team_1.name ,'</span></h3>\n    <label>Team 2:</label>\n    <h3 id="team2_txt"><span>', team_2.name ,'</span></h3>\n    <label>Start Time:</label>\n    <input type="text" id="start_time" name="start_time" value="', start_time ,'" />\n    <button class="save">Save</button>\n    <button class="delete">Delete</button>\n</form>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<form>\r\n    <label>Team 1:</label>\r\n    <h3 id="team1_txt"><span>', team_1.name ,'</span></h3>\r\n    <label>Team 2:</label>\r\n    <h3 id="team2_txt"><span>', team_2.name ,'</span></h3>\r\n    <label>Start Time:</label>\r\n    <input type="text" id="start_time" name="start_time" value="', start_time ,'" />\r\n    <button class="save">Save</button>\r\n    <button class="delete">Delete</button>\r\n</form>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/games/find.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="game_find_detail">\n    <form action="/teams">\n    <h2>Get started</h2>\n    <p>To get started, find or create your team.</p>\n        <button class="button">Find your team</button>\n    </form>\n    <form action="/tournaments">\n    <p>Or, search for your game by tournament</p>\n        <button class="button">Find your tournament</button>\n    </form>\n</div>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="game_find_detail">\r\n    <form action="/teams">\r\n    <h2>Get started</h2>\r\n    <p>To get started, find or create your team.</p>\r\n        <button class="button">Find your team</button>\r\n    </form>\r\n    <form action="/tournaments">\r\n    <p>Or, search for your game by tournament</p>\r\n        <button class="button">Find your tournament</button>\r\n    </form>\r\n</div>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/games/item.html'] = function(data) { return function (obj,_) {
@@ -336,15 +336,15 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/games/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="games-list obj-list"></ul>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="games-list obj-list"></ul>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/games/multilist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\n    <table>\n        <tr>\n            <td>\n                <button class="button bplayer_stats is_active">Player Stats</button>\n            </td>\n            <td>\n                <button class="button bteam_stats">Team Stats</button>\n            </td>\n        </tr>\n    </table>\n</div>\n<div class="list lteam_stats"></div>\n<div class="list lplayer_stats"></div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\r\n    <table>\r\n        <tr>\r\n            <td>\r\n                <button class="button bplayer_stats is_active">Player Stats</button>\r\n            </td>\r\n            <td>\r\n                <button class="button bteam_stats">Team Stats</button>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n<div class="list lteam_stats"></div>\r\n<div class="list lplayer_stats"></div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/layouts/div.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div></div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div></div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/layouts/main.html'] = function(data) { return function (obj,_) {
@@ -380,35 +380,35 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/players/detail.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<!--\n<ul>\n\t<li> DOB: ', birth_date ,'</li>\n\t<li> Height: ', height ,' cm</li>\n\t<li> Weight: ', weight ,' kg?</li>\n</ul>\n-->\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<!--\r\n<ul>\r\n\t<li> DOB: ', birth_date ,'</li>\r\n\t<li> Height: ', height ,' cm</li>\r\n\t<li> Weight: ', weight ,' kg?</li>\r\n</ul>\r\n-->\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/players/item.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<a href=\'/players/', id ,'\'>\n    ', number ,' \n    ', first_name ,' \n    '); if (nickname) { ;__p.push('"', nickname ,'"'); } ;__p.push('\n    ', last_name ,'\n</a>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<a href=\'/players/', id ,'\'>\r\n    ', number ,' \r\n    ', first_name ,' \r\n    '); if (nickname) { ;__p.push('"', nickname ,'"'); } ;__p.push('\r\n    ', last_name ,'\r\n</a>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/players/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="players-list obj-list"></ul>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="players-list obj-list"></ul>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/players/multilist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\n\t<button class="button bteams is_active">Teams</button>\n</div>\n<div class="list lteams"></div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\r\n\t<button class="button bteams is_active">Teams</button>\r\n</div>\r\n<div class="list lteams"></div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/playerstats/boxscore.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="player_per_game_stats_1" class="playerstats_list stats">\n    <tr class="table_name">\n        <td colspan=8 width="100%" >', team_1.name ,'</td>\n    </tr>\n    <tr class="column_headers">\n        <th width="40%" class="table_first_item">\n            PLAYER\n        </th>\n        <th width="12%">\n            COMP\n        </th>\n        <th width="8%">\n            PT\n        </th>\n        <th width="8%">\n            AST\n        </th>\n        <th width="8%">\n            Ds\n        </th>\n        <th width="8%">\n            TO\n        </th>\n        <th width="8%">\n            +/-\n        </th>\n        <th width="8%">\n            GLS\n        </th>\n    </th>\n</table>\n\n<table id="player_per_game_stats_2" class="playerstats_list stats">\n    <tr class="table_name">\n        <td colspan=8 width="100%" >', team_2.name ,'</td>\n    </tr>\n    <tr class="column_headers">\n        <th width="40%" class="table_first_item">\n            PLAYER\n        </th>\n        <th width="12%">\n            COMP\n        </th>\n        <th width="8%">\n            PT\n        </th>\n        <th width="8%">\n            AST\n        </th>\n        <th width="8%">\n            Ds\n        </th>\n        <th width="8%">\n            TO\n        </th>\n        <th width="8%">\n            +/-\n        </th>\n        <th width="8%">\n            GLS\n        </th>\n    </th>\n</table>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="player_per_game_stats_1" class="playerstats_list stats">\r\n    <tr class="table_name">\r\n        <td colspan=8 width="100%" >', team_1.name ,'</td>\r\n    </tr>\r\n    <tr class="column_headers">\r\n        <th width="40%" class="table_first_item">\r\n            PLAYER\r\n        </th>\r\n        <th width="12%">\r\n            COMP\r\n        </th>\r\n        <th width="8%">\r\n            PT\r\n        </th>\r\n        <th width="8%">\r\n            AST\r\n        </th>\r\n        <th width="8%">\r\n            Ds\r\n        </th>\r\n        <th width="8%">\r\n            TO\r\n        </th>\r\n        <th width="8%">\r\n            +/-\r\n        </th>\r\n        <th width="8%">\r\n            GLS\r\n        </th>\r\n    </th>\r\n</table>\r\n\r\n<table id="player_per_game_stats_2" class="playerstats_list stats">\r\n    <tr class="table_name">\r\n        <td colspan=8 width="100%" >', team_2.name ,'</td>\r\n    </tr>\r\n    <tr class="column_headers">\r\n        <th width="40%" class="table_first_item">\r\n            PLAYER\r\n        </th>\r\n        <th width="12%">\r\n            COMP\r\n        </th>\r\n        <th width="8%">\r\n            PT\r\n        </th>\r\n        <th width="8%">\r\n            AST\r\n        </th>\r\n        <th width="8%">\r\n            Ds\r\n        </th>\r\n        <th width="8%">\r\n            TO\r\n        </th>\r\n        <th width="8%">\r\n            +/-\r\n        </th>\r\n        <th width="8%">\r\n            GLS\r\n        </th>\r\n    </th>\r\n</table>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/playerstats/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table class="playerstats-list">\n    <tr>\n        <th width="60%">\n            Player\n        </th>\n        <th width="10%">\n            Goals\n        </th>\n        <th width="10%">\n            Assists\n        </th>\n        <th width="10%">\n            Ds\n        </th>\n        <th width="10%">\n            Turns\n        </th>\n    </th>\n</table>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table class="playerstats-list">\r\n    <tr>\r\n        <th width="60%">\r\n            Player\r\n        </th>\r\n        <th width="10%">\r\n            Goals\r\n        </th>\r\n        <th width="10%">\r\n            Assists\r\n        </th>\r\n        <th width="10%">\r\n            Ds\r\n        </th>\r\n        <th width="10%">\r\n            Turns\r\n        </th>\r\n    </th>\r\n</table>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/playerstats/per_game_stat_line.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td class="table_first_item">\n    <a href="players/', player.id ,'">', player.first_name ,' '); if (player.nickname) { ;__p.push('"'); } ;__p.push('', player.nickname ,''); if (player.nickname) { ;__p.push('"'); } ;__p.push(' ', player.last_name ,'</a>\n</td>\n<td>\n    ', completed_passes_thrown ,'/', passes_thrown ,'\n</td>\n<td>\n    ', points_played ,'\n</td>\n<td>\n    ', goals_thrown ,'\n</td>\n<td>\n    ', ds ,'\n</td>\n<td>\n    ', turnovers ,'\n</td>\n<td>\n    ', plus_minus ,'\n</td>\n<td>\n    ', goals_caught ,'\n</td>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td class="table_first_item">\r\n    <a href="players/', player.id ,'">', player.first_name ,' '); if (player.nickname) { ;__p.push('"'); } ;__p.push('', player.nickname ,''); if (player.nickname) { ;__p.push('"'); } ;__p.push(' ', player.last_name ,'</a>\r\n</td>\r\n<td>\r\n    ', completed_passes_thrown ,'/', passes_thrown ,'\r\n</td>\r\n<td>\r\n    ', points_played ,'\r\n</td>\r\n<td>\r\n    ', goals_thrown ,'\r\n</td>\r\n<td>\r\n    ', ds ,'\r\n</td>\r\n<td>\r\n    ', turnovers ,'\r\n</td>\r\n<td>\r\n    ', plus_minus ,'\r\n</td>\r\n<td>\r\n    ', goals_caught ,'\r\n</td>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/settings/detail.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push(''); if (logged_in) { ;__p.push('\n<div id="logout_area">\n    <h2>You are logged in</h2>\n    <button id="logout" href="#">Log out</button>\n</div>\n'); } else { ;__p.push('\n<div id="logout_area">\n    <h2>Please log in</h2>\n    <button id="login" href="#">Log in</button>\n</div>\n'); } ;__p.push('\n<div id="battery_usage_area">\n    <h2>Set battery usage</h2>\n    <p>Sorry, this feature is not available at this time.</p>\n</div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push(''); if (logged_in) { ;__p.push('\r\n<div id="logout_area">\r\n    <h2>You are logged in</h2>\r\n    <button id="logout" href="#">Log out</button>\r\n</div>\r\n'); } else { ;__p.push('\r\n<div id="logout_area">\r\n    <h2>Please log in</h2>\r\n    <button id="login" href="#">Log in</button>\r\n</div>\r\n'); } ;__p.push('\r\n<div id="battery_usage_area">\r\n    <h2>Set battery usage</h2>\r\n    <p>Sorry, this feature is not available at this time.</p>\r\n</div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/settings/list.html'] = function(data) { return function (obj,_) {
@@ -428,7 +428,7 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/teamplayers/playerlist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="players-list obj-list"></ul>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="players-list obj-list"></ul>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teamplayers/team.html'] = function(data) { return function (obj,_) {
@@ -436,7 +436,7 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/teamplayers/teamlist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="teams-list"></ul>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="teams-list"></ul>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teams/detail.html'] = function(data) { return function (obj,_) {
@@ -452,23 +452,23 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/teams/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="team-list obj-list"></ul>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="team-list obj-list"></ul>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teams/multilist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\n    <table>\n        <tr>\n            <td>\n                <button class="button bgames is_active">Games</button>\n            </td>\n            <td>\n                <button class="button bplayers">Players</button>\n            </td>\n        </tr>\n    </table>\n</div>\n<div class="list lgames"></div>\n<div class="list lplayers"></div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\r\n    <table>\r\n        <tr>\r\n            <td>\r\n                <button class="button bgames is_active">Games</button>\r\n            </td>\r\n            <td>\r\n                <button class="button bplayers">Players</button>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n<div class="list lgames"></div>\r\n<div class="list lplayers"></div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teamstats/boxscore.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="team_per_game_stats" class="teamstats_list stats">\n    <tr class="table_name">\n        <td colspan=8 width="100%" >Team Stats</td>\n    </tr>\n    <tr class="column_headers">\n        <th width="40%" class="table_first_item">\n            TEAM\n        </th>\n        <th width="14%">\n            COMP\n        </th>\n        <th width="14%">\n            COMP%\n        </th>\n        <th width="8">\n            Ds\n        </th>\n        <th width="8%">\n            DRP\n        </th>\n        <th width="8%">\n            TA\n        </th>\n        <th width="8%">\n            TO\n        </th>\n    </th>\n</table>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="team_per_game_stats" class="teamstats_list stats">\r\n    <tr class="table_name">\r\n        <td colspan=8 width="100%" >Team Stats</td>\r\n    </tr>\r\n    <tr class="column_headers">\r\n        <th width="40%" class="table_first_item">\r\n            TEAM\r\n        </th>\r\n        <th width="14%">\r\n            COMP\r\n        </th>\r\n        <th width="14%">\r\n            COMP%\r\n        </th>\r\n        <th width="8">\r\n            Ds\r\n        </th>\r\n        <th width="8%">\r\n            DRP\r\n        </th>\r\n        <th width="8%">\r\n            TA\r\n        </th>\r\n        <th width="8%">\r\n            TO\r\n        </th>\r\n    </th>\r\n</table>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/teamstats/per_game_stat_line.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td class="table_first_item">\n    <a href="teams/', team.id ,'">', team.name ,'</a>\n</td>\n<td>\n    ', completed_passes_thrown ,'/', passes_thrown ,'\n</td>\n<td>\n    ', completion_percent ,'\n</td>\n<td>\n    ', ds ,'\n</td>\n<td>\n    ', drops ,'\n</td>\n<td>\n    ', throwaways ,'\n</td>\n<td>\n    ', turnovers ,'\n</td>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td class="table_first_item">\r\n    <a href="teams/', team.id ,'">', team.name ,'</a>\r\n</td>\r\n<td>\r\n    ', completed_passes_thrown ,'/', passes_thrown ,'\r\n</td>\r\n<td>\r\n    ', completion_percent ,'\r\n</td>\r\n<td>\r\n    ', ds ,'\r\n</td>\r\n<td>\r\n    ', drops ,'\r\n</td>\r\n<td>\r\n    ', throwaways ,'\r\n</td>\r\n<td>\r\n    ', turnovers ,'\r\n</td>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/tournaments/detail.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="tournament_start_date"><span>', start_date_string ,'</span></div>\n<div>', info ,'</div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="tournament_start_date"><span>', start_date_string ,'</span></div>\r\n<div>', info ,'</div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/tournaments/item.html'] = function(data) { return function (obj,_) {
@@ -476,39 +476,39 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/tournaments/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="tournament-list obj-list"></ul>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="tournament-list obj-list"></ul>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/tournaments/multilist.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\n    <table>\n        <tr>\n            <td>\n                <button class="button bgames is_active">Games</button>\n            </td>\n            <td>\n                <button class="button bstandings">Standings</button>\n            </td>\n            <!--\n            <td>\n                <button class="button bpools">Pools</button>\n            </td>\n            <td>\n                <button class="button bbrackets">Brackets</button>\n            </td>\n            -->\n        </tr>\n    </table>\n</div>\n<div class="list lgames"></div>\n<div class="list lstandings"></div>\n<!--\n<div class="list lpools"></div>\n<div class="list lbrackets"></div>\n-->\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons">\r\n    <table>\r\n        <tr>\r\n            <td>\r\n                <button class="button bgames is_active">Games</button>\r\n            </td>\r\n            <td>\r\n                <button class="button bstandings">Standings</button>\r\n            </td>\r\n            <!--\r\n            <td>\r\n                <button class="button bpools">Pools</button>\r\n            </td>\r\n            <td>\r\n                <button class="button bbrackets">Brackets</button>\r\n            </td>\r\n            -->\r\n        </tr>\r\n    </table>\r\n</div>\r\n<div class="list lgames"></div>\r\n<div class="list lstandings"></div>\r\n<!--\r\n<div class="list lpools"></div>\r\n<div class="list lbrackets"></div>\r\n-->\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/tournteams/list.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="tournament_standings" class="tournteam-list">\n    <tr>\n        <th width="70%">\n            Team\n        </th>\n        <th width="15%">\n            Seed\n        </th>\n        <th width="15%">\n            Finish\n        </th>\n    </th>\n</table>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<table id="tournament_standings" class="tournteam-list">\r\n    <tr>\r\n        <th width="70%">\r\n            Team\r\n        </th>\r\n        <th width="15%">\r\n            Seed\r\n        </th>\r\n        <th width="15%">\r\n            Finish\r\n        </th>\r\n    </th>\r\n</table>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/tournteams/team.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td>\n    <a href=\'teams/', team.id ,'\'>', team.name ,'</a>\n</td>\n<td>\n    ', seed ,'\n</td>\n<td>\n    ', final_standing ,'\n</td>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<td>\r\n    <a href=\'teams/', team.id ,'\'>', team.name ,'</a>\r\n</td>\r\n<td>\r\n    ', seed ,'\r\n</td>\r\n<td>\r\n    ', final_standing ,'\r\n</td>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/action_area.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons main_action">\n    <div id="throw_prompt" class="action_prompt">\n        <div class="action_prompt_player">\n            ', player_string ,'\n        </div>\n        <div class="action_prompt_action">\n            ', action_string ,'\n        </div>\n    </div>\n    <button class="button completion">Complete Pass</button>\n\t<button class="button dropped_pass">Dropped pass</button>\n\t<button class="button defd_pass">D\'ed Pass</button>\n    <button class="button throwaway">\n        <span class="button_line_1">Untouched</span> \n        <span class="button_line_2">Throwaway</span>\n    </button>\n    <button class="button score">Score</button>\n</div>\n<div class="buttons alternate_action">\n    <div id="alternate_action_prompt" class="action_prompt">\n        <div class="action_prompt_action">What happened?</div>\n    </div>\n\t<button class="button unknown_turn">Unknown Turn</button>\n\t<button class="button stall">Stall</button>\n    <!-- Removed for simplicity for the first version \n        <button class="button foul">Foul/Violation</button>\n    -->\n\t<button class="button injury">Injury</button>\n\t<button class="button timeout">Timeout</button>\n\t<button class="button end_of_period">End of Period ', per_num ,'</button>\n</div>\n<div class="buttons extra_actions">\n    <button class="button misc">Misc</button>\n    <button class="button undo">Undo</button>\n</div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="buttons main_action">\r\n    <div id="throw_prompt" class="action_prompt">\r\n        <div class="action_prompt_player">\r\n            ', player_string ,'\r\n        </div>\r\n        <div class="action_prompt_action">\r\n            ', action_string ,'\r\n        </div>\r\n    </div>\r\n    <button class="button completion">Complete Pass</button>\r\n\t<button class="button dropped_pass">Dropped pass</button>\r\n\t<button class="button defd_pass">D\'ed Pass</button>\r\n    <button class="button throwaway">\r\n        <span class="button_line_1">Untouched</span> \r\n        <span class="button_line_2">Throwaway</span>\r\n    </button>\r\n    <button class="button score">Score</button>\r\n</div>\r\n<div class="buttons alternate_action">\r\n    <div id="alternate_action_prompt" class="action_prompt">\r\n        <div class="action_prompt_action">What happened?</div>\r\n    </div>\r\n\t<button class="button unknown_turn">Unknown Turn</button>\r\n\t<button class="button stall">Stall</button>\r\n    <!-- Removed for simplicity for the first version \r\n        <button class="button foul">Foul/Violation</button>\r\n    -->\r\n\t<button class="button injury">Injury</button>\r\n\t<button class="button timeout">Timeout</button>\r\n\t<button class="button end_of_period">End of Period ', per_num ,'</button>\r\n</div>\r\n<div class="buttons extra_actions">\r\n    <button class="button misc">Misc</button>\r\n    <button class="button undo">Undo</button>\r\n</div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/basic.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="trackbasic">\n    <div id="team1">\n        <button class="team_1 decrement">-</button>\n        <button class="team_1 increment">+</button>\n    </div>\n    <div id="team2">\n        <button class="team_2 decrement">-</button>\n        <button class="team_2 increment">+</button>\n    </div>\n</div>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div id="trackbasic">\r\n    <div id="team1">\r\n        <button class="team_1 decrement">-</button>\r\n        <button class="team_1 increment">+</button>\r\n    </div>\r\n    <div id="team2">\r\n        <button class="team_2 decrement">-</button>\r\n        <button class="team_2 increment">+</button>\r\n    </div>\r\n</div>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/game_action.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="playbyplay"></div>\n<div class="player_area"></div>\n<div class="action_area"></div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="playbyplay"></div>\r\n<div class="player_area"></div>\r\n<div class="action_area"></div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/main.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="roster_1"></section>\n<section class="roster_2"></section>\n<section class="action"></section>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<section class="roster_1"></section>\r\n<section class="roster_2"></section>\r\n<section class="action"></section>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/playbyplay.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="last_action_label">Previous Play:</div>\n<div class="last_action">', playtext ,'</div>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="last_action_label">Previous Play:</div>\r\n<div class="last_action">', playtext ,'</div>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/player_action_prompt.html'] = function(data) { return function (obj,_) {
@@ -516,7 +516,7 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/player_area.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="player_prompt"></div>\n<div class="player_area_1"></div>\n<div class="player_area_2"></div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="player_prompt"></div>\r\n<div class="player_area_1"></div>\r\n<div class="player_area_2"></div>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/player_button.html'] = function(data) { return function (obj,_) {
@@ -524,27 +524,27 @@ var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.pu
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/roster.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="roster_team_header">\n    <span class="roster_team_name">\n        ', team.name ,'\n    </span>\n</div>\n<div class="roster_onfield_sum"></div>\n<div class="roster_quick">\n\t<ul>\n\t\t<li>\n\t\t\t<button class="clear_roster">\n\t\t\t\t<span>Clear</span>\n\t\t\t</button>\n\t\t</li>\n\t\t<li>\n\t\t\t<button class="last_o">\n\t\t\t\t<span>Last O-Line</span>\n\t\t\t</button>\n\t\t</li>\n\t\t<li>\n\t\t\t<button class="last_d">\n\t\t\t\t<span>Last D-Line</span>\n\t\t\t</button>\n\t\t</li>\n\t</ul>\n</div>\n<div class="roster_area"></div>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="roster_team_header">\r\n    <span class="roster_team_name">\r\n        ', team.name ,'\r\n    </span>\r\n</div>\r\n<div class="roster_onfield_sum"></div>\r\n<div class="roster_quick">\r\n\t<ul>\r\n\t\t<li>\r\n\t\t\t<button class="clear_roster">\r\n\t\t\t\t<span>Clear</span>\r\n\t\t\t</button>\r\n\t\t</li>\r\n\t\t<li>\r\n\t\t\t<button class="last_o">\r\n\t\t\t\t<span>Last O-Line</span>\r\n\t\t\t</button>\r\n\t\t</li>\r\n\t\t<li>\r\n\t\t\t<button class="last_d">\r\n\t\t\t\t<span>Last D-Line</span>\r\n\t\t\t</button>\r\n\t\t</li>\r\n\t</ul>\r\n</div>\r\n<div class="roster_area"></div>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/roster_item.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="roster_player player" id="', player_id ,'">\n    <span class="player_name" id="', player_id ,'">', player.first_name ,' ', player.last_name ,'</span>\n    <span class="player_number" id="', player_id ,'">', number ,'</span>\n</button>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<button class="roster_player player" id="', player_id ,'">\r\n    <span class="player_name" id="', player_id ,'">', player.first_name ,' ', player.last_name ,'</span>\r\n    <span class="player_number" id="', player_id ,'">', number ,'</span>\r\n</button>\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/roster_sum.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('', onfield_sum ,' players in\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('', onfield_sum ,' players in\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/rotate_button.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('', next_screen ,'\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('', next_screen ,'\r\n');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/scoreboard.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="name team1">', game.team_1.name ,'</div>\n<div class="score team1">', game.team_1_score ,'</div>\n<div class="score team2">', game.team_2_score ,'</div>\n<div class="name team2">', game.team_2.name ,'</div>');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<div class="name team1">', game.team_1.name ,'</div>\r\n<div class="score team1">', game.team_1_score ,'</div>\r\n<div class="score team2">', game.team_2_score ,'</div>\r\n<div class="name team2">', game.team_2.name ,'</div>');}return __p.join('');
 }(data, _)};
 
 this['JST']['app/templates/trackedgame/teamplayer_area.html'] = function(data) { return function (obj,_) {
-var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="player_buttons"></ul>\n<div class="offense_teamname"><p>', team.name ,'</p></div>\n');}return __p.join('');
+var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('<ul class="player_buttons"></ul>\r\n<div class="offense_teamname"><p>', team.name ,'</p></div>\r\n');}return __p.join('');
 }(data, _)};
 
 /*!
@@ -15565,17 +15565,17 @@ define('modules/leaguevine',[
 ],
 
 function(app, Backbone) {
-	/*
-	* This module defines the API properties.
-	*/
+    /*
+    * This module defines the API properties.
+    */
 
-	// Create a new module
-	var Leaguevine = app.module();
+    // Create a new module
+    var Leaguevine = app.module();
 
-	Leaguevine.Utils = {};
-	Leaguevine.Utils.concat_collections = function(c1, c2) {
+    Leaguevine.Utils = {};
+    Leaguevine.Utils.concat_collections = function(c1, c2) {
         //Concatenates collections c1 and c2, making sure we remove any duplicate entries from c2 before appending
-        
+
         var models = _.reject(c2.models, function(model) {
             return c1.pluck("id").indexOf(model.get("id")) != -1;
         });
@@ -15586,41 +15586,50 @@ function(app, Backbone) {
         c1.reset(_.union(c1.models, models));
    };
 
-	Leaguevine.Router = Backbone.Router.extend({
-		
-		routes: {
-			"access_:hash": "token_received",
-            "error_description:hash": "login_error"
-		},
-		
-		token_received: function(hash) {//route matched by oauth/:hash
-			hash = hash.split("&"); //break the URL hash into its segments.
-			_.each(hash, function(element){ //For each segment...
-				var pair = element.split("="); //Get the key and value.
-				var temp_obj = {};
-				temp_obj[pair[0]]=pair[1]; //Put the key and value into a temp object.
-				_.extend(app.api,temp_obj); //Extend/overwrite our app.api with the key/value of the temp object.
-			});
+    Leaguevine.Router = Backbone.Router.extend({
 
-			//After token is received, navigate to the href that was saved earlier
-			localStorage.setItem("auth_object", JSON.stringify(app.api));
+        //http://local.ultistats.com/expires_in=157680000&token_type=bearer&access_token=22db8beda6&scope=universal
+        routes: {
+            "token_:hash": "token_received",
+            "expires_:hash": "token_received",
+            "access_:hash": "token_received",
+            "error_description:hash": "login_error"
+        },
+
+        token_received: function(hash) {//route matched by oauth/:hash
+            hash = hash.split("&"); //break the URL hash into its segments.
+            //Restore the matched part of the url (i.e. change "type" to "token_type", "in" to "expires_in", or "token" to "access_token")
+            var pair0 = hash[0].split("=");
+            pair0[0] = pair0[0] == "type" ? "token_" + pair0[0] : pair0[0];
+            pair0[0] = pair0[0] == "in" ? "expires_" + pair0[0] : pair0[0];
+            pair0[0] = pair0[0] == "token" ? "access_" + pair0[0] : pair0[0];
+            hash[0] = pair0[0] + "=" + pair0[1];
+            _.each(hash, function(element){ //For each segment...
+                var pair = element.split("="); //Get the key and value.
+                var temp_obj = {};
+                temp_obj[pair[0]]=pair[1]; //Put the key and value into a temp object.
+                _.extend(app.api,temp_obj); //Extend/overwrite our app.api with the key/value of the temp object.
+            });
+
+            //After token is received, navigate to the href that was saved earlier
+            localStorage.setItem("auth_object", JSON.stringify(app.api));
             //window.location.href = "#" + localStorage.getItem("login_redirect");
             window.location.href = localStorage.getItem("login_redirect");
             return false;
-		},
+        },
         login_error: function(hash) {
             Backbone.history.navigate("settings", true); //Redirect to the settings page where there is a prompt to log in again
          }
 
-	});
+    });
     Leaguevine.router = new Leaguevine.Router();// INITIALIZE ROUTER
 
     Leaguevine.Views.MoreItems = Backbone.View.extend({
-		template: "leaguevine/more_items",
+        template: "leaguevine/more_items",
             events: {
                 click: "fetch_more_items"
             },
-		tagName: "li",
+        tagName: "li",
         initialize: function() {
             this.collection = this.options.collection;
         },
@@ -15631,7 +15640,7 @@ function(app, Backbone) {
                 var limit = this.collection.meta.limit;
                 if (limit + this.collection.length > this.collection.meta.total_count) {
                     // If we are almost at the end of the list of items
-                    context.num_items = this.collection.meta.total_count - this.collection.length; 
+                    context.num_items = this.collection.meta.total_count - this.collection.length;
                 } else {
                     context.num_items = this.collection.meta.limit;
                 }
@@ -15656,32 +15665,32 @@ function(app, Backbone) {
         }
     });
 
-	Leaguevine.API = {	
+    Leaguevine.API = {
         root: "http://api.playwithlv.com/v1/",
         base: "http://playwithlv.com/oauth2/authorize/?response_type=token&scope=universal",
-        client_id: "9f30036f95850b185ccbfd66ab54fb",
-        redirect_uri: "http://ultistats.localhost/",
+        client_id: "ab9a5a75a96924bcdda7ee94f9c7ca",
+        redirect_uri: "http://local.ultistats.com/",
         season_id: null,
-        d_token: function() {//Modules will reference this dynamic token			
-            if (!this.token) {
+        d_token: function() {//Modules will reference this dynamic token
+            if (!this.access_token) {
                 var stored_api = JSON.parse(localStorage.getItem("auth_object")); //Pull our token out of local storage if it exists.
                 _.extend(this,stored_api);
             }
-            if (!this.token) {
+            if (!this.access_token) {
                 //return this.login();
                 this.login();
                 return false;
             }
             else {
-                return this.token;
+                return this.access_token;
             }
         },
         is_logged_in: function() {//Returns true if the user is logged in and false if not
-			if (!this.token) {
-				var stored_api = JSON.parse(localStorage.getItem("auth_object"));
-				_.extend(this, stored_api);
-			}
-            return (this.token !== null && this.token !== undefined);
+            if (!this.access_token) {
+                var stored_api = JSON.parse(localStorage.getItem("auth_object"));
+                _.extend(this, stored_api);
+            }
+            return (this.access_token !== null && this.access_token !== undefined);
         },
         login: function() {//Redirects a user to the login screen
             localStorage.setItem("login_redirect", Backbone.history.fragment);
@@ -15690,19 +15699,19 @@ function(app, Backbone) {
         },
         logout: function() {//Logs a user out by removing the locally stored token
             localStorage.removeItem("auth_object");
-            this.token = undefined;
+            this.access_token = undefined;
         }
     };
 
-    if (typeof localSettings != "undefined" && 
-        typeof localSettings.Leaguevine != "undefined" && 
+    if (typeof localSettings != "undefined" &&
+        typeof localSettings.Leaguevine != "undefined" &&
         typeof localSettings.Leaguevine.API != "undefined") {
         _.extend(Leaguevine.API, localSettings.Leaguevine.API);
     }
-    
+
     Backbone.API = Leaguevine.API;
-		
-	return Leaguevine;
+
+    return Leaguevine;
 });
 
 define('modules/navigation',[
@@ -15715,8 +15724,8 @@ define('modules/navigation',[
   "plugins/backbone.layoutmanager"
 ],
 function(app, Backbone, Game) {
-    
-	var Navigation = app.module();
+
+    var Navigation = app.module();
 
     //Initialize the URLs for the navigation buttons
     //We remember the last page viewed within each sub-navigation so subsequent clicks on that
@@ -15739,16 +15748,16 @@ function(app, Backbone, Game) {
     if (games_href) {
         app.navigation.games_href = games_href;
     }
-	
-	Navigation.Views.Navbar = Backbone.View.extend({
-		template: "navigation/navbar",
-		//className: "navbar-wrapper",
-		//href: "",
-		//name: "",
-		currently_viewed: "",
-		render: function(layout) {
-			var view = layout(this);
-			// Initialize the classes for the currently viewed navigation button
+
+    Navigation.Views.Navbar = Backbone.View.extend({
+        template: "navigation/navbar",
+        //className: "navbar-wrapper",
+        //href: "",
+        //name: "",
+        currently_viewed: "",
+        render: function(layout) {
+            var view = layout(this);
+            // Initialize the classes for the currently viewed navigation button
             var tournaments_class = "";
             var teams_class = "";
             var games_class = "";
@@ -15759,12 +15768,12 @@ function(app, Backbone, Game) {
                 tournaments_class = currently_viewed;
                 app.navigation.tournaments_href = fragment;
                 localStorage.setItem('tournaments_href', fragment);
-            } 
+            }
             else if (fragment.indexOf("team") != -1) { // If the current URL is a team URL
                 teams_class = currently_viewed;
                 app.navigation.teams_href = fragment;
                 localStorage.setItem('teams_href', fragment);
-            } 
+            }
             else if (fragment.indexOf("games") != -1) {
                 games_class = currently_viewed;
                 app.navigation.games_href = fragment;
@@ -15774,10 +15783,10 @@ function(app, Backbone, Game) {
                 settings_class = currently_viewed;
                 app.navigation.settings_href = fragment;
             }
-        
-			return view.render({
-                //href: this.options.href, 
-                //name: this.options.name, 
+
+            return view.render({
+                //href: this.options.href,
+                //name: this.options.name,
                 tournaments_class: tournaments_class,
                 teams_class: teams_class,
                 games_class: games_class,
@@ -15787,15 +15796,15 @@ function(app, Backbone, Game) {
                 games_href: app.navigation.games_href,
                 settings_href: app.navigation.settings_href
             });
-		}
-		//I don't understand what the following does so I commented it out to see if anything breaks.
-		/*initialize: function() {
-			this.bind("change", function() {
-				this.render();
-			}, this);
-		}*/
-	});
-    
+        }
+        //I don't understand what the following does so I commented it out to see if anything breaks.
+        /*initialize: function() {
+            this.bind("change", function() {
+                this.render();
+            }, this);
+        }*/
+    });
+
     Navigation.Views.Titlebar = Backbone.View.extend({
         /* Usage:
          *      options:
@@ -15804,7 +15813,7 @@ function(app, Backbone, Game) {
          *			model - The model. Required for levels 'show' and 'edit'
          * With these arguments we can construct
          * title, left_btn_class, left_btn_href, left_btn_txt, right_btn_class, right_btn_href, right_btn_txt
-         * 
+         *
          * title is either the name of the group (Teams, Games, Players, Tournaments, Settings) or it is the name of the model being viewed.
          * left_btn_href: empty if we are at a top level (i.e. Teams list, etc), takes us back to the list if we are at the item, or takes us back to the item if we are editing the item
          * left_btn_txt: if list then "", if at item then group name, if at edit then item name
@@ -15813,150 +15822,150 @@ function(app, Backbone, Game) {
          * right_btn_txt: if list then "" (+ button used), if item then "Edit", if edit then disabled
          * right_btn_class: if list then "add", if item then ?, if edit then disabled.
          */
-        
-		template: "navigation/titlebar",
-		initialize: function(){
-			if (this.model){
-				this.model.on("change", this.render, this);
-			}
-		},
-		cleanup: function(){
-			if (this.model){
-				this.model.off(null, null, this);
-			}
-		},
-		render: function(layout) {
-			var view = layout(this);
-			var my_class = this.options.model_class || null;
-			var my_level = this.options.level || null;
-			var my_title; //Title is from the dict if list, else it is
-			var list_titles = {"team": "Teams", "game": "Games", "tournament": "Tournaments", "player": "Players", "setting": "Settings"}; 
-			if (my_level === "list"){my_title = list_titles[my_class];}
-			else if (my_level === "edit"){my_title = this.model.isNew() ? "Create" : "Edit";}
-			else if (my_level == "show"){
-				if (my_class === "player"){
-					var this_first = this.model.get("first_name") || "";
-					var this_last = this.model.get("last_name") || "";
-					my_title = this_first + " " + this_last;
-				} else {my_title = this.model.get("name") || "";}
-			} else {my_title = "";}
 
-			var lbc, lbh, lbt, rbc, rbh, rbt;
-			//var list_hrefs = {"team": "#teams", "game": "#games", "tournament": "#tournaments", "player": "#players", "setting": "#settings"};
-			var list_hrefs = {"team": "/teams", "game": "/games", "tournament": "/tournaments", "player": "/players", "setting": "/settings"};
-			if (my_level === "list"){
-				//Left button does not exist for list level.
-				lbc = "disabled";
-				lbh = "";
-				lbt = "";
-				//Right button is new/add for list
-				rbc = "add";
-				rbh = "/new" + my_class;
-				rbt = "";//Doesn't matter because it'll be a plus button.
-			} else if (my_level === "show"){
-				//Left button is back to the list if we are viewing an item.
-				lbc = "back";
-				lbh = list_hrefs[my_class];
-				lbt = list_titles[my_class];
-				//Right button is Edit if we are viewing an item.
-				rbc = ""; //No class for the 'edit' button.
-				rbh = "/edit" + my_class + "/" + this.model.id;
-				rbt = "Edit";
-			} else if (my_level === "edit"){
-				//Left button is 'cancel' if we are editing.
-				lbc = "back";
-				lbh = list_hrefs[my_class];
-				if (!this.model.isNew()){
-					lbh = lbh + "/" + this.model.id;
-				}
-				lbt = "Cancel";
-				//Right button does not exist for edit level
-				rbc = "disabled";
-				rbh = "";
-				rbt = "";
-			}
+        template: "navigation/titlebar",
+        initialize: function(){
+            if (this.model){
+                this.model.on("change", this.render, this);
+            }
+        },
+        cleanup: function(){
+            if (this.model){
+                this.model.off(null, null, this);
+            }
+        },
+        render: function(layout) {
+            var view = layout(this);
+            var my_class = this.options.model_class || null;
+            var my_level = this.options.level || null;
+            var my_title; //Title is from the dict if list, else it is
+            var list_titles = {"team": "Teams", "game": "Games", "tournament": "Tournaments", "player": "Players", "setting": "Settings"};
+            if (my_level === "list"){my_title = list_titles[my_class];}
+            else if (my_level === "edit"){my_title = this.model.isNew() ? "Create" : "Edit";}
+            else if (my_level == "show"){
+                if (my_class === "player"){
+                    var this_first = this.model.get("first_name") || "";
+                    var this_last = this.model.get("last_name") || "";
+                    my_title = this_first + " " + this_last;
+                } else {my_title = this.model.get("name") || "";}
+            } else {my_title = "";}
 
-			// Some hacks until these features are implemented.
-			if (my_level === "show" && my_class === "player"){
-				lbc = "disabled"; //We currently do not have a generic list of players.
-				rbc = "disabled"; //We currently do not have a page to edit a player.
-			}
-			if (my_class === "tournament"){
-				rbc = "disabled"; //We currently do not have pages to create or edit a tournament.
-			}
-			if (my_level === "show" && my_class === "game"){
-				rbc = "disabled"; //We do not hav a way to edit games.
-			if (this.model.get("tournament_id")){
-				lbh = "/tournaments/" + this.model.get("tournament_id");
-				lbt = this.model.get("tournament").name ? this.model.get("tournament").name : "Tournament";
-			} else {lbc = "disabled";}//We do not have a generic list of games.
-			}
+            var lbc, lbh, lbt, rbc, rbh, rbt;
+            //var list_hrefs = {"team": "#teams", "game": "#games", "tournament": "#tournaments", "player": "#players", "setting": "#settings"};
+            var list_hrefs = {"team": "/teams", "game": "/games", "tournament": "/tournaments", "player": "/players", "setting": "/settings"};
+            if (my_level === "list"){
+                //Left button does not exist for list level.
+                lbc = "disabled";
+                lbh = "";
+                lbt = "";
+                //Right button is new/add for list
+                rbc = "add";
+                rbh = "/new" + my_class;
+                rbt = "";//Doesn't matter because it'll be a plus button.
+            } else if (my_level === "show"){
+                //Left button is back to the list if we are viewing an item.
+                lbc = "back";
+                lbh = list_hrefs[my_class];
+                lbt = list_titles[my_class];
+                //Right button is Edit if we are viewing an item.
+                rbc = ""; //No class for the 'edit' button.
+                rbh = "/edit" + my_class + "/" + this.model.id;
+                rbt = "Edit";
+            } else if (my_level === "edit"){
+                //Left button is 'cancel' if we are editing.
+                lbc = "back";
+                lbh = list_hrefs[my_class];
+                if (!this.model.isNew()){
+                    lbh = lbh + "/" + this.model.id;
+                }
+                lbt = "Cancel";
+                //Right button does not exist for edit level
+                rbc = "disabled";
+                rbh = "";
+                rbt = "";
+            }
 
-			return view.render({href: "",
-				title: my_title,
-				left_btn_href: lbh,
-				left_btn_txt: lbt,
-				left_btn_class: lbc,
-				right_btn_href: rbh,
-				right_btn_txt: rbt,
-				right_btn_class: rbc
-			});
-		}
-	});
+            // Some hacks until these features are implemented.
+            if (my_level === "show" && my_class === "player"){
+                lbc = "disabled"; //We currently do not have a generic list of players.
+                rbc = "disabled"; //We currently do not have a page to edit a player.
+            }
+            if (my_class === "tournament"){
+                rbc = "disabled"; //We currently do not have pages to create or edit a tournament.
+            }
+            if (my_level === "show" && my_class === "game"){
+                rbc = "disabled"; //We do not hav a way to edit games.
+            if (this.model.get("tournament_id")){
+                lbh = "/tournaments/" + this.model.get("tournament_id");
+                lbt = this.model.get("tournament").name ? this.model.get("tournament").name : "Tournament";
+            } else {lbc = "disabled";}//We do not have a generic list of games.
+            }
+
+            return view.render({href: "",
+                title: my_title,
+                left_btn_href: lbh,
+                left_btn_txt: lbt,
+                left_btn_class: lbc,
+                right_btn_href: rbh,
+                right_btn_txt: rbt,
+                right_btn_class: rbc
+            });
+        }
+    });
 
     Navigation.Views.SearchableList = Backbone.View.extend({
-		/*Usage:
-		*	required arguments:
-		*		collection - Collection of models
-		*			CollectionClass - the Collection class (e.g. Team.Collection)
-		*			ViewsListClass - the Views.List class (e.g. Team.Views.List)
-		*			search_object_name - type of object being searched
-		*			tap_method (optional)
-		*			Xright_btn_href - link for right button
-		*			Xright_btn_txt - text of right button
-		*			Xright_btn_class - additional class for right button
-		*	e.g.	myLayout.view(".content", new Search.Views.SearchableList({
-		*			collection: teams, CollectionClass: Team.Collection, 
-		*				ViewsListClass: Team.Views.List, right_btn_class: "",
-		*				right_btn_txt: "Create", right_btn_href: "#newteam", 
-		*				search_object_name: "team"}));
-		*			At least for the case of Team and Tournament, a lot of these
-		*			passed variables can be guessed from the module alone.
-		*	e.g.	myLayout.view(".content", new Search.Views.SearchableList({
-		*				collection: teams, Module: Team }))
-		*			Then we have Module.Collection, Module.Views.List,
-		*			and there must be a way to get a lower-case string from the module
-		*			name to make #newmodule and "module"
-		*			I don't know if simplifying the input arguments breaks any other 
-		*			modules that might use searchable list so I will hold off on 
-		*			this for now.
-		*/
-		concat_collections: function(c1, c2) {
-			var models = _.reject(c2.models, function(model) {
-				return c1.pluck("id").indexOf(model.get("id")) != -1;
-			});
-			c1.reset(_.union(c1.models, models));
-		},
-		template: "navigation/searchable_list",
-		events: {
-			"keyup #object_search": "filterObjects"
-		},
-		//search_results: _.extend({}, Backbone.Events),
-		filterObjects: function(ev) {
-			var search_string = ev.currentTarget.value;
-			this.collection.name = search_string;
-			//When we fetch a collection, upon its return the collection "reset" is triggered.
-			//However, we cannot fetch our original collection because this will cause (error-generating) duplicates.
-			//Thus we make a new collection then merge new results.
-			this.search_results.reset();
-			this.search_results.name = search_string;
-			this.search_results.fetch(); //When the fetch returns it will cause this.search_results to merge with this.collection  
-			this.collection.trigger("reset");//Trigger a reset immediately so the already-present data are curated immediately.
-		},
-		render: function(manage) {
-			//var temp_collection = {};
-			//Leaguevine.Utils.concat_collections(this.collection, this.search_results);
-			this.setView(".object_list_area", new this.options.ViewsListClass({collection: this.collection, tap_method: this.options.tap_method}));
+        /*Usage:
+        *	required arguments:
+        *		collection - Collection of models
+        *			CollectionClass - the Collection class (e.g. Team.Collection)
+        *			ViewsListClass - the Views.List class (e.g. Team.Views.List)
+        *			search_object_name - type of object being searched
+        *			tap_method (optional)
+        *			Xright_btn_href - link for right button
+        *			Xright_btn_txt - text of right button
+        *			Xright_btn_class - additional class for right button
+        *	e.g.	myLayout.view(".content", new Search.Views.SearchableList({
+        *			collection: teams, CollectionClass: Team.Collection,
+        *				ViewsListClass: Team.Views.List, right_btn_class: "",
+        *				right_btn_txt: "Create", right_btn_href: "#newteam",
+        *				search_object_name: "team"}));
+        *			At least for the case of Team and Tournament, a lot of these
+        *			passed variables can be guessed from the module alone.
+        *	e.g.	myLayout.view(".content", new Search.Views.SearchableList({
+        *				collection: teams, Module: Team }))
+        *			Then we have Module.Collection, Module.Views.List,
+        *			and there must be a way to get a lower-case string from the module
+        *			name to make #newmodule and "module"
+        *			I don't know if simplifying the input arguments breaks any other
+        *			modules that might use searchable list so I will hold off on
+        *			this for now.
+        */
+        concat_collections: function(c1, c2) {
+            var models = _.reject(c2.models, function(model) {
+                return c1.pluck("id").indexOf(model.get("id")) != -1;
+            });
+            c1.reset(_.union(c1.models, models));
+        },
+        template: "navigation/searchable_list",
+        events: {
+            "keyup #object_search": "filterObjects"
+        },
+        //search_results: _.extend({}, Backbone.Events),
+        filterObjects: function(ev) {
+            var search_string = ev.currentTarget.value;
+            this.collection.name = search_string;
+            //When we fetch a collection, upon its return the collection "reset" is triggered.
+            //However, we cannot fetch our original collection because this will cause (error-generating) duplicates.
+            //Thus we make a new collection then merge new results.
+            this.search_results.reset();
+            this.search_results.name = search_string;
+            this.search_results.fetch(); //When the fetch returns it will cause this.search_results to merge with this.collection
+            this.collection.trigger("reset");//Trigger a reset immediately so the already-present data are curated immediately.
+        },
+        render: function(manage) {
+            //var temp_collection = {};
+            //Leaguevine.Utils.concat_collections(this.collection, this.search_results);
+            this.setView(".object_list_area", new this.options.ViewsListClass({collection: this.collection, tap_method: this.options.tap_method}));
             return manage(this).render({
                 search_object_name: this.options.search_object_name
                 /*right_btn_class: this.options.right_btn_class,
@@ -15968,22 +15977,22 @@ function(app, Backbone, Game) {
                 //In this case it is probably causing a (slow) double-render
             })*/;
         },
-		initialize: function() {
-			this.search_results = new this.options.CollectionClass();
-			this.search_results.bind("reset", function() {
-				this.concat_collections(this.collection, this.search_results);
-				//Leaguevine.Utils.concat_collections(this.collection, this.search_results);
-			}, this);
-			/*We could bind to reset here to re-render this whole thing.
-			Instead we bind to reset in the module's .Views.List
-			
-			It is not necessary to take this.options and set them as higher level
-			variables because we are assuming that we are always passing in these
-			"required" arguments. If we make these arguments optional, to the point
-			that this view might be insantiated with 0 options, AND we check for the
-			presence of this.options.var_name somewhere else, then we will need to
-			reassign these below variables and instead check for the presence of this.var_name
-			
+        initialize: function() {
+            this.search_results = new this.options.CollectionClass();
+            this.search_results.bind("reset", function() {
+                this.concat_collections(this.collection, this.search_results);
+                //Leaguevine.Utils.concat_collections(this.collection, this.search_results);
+            }, this);
+            /*We could bind to reset here to re-render this whole thing.
+            Instead we bind to reset in the module's .Views.List
+
+            It is not necessary to take this.options and set them as higher level
+            variables because we are assuming that we are always passing in these
+            "required" arguments. If we make these arguments optional, to the point
+            that this view might be insantiated with 0 options, AND we check for the
+            presence of this.options.var_name somewhere else, then we will need to
+            reassign these below variables and instead check for the presence of this.var_name
+
             this.CollectionClass = this.options.CollectionClass;
             this.ViewsListClass = this.options.ViewsListClass;
             this.search_object_name = this.options.search_object_name;
@@ -15992,14 +16001,13 @@ function(app, Backbone, Game) {
             this.right_btn_href = this.options.right_btn_href;
             */
        },
-		cleanup: function() {
-			this.search_results.off(null, null, this);
-		}
+        cleanup: function() {
+            this.search_results.off(null, null, this);
+        }
     });
-    
-	return Navigation;// Required, return the module for AMD compliance
-});
 
+    return Navigation;// Required, return the module for AMD compliance
+});
 /**
  * Backbone localStorage Adapter v1.0
  * https://github.com/jeromegn/Backbone.localStorage
@@ -16275,13 +16283,13 @@ function(require, app, Backbone, Navigation) {
 
 /**
  * Backbone WebSQL Adapter + AJAX Syncing v0.0
- * 
+ *
  * Applications built upon the backbone boilerplate will generally
  * instantiate models in one of several ways:
  * -a fetch on a collection
  * -the id is provided (e.g. in the URL hash recognized by a router)
  * -the model is created by the user
- * 
+ *
  * Fetching on a collection:
  * my_class_collection = new Class.Collection();
  * my_class_collection.fetch(); //sets a success callback to collection.add/reset with the xhr (see below)
@@ -16298,438 +16306,452 @@ function(require, app, Backbone, Navigation) {
  * this.queue(function(){return Backbone.sync(method, model, options);});
  * //If Backbone.sync is successful
  * iterate through remote objects, adding remote objects
- * 
+ *
  * Also check out http://coenraets.org/blog/2012/05/simple-offline-data-synchronization-for-mobile-web-and-phonegap-applications/
  */
 
 (function(window) {
-	
-	var S4 = function (){
-		return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
-	};
-	var guid = function() {
-		return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
-	};
-	var is_online = function () {
-		if (navigator && navigator.onLine !== undefined) {
-			return navigator.onLine;
-		}
-		try {
-			var request = new XMLHttpRequest();
-			request.open('GET', '/', false);
-			request.send(null);
-			return (request.status === 200);
-		}
-		catch(e) {
-			return false;
-		}
-	};
-	
-	// Define the sync first. Then below define the store(s).
-	// ====== [ Backbone.sync WebSQL implementation ] ======
-	
-	Backbone.WebSQLAjaxSync = function (method, model, options) {
-		
-		if (!model.store && !(model.collection && model.collection.store)){
-			console.log("websqlajax sync specified but no store specified.");
-		}
-		
-		var is_solo = !model.models;
-		var store = model.store || model.collection.store, success, error;
-		
-		//Set the db request callbacks.
-		var success = function (tx, res) {
-			var len = res.rows.length,result=[], i, this_res;
-			if (len > 0) {//res.rows is empty for anything except find or findall, I think.
-				result = [];
-				for (i=0;i<len;i++) {//Process each row from the SQL result and build an array of results.
-					this_res = _.extend(JSON.parse(res.rows.item(i).value),res.rows.item(i));
-					var tc = res.rows.item(i).time_created;
-					var tlu = res.rows.item(i).time_last_updated;
-					this_res.time_created = new Date(_.isString(tc) ? tc.replace(/-/g, "/") : tc).toISOString();//safari hacks
-					this_res.time_last_updated = new Date(_.isString(tlu) ? tlu.replace(/-/g, "/") : tlu).toISOString();
-					delete this_res.value;//value already in this_res root attributes
-					result.push(this_res);//build the array.
-				}
-			}/* else if (is_solo && method == "read"){//We did a single-model find, but got no results.
-				//Let the ajax fetch handle creating it in the local database.
-			}*/
-			//If the fetch/etc request came from a solo model, then the callback expects an object, not an array.
-			if (is_solo && result.length==1) {result=result[0];}
-			//Return the result of the initial WebSQL request to the app as quickly as possible by passing it as an argument to options.success
-			//(options.success is the callback generated by Model (or Collection) .fetch)
-			$.when(options.success(result)).then(
-				//Only after the app has been updated should we then enqueue the Backbone.sync
-				//Actually the queued up callback will do a little work on the model first before sending out the ajax sync request.
-				Backbone.ajaxQueue.prequeue(method,model,options)
-			);
-		};
-		
-		var error = function (tx,error) {
-			console.error("sql error");
-			console.error(error);
-			console.error(tx);
-			options.error(error);//TODO: Does this work if there is more than 1 error callback?
-		};
-		
-		/*
-		 * TODO: In the case that the model has been created from a router, we will not
-		 * yet know if it has already been persisted locally.
-		 */
-		
-		//Send out the SQL request.
-		switch(method) {
-			case "read":
-				if (!is_solo){//This is a collection.
-					store.findAll(model, success, error);
-				} else if (model.get("local_id") || model.id){
-					//If we have a model.id or model.get("local_id"), then we might be able to find a match in the database.
-					//We might only have id if the model was created from a router.
-					//We might only have a local_id if it has not yet be synchronized.
-					store.find(model, success, error);
-				}
-				break;
-			case "create":
-				store.create(model,success,error);
-				break;
-			case "update":
-				store.update(model,success,error);
-				break;
-			case "delete":
-				store.destroy(model,success,error);
-				break;
-			default:
-				//console.log(method);
-		}
-	};
-	
-	var db = openDatabase("ultistats", "", "Leaguevine-ultistats db", 1024*1024*5);//5th parameter can be create callback.
-	// ====== [ Default WebSQLStore ] ======
-	// Use this store if you do not need a more specific store (see below).
-	// Specify the store in the model definition.
-	// store: new WebSQLStore(db, "model_name")
-	Backbone.WebSQLStore = function (tableName, initSuccessCallback, initErrorCallback) {
-		var success, error;
-		this.tableName = tableName;
-		this.db = db;
-		success = function (tx,res) {
-			if(initSuccessCallback) initSuccessCallback();
-		};
-		error = function (tx,error) {
-			console.log("Error while create table",error);
-			if (initErrorCallback) initErrorCallback();
-		};
-		db.transaction (function(tx) {
-			tx.executeSql("CREATE TABLE IF NOT EXISTS " + tableName + 
-				" (id UNIQUE, local_id UNIQUE, value, time_created INTEGER, time_last_updated INTEGER)",[],success, error);
-			//local_id is used as .id in the app until the objected gets an id from the API.
-			//local_id might also be used to find out real ids of associated objects.
-		});
-	};
 
-	_.extend(Backbone.WebSQLStore.prototype,{
-		
-		create: function (model,success,error) {//Create might be called either by the API return or by the app making a new model.
-			var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
-			var local_id = guid();
-			local_id = "local_id_" + local_id;
-			model.set("local_id",local_id);
-			
-			var stmnt = "INSERT INTO " + this.tableName + " (";
-			//var stmnt = "INSERT OR REPLACE INTO " + this.tableName + " (";//This will replace all of the db attributes with the passed attributes.
-			var parms = [];
-			
-			if (real_id){
-				stmnt += "id, ";
-			}
-			stmnt += "local_id, value, time_created, time_last_updated) VALUES (";
-			
-			if (real_id){
-				stmnt += "\"" + model.id + "\", ";
-				//parms.push(model.id);
-			}
-			stmnt += "?, ?";
-			parms.push(model.get("local_id"));
-			//Clean id, local_id, time_created, and time_last_updated from the stringified version of the model, as those will be stored in separate columns.
-			var value = model.toJSON();
-			delete value.id;
-			delete value.local_id;
-			delete value.time_created;
-			delete value.time_last_updated;
-			value = JSON.stringify(value);
-			parms.push(value);
-			
-			if (model.get("time_created")){
-				stmnt += ", ?";
-				parms.push(Date.parse(model.get("time_created")));//not necessary if create gives a result.
-			} else {
-				stmnt += ", datetime('now')";
-				model.set("time_created", new Date().toISOString());//not necessary if create gives a result.
-			}
-			
-			if (model.get("time_last_updated")){
-				stmnt += ", ?";
-				parms.push(Date.parse(model.get("time_last_updated")));
-			} else {
-				stmnt += ", datetime('now')";
-				model.set("time_last_updated", new Date().toISOString());
-			}
-			stmnt += ")"
-			
-			this._executeSql(stmnt,parms, success, error);
-		},
-	
-		destroy: function (model, success, error) {
-			var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
-			var stmnt = "DELETE FROM "+this.tableName+" WHERE local_id=?";
-			var parms = [model.get("local_id")];
-			if (real_id) {
-				stmnt += " OR id = " + model.id;
-			}
-			this._executeSql(stmnt,parms,success, error);
-		},
-	
-		find: function (model, success, error) {
-			var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
-			var stmnt = "SELECT COALESCE(id, local_id) AS id, local_id, value, time_created, time_last_updated FROM "+this.tableName+" WHERE ";
-			var parms = [];
-			if (model.get("local_id")){
-				stmnt += "local_id=?";
-				parms.push(model.get("local_id"));
-			}
-			if (real_id) {
-				if (model.get("local_id")) { stmnt += " OR "; }
-				stmnt += "id = \"" + model.id + "\"";
-			}
-			this._executeSql(stmnt, parms, success, error);
-		},
-	
-		findAll: function (model, success,error) {
-			//TODO: Handle the case when model has search criteria. This should be done in the model-specific store.
-			this._executeSql("SELECT COALESCE(id, local_id) as id, local_id, value, time_created, time_last_updated FROM "+this.tableName,[], success, error);
-		},
-		
-		update: function (model, success, error) {
-			var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
-			//Clean id, local_id, time_created, and time_last_updated from the stringified version of the model, as those will be stored in separate columns.
-			var value = model.toJSON();
-			delete value.id;
-			delete value.local_id;
-			delete value.time_created;
-			delete value.time_last_updated;
-			value = JSON.stringify(value);
-			
-			//Build the statement and parms
-			//this._executeSql("UPDATE "+this.tableName+" SET value=? WHERE id=?",[JSON.stringify(model.toJSON()),model.id], success, error);
-			var stmnt = "UPDATE " + this.tableName + " SET value=?, time_last_updated=datetime('now')";
-			var parms = [value]
-			if (real_id) {
-				stmnt += ", id = ";
-				stmnt += "\"" + model.id + "\"";
-			}
-			stmnt += " WHERE local_id=?";
-			parms.push(model.get("local_id"));
-			if (real_id) {
-				stmnt += " OR id = ";
-				stmnt += "\"" + model.id + "\"";
-			}
-			this._executeSql(stmnt,parms, success, error);
-		},
-	
-		_save: function (model, success, error) {
-			//console.log("sql _save");
-			var id = (model.id || model.attributes.id);
-			this.db.transaction(function(tx) {
-				tx.executeSql("");
-			});
-		},
-	
-		_executeSql: function (SQL, params, successCallback, errorCallback) {
-			var success = function(tx,result) {
-				//console.log(SQL + " - finished");
-				if(successCallback) successCallback(tx,result);
-			};
-			var error = function(tx,error) {
-				console.log(SQL + " - error: " + error);
-				if(errorCallback) errorCallback(tx,error);
-			};
-			this.db.transaction(function(tx) {
-				tx.executeSql(SQL, params, success, error);
-			});
-		}
-	});
-	
-	// TODO: Create model-specific stores for improved performance.
-	
-	/*
-	 * https://github.com/maccman/spine/blob/master/lib/ajax.js
-	 * 
-	 */
-	Backbone.ajaxQueue = {
-		requests: [],
-		enabled: true,
-		pending: false,
-		disable: function(callback) {
-			if (this.enabled) {
-				this.enabled = false;
-				try {
-					return callback();
-				} catch (e) {
-					throw e;
-				} finally {
-					this.enabled = true;
-				}
-			} else {
-				return callback();
-			}
-		},
-		requestNext: function() {
-			var next;
-			next = this.requests.shift();
-			if (next) {
-				return this.request(next);
-			} else {
-				return this.pending = false;
-			}
-		},
-		request: function(callback) {
-			var _this = this;
-			//if (is_online()) {
-				return (callback()).then(function() {
-					return _this.requestNext();
-				});
-			//} else {
-				//this.requests.unshift(callback);
-				//return setTimeout(this.requestNext(),10000);
-			//}
-		},
-		queue: function(callback) {
-			if (!this.enabled) {
-				return;
-			}
-			if (this.pending) {
-				this.requests.push(callback);
-			} else {
-				this.pending = true;
-				this.request(callback);
-			}
-			return callback;
-		},
-		prequeue: function(method, model, options){
-			/*
-			 * Check to see if the model's associated ids are local_ids, and if so, try to update them.
-			 * Clean the model.id and its associated ids so that none are local_ids.
-			 * Set the success callback and then enqueue the object.
-			 */
-			
-			/*
-			 * TODO: model may or may not be alive in the app. If not, and it was persisted as JSON,
-			 * then it won't be a model class so .set etc might not work.
-			 * Is it possible to save the class name to the queue so that we can create a new model/collection on queue access? 
-			 */
-	 			
- 			//Process associations. e.g., make sure that team.season_id is a real id and not a local_id.
- 			if ((method=="create" || method=="update") && model.associations!==undefined && _.isObject(model.associations)){
- 				var assoc = model.associations;
- 				_.each(_.keys(assoc), function(this_key){
- 					var table_name = assoc[this_key];
- 					if (_.isString(model.get(this_key)) && model.get(this_key).indexOf("local_id")==0){
- 						//The associated object has a local_id for id. We need to check table_name for its updated id.
- 						var store = new Backbone.WebSQLStore(table_name);
- 						var stmnt = "SELECT id FROM "+table_name+" WHERE local_id="+model.get(this_key);
- 						//var stmnt = "SELECT COALESCE(id, local_id) AS id FROM "+table_name+" WHERE id="+model.get(this_key);
- 						store._executeSql(stmnt,[], function(tx,result) {
- 							if (result.rows.length>0){
- 								//console.log("new id set");
- 								model.set(this_key,result.rows.item(0).id);
- 							}
-						});
-					}
- 				});
- 			}
- 			
- 			
-			//Describe the success callback for when the ajax call returns.
-	      	options.success = function(resp, status, xhr){
-	      		/*
-	      		 * This will be called after a successful ajax call to the API.
-	      		 * We only expect a useful response if we're doing a fetch.
-	      		 * TODO: Handle errors.
-	      		 * TODO: Handle deleted object.
-	      		 */
-	      		
-	      		//remote_objs might be an array or a single object. Make it always an array.
-	      		remote_objs = model.parse(resp,xhr);
-	      		if (remote_objs && !(remote_objs instanceof Array)){
-	      			//model.id=remote_objs.id;//What does this do?
-	      			remote_objs = [remote_objs];
-      			}
-      			
-      			if (method=="create" && remote_objs.length==1) {
- 					model.id = remote_objs[0].id;
- 				}
-	      		
-      			//Iterate through remote_objs.
-      			var matched_model; //use this to hold the in-app model that matches resp[x]
-      			var models_to_add = [];//Build an array of models
-      			_.each(remote_objs, function(remote_obj){//for each result from API
-      				//Try to find a local model (either model, or a member of model.models) with a matching id.
-      				matched_model = model.models ? model.get(remote_obj.id) : (model.id==remote_obj.id && model);
-  					if (matched_model){//If the model was matched then merge data from matched_model and remote_obj
-      					var remote_is_newer = true;//Assume remote is newer unless we have proof otherwise.
-      					//Compare the dates, if remote_obj has dates.
-      					if (remote_obj.time_created || remote_obj.time_last_updated){
-      						var local_created = new Date(matched_model.get("time_created"));
-      						var local_updated = new Date(matched_model.get("time_last_updated"));
-      						var remote_created = new Date(remote_obj.time_created);
-      						var remote_updated = new Date(remote_obj.time_last_updated);
-      						var local_latest = Math.max.apply(null,[local_created,local_updated]);
-      						remote_is_newer = isNaN(local_latest) || Math.max.apply(null,[remote_created,remote_updated]) >= local_latest;
-      					}
-      					local_obj = matched_model.toJSON();
-      					if (remote_is_newer) {
-      						//console.log(local_obj.local_id);
-      						_.extend(local_obj, remote_obj);
-      						matched_model.set(local_obj, {silent: true});
-      					} else {
-      						_.extend(remote_obj, local_obj);
-      						matched_model.set(remote_obj, {silent: true});
-      					}
-  						if (matched_model.get("local_id") !== undefined) {//If this is already stored locally, it'll have a local_id
-  							matched_model.store.update(matched_model, false, false);
-  						} else {
-  							matched_model.store.create(matched_model, false, false);
-  						}
-      				}
-      				else {//We do not have a local model with matching id then create into the store
-      					if (model.models) {//if this was a collection...
-		      				var new_model = model._prepareModel(remote_obj, {});
-		      				model.store.create(new_model,false,false);
-		      				models_to_add.push(new_model);
-		      			} else {//Under what circumstances would a single model do a fetch, and then get a response from the API that did not match?
-		      				console.log("you should never see this text");
-		      				var new_model = model.clone();
-		      				new_model.clear({silent: true});
-		      				new_model.set(remote_obj);
-		      				model.store.create(new_model,false,false);
-		      			}
-	      			}
-	      		});
-	      		if (model.models && models_to_add.length>0) {
-	      			model.add(models_to_add, {silent: true});
-	      		}
-		        model.trigger("reset", model);
-      		};
-      		this.queue(function(){
-      			//A database call may have set model.id with local_id. If so, remove it here, because it'll confuse remote storage.
-		      	if (model.id && (model.id==model.get("local_id") || ("" + model.id).indexOf("local_id")==0)) {
-		      		model.unset(model.idAttribute, {silent: true});
-	      		}
-      			return Backbone.sync(method, model, options);
-  			});
-		}
-	};
-	
+    var S4 = function (){
+        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+    };
+    var guid = function() {
+        return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+    };
+
+    var is_online = function () {
+        if (navigator && navigator.onLine !== undefined) {
+            return navigator.onLine;
+        }
+        try {
+            var request = new XMLHttpRequest();
+            request.open('GET', '/', false);
+            request.send(null);
+            return (request.status === 200);
+        }
+        catch(e) {
+            return false;
+        }
+    };
+
+
+    // Define the sync first. Then below define the store(s).
+    // ====== [ Backbone.sync WebSQL implementation ] ======
+
+    Backbone.WebSQLAjaxSync = function (method, model, options) {
+
+        if (!model.store && !(model.collection && model.collection.store)){
+            console.log("websqlajax sync specified but no store specified.");
+        }
+
+        var is_solo = !model.models;
+        var store = model.store || model.collection.store;
+
+        //Set the db request callbacks for success and error
+        //These are passed as arguments to each store.method
+
+        var success = function (tx, res) {
+            var len = res.rows.length,result=[], i, this_res;
+            if (len > 0) {//res.rows is empty for anything except find or findall, I think.
+                result = [];
+                for (i=0;i<len;i++) {//Process each row from the SQL result and build an array of results.
+                    this_res = _.extend(JSON.parse(res.rows.item(i).value),res.rows.item(i));
+                    var tc = res.rows.item(i).time_created;
+                    var tlu = res.rows.item(i).time_last_updated;
+                    this_res.time_created = new Date(_.isString(tc) ? tc.replace(/-/g, "/") : tc).toISOString();//safari hacks
+                    this_res.time_last_updated = new Date(_.isString(tlu) ? tlu.replace(/-/g, "/") : tlu).toISOString();
+                    delete this_res.value;//value already in this_res root attributes
+                    result.push(this_res);//build the array.
+                }
+            }/* else if (is_solo && method == "read"){//We did a single-model find, but got no results.
+                //Let the ajax fetch handle creating it in the local database.
+            }*/
+            //If the fetch/etc request came from a solo model, then the callback expects an object, not an array.
+            if (is_solo && result.length==1) {result=result[0];}
+            //Return the result of the initial WebSQL request to the app as quickly as possible by passing it as an argument to options.success
+            //(options.success is the callback generated by Model (or Collection) .fetch)
+            $.when(options.success(result)).then(
+                    //Only after the app has been updated should we then enqueue the Backbone.sync
+                    //Actually the queued up callback will do a little work on the model first before sending out the ajax sync request.
+                    Backbone.ajaxQueue.prequeue(method,model,options)
+            );
+        };
+
+        var error = function (tx,error) {
+            console.error("sql error");
+            console.error(error);
+            console.error(tx);
+            options.error(error);//TODO: Does this work if there is more than 1 error callback?
+        };
+
+
+        /*
+         * TODO: In the case that the model has been created from a router, we will not
+         * yet know if it has already been persisted locally.
+         */
+
+
+        //Send out the appropriate SQL request.
+        switch(method) {
+        case "read":
+            if (!is_solo){//This is a collection, so findAall
+                store.findAll(model, success, error);
+            } else if (model.get("local_id") || model.id){//This is not a collection, and we have some identifier.
+                //If we have a model.id or model.get("local_id"), then we might be able to find a match in the database.
+                //We might only have id if the model was created from a router.
+                //We might only have a local_id if it has not yet be synchronized.
+                store.find(model, success, error);
+            }
+            break;
+        case "create":
+            store.create(model,success,error);
+            break;
+        case "update":
+            store.update(model,success,error);
+            break;
+        case "delete":
+            store.destroy(model,success,error);
+            break;
+        default:
+            //console.log(method);
+        }
+    };
+
+    //Get a reference to the local database. This will also create the local database if it does not already exist.
+    var db = openDatabase("ultistats", "", "Leaguevine-ultistats db", 1024*1024*5);//5th parameter can be create callback.
+
+    // ====== [ Default WebSQLStore ] ======
+    // Use this store if you do not need a more specific store (see below).
+    // Specify the store in the model definition.
+    // store: new WebSQLStore(db, "model_name")
+    Backbone.WebSQLStore = function (tableName, initSuccessCallback, initErrorCallback) {
+        var success, error;
+        this.tableName = tableName;
+        this.db = db; //attach the global db to this store.
+        success = function (tx,res) {
+            if(initSuccessCallback) initSuccessCallback();
+        };
+        error = function (tx,error) {
+            console.log("Error while create table",error);
+            if (initErrorCallback) initErrorCallback();
+        };
+        db.transaction (function(tx) {
+            tx.executeSql("CREATE TABLE IF NOT EXISTS " + tableName +
+                    " (id UNIQUE, local_id UNIQUE, value, time_created INTEGER, time_last_updated INTEGER)",[],success, error);
+            //local_id is used as .id in the app until the objected gets an id from the API.
+            //local_id might also be used to find out real ids of associated objects.
+        });
+    };
+
+    //Add more methods to our store.
+    _.extend(Backbone.WebSQLStore.prototype,{
+
+        create: function (model,success,error) {//Create might be called either by the API return or by the app making a new model.
+            var real_id = (model.id &&
+                    (model.id!=model.get("local_id") &&
+                            ("" + model.id).indexOf("local_id")!=0));
+            var local_id = guid();
+            local_id = "local_id_" + local_id;
+            model.set("local_id",local_id);
+
+            var stmnt = "INSERT INTO " + this.tableName + " (";
+            //var stmnt = "INSERT OR REPLACE INTO " + this.tableName + " (";//This will replace all of the db attributes with the passed attributes.
+            var parms = [];
+
+            if (real_id){
+                stmnt += "id, ";
+            }
+            stmnt += "local_id, value, time_created, time_last_updated) VALUES (";
+
+            if (real_id){
+                stmnt += "\"" + model.id + "\", ";
+                //parms.push(model.id);
+            }
+            stmnt += "?, ?";
+            parms.push(model.get("local_id"));
+            //Clean id, local_id, time_created, and time_last_updated from the stringified version of the model, as those will be stored in separate columns.
+            var value = model.toJSON();
+            delete value.id;
+            delete value.local_id;
+            delete value.time_created;
+            delete value.time_last_updated;
+            value = JSON.stringify(value);
+            parms.push(value);
+
+            if (model.get("time_created")){
+                stmnt += ", ?";
+                parms.push(Date.parse(model.get("time_created")));//not necessary if create gives a result.
+            } else {
+                stmnt += ", datetime('now')";
+                model.set("time_created", new Date().toISOString());//not necessary if create gives a result.
+            }
+
+            if (model.get("time_last_updated")){
+                stmnt += ", ?";
+                parms.push(Date.parse(model.get("time_last_updated")));
+            } else {
+                stmnt += ", datetime('now')";
+                model.set("time_last_updated", new Date().toISOString());
+            }
+            stmnt += ")";
+
+            this._executeSql(stmnt,parms, success, error);
+        },
+
+        destroy: function (model, success, error) {
+            var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
+            var stmnt = "DELETE FROM "+this.tableName+" WHERE local_id=?";
+            var parms = [model.get("local_id")];
+            if (real_id) {
+                stmnt += " OR id = " + model.id;
+            }
+            this._executeSql(stmnt,parms,success, error);
+        },
+
+        find: function (model, success, error) {
+            var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
+            var stmnt = "SELECT COALESCE(id, local_id) AS id, local_id, value, time_created, time_last_updated FROM "+this.tableName+" WHERE ";
+            var parms = [];
+            if (model.get("local_id")){
+                stmnt += "local_id=?";
+                parms.push(model.get("local_id"));
+            }
+            if (real_id) {
+                if (model.get("local_id")) { stmnt += " OR "; }
+                stmnt += "id = \"" + model.id + "\"";
+            }
+            this._executeSql(stmnt, parms, success, error);
+        },
+
+        findAll: function (model, success,error) {
+            //TODO: Handle the case when model has search criteria. This should be done in the model-specific store.
+            this._executeSql("SELECT COALESCE(id, local_id) as id, local_id, value, time_created, time_last_updated FROM "+this.tableName,[], success, error);
+        },
+
+        update: function (model, success, error) {
+            var real_id = (model.id && (model.id!=model.get("local_id") && ("" + model.id).indexOf("local_id")!=0));
+            //Clean id, local_id, time_created, and time_last_updated from the stringified version of the model, as those will be stored in separate columns.
+            var value = model.toJSON();
+            delete value.id;
+            delete value.local_id;
+            delete value.time_created;
+            delete value.time_last_updated;
+            value = JSON.stringify(value);
+
+            //Build the statement and parms
+            //this._executeSql("UPDATE "+this.tableName+" SET value=? WHERE id=?",[JSON.stringify(model.toJSON()),model.id], success, error);
+            var stmnt = "UPDATE " + this.tableName + " SET value=?, time_last_updated=datetime('now')";
+            var parms = [value];
+            if (real_id) {
+                stmnt += ", id = ";
+                stmnt += "\"" + model.id + "\"";
+            }
+            stmnt += " WHERE local_id=?";
+            parms.push(model.get("local_id"));
+            if (real_id) {
+                stmnt += " OR id = ";
+                stmnt += "\"" + model.id + "\"";
+            }
+            this._executeSql(stmnt,parms, success, error);
+        },
+
+        //TODO: Why does this function do nothing? It is never called?
+        _save: function (model, success, error) {
+            console.log("sql _save");
+            //var id = (model.id || model.attributes.id);
+            this.db.transaction(function(tx) {
+                tx.executeSql("");
+            });
+        },
+
+        _executeSql: function (SQL, params, successCallback, errorCallback) {
+            var success = function(tx,result) {
+                //console.log(SQL + " - finished");
+                if(successCallback) successCallback(tx,result);
+            };
+            var error = function(tx,error) {
+                console.log(SQL + " - error: " + error);
+                if(errorCallback) errorCallback(tx,error);
+            };
+            this.db.transaction(function(tx) {
+                tx.executeSql(SQL, params, success, error);
+            });
+        }
+    });
+ // ====== [ END WebSQLStore ] ======
+
+    // TODO: Create model-specific stores for improved performance.
+
+    /*
+     * https://github.com/maccman/spine/blob/master/lib/ajax.js
+     *
+     */
+    Backbone.ajaxQueue = {
+        requests: [],
+        enabled: true,
+        pending: false,
+        disable: function(callback) {
+            if (this.enabled) {
+                this.enabled = false;
+                try {
+                    return callback();
+                } catch (e) {
+                    throw e;
+                } finally {
+                    this.enabled = true;
+                }
+            } else {
+                return callback();
+            }
+        },
+        requestNext: function() {
+            var next;
+            next = this.requests.shift();
+            if (next) {
+                return this.request(next);
+            } else {
+                return this.pending = false;
+            }
+        },
+        request: function(callback) {
+            var _this = this;
+            if (is_online()) {
+                return (callback()).then(function() {
+                    return _this.requestNext();
+                });
+            } else {
+                _this.requests.unshift(callback);
+                //TODO: unshift works, but when this.requestNext is called, this.requests is empty.
+                setTimeout(function(){_this.requestNext();},10000);
+            }
+        },
+        queue: function(callback) {
+            if (!this.enabled) {
+                return;
+            }
+            if (this.pending) {
+                this.requests.push(callback);
+            } else {
+                this.pending = true;
+                this.request(callback);
+            }
+            return callback;
+        },
+        prequeue: function(method, model, options){
+            /*
+             * Check to see if the model's associated ids are local_ids, and if so, try to update them.
+             * Clean the model.id and its associated ids so that none are local_ids.
+             * Set the success callback and then enqueue the object.
+             */
+
+            /*
+             * TODO: model may or may not be alive in the app. If not, and it was persisted as JSON,
+             * then it won't be a model class so .set etc might not work.
+             * Is it possible to save the class name to the queue so that we can create a new model/collection on queue access?
+             */
+
+            //Process associations. e.g., make sure that team.season_id is a real id and not a local_id.
+            if ((method=="create" || method=="update") && model.associations!==undefined && _.isObject(model.associations)){
+                var assoc = model.associations;
+                _.each(_.keys(assoc), function(this_key){
+                    var table_name = assoc[this_key];
+                    if (_.isString(model.get(this_key)) && model.get(this_key).indexOf("local_id")==0){
+                        //The associated object has a local_id for id. We need to check table_name for its updated id.
+                        var store = new Backbone.WebSQLStore(table_name);
+                        var stmnt = "SELECT id FROM "+table_name+" WHERE local_id="+model.get(this_key);
+                        //var stmnt = "SELECT COALESCE(id, local_id) AS id FROM "+table_name+" WHERE id="+model.get(this_key);
+                        store._executeSql(stmnt,[], function(tx,result) {
+                            if (result.rows.length>0){
+                                //console.log("new id set");
+                                model.set(this_key,result.rows.item(0).id);
+                            }
+                        });
+                    }
+                });
+            }
+
+
+            //Describe the success callback for when the ajax call returns.
+            options.success = function(resp, status, xhr){
+                /*
+                 * This will be called after a successful ajax call to the API.
+                 * We only expect a useful response if we're doing a fetch.
+                 * TODO: Handle errors.
+                 * TODO: Handle deleted object.
+                 */
+
+                //remote_objs might be an array or a single object. Make it always an array.
+                remote_objs = model.parse(resp,xhr);
+                if (remote_objs && !(remote_objs instanceof Array)){
+                    //model.id=remote_objs.id;//What does this do?
+                    remote_objs = [remote_objs];
+                }
+
+                if (method=="create" && remote_objs.length==1) {
+                    model.id = remote_objs[0].id;
+                }
+
+                //Iterate through remote_objs.
+                var matched_model; //use this to hold the in-app model that matches resp[x]
+                var models_to_add = [];//Build an array of models
+                _.each(remote_objs, function(remote_obj){//for each result from API
+                    //Try to find a local model (either model, or a member of model.models) with a matching id.
+                    matched_model = model.models ? model.get(remote_obj.id) : (model.id==remote_obj.id && model);
+                    if (matched_model){//If the model was matched then merge data from matched_model and remote_obj
+                        var remote_is_newer = true;//Assume remote is newer unless we have proof otherwise.
+                        //Compare the dates, if remote_obj has dates.
+                        if (remote_obj.time_created || remote_obj.time_last_updated){
+                            var local_created = new Date(matched_model.get("time_created"));
+                            var local_updated = new Date(matched_model.get("time_last_updated"));
+                            var remote_created = new Date(remote_obj.time_created);
+                            var remote_updated = new Date(remote_obj.time_last_updated);
+                            var local_latest = Math.max.apply(null,[local_created,local_updated]);
+                            remote_is_newer = isNaN(local_latest) || Math.max.apply(null,[remote_created,remote_updated]) >= local_latest;
+                        }
+                        local_obj = matched_model.toJSON();
+                        if (remote_is_newer) {
+                            //console.log(local_obj.local_id);
+                            _.extend(local_obj, remote_obj);
+                            matched_model.set(local_obj, {silent: true});
+                        } else {
+                            _.extend(remote_obj, local_obj);
+                            matched_model.set(remote_obj, {silent: true});
+                        }
+                        if (matched_model.get("local_id") !== undefined) {//If this is already stored locally, it'll have a local_id
+                            matched_model.store.update(matched_model, false, false);
+                        } else {
+                            matched_model.store.create(matched_model, false, false);
+                        }
+                    }
+                    else {//We do not have a local model with matching id then create into the store
+                        if (model.models) {//if this was a collection...
+                            var new_model = model._prepareModel(remote_obj, {});
+                            model.store.create(new_model,false,false);
+                            models_to_add.push(new_model);
+                        } else {//Under what circumstances would a single model do a fetch, and then get a response from the API that did not match?
+                            console.log("you should never see this text");
+                            var new_model = model.clone();
+                            new_model.clear({silent: true});
+                            new_model.set(remote_obj);
+                            model.store.create(new_model,false,false);
+                        }
+                    }
+                });
+                if (model.models && models_to_add.length>0) {
+                    model.add(models_to_add, {silent: true});
+                }
+                model.trigger("reset", model);
+            };
+            this.queue(function(){
+                //A database call may have set model.id with local_id. If so, remove it here, because it'll confuse remote storage.
+                if (model.id && (model.id==model.get("local_id") || ("" + model.id).indexOf("local_id")==0)) {
+                    model.unset(model.idAttribute, {silent: true});
+                }
+                return Backbone.sync(method, model, options);
+            });
+        }
+    };
+
 })(this);
 define("plugins/backbone.websqlajax", ["backbone"], function(){});
 
@@ -16779,7 +16801,7 @@ function(app, Backbone, Leaguevine) {
 });
 
 define('modules/teamplayer',[
-	"require",
+    "require",
   "app",
 
   // Libs
@@ -16787,394 +16809,394 @@ define('modules/teamplayer',[
 
   // Modules
   "modules/leaguevine",
-  
+
   "plugins/backbone.websqlajax"
 ],
 function(require, app, Backbone, Leaguevine) {
-    
-	var TeamPlayer = app.module();
-	
-	//
-	// MODEL
-	//
-	TeamPlayer.Model = Backbone.Model.extend({
-		defaults: {
-			number: null,
-			team_id: null,
-			team: {},
-			player_id: null,
-			player: {last_name: "", first_name: ""}
-		},
-		urlRoot: Leaguevine.API.root + "team_players",
-		//TODO: override URL to /team_players/team_id/player_id/
-		url: function(models) {
-			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += "/?";
-		},
-		parse: function(resp, xhr) {
-			resp = Backbone.Model.prototype.parse(resp);
-			resp.id = resp.team_id + "/" + resp.player_id;
-			return resp;
-		},
-		toJSON: function() {
-			//TODO: Remove attributes that are not stored
-			var tp = _.clone(this.attributes);
-			//delete tp.team;
-			//delete tp.player;
-			return tp;
-		},
-		//sync: Backbone.WebSQLAjaxSync,
-		//store: new Backbone.WebSQLStore("teamplayer"),
-		associations: {
-			"team_id": "team",
-			"player_id": "player"
-		}
-	});
-	//
-	// COLLECTION
-	//
-	TeamPlayer.Collection = Backbone.Collection.extend({
-		model: TeamPlayer.Model,
-		//sync: Backbone.WebSQLAjaxSync,
-		//store: new Backbone.WebSQLStore("teamplayer"),
-		urlRoot: Leaguevine.API.root + "team_players",
-		url: function(models) {
-			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += "/?";
-			if (this.team_id) {
-				url += "team_ids=%5B" + this.team_id + "%5D&";
-			} else if (this.models && this.models.length) {
-				url += "team_ids=%5B" + this.models[0].get("team").id + "%5D&";
-			}
-			//If we already have a list of players, 
-			if (this.player_id) {url += "player_ids=%5B" + this.player_id + "%5D&";}
-			else if (this.models && this.models.length) {
-				url += "player_ids=%5B";
-				_.each(this.models, function(tp) {
-					url = url + tp.get("player").id + ",";
-				});
-				url = url.substr(0,url.length-1) + "%5D&";
-			}
+
+    var TeamPlayer = app.module();
+
+    //
+    // MODEL
+    //
+    TeamPlayer.Model = Backbone.Model.extend({
+        defaults: {
+            number: null,
+            team_id: null,
+            team: {},
+            player_id: null,
+            player: {last_name: "", first_name: ""}
+        },
+        urlRoot: Leaguevine.API.root + "team_players",
+        //TODO: override URL to /team_players/team_id/player_id/
+        url: function(models) {
+            var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
+            url += "/?";
+        },
+        parse: function(resp, xhr) {
+            resp = Backbone.Model.prototype.parse(resp);
+            resp.id = resp.team_id + "/" + resp.player_id;
+            return resp;
+        },
+        toJSON: function() {
+            //TODO: Remove attributes that are not stored
+            var tp = _.clone(this.attributes);
+            //delete tp.team;
+            //delete tp.player;
+            return tp;
+        },
+        sync: Backbone.WebSQLAjaxSync,
+        store: new Backbone.WebSQLStore("teamplayer"),
+        associations: {
+            "team_id": "team",
+            "player_id": "player"
+        }
+    });
+    //
+    // COLLECTION
+    //
+    TeamPlayer.Collection = Backbone.Collection.extend({
+        model: TeamPlayer.Model,
+        sync: Backbone.WebSQLAjaxSync,
+        store: new Backbone.WebSQLStore("teamplayer"),
+        urlRoot: Leaguevine.API.root + "team_players",
+        url: function(models) {
+            var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
+            url += "/?";
+            if (this.team_id) {
+                url += "team_ids=%5B" + this.team_id + "%5D&";
+            } else if (this.models && this.models.length) {
+                url += "team_ids=%5B" + this.models[0].get("team").id + "%5D&";
+            }
+            //If we already have a list of players,
+            if (this.player_id) {url += "player_ids=%5B" + this.player_id + "%5D&";}
+            else if (this.models && this.models.length) {
+                url += "player_ids=%5B";
+                _.each(this.models, function(tp) {
+                    url = url + tp.get("player").id + ",";
+                });
+                url = url.substr(0,url.length-1) + "%5D&";
+            }
             url += "limit=50&"; //Make sure we grab all of the players. Omitting this defaults to 20 players
             url += "fields=%5Bnumber%2Cplayer%2Cplayer_id%2Cteam%2Cteam_id%2Ctime_created%2Ctime_last_updated%5D&";
-			return url.substr(0,url.length-1);
-		},
-		comparator: function(teamplayer) {// Define how items in the collection will be sorted.
-			//Build an object containing different string representations.
-			var temp_player = teamplayer.get("player");
-			var this_obj = {"number": teamplayer.get("number")};
-			if (_.isFunction(temp_player.get)) {//If this is a proper model.
-				_.extend(this_obj,{
-					"first_name": temp_player.get("first_name").toLowerCase(),
-					"last_name": temp_player.get("last_name").toLowerCase(),
-					"nick_name": temp_player.get("nickname").toLowerCase(),
-					"full_name": temp_player.get("last_name").toLowerCase() + temp_player.get("first_name").toLowerCase()[0]
-				});
-			} else {//If this is a JSON object.
-				_.extend(this_obj,{
-					"first_name": temp_player.first_name.toLowerCase(),
-					"last_name": temp_player.last_name.toLowerCase(),
-					"nick_name": temp_player.nickname.toLowerCase(),
-					"full_name": temp_player.last_name.toLowerCase() + temp_player.first_name.toLowerCase()[0]
-				});
-			}
-			var sort_setting = JSON.parse(localStorage.getItem("settings-Sort players by:"));
-			if (sort_setting){
-				if (sort_setting.value == "nick name"){return this_obj.nick_name;}
-				else if (sort_setting.value == "jersey"){return this_obj.number;}
-				else if (sort_setting.value == "last name"){return this_obj.last_name;}
-			}
-			return this_obj.full_name;
-		},
-		parse: function(resp, xhr) {
-			resp = Backbone.Collection.prototype.parse(resp);
-			//The websql plugin doesn't know how to sort, meaning we'll get back every teamplayer in the db.
-			//We need to weed them out here.
-			var _this = this;
-			if (this.team_id) {
-				resp = _.filter(resp, function(obj){
-					return obj.team_id == _this.team_id;
-				});
-			}
-			if (this.player_id) {
-				resp = _this.filter(resp, function(obj){
-					return obj.player_id == _this.player_id;
-				});
-			}
-			_.map(resp, function(resp_){
-				resp_ = Backbone.Model.prototype.parse(resp_);
-				resp_.id = resp_.team_id + "/" + resp_.player_id;
-				return resp_;
-			});
-			//
-			/*var _this = this;
-			if (this.team_id){resp = _.filter(resp, function(obj){
-				return obj.team_id == _this.team_id;
-			});}
-			if (this.player_id){resp = _.filter(resp, function(obj){
-				return obj.player_id == _this.player_id;
-			});}*/
-			return resp;
-		},
-		initialize: function(models, options) {
-			if (options) {
-				if (options.team_id) {this.team_id = options.team_id;}
-				if (options.player_id) {this.player_id = options.player_id;}
-			}
-		}
-	});
-	
-	TeamPlayer.Views.Player = Backbone.View.extend({
-		template: "teamplayers/player",
-		tagName: "li",
-		serialize: function() {return _.clone(this.model.attributes);}
-	});
-	TeamPlayer.Views.PlayerList = Backbone.View.extend({
-		template: "teamplayers/playerlist",
-		initialize: function() {
-			this.collection.on("reset", this.render, this);
-		},
-		cleanup: function() {
-			this.collection.off(null, null, this);
-		},
-		className: "players-wrapper",
-		render: function(layout) {
-			var view = layout(this);
-			//this.$el.empty()
-			// call .cleanup() on all child views, and remove all appended views
-			//view.cleanup();
-			this.collection.each(function(teamplayer) {
-				this.insertView("ul", new TeamPlayer.Views.Player({
-					model: teamplayer
-				}));
-			}, this);
-			return view.render();
-		}
-	});
-	
-	TeamPlayer.Views.Team = Backbone.View.extend({
-		template: "teamplayers/team",
-		tagName: "li",
-		serialize: function() {return _.clone(this.model.attributes);}
-	});
-	TeamPlayer.Views.TeamList = Backbone.View.extend({
-		template: "teamplayers/playerlist",
-		initialize: function() {
-			this.collection.on("reset", this.render, this);
-		},
-		cleanup: function() {
-			this.collection.off(null, null, this);
-		},
-		className: "teams-wrapper",
-		render: function(layout) {
-			var view = layout(this);
-			//this.$el.empty()
-			// call .cleanup() on all child views, and remove all appended views
-			//view.cleanup();
-			this.collection.each(function(teamplayer) {
-				this.insertView("ul", new TeamPlayer.Views.Team({
-					model: teamplayer
-				}));
-			}, this);
-			return view.render();
-		}
-	});
-	
-	return TeamPlayer;
+            return url.substr(0,url.length-1);
+        },
+        comparator: function(teamplayer) {// Define how items in the collection will be sorted.
+            //Build an object containing different string representations.
+            var temp_player = teamplayer.get("player");
+            var this_obj = {"number": teamplayer.get("number")};
+            if (_.isFunction(temp_player.get)) {//If this is a proper model.
+                _.extend(this_obj,{
+                    "first_name": temp_player.get("first_name").toLowerCase(),
+                    "last_name": temp_player.get("last_name").toLowerCase(),
+                    "nick_name": temp_player.get("nickname").toLowerCase(),
+                    "full_name": temp_player.get("last_name").toLowerCase() + temp_player.get("first_name").toLowerCase()[0]
+                });
+            } else {//If this is a JSON object.
+                _.extend(this_obj,{
+                    "first_name": temp_player.first_name.toLowerCase(),
+                    "last_name": temp_player.last_name.toLowerCase(),
+                    "nick_name": temp_player.nickname.toLowerCase(),
+                    "full_name": temp_player.last_name.toLowerCase() + temp_player.first_name.toLowerCase()[0]
+                });
+            }
+            var sort_setting = JSON.parse(localStorage.getItem("settings-Sort players by:"));
+            if (sort_setting){
+                if (sort_setting.value == "nick name"){return this_obj.nick_name;}
+                else if (sort_setting.value == "jersey"){return this_obj.number;}
+                else if (sort_setting.value == "last name"){return this_obj.last_name;}
+            }
+            return this_obj.full_name;
+        },
+        parse: function(resp, xhr) {
+            resp = Backbone.Collection.prototype.parse(resp);
+            //The websql plugin doesn't know how to sort, meaning we'll get back every teamplayer in the db.
+            //We need to weed them out here.
+            var _this = this;
+            if (this.team_id) {
+                resp = _.filter(resp, function(obj){
+                    return obj.team_id == _this.team_id;
+                });
+            }
+            if (this.player_id) {
+                resp = _this.filter(resp, function(obj){
+                    return obj.player_id == _this.player_id;
+                });
+            }
+            _.map(resp, function(resp_){
+                resp_ = Backbone.Model.prototype.parse(resp_);
+                resp_.id = resp_.team_id + "/" + resp_.player_id;
+                return resp_;
+            });
+            //
+            /*var _this = this;
+            if (this.team_id){resp = _.filter(resp, function(obj){
+                return obj.team_id == _this.team_id;
+            });}
+            if (this.player_id){resp = _.filter(resp, function(obj){
+                return obj.player_id == _this.player_id;
+            });}*/
+            return resp;
+        },
+        initialize: function(models, options) {
+            if (options) {
+                if (options.team_id) {this.team_id = options.team_id;}
+                if (options.player_id) {this.player_id = options.player_id;}
+            }
+        }
+    });
+
+    TeamPlayer.Views.Player = Backbone.View.extend({
+        template: "teamplayers/player",
+        tagName: "li",
+        serialize: function() {return _.clone(this.model.attributes);}
+    });
+    TeamPlayer.Views.PlayerList = Backbone.View.extend({
+        template: "teamplayers/playerlist",
+        initialize: function() {
+            this.collection.on("reset", this.render, this);
+        },
+        cleanup: function() {
+            this.collection.off(null, null, this);
+        },
+        className: "players-wrapper",
+        render: function(layout) {
+            var view = layout(this);
+            //this.$el.empty()
+            // call .cleanup() on all child views, and remove all appended views
+            //view.cleanup();
+            this.collection.each(function(teamplayer) {
+                this.insertView("ul", new TeamPlayer.Views.Player({
+                    model: teamplayer
+                }));
+            }, this);
+            return view.render();
+        }
+    });
+
+    TeamPlayer.Views.Team = Backbone.View.extend({
+        template: "teamplayers/team",
+        tagName: "li",
+        serialize: function() {return _.clone(this.model.attributes);}
+    });
+    TeamPlayer.Views.TeamList = Backbone.View.extend({
+        template: "teamplayers/playerlist",
+        initialize: function() {
+            this.collection.on("reset", this.render, this);
+        },
+        cleanup: function() {
+            this.collection.off(null, null, this);
+        },
+        className: "teams-wrapper",
+        render: function(layout) {
+            var view = layout(this);
+            //this.$el.empty()
+            // call .cleanup() on all child views, and remove all appended views
+            //view.cleanup();
+            this.collection.each(function(teamplayer) {
+                this.insertView("ul", new TeamPlayer.Views.Team({
+                    model: teamplayer
+                }));
+            }, this);
+            return view.render();
+        }
+    });
+
+    return TeamPlayer;
 });
 
 define('modules/player',[
-	"require",
+    "require",
   "app",
 
   // Libs
   "backbone",
-  
+
   // Modules
   "modules/leaguevine",
   "modules/navigation",
   "modules/teamplayer",
-  
+
   "plugins/backbone.websqlajax"
 ],
 function(require, app, Backbone, Leaguevine, Navigation) {
-    
-	var Player = app.module();
-	
-	//
-	// MODEL
-	//
-	Player.Model = Backbone.Model.extend({
-		defaults: {// Include defaults for any attribute that will be rendered.
-			//id: "", //Needed for template
-			age: "",
-			birth_date: "",
-			first_name: "",
-			height: "",
-			last_name: "",
-			nickname: "",
-			weight: "",
-			teamplayers: {}//used to get to teams that this player belongs to.
-		},
-		//sync: Backbone.WebSQLAjaxSync,
-		//store: new Backbone.WebSQLStore("player"),
-		urlRoot: Leaguevine.API.root + "players",
-		parse: function(resp, xhr) {
-			resp = Backbone.Model.prototype.parse(resp);
-			return resp;
-		},
-		toJSON: function() {
-			var player = _.clone(this.attributes);
-			//delete player.teamplayers;
-			return player;
-		}
-	});
-  
-	//
-	// COLLECTION
-	//
-	Player.Collection = Backbone.Collection.extend({
-		model: Player.Model,
-		//sync: Backbone.WebSQLAjaxSync,
-		//store: new Backbone.WebSQLStore("player"),
-		comparator: function(player) {// Define how items in the collection will be sorted.
-			return player.get("last_name").toLowerCase();
-		},
-		urlRoot: Leaguevine.API.root + "players",
-		parse: function(resp, xhr) {
-			resp = Backbone.Collection.prototype.parse(resp);
-			return resp;
-		},
-		initialize: function(models, options) {
-			if (options) {
-				this.season_id = options.season_id;
-			}
-		}
-	});
-  
-	//
-	// ROUTER
-	//
-	Player.Router = Backbone.Router.extend({
-		// Create a router to map faux-URLs to actions.
-		// Faux-URLs come from Backbone.history.navigate or hashes in a URL from a followed link.
-		routes : {
-			"players": "listPlayers", //List all players.
-			"players/:playerId": "showPlayer" //Show detail for one player.
-		},
-		listPlayers: function () {//Route for all players.
-			// Prepare the data.
-			app.players = new Player.Collection();
-			app.players.fetch();
-			
-			var myLayout = app.router.useLayout("main");// Get the layout from a layout cache.
-			// Layout from cache might have different views set. Let's (re-)set them now.
-			myLayout.view(".navbar", new Navigation.Views.Navbar());
+
+    var Player = app.module();
+
+    //
+    // MODEL
+    //
+    Player.Model = Backbone.Model.extend({
+        defaults: {// Include defaults for any attribute that will be rendered.
+            //id: "", //Needed for template
+            age: "",
+            birth_date: "",
+            first_name: "",
+            height: "",
+            last_name: "",
+            nickname: "",
+            weight: "",
+            teamplayers: {}//used to get to teams that this player belongs to.
+        },
+        sync: Backbone.WebSQLAjaxSync,
+        store: new Backbone.WebSQLStore("player"),
+        urlRoot: Leaguevine.API.root + "players",
+        parse: function(resp, xhr) {
+            resp = Backbone.Model.prototype.parse(resp);
+            return resp;
+        },
+        toJSON: function() {
+            var player = _.clone(this.attributes);
+            //delete player.teamplayers;
+            return player;
+        }
+    });
+
+    //
+    // COLLECTION
+    //
+    Player.Collection = Backbone.Collection.extend({
+        model: Player.Model,
+        sync: Backbone.WebSQLAjaxSync,
+        store: new Backbone.WebSQLStore("player"),
+        comparator: function(player) {// Define how items in the collection will be sorted.
+            return player.get("last_name").toLowerCase();
+        },
+        urlRoot: Leaguevine.API.root + "players",
+        parse: function(resp, xhr) {
+            resp = Backbone.Collection.prototype.parse(resp);
+            return resp;
+        },
+        initialize: function(models, options) {
+            if (options) {
+                this.season_id = options.season_id;
+            }
+        }
+    });
+
+    //
+    // ROUTER
+    //
+    Player.Router = Backbone.Router.extend({
+        // Create a router to map faux-URLs to actions.
+        // Faux-URLs come from Backbone.history.navigate or hashes in a URL from a followed link.
+        routes : {
+            "players": "listPlayers", //List all players.
+            "players/:playerId": "showPlayer" //Show detail for one player.
+        },
+        listPlayers: function () {//Route for all players.
+            // Prepare the data.
+            app.players = new Player.Collection();
+            app.players.fetch();
+
+            var myLayout = app.router.useLayout("main");// Get the layout from a layout cache.
+            // Layout from cache might have different views set. Let's (re-)set them now.
+            myLayout.view(".navbar", new Navigation.Views.Navbar());
             myLayout.view(".titlebar", new Navigation.Views.Titlebar({model_class: "player", level: "list"}));
-			myLayout.view(".content_1", new Player.Views.List ({collection: app.players}));//pass the List view a collection of (fetched) players.
-			//myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
-			myLayout.render();
-		},
-		showPlayer: function (playerId) {
-			//Prepare the data.
-			var player = new Player.Model({id: playerId});
+            myLayout.view(".content_1", new Player.Views.List ({collection: app.players}));//pass the List view a collection of (fetched) players.
+            //myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+            myLayout.render();
+        },
+        showPlayer: function (playerId) {
+            //Prepare the data.
+            var player = new Player.Model({id: playerId});
 
-			player.fetch();
-			
-			var TeamPlayer = require("modules/teamplayer");
-			var teamplayers = new TeamPlayer.Collection([],{player_id: playerId});
-			teamplayers.fetch();
-			//player.set("teamplayers", teamplayers);
-			
-			//TODO: Get some player stats and add them to Multilist
-			var myLayout = app.router.useLayout("main");// Get the layout. Has .navbar, .detail, .list_children
-			myLayout.setViews({
-				".navbar": new Navigation.Views.Navbar({href: "/editplayer/"+playerId, name: "Edit"}),
-				".titlebar": new Navigation.Views.Titlebar({model_class: "player", level: "show", model: player}),
-				".content_1": new Player.Views.Detail( {model: player}),
-				".content_2": new Player.Views.Multilist({ teamplayers: teamplayers})
-			});
-			//myLayout.render(function(el) {$("#main").html(el);});
-			myLayout.render();
-		}
-	});
-	Player.router = new Player.Router();// INITIALIZE ROUTER
+            player.fetch();
 
-	//
-	// VIEWS
-	//
-	Player.Views.Item = Backbone.View.extend({
-		template: "players/item",
-		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul.
-		serialize: function() {
+            var TeamPlayer = require("modules/teamplayer");
+            var teamplayers = new TeamPlayer.Collection([],{player_id: playerId});
+            teamplayers.fetch();
+            //player.set("teamplayers", teamplayers);
+
+            //TODO: Get some player stats and add them to Multilist
+            var myLayout = app.router.useLayout("main");// Get the layout. Has .navbar, .detail, .list_children
+            myLayout.setViews({
+                ".navbar": new Navigation.Views.Navbar({href: "/editplayer/"+playerId, name: "Edit"}),
+                ".titlebar": new Navigation.Views.Titlebar({model_class: "player", level: "show", model: player}),
+                ".content_1": new Player.Views.Detail( {model: player}),
+                ".content_2": new Player.Views.Multilist({ teamplayers: teamplayers})
+            });
+            //myLayout.render(function(el) {$("#main").html(el);});
+            myLayout.render();
+        }
+    });
+    Player.router = new Player.Router();// INITIALIZE ROUTER
+
+    //
+    // VIEWS
+    //
+    Player.Views.Item = Backbone.View.extend({
+        template: "players/item",
+        tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul.
+        serialize: function() {
             var player = this.model.toJSON();
             player.number = ''; //Set the player's number to be blank because numbers are specific to a player's team
             return player;
         } //render looks for this to manipulate model before passing to the template.
-	});
-	Player.Views.List = Backbone.View.extend({
-		template: "players/list",
-		initialize: function(){
-			this.collection.on("reset", this.render, this);
-		},
-		cleanup: function(){
-			this.collection.off(null, null, this);
-		},
-		className: "players-wrapper",
-		render: function(layout) {
-			var view = layout(this); //Get this view from the layout.
-			//this.$el.empty()
-			// call .cleanup() on all child views, and remove all appended views
-			// view.cleanup();
-			this.collection.each(function(player) {//for each player in the collection.
-				this.insertView("ul", new Player.Views.Item({//Inserts the player into the ul in the list template.
-					model: player//pass each player to a Item view instance.
-				}));
-			}, this);
+    });
+    Player.Views.List = Backbone.View.extend({
+        template: "players/list",
+        initialize: function(){
+            this.collection.on("reset", this.render, this);
+        },
+        cleanup: function(){
+            this.collection.off(null, null, this);
+        },
+        className: "players-wrapper",
+        render: function(layout) {
+            var view = layout(this); //Get this view from the layout.
+            //this.$el.empty()
+            // call .cleanup() on all child views, and remove all appended views
+            // view.cleanup();
+            this.collection.each(function(player) {//for each player in the collection.
+                this.insertView("ul", new Player.Views.Item({//Inserts the player into the ul in the list template.
+                    model: player//pass each player to a Item view instance.
+                }));
+            }, this);
             //Add a button at the end of the list that creates more items
             this.insertView("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
-			return view.render({ count: this.collection.length });
-		}
-	});
-	Player.Views.Detail = Backbone.View.extend({
-		template: "players/detail",
-		initialize: function(){
-			this.model.on("change", this.render, this);
-		},
-		cleanup: function(){
-			this.model.off(null, null, this);
-		},
-		//We were passed a model on creation, so we have this.model
-		render: function(layout) {
-			// The model has not yet been filled by the fetch process if it was fetched just now
-			// We need to update the view once the data have changed.
-			return layout(this).render(this.model.toJSON());//toJSON OK here.
-		}
-	});
-	Player.Views.Multilist = Backbone.View.extend({
-		template: "players/multilist",
-		initialize: function(){
-			this.options.teamplayers.on("reset", this.render, this);
-		},
-		cleanup: function(){
-			this.options.teamplayers.off(null, null, this);
-		},
-		events: {
-			"click .bteams": "showTeams"
-		},
-		showTeams: function(ev){
-			$(".lteams").show();
-		},
-		render: function(layout) {
-			var view = layout(this); //Get this view from the layout.
-			var TeamPlayer = require("modules/teamplayer");
-			this.setViews({
-				".lteams": new TeamPlayer.Views.TeamList( {collection: this.options.teamplayers} )
-			});
-			return view.render();
-		}
-	});
-	return Player;// Required, return the module for AMD compliance
+            return view.render({ count: this.collection.length });
+        }
+    });
+    Player.Views.Detail = Backbone.View.extend({
+        template: "players/detail",
+        initialize: function(){
+            this.model.on("change", this.render, this);
+        },
+        cleanup: function(){
+            this.model.off(null, null, this);
+        },
+        //We were passed a model on creation, so we have this.model
+        render: function(layout) {
+            // The model has not yet been filled by the fetch process if it was fetched just now
+            // We need to update the view once the data have changed.
+            return layout(this).render(this.model.toJSON());//toJSON OK here.
+        }
+    });
+    Player.Views.Multilist = Backbone.View.extend({
+        template: "players/multilist",
+        initialize: function(){
+            this.options.teamplayers.on("reset", this.render, this);
+        },
+        cleanup: function(){
+            this.options.teamplayers.off(null, null, this);
+        },
+        events: {
+            "click .bteams": "showTeams"
+        },
+        showTeams: function(ev){
+            $(".lteams").show();
+        },
+        render: function(layout) {
+            var view = layout(this); //Get this view from the layout.
+            var TeamPlayer = require("modules/teamplayer");
+            this.setViews({
+                ".lteams": new TeamPlayer.Views.TeamList( {collection: this.options.teamplayers} )
+            });
+            return view.render();
+        }
+    });
+    return Player;// Required, return the module for AMD compliance
 });
 
 define('modules/team',[
@@ -17182,220 +17204,220 @@ define('modules/team',[
 
   // Libs
   "backbone",
-  
+
   // Modules
   "modules/leaguevine",
   "modules/navigation",
   "modules/teamplayer",
   "modules/game",
-  
-  "plugins/backbone.websqlajax"	
+
+  "plugins/backbone.websqlajax"
 ],
 
 function(app, Backbone, Leaguevine, Navigation) {
 
-	var Team = app.module();
-	
-	//
-	// MODEL
-	//
-	Team.Model = Backbone.Model.extend({
-		defaults: {// Include defaults for any attribute that will be rendered.
-			//id: "",//id is used as href in template so we need default.
-			name: "",
-			info: "",
-			season: {},
-			season_id: null,
-			teamplayers: [],
-			games: []
-		},
-		urlRoot: Leaguevine.API.root + "teams",
-		parse: function(resp, xhr) {
-			resp = Backbone.Model.prototype.parse(resp);
-			return resp;
-		},
-		toJSON: function() {
-			var temp = _.clone(this.attributes);
-			//delete temp.teamplayers;
-			//delete temp.games;
-			//delete temp.season;
-			return temp;
-		},
-		//sync: Backbone.WebSQLAjaxSync,
-		//store: new Backbone.WebSQLStore("team"),
-		associations: {"season_id": "season"}
-	});
-  
-	//
-	// COLLECTION
-	//
-	Team.Collection = Backbone.Collection.extend({
-		model: Team.Model,
-		//sync: Backbone.WebSQLAjaxSync,
-		//store: new Backbone.WebSQLStore("team"),
-		urlRoot: Leaguevine.API.root + "teams",
-		url: function(models) {
-			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += "/?";
-			if ( models && models.length ) {
-				url += "&team_ids=" + JSON.stringify(models.pluck("id"));
-			}
+    var Team = app.module();
+
+    //
+    // MODEL
+    //
+    Team.Model = Backbone.Model.extend({
+        defaults: {// Include defaults for any attribute that will be rendered.
+            //id: "",//id is used as href in template so we need default.
+            name: "",
+            info: "",
+            season: {},
+            season_id: null,
+            teamplayers: [],
+            games: []
+        },
+        urlRoot: Leaguevine.API.root + "teams",
+        parse: function(resp, xhr) {
+            resp = Backbone.Model.prototype.parse(resp);
+            return resp;
+        },
+        toJSON: function() {
+            var temp = _.clone(this.attributes);
+            //delete temp.teamplayers;
+            //delete temp.games;
+            //delete temp.season;
+            return temp;
+        },
+        sync: Backbone.WebSQLAjaxSync,
+        store: new Backbone.WebSQLStore("team"),
+        associations: {"season_id": "season"}
+    });
+
+    //
+    // COLLECTION
+    //
+    Team.Collection = Backbone.Collection.extend({
+        model: Team.Model,
+        sync: Backbone.WebSQLAjaxSync,
+        store: new Backbone.WebSQLStore("team"),
+        urlRoot: Leaguevine.API.root + "teams",
+        url: function(models) {
+            var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
+            url += "/?";
+            if ( models && models.length ) {
+                url += "&team_ids=" + JSON.stringify(models.pluck("id"));
+            }
             if (this.name) {
                 url += "&name=" + this.name;
             }
-			if (this.season_id) {
-				url += "&season_id=" + this.season_id;
-			}
-			url += "&limit=30";
+            if (this.season_id) {
+                url += "&season_id=" + this.season_id;
+            }
+            url += "&limit=30";
             url += "&order_by=%5Bname,-season_id%5D";
             url += "&fields=%5Bid%2Cinfo%2Cname%2Cseason_id%2Cseason%2Cshort_name%2Ctime_created%2Ctime_last_updated%5D";
-			return url;
-		},
-		//TODO: I should override parse if I want to filter team's returned from DB. e.g. this would be useful for
-		//filtering results shown on the "Teams" page if a season is already set. Setting the season in "Settings" comes first.
-		comparator: function(team) {// Define how items in the collection will be sorted.
-			if (team.season && team.season.name) {return team.get("name").toLowerCase() + team.season.name.toLowerCase();}
+            return url;
+        },
+        //TODO: I should override parse if I want to filter team's returned from DB. e.g. this would be useful for
+        //filtering results shown on the "Teams" page if a season is already set. Setting the season in "Settings" comes first.
+        comparator: function(team) {// Define how items in the collection will be sorted.
+            if (team.season && team.season.name) {return team.get("name").toLowerCase() + team.season.name.toLowerCase();}
             else {return team.get("name").toLowerCase();}
-		},
-		initialize: function(models, options) {
-			if (options) {
-				//When a collection/model is instantiated with a second argument
-				//then that argument is passed in as options
-				//However, some other functions check for the existence of certain options
-				//but the parameter "options" itself might not exist, so the check results in an undefined error
-				//i.e. this.options.var_name gives an error if this.options does not exist.
-				//So instead we set our options to be higher-level parameters here and 
-				//then check for the existence of these higher-level parameters.
-				//i.e. this.var_name returns undefined but does not return an error if this model/collection was not instantiated with these options.
-				//Note that this might also be true for views though thus far we seem to always instantiate them with their required options.
-				this.season_id = options.season_id;
-				this.name = options.name;
-			}
-		}
-	});
-	
-	//
-	// ROUTER
-	//
-	Team.Router = Backbone.Router.extend({
-		// Create a router to map faux-URLs to actions.
-		// Faux-URLs come from Backbone.history.navigate or hashes in a URL from a followed link.
-		routes : {
-			"teams": "listTeams", //List all teams.
-			"teams/:teamId": "showTeam", //Show detail for one team.
-			"newteam": "editTeam",
-			"editteam/:teamId": "editTeam"
-		},
-		listTeams: function () {//Route for all teams.
-			// Prepare the data.
-			var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
-			//var teams = new Team.Collection();//No defaults?
-			teams.fetch();
+        },
+        initialize: function(models, options) {
+            if (options) {
+                //When a collection/model is instantiated with a second argument
+                //then that argument is passed in as options
+                //However, some other functions check for the existence of certain options
+                //but the parameter "options" itself might not exist, so the check results in an undefined error
+                //i.e. this.options.var_name gives an error if this.options does not exist.
+                //So instead we set our options to be higher-level parameters here and
+                //then check for the existence of these higher-level parameters.
+                //i.e. this.var_name returns undefined but does not return an error if this model/collection was not instantiated with these options.
+                //Note that this might also be true for views though thus far we seem to always instantiate them with their required options.
+                this.season_id = options.season_id;
+                this.name = options.name;
+            }
+        }
+    });
 
-			//var Search = require("modules/search"); If that module is an argument to this module's function then it does not need to be required again.
-			// Prepare the layout/view(s)
-			var myLayout = app.router.useLayout("main");// Get the layout from a layout cache.
-			// Layout from cache might have different views set. Let's (re-)set them now.
-			myLayout.setViews({
-				".navbar": new Navigation.Views.Navbar({}),
-				".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "list"}),
-				".content_1": new Navigation.Views.SearchableList({
-					collection: teams, 
-					CollectionClass: Team.Collection, 
-					ViewsListClass: Team.Views.List, 
-					//right_btn_class: "", right_btn_txt: "Create", right_btn_href: "#newteam",
-					search_object_name: "team"
-				})
-			});
-			//myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
-			myLayout.render();
-		},
-		showTeam: function (teamId) {
-			//Prepare the data.
-			var team = new Team.Model({id: teamId});
-			
+    //
+    // ROUTER
+    //
+    Team.Router = Backbone.Router.extend({
+        // Create a router to map faux-URLs to actions.
+        // Faux-URLs come from Backbone.history.navigate or hashes in a URL from a followed link.
+        routes : {
+            "teams": "listTeams", //List all teams.
+            "teams/:teamId": "showTeam", //Show detail for one team.
+            "newteam": "editTeam",
+            "editteam/:teamId": "editTeam"
+        },
+        listTeams: function () {//Route for all teams.
+            // Prepare the data.
+            var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
+            //var teams = new Team.Collection();//No defaults?
+            teams.fetch();
+
+            //var Search = require("modules/search"); If that module is an argument to this module's function then it does not need to be required again.
+            // Prepare the layout/view(s)
+            var myLayout = app.router.useLayout("main");// Get the layout from a layout cache.
+            // Layout from cache might have different views set. Let's (re-)set them now.
+            myLayout.setViews({
+                ".navbar": new Navigation.Views.Navbar({}),
+                ".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "list"}),
+                ".content_1": new Navigation.Views.SearchableList({
+                    collection: teams,
+                    CollectionClass: Team.Collection,
+                    ViewsListClass: Team.Views.List,
+                    //right_btn_class: "", right_btn_txt: "Create", right_btn_href: "#newteam",
+                    search_object_name: "team"
+                })
+            });
+            //myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+            myLayout.render();
+        },
+        showTeam: function (teamId) {
+            //Prepare the data.
+            var team = new Team.Model({id: teamId});
+
             team.fetch();
 
-			var TeamPlayer = require("modules/teamplayer");
-			var teamplayers = new TeamPlayer.Collection([],{team_id: team.id});
-			teamplayers.fetch();
-			//team.set("teamplayers", teamplayers);
-			
-			var Game = require("modules/game");
-			var games = new Game.Collection([],{team_1_id: team.id});
-			games.fetch();
-			//team.set("games", games);
-			
-			var myLayout = app.router.useLayout("main");// Get the layout. Has .navbar, .detail, .list_children
-			myLayout.setViews({
-				".navbar": new Navigation.Views.Navbar(),
-				".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "show", model: team}),
-				".content_1": new Team.Views.Detail( {model: team}),
-				".content_2": new Team.Views.Multilist({ teamplayers: teamplayers, games: games})
-			});
-			//myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
-			myLayout.render();
-		},
-		editTeam: function (teamId) {
-			if (!app.api.is_logged_in()) {//Ensure that the user is logged in
+            var TeamPlayer = require("modules/teamplayer");
+            var teamplayers = new TeamPlayer.Collection([],{team_id: team.id});
+            teamplayers.fetch();
+            //team.set("teamplayers", teamplayers);
+
+            var Game = require("modules/game");
+            var games = new Game.Collection([],{team_1_id: team.id});
+            games.fetch();
+            //team.set("games", games);
+
+            var myLayout = app.router.useLayout("main");// Get the layout. Has .navbar, .detail, .list_children
+            myLayout.setViews({
+                ".navbar": new Navigation.Views.Navbar(),
+                ".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "show", model: team}),
+                ".content_1": new Team.Views.Detail( {model: team}),
+                ".content_2": new Team.Views.Multilist({ teamplayers: teamplayers, games: games})
+            });
+            //myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+            myLayout.render();
+        },
+        editTeam: function (teamId) {
+            if (!app.api.is_logged_in()) {//Ensure that the user is logged in
                 app.api.login();
                 return;
             }
-			//If we have teamId, then we are editing. If not, then we are creating a new team.
-			var team = new Team.Model();
-			if (teamId) { //make the edit team page
-				team.id=teamId;
+            //If we have teamId, then we are editing. If not, then we are creating a new team.
+            var team = new Team.Model();
+            if (teamId) { //make the edit team page
+                team.id=teamId;
                 team.fetch(); //Fetch this team instance
-			}
-			var myLayout = app.router.useLayout("main");
-			myLayout.setViews({
-				".navbar": new Navigation.Views.Navbar(),
-				".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "edit", model: team}),
-				".content_1": new Team.Views.Edit({model: team})
-			});
-			//myLayout.render(function(el) {$("#main").html(el);});
-			myLayout.render();
-		}
-	});
-	Team.router = new Team.Router();// INITIALIZE ROUTER
+            }
+            var myLayout = app.router.useLayout("main");
+            myLayout.setViews({
+                ".navbar": new Navigation.Views.Navbar(),
+                ".titlebar": new Navigation.Views.Titlebar({model_class: "team", level: "edit", model: team}),
+                ".content_1": new Team.Views.Edit({model: team})
+            });
+            //myLayout.render(function(el) {$("#main").html(el);});
+            myLayout.render();
+        }
+    });
+    Team.router = new Team.Router();// INITIALIZE ROUTER
 
-	//
-	// VIEWS
-	//
-	Team.Views.List = Backbone.View.extend({
-		template: "teams/list",
-		initialize: function() {
-			this.collection.on("reset", this.render, this);
-		},
-		cleanup: function() {
-			this.collection.off(null, null, this);
-		},
-		className: "teams-wrapper",
-		render: function(layout) {
-			var view = layout(this); //Get this view from the layout.
-			var filter_by = this.collection.name ? this.collection.name : "";
-			var tap_method = this.options.tap_method;
-			this.collection.each(function(team) {//for each team in the collection.
-				//Do collection filtering here
-				if (!filter_by || team.get("name").toLowerCase().indexOf(filter_by.toLowerCase()) != -1) {
-					this.insertView("ul", new Team.Views.Item({//Inserts the team into the ul in the list template.
-						model: team, //pass each team to a Item view instance.
+    //
+    // VIEWS
+    //
+    Team.Views.List = Backbone.View.extend({
+        template: "teams/list",
+        initialize: function() {
+            this.collection.on("reset", this.render, this);
+        },
+        cleanup: function() {
+            this.collection.off(null, null, this);
+        },
+        className: "teams-wrapper",
+        render: function(layout) {
+            var view = layout(this); //Get this view from the layout.
+            var filter_by = this.collection.name ? this.collection.name : "";
+            var tap_method = this.options.tap_method;
+            this.collection.each(function(team) {//for each team in the collection.
+                //Do collection filtering here
+                if (!filter_by || team.get("name").toLowerCase().indexOf(filter_by.toLowerCase()) != -1) {
+                    this.insertView("ul", new Team.Views.Item({//Inserts the team into the ul in the list template.
+                        model: team, //pass each team to a Item view instance.
                         tap_method: tap_method //passing on tap_method from caller
-					}));
-				}
-			}, this);
+                    }));
+                }
+            }, this);
             //Add a button at the end of the list that creates more items
             this.insertView("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
-			return view.render({ count: this.collection.length });
-		}
-	});
-	Team.Views.Item = Backbone.View.extend({
-		template: "teams/item",
+            return view.render({ count: this.collection.length });
+        }
+    });
+    Team.Views.Item = Backbone.View.extend({
+        template: "teams/item",
         events: {
             "click": "team_tap_method"
         },
-		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul by the list's render function.
-		serialize: function() {
+        tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul by the list's render function.
+        serialize: function() {
             // Add a couple attributes to the team for displaying
             var team = _.clone(this.model.attributes);
             team.season_name = "";
@@ -17404,8 +17426,8 @@ function(app, Backbone, Leaguevine, Navigation) {
                 team.season_name = team.season.name;
                 team.league_name = team.season.league.name;
             }
-			return team;
-		}, //render looks for this to manipulate model before passing to the template.
+            return team;
+        }, //render looks for this to manipulate model before passing to the template.
         initialize: function() {
             if (this.options.tap_method) {
                 this.team_tap_method = this.options.tap_method;
@@ -17416,89 +17438,89 @@ function(app, Backbone, Leaguevine, Navigation) {
                 };
             }
         }
-	});
-	Team.Views.Detail = Backbone.View.extend({
-		//We were passed a model on creation by Team.Router.showTeam(), so we have this.model
-		template: "teams/detail",
-		initialize: function() {
-			this.model.on("change", this.render, this);
-		},
-		cleanup: function() {
-			this.model.off(null, null, this);
-		},
+    });
+    Team.Views.Detail = Backbone.View.extend({
+        //We were passed a model on creation by Team.Router.showTeam(), so we have this.model
+        template: "teams/detail",
+        initialize: function() {
+            this.model.on("change", this.render, this);
+        },
+        cleanup: function() {
+            this.model.off(null, null, this);
+        },
         events: {
             "click .bcreategame": "createGame"
         },
         createGame: function(ev) {
             Backbone.history.navigate("newgame/"+this.model.get("id"), true);
         },
-		serialize: function() {
-			return _.clone(this.model.attributes);
-		}
-	});
-	Team.Views.Multilist = Backbone.View.extend({
-		template: "teams/multilist",
-		initialize: function() {
-			this.options.teamplayers.on("reset", this.render, this);
-			this.options.games.on("reset", this.render, this);
-		},
-		cleanup: function() {
-			this.options.teamplayers.off(null, null, this);
-			this.options.games.off(null, null, this);
-		},
-		events: {
-			"click .bplayers": "showPlayers",
-			"click .bgames": "showGames"
-		},
-		showPlayers: function(ev){
-			$(".lgames").hide();
-			$(".lplayers").show();
+        serialize: function() {
+            return _.clone(this.model.attributes);
+        }
+    });
+    Team.Views.Multilist = Backbone.View.extend({
+        template: "teams/multilist",
+        initialize: function() {
+            this.options.teamplayers.on("reset", this.render, this);
+            this.options.games.on("reset", this.render, this);
+        },
+        cleanup: function() {
+            this.options.teamplayers.off(null, null, this);
+            this.options.games.off(null, null, this);
+        },
+        events: {
+            "click .bplayers": "showPlayers",
+            "click .bgames": "showGames"
+        },
+        showPlayers: function(ev){
+            $(".lgames").hide();
+            $(".lplayers").show();
             $("button.bgames").removeClass("is_active");
             $("button.bplayers").addClass("is_active");
-		},
-		showGames: function(ev){
-			$(".lplayers").hide();
-			$(".lgames").show();
+        },
+        showGames: function(ev){
+            $(".lplayers").hide();
+            $(".lgames").show();
             $("button.bplayers").removeClass("is_active");
             $("button.bgames").addClass("is_active");
-		},
-		render: function(layout) {
-			var view = layout(this); //Get this view from the layout.
-			var Game = require("modules/game");
-			var TeamPlayer = require("modules/teamplayer");
-			this.setViews({
-				".lgames": new Game.Views.List( {collection: this.options.games} ),
-				".lplayers": new TeamPlayer.Views.PlayerList( {collection: this.options.teamplayers} )
-			});
-			return view.render().then(function(el) {
-				//I'd rather the render function only do this once, instead of everytime the data are reset
-				//But it might turn out to be a non-issue.
-				$(".lplayers").hide();
-			});
-		}
-	});
-	Team.Views.Edit = Backbone.View.extend({
-		initialize: function() {
-			this.model.on("reset", this.render, this);
-		},
-		cleanup: function() {
-			this.model.off(null, null, this);
-		},
-		template: "teams/edit",
-		render: function(layout) {
+        },
+        render: function(layout) {
+            var view = layout(this); //Get this view from the layout.
+            var Game = require("modules/game");
+            var TeamPlayer = require("modules/teamplayer");
+            this.setViews({
+                ".lgames": new Game.Views.List( {collection: this.options.games} ),
+                ".lplayers": new TeamPlayer.Views.PlayerList( {collection: this.options.teamplayers} )
+            });
+            return view.render().then(function(el) {
+                //I'd rather the render function only do this once, instead of everytime the data are reset
+                //But it might turn out to be a non-issue.
+                $(".lplayers").hide();
+            });
+        }
+    });
+    Team.Views.Edit = Backbone.View.extend({
+        initialize: function() {
+            this.model.on("reset", this.render, this);
+        },
+        cleanup: function() {
+            this.model.off(null, null, this);
+        },
+        template: "teams/edit",
+        render: function(layout) {
             return layout(this).render(this.model.toJSON());
         },
-		events: {
-			"click button.save": "saveModel",
-			"click button.delete": "deleteModel"
-		},
-		saveModel: function(ev){
-			this.model.save(
-				{
-					name:$("#name").val(),
-					info:$("#info").val()
-				},
-				{
+        events: {
+            "click button.save": "saveModel",
+            "click button.delete": "deleteModel"
+        },
+        saveModel: function(ev){
+            this.model.save(
+                {
+                    name:$("#name").val(),
+                    info:$("#info").val()
+                },
+                {
                     success: function(model, status, xhr) {
                         Backbone.history.navigate("teams/"+model.get("id"), true); //Redirect to the team detail page
                     },
@@ -17508,13 +17530,13 @@ function(app, Backbone, Leaguevine, Navigation) {
                         // For now, just redirect
                         Backbone.history.navigate("teams", true);
                     }
-				}
-			);
+                }
+            );
             return false; //Disable the regular form submission
-		},
-		deleteModel: function(ev) {
-			this.model.destroy(
-				{
+        },
+        deleteModel: function(ev) {
+            this.model.destroy(
+                {
                     success: function() {
                         Backbone.history.navigate("teams", true);
                     },
@@ -17524,12 +17546,12 @@ function(app, Backbone, Leaguevine, Navigation) {
                         // For now, just redirect
                         Backbone.history.navigate("teams", true);
                     }
-				}
-			);
+                }
+            );
             return false; //Disable the regular form submission
-		}
-	});
-	return Team;// Required, return the module for AMD compliance
+        }
+    });
+    return Team;// Required, return the module for AMD compliance
 });
 
 define('modules/stats',[
@@ -17904,48 +17926,48 @@ define('modules/game',[
   "modules/team",
   "modules/player_per_game_stats",
   "modules/team_per_game_stats",
-  
+
   "plugins/backbone.websqlajax"
 ],
 function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStats, TeamPerGameStats) {
-	
-	var Game = app.module();
-	
-	Game.Model = Backbone.Model.extend({
-		defaults: {
-			//id: "",
-			season_id: undefined,
-			//season: {},
-			tournament_id: null,
-			tournament: {},
-			team_1_id: null,
-			team_1_score: null,
-			team_1: {name: ""},
-			team_2_id: null,
-			team_2_score: null,
-			team_2: {name: ""},
-			start_time: ""
-			//pool, swiss_round, bracket
-		},
-		//sync: Backbone.WebSQLAjaxSync,
-		//store: new Backbone.WebSQLStore("game"),
-		associations: {
-			"tournament_id": "tournament",
-			"team_1_id": "team",
-			"team_2_id": "team"
-		},
-		urlRoot: Leaguevine.API.root + "games",
-		parse: function(resp, xhr) {
-			resp = Backbone.Model.prototype.parse(resp);
-			return resp;
-		},
-		//reserve toJSON for storage...
-		//game_id, start_time, season_id, team_1_id, team_2_id
-		//Use toJSON2 for rendering.
-		toJSON: function() {
-			var game = _.clone(this.attributes);
 
-            // Add a formatted start time 
+    var Game = app.module();
+
+    Game.Model = Backbone.Model.extend({
+        defaults: {
+            //id: "",
+            season_id: undefined,
+            //season: {},
+            tournament_id: null,
+            tournament: {},
+            team_1_id: null,
+            team_1_score: null,
+            team_1: {name: ""},
+            team_2_id: null,
+            team_2_score: null,
+            team_2: {name: ""},
+            start_time: ""
+            //pool, swiss_round, bracket
+        },
+        sync: Backbone.WebSQLAjaxSync,
+        store: new Backbone.WebSQLStore("game"),
+        associations: {
+            "tournament_id": "tournament",
+            "team_1_id": "team",
+            "team_2_id": "team"
+        },
+        urlRoot: Leaguevine.API.root + "games",
+        parse: function(resp, xhr) {
+            resp = Backbone.Model.prototype.parse(resp);
+            return resp;
+        },
+        //reserve toJSON for storage...
+        //game_id, start_time, season_id, team_1_id, team_2_id
+        //Use toJSON2 for rendering.
+        toJSON: function() {
+            var game = _.clone(this.attributes);
+
+            // Add a formatted start time
             // TODO: Put this function in namespace?
             game.start_time_string = "";
             if (game.start_time !== "" ){ //parse the start time and make it human-readable
@@ -17957,137 +17979,137 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
                 if (minutes < 10) {minutes = "0" + minutes;} //Make the minutes field two digits
                 game.start_time_string = start_time.getHours() + ":" + minutes + " " + start_time.toLocaleDateString();
             }
-            
+
             game.team_1 = _.isFunction(this.get("team_1").get) ? this.get("team_1").toJSON() : this.get("team_1");
             game.team_2 = _.isFunction(this.get("team_2").get) ? this.get("team_2").toJSON() : this.get("team_2");
             game.tournament = (this.get("tournament")!==null && _.isFunction(this.get("tournament").get)) ? this.get("tournament").toJSON() : this.get("tournament");
-            
+
             //delete game.tournament;
             //delete game.team_1;
             //delete game.team_2;
 
             return game;
-		}
-	});
-	
-	Game.Collection = Backbone.Collection.extend({
-		model: Game.Model,
-		//sync: Backbone.WebSQLAjaxSync,
-		//store: new Backbone.WebSQLStore("game"),
-		comparator: function(game) {// Define how items in the collection will be sorted.
-			return game.get("start_time");
-		},
-		urlRoot: Leaguevine.API.root + "games",
-		url: function(models) {
-			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += "/?";
-			if ( models && models.length ) {
-				url += "game_ids=" + JSON.stringify(models.pluck("id")) + "&";
-			}
-			if (this.season_id) {
-				url += "season_id=" + this.season_id + "&";
-			}
-			if (this.tournament_id) {
-				url += "tournament_id=" + this.tournament_id + "&";
-			}
-			if (this.team_1_id || this.team_2_id) {
-				url += "team_ids=%5B";
-				if (this.team_1_id){url += this.team_1_id;}
-				if (this.team_1_id && this.team_2_id){url += ",";}
-				if (this.team_2_id){url += this.team_2_id;}
-				url += "%5D&";
-			}
-			//Can't specify fields until tournament_id works.
-			//url += "fields=%5Bid%2Cseason_id%2Cteam_1_id%2Cteam_1_score%2Cteam_1%2Cteam_2_id%2Cteam_2_score%2Cteam_2%2Cstart_time%2Ctime_created%2C%20time_last_updated%5D&";
-			return url.substr(0,url.length-1);
-		},
-		parse: function(resp, xhr) {
-			resp = Backbone.Collection.prototype.parse(resp);
-			var _this = this;
-			//If we have criteria to filter by, reject resp objects that do not meet the criteria.
-			if (this.team_1_id){resp = _.filter(resp, function(obj){
-				return obj.team_1_id == _this.team_1_id || obj.team_2_id == _this.team_1_id;
-			});}
-			if (this.team_2_id){resp = _.filter(resp, function(obj){
-				return obj.team_2_id == _this.team_2_id || obj.team_1_id == _this.team_2_id;
-			});}
-			if (this.tournament_id){resp = _.filter(resp, function(obj){
-				return obj.tournament_id == _this.tournament_id;
-			});}
-			return resp;
-		},
-		initialize: function(models, options) {
-			if (options) {
-				if (options.season_id) {this.season_id = options.season_id;}
-				if (options.tournament_id) {this.tournament_id = options.tournament_id;}
-				if (options.team_1_id) {this.team_1_id = options.team_1_id;}
-				if (options.team_2_id) {this.team_2_id = options.team_2_id;}
-			}
-		}
-	});
-	
-	Game.Router = Backbone.Router.extend({
-		routes : {
-			"games": "findGames", //List all games.
-			"games/:gameId": "showGame", //Show detail for one game.
+        }
+    });
+
+    Game.Collection = Backbone.Collection.extend({
+        model: Game.Model,
+        sync: Backbone.WebSQLAjaxSync,
+        store: new Backbone.WebSQLStore("game"),
+        comparator: function(game) {// Define how items in the collection will be sorted.
+            return game.get("start_time");
+        },
+        urlRoot: Leaguevine.API.root + "games",
+        url: function(models) {
+            var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
+            url += "/?";
+            if ( models && models.length ) {
+                url += "game_ids=" + JSON.stringify(models.pluck("id")) + "&";
+            }
+            if (this.season_id) {
+                url += "season_id=" + this.season_id + "&";
+            }
+            if (this.tournament_id) {
+                url += "tournament_id=" + this.tournament_id + "&";
+            }
+            if (this.team_1_id || this.team_2_id) {
+                url += "team_ids=%5B";
+                if (this.team_1_id){url += this.team_1_id;}
+                if (this.team_1_id && this.team_2_id){url += ",";}
+                if (this.team_2_id){url += this.team_2_id;}
+                url += "%5D&";
+            }
+            //Can't specify fields until tournament_id works.
+            //url += "fields=%5Bid%2Cseason_id%2Cteam_1_id%2Cteam_1_score%2Cteam_1%2Cteam_2_id%2Cteam_2_score%2Cteam_2%2Cstart_time%2Ctime_created%2C%20time_last_updated%5D&";
+            return url.substr(0,url.length-1);
+        },
+        parse: function(resp, xhr) {
+            resp = Backbone.Collection.prototype.parse(resp);
+            var _this = this;
+            //If we have criteria to filter by, reject resp objects that do not meet the criteria.
+            if (this.team_1_id){resp = _.filter(resp, function(obj){
+                return obj.team_1_id == _this.team_1_id || obj.team_2_id == _this.team_1_id;
+            });}
+            if (this.team_2_id){resp = _.filter(resp, function(obj){
+                return obj.team_2_id == _this.team_2_id || obj.team_1_id == _this.team_2_id;
+            });}
+            if (this.tournament_id){resp = _.filter(resp, function(obj){
+                return obj.tournament_id == _this.tournament_id;
+            });}
+            return resp;
+        },
+        initialize: function(models, options) {
+            if (options) {
+                if (options.season_id) {this.season_id = options.season_id;}
+                if (options.tournament_id) {this.tournament_id = options.tournament_id;}
+                if (options.team_1_id) {this.team_1_id = options.team_1_id;}
+                if (options.team_2_id) {this.team_2_id = options.team_2_id;}
+            }
+        }
+    });
+
+    Game.Router = Backbone.Router.extend({
+        routes : {
+            "games": "findGames", //List all games.
+            "games/:gameId": "showGame", //Show detail for one game.
             "newgame/:teamId": "editGame"
      //                   "editgame/:gameId": "editGame"
-		},
-		findGames: function () {
-			var myLayout = app.router.useLayout("main");// Get the layout from a layout cache.
-			// Layout from cache might have different views set. Let's (re-)set them now.
-			myLayout.setViews({
-				".navbar": new Navigation.Views.Navbar(),
-				".titlebar": new Navigation.Views.Titlebar({model_class: "game", level: "list"}),
-				".content_1": new Game.Views.Find()
-			});
-			//myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
-			myLayout.render();
-		},
-		showGame: function (gameId) {
-			//Prepare the data.
-			var game = new Game.Model({id: gameId});
-			
-			game.fetch();
+        },
+        findGames: function () {
+            var myLayout = app.router.useLayout("main");// Get the layout from a layout cache.
+            // Layout from cache might have different views set. Let's (re-)set them now.
+            myLayout.setViews({
+                ".navbar": new Navigation.Views.Navbar(),
+                ".titlebar": new Navigation.Views.Titlebar({model_class: "game", level: "list"}),
+                ".content_1": new Game.Views.Find()
+            });
+            //myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+            myLayout.render();
+        },
+        showGame: function (gameId) {
+            //Prepare the data.
+            var game = new Game.Model({id: gameId});
+
+            game.fetch();
 
             var playerstats = new PlayerPerGameStats.Collection([],{game_ids: [gameId]});
             playerstats.fetch();
 
             var teamstats = new TeamPerGameStats.Collection([],{game_ids: [gameId]});
             teamstats.fetch();
-			
-			var myLayout = app.router.useLayout("main");
-			myLayout.setViews({
-				".navbar": new Navigation.Views.Navbar({href: "/editgame/"+gameId, name: "Edit"}),
-				".titlebar": new Navigation.Views.Titlebar({model_class: "game", level: "show", model: game}),
-				".content_1": new Game.Views.Detail( {model: game}),
-				".content_2": new Game.Views.Multilist({
-                    model: game, 
+
+            var myLayout = app.router.useLayout("main");
+            myLayout.setViews({
+                ".navbar": new Navigation.Views.Navbar({href: "/editgame/"+gameId, name: "Edit"}),
+                ".titlebar": new Navigation.Views.Titlebar({model_class: "game", level: "show", model: game}),
+                ".content_1": new Game.Views.Detail( {model: game}),
+                ".content_2": new Game.Views.Multilist({
+                    model: game,
                     playerstats: playerstats,
                     teamstats: teamstats
                 })
-			});
-			//myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
-			myLayout.render();
-		},
+            });
+            //myLayout.render(function(el) {$("#main").html(el);});// Render the layout, calling each subview's .render first.
+            myLayout.render();
+        },
         editGame: function(teamId, gameId) {
-			if (!app.api.is_logged_in()) {//Ensure that the user is logged in
+            if (!app.api.is_logged_in()) {//Ensure that the user is logged in
                 app.api.login();
                 return;
             }
-            
+
             var myLayout = app.router.useLayout("main");
 
             /*if (gameId) { //edit existing game
 
             }
             else*/ if (teamId) { //create new game
-				var Team = require("modules/team");
-				var this_team = new Team.Model({id: teamId});
-				this_team.fetch();
-				var placeholder_team = new Team.Model({name: "Select opponent from list below:"});
-				var this_game = new Game.Model({team_1_id: teamId, team_1: this_team, team_2: placeholder_team});
-				//this_game.fetch(); Game is not persisted yet so it cannot be fetched.
+                var Team = require("modules/team");
+                var this_team = new Team.Model({id: teamId});
+                this_team.fetch();
+                var placeholder_team = new Team.Model({name: "Select opponent from list below:"});
+                var this_game = new Game.Model({team_1_id: teamId, team_1: this_team, team_2: placeholder_team});
+                //this_game.fetch(); Game is not persisted yet so it cannot be fetched.
                 var teams = new Team.Collection([],{season_id: Leaguevine.API.season_id});
                 teams.fetch();
                 myLayout.setView(".titlebar", new Navigation.Views.Titlebar({model_class: "game", level: "edit", model: this_game}));
@@ -18097,75 +18119,75 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
             //myLayout.render(function(el) {$("#main").html(el);});
             myLayout.render();
         }
-	});
-	Game.router = new Game.Router();// INITIALIZE ROUTER
+    });
+    Game.router = new Game.Router();// INITIALIZE ROUTER
 
-	//
-	// VIEWS
-	//
-	Game.Views.Item = Backbone.View.extend({
-		template: "games/item",
-		tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul.
-		serialize: function() {
-			var game = this.model.toJSON();
-			if (this.model.get("team_1") !== null){
-				game.team_1 = _.isFunction(this.model.get("team_1").get) ? this.model.get("team_1").toJSON() : this.model.get("team_1");
-			}
-			if (this.model.get("team_1") !== null){
-				game.team_2 = _.isFunction(this.model.get("team_2").get) ? this.model.get("team_2").toJSON() : this.model.get("team_2");
-			}
-			return game;
-		} //render looks for this to manipulate model before passing to the template.
-	});
+    //
+    // VIEWS
+    //
+    Game.Views.Item = Backbone.View.extend({
+        template: "games/item",
+        tagName: "li",//Creates a li for each instance of this view. Note below that this li is inserted into a ul.
+        serialize: function() {
+            var game = this.model.toJSON();
+            if (this.model.get("team_1") !== null){
+                game.team_1 = _.isFunction(this.model.get("team_1").get) ? this.model.get("team_1").toJSON() : this.model.get("team_1");
+            }
+            if (this.model.get("team_1") !== null){
+                game.team_2 = _.isFunction(this.model.get("team_2").get) ? this.model.get("team_2").toJSON() : this.model.get("team_2");
+            }
+            return game;
+        } //render looks for this to manipulate model before passing to the template.
+    });
     Game.Views.Find = Backbone.View.extend({
         template: "games/find"
     });
-	Game.Views.List = Backbone.View.extend({
-		template: "games/list",
-		className: "games-wrapper",
-		render: function(layout) {
-			var view = layout(this); //Get this view from the layout.
-			//this.$el.empty()
-			// call .cleanup() on all child views, and remove all appended views
-			//view.cleanup();
-			this.collection.each(function(game) {//for each game in the collection.
-				this.insertView("ul", new Game.Views.Item({//Inserts the game into the ul in the list template.
-					model: game//pass each game to a Item view instance.
-				}));
-			}, this);
+    Game.Views.List = Backbone.View.extend({
+        template: "games/list",
+        className: "games-wrapper",
+        render: function(layout) {
+            var view = layout(this); //Get this view from the layout.
+            //this.$el.empty()
+            // call .cleanup() on all child views, and remove all appended views
+            //view.cleanup();
+            this.collection.each(function(game) {//for each game in the collection.
+                this.insertView("ul", new Game.Views.Item({//Inserts the game into the ul in the list template.
+                    model: game//pass each game to a Item view instance.
+                }));
+            }, this);
             //Add a button at the end of the list that creates more items
             this.insertView("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
-			return view.render({ count: this.collection.length });
-		},
-		initialize: function() {
-			this.collection.bind("reset", function() {
-				this.render();
-			}, this);
-		}
-	});
-	Game.Views.Detail = Backbone.View.extend({
-		template: "games/detail",
-		initialize: function() {
-			this.model.on("change", this.render, this);
-		},
-		cleanup: function() {
-			this.model.off(null, null, this);
-		},
-		render: function(layout) {
+            return view.render({ count: this.collection.length });
+        },
+        initialize: function() {
+            this.collection.bind("reset", function() {
+                this.render();
+            }, this);
+        }
+    });
+    Game.Views.Detail = Backbone.View.extend({
+        template: "games/detail",
+        initialize: function() {
+            this.model.on("change", this.render, this);
+        },
+        cleanup: function() {
+            this.model.off(null, null, this);
+        },
+        render: function(layout) {
             var game = this.model.toJSON();
             if (this.model.get("team_1") !== null){
-				game.team_1 = _.isFunction(this.model.get("team_1").get) ? this.model.get("team_1").toJSON() : this.model.get("team_1");
-			}
-			if (this.model.get("team_1") !== null){
-				game.team_2 = _.isFunction(this.model.get("team_2").get) ? this.model.get("team_2").toJSON() : this.model.get("team_2");
-			}
-			if (this.model.get("tournament") !== null){
-				game.tournament = _.isFunction(this.model.get("tournament").get) ? this.model.get("tournament").toJSON() : this.model.get("tournament");
-			} else {game.tournament = {name: ""};}
-			var track_mode = JSON.parse(localStorage.getItem("settings-Stats Entry:"));
-			game.track = (track_mode && track_mode.value == "score only") ? "basic" : "track";
-			return layout(this).render(game);
-		},
+                game.team_1 = _.isFunction(this.model.get("team_1").get) ? this.model.get("team_1").toJSON() : this.model.get("team_1");
+            }
+            if (this.model.get("team_1") !== null){
+                game.team_2 = _.isFunction(this.model.get("team_2").get) ? this.model.get("team_2").toJSON() : this.model.get("team_2");
+            }
+            if (this.model.get("tournament") !== null){
+                game.tournament = _.isFunction(this.model.get("tournament").get) ? this.model.get("tournament").toJSON() : this.model.get("tournament");
+            } else {game.tournament = {name: ""};}
+            var track_mode = JSON.parse(localStorage.getItem("settings-Stats Entry:"));
+            game.track = (track_mode && track_mode.value == "score only") ? "basic" : "track";
+            return layout(this).render(game);
+        },
         checkPermission: function() {
             // If the user is not logged in, redirect to login and disable the page transition
             /*if (!app.api.is_logged_in()) {
@@ -18174,44 +18196,44 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
             }*/
            return app.api.d_token();
          },
-		events: {
-			"click button.btrack_game": "checkPermission"
+        events: {
+            "click button.btrack_game": "checkPermission"
         }
-	});
-	Game.Views.Multilist = Backbone.View.extend({
-		template: "games/multilist",
-		initialize: function(){
-			this.model.on("reset", this.render, this);
-		},
-		cleanup: function(){
-			this.model.off(null, null, this);
-		},
-		events: {
-			"click button.bteam_stats": "showTeamStats",
-			"click button.bplayer_stats": "showPlayerStats"
-		},
-		showTeamStats: function(ev){
-			$(".lplayer_stats").hide();
-			$(".lteam_stats").show();
+    });
+    Game.Views.Multilist = Backbone.View.extend({
+        template: "games/multilist",
+        initialize: function(){
+            this.model.on("reset", this.render, this);
+        },
+        cleanup: function(){
+            this.model.off(null, null, this);
+        },
+        events: {
+            "click button.bteam_stats": "showTeamStats",
+            "click button.bplayer_stats": "showPlayerStats"
+        },
+        showTeamStats: function(ev){
+            $(".lplayer_stats").hide();
+            $(".lteam_stats").show();
             $("button.bplayer_stats").removeClass("is_active");
             $("button.bteam_stats").addClass("is_active");
-		},
-		showPlayerStats: function(ev){
-			$(".lteam_stats").hide();
-			$(".lplayer_stats").show();
+        },
+        showPlayerStats: function(ev){
+            $(".lteam_stats").hide();
+            $(".lplayer_stats").show();
             $("button.bteam_stats").removeClass("is_active");
             $("button.bplayer_stats").addClass("is_active");
-		},
-		render: function(layout) {
-			var view = layout(this);
-			this.setViews({
-				".lplayer_stats": new PlayerPerGameStats.Views.BoxScore( {collection: this.options.playerstats, game: this.model } ),
-				".lteam_stats": new TeamPerGameStats.Views.BoxScore( {collection: this.options.teamstats} )
-			});
-			return view.render();
+        },
+        render: function(layout) {
+            var view = layout(this);
+            this.setViews({
+                ".lplayer_stats": new PlayerPerGameStats.Views.BoxScore( {collection: this.options.playerstats, game: this.model } ),
+                ".lteam_stats": new TeamPerGameStats.Views.BoxScore( {collection: this.options.teamstats} )
+            });
+            return view.render();
         }
-	});
-	
+    });
+
     Game.Views.Edit = Backbone.View.extend({
         template: "games/edit",
         render: function(layout) {
@@ -18219,67 +18241,67 @@ function(require, app, Backbone, Leaguevine, Navigation, Team, PlayerPerGameStat
             var edit_view = this;
             var Team = require("modules/team");
             this.setViews({
-				".edit_area": new Game.Views.EditArea({model: this.model}),
+                ".edit_area": new Game.Views.EditArea({model: this.model}),
                 ".team_search_list": new Navigation.Views.SearchableList({
-					collection: this.options.teams, CollectionClass: Team.Collection, ViewsListClass: Team.Views.List, right_btn_class: "",
+                    collection: this.options.teams, CollectionClass: Team.Collection, ViewsListClass: Team.Views.List, right_btn_class: "",
                     right_btn_txt: "Create", right_btn_href: "/newteam", search_object_name: "team",
                     tap_method: function() {
-						edit_view.model.set("team_2",this.model);//check the context here.
+                        edit_view.model.set("team_2",this.model);//check the context here.
                     }
                 })
             });
             return view.render();
         }
     });
-	Game.Views.EditArea = Backbone.View.extend({
-		initialize: function() {
-			//We need to re-render whenever the game's team_1 or team_2 changes.
-			this.model.get("team_1").on("change", this.render, this);
-			this.model.get("team_2").on("change", this.render, this);
-			this.model.on("change", this.render, this);
-		},
-		cleanup: function() {
-			this.model.get("team_1").off(null, null, this);
-			this.model.get("team_2").off(null, null, this);
-			this.model.off(null, null, this);
-		},
-		template: "games/edit_area",
-		events: {
-			"click .save": "saveGame",
-			"click .delete": "deleteGame"
-		},
-		saveGame: function(ev) {
-			this.model.save(
-				{
-					start_time: $("#start_time").val()
-				},
-				{
+    Game.Views.EditArea = Backbone.View.extend({
+        initialize: function() {
+            //We need to re-render whenever the game's team_1 or team_2 changes.
+            this.model.get("team_1").on("change", this.render, this);
+            this.model.get("team_2").on("change", this.render, this);
+            this.model.on("change", this.render, this);
+        },
+        cleanup: function() {
+            this.model.get("team_1").off(null, null, this);
+            this.model.get("team_2").off(null, null, this);
+            this.model.off(null, null, this);
+        },
+        template: "games/edit_area",
+        events: {
+            "click .save": "saveGame",
+            "click .delete": "deleteGame"
+        },
+        saveGame: function(ev) {
+            this.model.save(
+                {
+                    start_time: $("#start_time").val()
+                },
+                {
                     success: function(model, status, xhr) {
                         Backbone.history.navigate("games/"+model.get("id"), true);
                     },
                     error: function() {
                         Backbone.history.navigate("teams", true);
                     }
-				}
-			);
-		},
-		deleteGame: function(ev) {},
-		serialize: function() {
-			var game = this.model.toJSON();
-			if (this.model.get("team_1") !== null){
-				game.team_1 = _.isFunction(this.model.get("team_1").get) ? this.model.get("team_1").toJSON() : this.model.get("team_1");
-			}
-			if (this.model.get("team_1") !== null){
-				game.team_2 = _.isFunction(this.model.get("team_2").get) ? this.model.get("team_2").toJSON() : this.model.get("team_2");
-			}
-			return game;
-		}
-	});
-	return Game;// Required, return the module for AMD compliance
+                }
+            );
+        },
+        deleteGame: function(ev) {},
+        serialize: function() {
+            var game = this.model.toJSON();
+            if (this.model.get("team_1") !== null){
+                game.team_1 = _.isFunction(this.model.get("team_1").get) ? this.model.get("team_1").toJSON() : this.model.get("team_1");
+            }
+            if (this.model.get("team_1") !== null){
+                game.team_2 = _.isFunction(this.model.get("team_2").get) ? this.model.get("team_2").toJSON() : this.model.get("team_2");
+            }
+            return game;
+        }
+    });
+    return Game;// Required, return the module for AMD compliance
 });
 
 define('modules/tournament',[
-	"require",
+    "require",
   "app",
 
   // Libs
@@ -18290,50 +18312,50 @@ define('modules/tournament',[
   "modules/navigation",
   "modules/tournteam",
   "modules/game",
-  
+
   "plugins/backbone.websqlajax"
 ],
 function(require, app, Backbone, Leaguevine, Navigation) {
-    
-	var Tournament = app.module();
-	
-	Tournament.Model = Backbone.Model.extend({
-		defaults: {
-			name: "",
-			start_date: "",
-			end_date: "",
-			info: "",
-			//season: {},
-			tournteams: {},
-			games: {}
-		},
-		urlRoot: Leaguevine.API.root + "tournaments",
-		parse: function(resp, xhr) {
-			resp = Backbone.Model.prototype.parse(resp);
-			return resp;
-		},
-		//If a tournament is saved to the API does it care about the teams and games?
-		toJSON: function() {//get rid of tournteams
-			return _.clone(this.attributes);
-		}
-		//sync: Backbone.WebSQLAjaxSync,
-		//store: new Backbone.WebSQLStore("tournament")
-	});
-	
-	Tournament.Collection = Backbone.Collection.extend({
-		model: Tournament.Model,
-		//sync: Backbone.WebSQLAjaxSync,
-		//store: new Backbone.WebSQLStore("tournament"),
-		urlRoot: Leaguevine.API.root + "tournaments",
+
+    var Tournament = app.module();
+
+    Tournament.Model = Backbone.Model.extend({
+        defaults: {
+            name: "",
+            start_date: "",
+            end_date: "",
+            info: "",
+            //season: {},
+            tournteams: {},
+            games: {}
+        },
+        urlRoot: Leaguevine.API.root + "tournaments",
+        parse: function(resp, xhr) {
+            resp = Backbone.Model.prototype.parse(resp);
+            return resp;
+        },
+        //If a tournament is saved to the API does it care about the teams and games?
+        toJSON: function() {//get rid of tournteams
+            return _.clone(this.attributes);
+        },
+        sync: Backbone.WebSQLAjaxSync,
+        store: new Backbone.WebSQLStore("tournament")
+    });
+
+    Tournament.Collection = Backbone.Collection.extend({
+        model: Tournament.Model,
+        sync: Backbone.WebSQLAjaxSync,
+        store: new Backbone.WebSQLStore("tournament"),
+        urlRoot: Leaguevine.API.root + "tournaments",
         url: function(models) {
             var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-            url += "/?"; 
+            url += "/?";
             if ( models && models.length ) {
                 url += "tournament_ids=" + JSON.stringify(models.pluck("id")) + "&";
             }
             if (this.name) {
                 url += "name=" + this.name + "&";
-            }           
+            }
             if (this.season_id) {
                 url += "season_id=" + this.season_id + "&";
             }
@@ -18342,110 +18364,110 @@ function(require, app, Backbone, Leaguevine, Navigation) {
             url += "fields=%5Bid%2Cseason_id%2Cname%2Cstart_date%2Cend_date%2Cinfo%2Ctime_created%2C%20time_last_updated%5D&";
             return url;
         },
-		comparator: function(tournament) {
-			return tournament.get("name").toLowerCase();
-		},
-		parse: function(resp, xhr) {
-			resp = Backbone.Collection.prototype.parse(resp);
-			return resp;
-		},
-		initialize: function(models, options) {
-			if (options) {
-				this.season_id = options.season_id;
-				this.name = options.name;
-			}
-		}
-	});
-	
-	Tournament.Router = Backbone.Router.extend({
-		routes : {
-			"tournaments": "listTournaments", //List all tournaments.
-			"tournaments/:tournamentId": "showTournament" //Show detail for one tournament.
-		},
-		listTournaments: function () {
-			// Prepare the data.
-			var tournaments = new Tournament.Collection([],{season_id: Leaguevine.API.season_id});
-			tournaments.fetch();
+        comparator: function(tournament) {
+            return tournament.get("name").toLowerCase();
+        },
+        parse: function(resp, xhr) {
+            resp = Backbone.Collection.prototype.parse(resp);
+            return resp;
+        },
+        initialize: function(models, options) {
+            if (options) {
+                this.season_id = options.season_id;
+                this.name = options.name;
+            }
+        }
+    });
 
-			//var Search = require("modules/search"); //If that module is an argument to this module's function then it does not need to be required again.
-			var myLayout = app.router.useLayout("main");
-			myLayout.setViews({
-				".navbar": new Navigation.Views.Navbar(),
-				".titlebar": new Navigation.Views.Titlebar({model_class: "tournament", level: "list"}),
-				".content_1": new Navigation.Views.SearchableList({collection: tournaments, CollectionClass: Tournament.Collection, ViewsListClass: Tournament.Views.List, search_object_name: "tournament"})
-			});
-			//myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newtournament", name: "New"}));
-			//myLayout.view(".content", new Tournament.Views.List ({collection: tournaments}));
-			//myLayout.view(".content", new Search.Views.SearchableList({collection: tournaments, CollectionClass: Tournament.Collection, ViewsListClass: Tournament.Views.List,
+    Tournament.Router = Backbone.Router.extend({
+        routes : {
+            "tournaments": "listTournaments", //List all tournaments.
+            "tournaments/:tournamentId": "showTournament" //Show detail for one tournament.
+        },
+        listTournaments: function () {
+            // Prepare the data.
+            var tournaments = new Tournament.Collection([],{season_id: Leaguevine.API.season_id});
+            tournaments.fetch();
+
+            //var Search = require("modules/search"); //If that module is an argument to this module's function then it does not need to be required again.
+            var myLayout = app.router.useLayout("main");
+            myLayout.setViews({
+                ".navbar": new Navigation.Views.Navbar(),
+                ".titlebar": new Navigation.Views.Titlebar({model_class: "tournament", level: "list"}),
+                ".content_1": new Navigation.Views.SearchableList({collection: tournaments, CollectionClass: Tournament.Collection, ViewsListClass: Tournament.Views.List, search_object_name: "tournament"})
+            });
+            //myLayout.view(".navbar", new Navigation.Views.Navbar({href: "#newtournament", name: "New"}));
+            //myLayout.view(".content", new Tournament.Views.List ({collection: tournaments}));
+            //myLayout.view(".content", new Search.Views.SearchableList({collection: tournaments, CollectionClass: Tournament.Collection, ViewsListClass: Tournament.Views.List,
             //                right_btn_class: "", right_btn_txt: "Create", right_btn_href: "#newtournament", search_object_name: "tournament"}));
             //myLayout.render(function(el) {$("#main").html(el);});
             myLayout.render();
-		},
-		showTournament: function (tournamentId) {
+        },
+        showTournament: function (tournamentId) {
             var tournament = new Tournament.Model({id: tournamentId});
             tournament.fetch();
 
-			var TournTeam = require("modules/tournteam");
-			var tournteams = new TournTeam.Collection([],{tournament_id: tournament.get("id")});
-			tournteams.fetch();
-			
-			var Game = require("modules/game");
-			var games = new Game.Collection([],{tournament_id: tournament.get("id")});
-			games.fetch();
-			
-			var myLayout = app.router.useLayout("main");
-			myLayout.setViews({
-				//".navbar": new Navigation.Views.Navbar({href: "#edittournament/"+tournamentId, name: "Edit"}),
-				".navbar": new Navigation.Views.Navbar(),
-				".titlebar": new Navigation.Views.Titlebar({model_class: "tournament", level: "show", model: tournament}),
-				".content_1": new Tournament.Views.Detail( {model: tournament}),
-				".content_2": new Tournament.Views.Multilist({ games: games, tournteams: tournteams })
-			});
-			//myLayout.render(function(el) {$("#main").html(el);});
-			myLayout.render();
-		}
-	});
-	Tournament.router = new Tournament.Router();// INITIALIZE ROUTER
+            var TournTeam = require("modules/tournteam");
+            var tournteams = new TournTeam.Collection([],{tournament_id: tournament.get("id")});
+            tournteams.fetch();
 
-	Tournament.Views.Item = Backbone.View.extend({
-		template: "tournaments/item",
-		tagName: "li",
-		serialize: function() {return this.model.toJSON();}
-	});
-	Tournament.Views.List = Backbone.View.extend({
-		template: "tournaments/list",
-		initialize: function() {
-			this.collection.on("reset", function() {
-				if (Backbone.history.fragment == "tournaments") {this.render();}
-			}, this);
-		},
-		cleanup: function() {
-			this.collection.off(null, null, this);
-		},
-		className: "tournaments-wrapper",
-		render: function(layout) {
-			var view = layout(this);
-			var filter_by = this.collection.name ? this.collection.name : "";
-			//this.$el.empty();
-			this.collection.each(function(tournament) {
-				if (!filter_by || tournament.get("name").toLowerCase().indexOf(filter_by.toLowerCase()) != -1) {
-					this.insertView("ul", new Tournament.Views.Item({ model: tournament}));
-				}
-			}, this);
+            var Game = require("modules/game");
+            var games = new Game.Collection([],{tournament_id: tournament.get("id")});
+            games.fetch();
+
+            var myLayout = app.router.useLayout("main");
+            myLayout.setViews({
+                //".navbar": new Navigation.Views.Navbar({href: "#edittournament/"+tournamentId, name: "Edit"}),
+                ".navbar": new Navigation.Views.Navbar(),
+                ".titlebar": new Navigation.Views.Titlebar({model_class: "tournament", level: "show", model: tournament}),
+                ".content_1": new Tournament.Views.Detail( {model: tournament}),
+                ".content_2": new Tournament.Views.Multilist({ games: games, tournteams: tournteams })
+            });
+            //myLayout.render(function(el) {$("#main").html(el);});
+            myLayout.render();
+        }
+    });
+    Tournament.router = new Tournament.Router();// INITIALIZE ROUTER
+
+    Tournament.Views.Item = Backbone.View.extend({
+        template: "tournaments/item",
+        tagName: "li",
+        serialize: function() {return this.model.toJSON();}
+    });
+    Tournament.Views.List = Backbone.View.extend({
+        template: "tournaments/list",
+        initialize: function() {
+            this.collection.on("reset", function() {
+                if (Backbone.history.fragment == "tournaments") {this.render();}
+            }, this);
+        },
+        cleanup: function() {
+            this.collection.off(null, null, this);
+        },
+        className: "tournaments-wrapper",
+        render: function(layout) {
+            var view = layout(this);
+            var filter_by = this.collection.name ? this.collection.name : "";
+            //this.$el.empty();
+            this.collection.each(function(tournament) {
+                if (!filter_by || tournament.get("name").toLowerCase().indexOf(filter_by.toLowerCase()) != -1) {
+                    this.insertView("ul", new Tournament.Views.Item({ model: tournament}));
+                }
+            }, this);
             //Add a button at the end of the list that creates more items
             this.insertView("ul", new Leaguevine.Views.MoreItems({collection: this.collection}));
-			return view.render({ count: this.collection.length });
-		}
-	});
-	Tournament.Views.Detail = Backbone.View.extend({
-		template: "tournaments/detail",
-		initialize: function() {
-			this.model.on("change", this.render, this);
-		},
-		cleanup: function(){
-			this.model.off(null, null, this);
-		},
-		render: function(layout) {
+            return view.render({ count: this.collection.length });
+        }
+    });
+    Tournament.Views.Detail = Backbone.View.extend({
+        template: "tournaments/detail",
+        initialize: function() {
+            this.model.on("change", this.render, this);
+        },
+        cleanup: function(){
+            this.model.off(null, null, this);
+        },
+        render: function(layout) {
             var tournament = this.model.toJSON();
             // Create a human-readable date for this tournament
             tournament.start_date_string = "";
@@ -18454,87 +18476,87 @@ function(require, app, Backbone, Leaguevine, Navigation) {
                 tournament.start_date_string = start_date.toLocaleDateString();
             }
             return layout(this).render(tournament);
-		}
-	});
-	Tournament.Views.Multilist = Backbone.View.extend({
-		template: "tournaments/multilist",
-		initialize: function() {
-			this.options.games.on("reset", this.render, this);
-			this.options.tournteams.on("reset", this.render, this);
-		},
-		cleanup: function() {
-			this.options.games.off(null, null, this);
-			this.options.tourteams.off(null, null, this);
-		},
-		events: {
-			"click .bstandings": "showStandings",
-			"click .bgames": "showGames"
+        }
+    });
+    Tournament.Views.Multilist = Backbone.View.extend({
+        template: "tournaments/multilist",
+        initialize: function() {
+            this.options.games.on("reset", this.render, this);
+            this.options.tournteams.on("reset", this.render, this);
+        },
+        cleanup: function() {
+            this.options.games.off(null, null, this);
+            this.options.tournteams.off(null, null, this);
+        },
+        events: {
+            "click .bstandings": "showStandings",
+            "click .bgames": "showGames"
         /*
-			"click .bpools": "showPools",
-			"click .bbrackets": "showBrackets"
+            "click .bpools": "showPools",
+            "click .bbrackets": "showBrackets"
             */
-		},
+        },
         showGames: function(ev){
-			$(".lbrackets").hide();
-			$(".lpools").hide();
-			$(".lstandings").hide();
+            $(".lbrackets").hide();
+            $(".lpools").hide();
+            $(".lstandings").hide();
             $(".lgames").show();
             $("button.bstandings").removeClass("is_active");
             $("button.bgames").addClass("is_active");
         },
-		showStandings: function(ev){
-			$(".lbrackets").hide();
-			$(".lpools").hide();
-			$(".lgames").hide();
-			$(".lstandings").show();
+        showStandings: function(ev){
+            $(".lbrackets").hide();
+            $(".lpools").hide();
+            $(".lgames").hide();
+            $(".lstandings").show();
             $("button.bgames").removeClass("is_active");
             $("button.bstandings").addClass("is_active");
-		},
-        /* 
-        // Don't show these yet. To enable showing pools and brackets, we 
+        },
+        /*
+        // Don't show these yet. To enable showing pools and brackets, we
         // need to return lists of pools and brackets instead of games, and then style these.
-		showPools: function(ev){
-			$(".lstandings").hide();
-			$(".lbrackets").hide();
-			$(".lgames").hide();
-			$(".lpools").show();
+        showPools: function(ev){
+            $(".lstandings").hide();
+            $(".lbrackets").hide();
+            $(".lgames").hide();
+            $(".lpools").show();
             $(".list_children button").removeClass("is_active");
             $("button.bpools").addClass("is_active");
-			//console.log("TODO: Show Pools");
-		},
-		showBrackets: function(ev){
-			$(".lstandings").hide();
-			$(".lpools").hide();
-			$(".lgames").hide();
-			$(".lbrackets").show();
+            //console.log("TODO: Show Pools");
+        },
+        showBrackets: function(ev){
+            $(".lstandings").hide();
+            $(".lpools").hide();
+            $(".lgames").hide();
+            $(".lbrackets").show();
             $(".list_children button").removeClass("is_active");
             $("button.bbrackets").addClass("is_active");
-			//console.log("TODO: Show Brackets")
-		},
+            //console.log("TODO: Show Brackets")
+        },
         */
-		render: function(layout) {
-			var view = layout(this); //Get this view from the layout.
-			var TournTeam = require("modules/tournteam");
-			var Game = require("modules/game");
-			this.setViews({
-				".lstandings": new TournTeam.Views.TeamList( {collection: this.options.tournteams} ),
-				".lgames": new Game.Views.List( {collection: this.options.games} )
+        render: function(layout) {
+            var view = layout(this); //Get this view from the layout.
+            var TournTeam = require("modules/tournteam");
+            var Game = require("modules/game");
+            this.setViews({
+                ".lstandings": new TournTeam.Views.TeamList( {collection: this.options.tournteams} ),
+                ".lgames": new Game.Views.List( {collection: this.options.games} )
                 /*
-				".lpools": new Game.Views.List( {collection: this.options.games} ),
-				".lbrackets": new Game.Views.List( {collection: this.options.games} )
+                ".lpools": new Game.Views.List( {collection: this.options.games} ),
+                ".lbrackets": new Game.Views.List( {collection: this.options.games} )
                 */
-			});
-			return view.render().then(function(el) {
+            });
+            return view.render().then(function(el) {
                 /*
-				$(".lpools").hide();
-				$(".lbrackets").hide();
+                $(".lpools").hide();
+                $(".lbrackets").hide();
                 */
-				$(".lstandings").hide();
-			});
-		}
-	});
-	
-	return Tournament;// Required, return the module for AMD compliance
+                $(".lstandings").hide();
+            });
+        }
+    });
+
+    return Tournament;// Required, return the module for AMD compliance
 });
 
 define('modules/tournteam',[
@@ -18672,7 +18694,7 @@ function(require, app, Backbone, Leaguevine) {
 });
 
 define('modules/gameevent',[
-	"require",
+    "require",
   "app",
 
   // Libs
@@ -18680,119 +18702,119 @@ define('modules/gameevent',[
 
   // Modules
   "modules/leaguevine",
-  
+
   "plugins/backbone.websqlajax"
 ],
 
 function(require, app, Backbone, Leaguevine) {
 
-	var GameEvent = app.module();
-	GameEvent.Model = Backbone.Model.extend({
-		defaults: {// Include defaults for any attribute that will be rendered.
-			type: NaN,//Need to set a dict somewhere, probably in Leaguevine.API
-			time: NaN,//YYYY-MM-DDTHH:MM:SS±hh:mm
-			ordinal_number: NaN,//smaller is earlier
-			game_id: NaN,
-			player_1_id: NaN,
-			player_2_id: NaN,
-			player_3_id: NaN,
-			player_1_team_id: NaN,
-			player_2_team_id: NaN,
-			player_3_team_id: NaN,
-			int_1: NaN
-		},
-		//sync: Backbone.WebSQLAjaxSync,
-		//store: new Backbone.WebSQLStore("gameevent"),
-		associations: {
-			"game_id": "game",
-			"player_1_id": "player",
-			"player_2_id": "player",
-			"player_3_id": "player",
-			"player_1_team_id": "team",
-			"player_2_team_id": "team",
-			"player_3_team_id": "team"
-		},
-		urlRoot: Leaguevine.API.root + "events",
-		parse: function(resp, xhr) {
-			resp = Backbone.Model.prototype.parse(resp);
-			return resp;
-		},
-		toJSON: function() {
-			//TODO: Remove attributes that are not stored
-			var temp = _.clone(this.attributes);
-			var keys = _.keys(temp);
-			_.each(keys, function(key){
-				if (!temp[key]) {this.unset(key);}
-			}, this);
+    var GameEvent = app.module();
+    GameEvent.Model = Backbone.Model.extend({
+        defaults: {// Include defaults for any attribute that will be rendered.
+            type: NaN,//Need to set a dict somewhere, probably in Leaguevine.API
+            time: NaN,//YYYY-MM-DDTHH:MM:SS??hh:mm
+            ordinal_number: NaN,//smaller is earlier
+            game_id: NaN,
+            player_1_id: NaN,
+            player_2_id: NaN,
+            player_3_id: NaN,
+            player_1_team_id: NaN,
+            player_2_team_id: NaN,
+            player_3_team_id: NaN,
+            int_1: NaN
+        },
+        sync: Backbone.WebSQLAjaxSync,
+        store: new Backbone.WebSQLStore("gameevent"),
+        associations: {
+            "game_id": "game",
+            "player_1_id": "player",
+            "player_2_id": "player",
+            "player_3_id": "player",
+            "player_1_team_id": "team",
+            "player_2_team_id": "team",
+            "player_3_team_id": "team"
+        },
+        urlRoot: Leaguevine.API.root + "events",
+        parse: function(resp, xhr) {
+            resp = Backbone.Model.prototype.parse(resp);
+            return resp;
+        },
+        toJSON: function() {
+            //TODO: Remove attributes that are not stored
+            var temp = _.clone(this.attributes);
+            var keys = _.keys(temp);
+            _.each(keys, function(key){
+                if (!temp[key]) {this.unset(key);}
+            }, this);
             var date = new Date(); //The time now
             this.set("time", date.toJSON().substring(0, 19) + "+00:00"); //The current time in ISO Format
-			return _.clone(this.attributes);
-		}
-	});
-	GameEvent.Collection = Backbone.Collection.extend({
-		model: GameEvent.Model,
-		//sync: Backbone.WebSQLAjaxSync,
-		//store: new Backbone.WebSQLStore("gameevent"),
-		urlRoot: Leaguevine.API.root + "events",
-		url: function(models) {
-			var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
-			url += "/?";
-			if (this.game_id) {
-				url += "game_ids=%5B" + this.game_id + "%5D&";
-			}
-			return url.substr(0,url.length-1);
-		},
-		parse: function(resp, xhr) {
-			resp = Backbone.Collection.prototype.parse(resp);
-			var _this = this;
-			if (this.game_id){resp = _.filter(resp, function(obj){
-				return obj.game_id == _this.game_id;
-			});}
-			return resp;
-		},
-		initialize: function(models, options) {
-			if (options) {
-				if (options.game_id) {this.game_id = options.game_id;}
-			}
-		},
-		comparator: function(gameevent) {// Define how items in the collection will be sorted.
-			//return gameevent.get("ordinal_number");
-			return gameevent.get("time");
-		}
-	});
+            return _.clone(this.attributes);
+        }
+    });
+    GameEvent.Collection = Backbone.Collection.extend({
+        model: GameEvent.Model,
+        sync: Backbone.WebSQLAjaxSync,
+        store: new Backbone.WebSQLStore("gameevent"),
+        urlRoot: Leaguevine.API.root + "events",
+        url: function(models) {
+            var url = this.urlRoot || ( models && models.length && models[0].urlRoot );
+            url += "/?";
+            if (this.game_id) {
+                url += "game_ids=%5B" + this.game_id + "%5D&";
+            }
+            return url.substr(0,url.length-1);
+        },
+        parse: function(resp, xhr) {
+            resp = Backbone.Collection.prototype.parse(resp);
+            var _this = this;
+            if (this.game_id){resp = _.filter(resp, function(obj){
+                return obj.game_id == _this.game_id;
+            });}
+            return resp;
+        },
+        initialize: function(models, options) {
+            if (options) {
+                if (options.game_id) {this.game_id = options.game_id;}
+            }
+        },
+        comparator: function(gameevent) {// Define how items in the collection will be sorted.
+            //return gameevent.get("ordinal_number");
+            return gameevent.get("time");
+        }
+    });
 
-	//
-	// VIEWS
-	//
-	GameEvent.Views.Item = Backbone.View.extend({
-		template: "events/item",
-		tagName: "li",
-		serialize: function() {return this.model.toJSON();}
-	});
-	GameEvent.Views.List = Backbone.View.extend({
-		template: "events/list",
-		initialize: function(){
-			this.collection.on("reset", this.render, this);
-		},
-		cleanup: function(){
-			this.collection.off(null, null, this);
-		},
-		className: "events-wrapper",
-		render: function(layout) {
-			var view = layout(this);
-			//this.$el.empty()
-			// call .cleanup() on all child views, and remove all appended views
-			view.cleanup();
-			this.collection.each(function(gameevent) {
-				this.insertView("ul", new Event.Views.Item({
-					model: gameevent
-				}));
-			}, this);
-			return view.render();
-		}
-	});	
-	
-	return GameEvent;// Required, return the module for AMD compliance
+    //
+    // VIEWS
+    //
+    GameEvent.Views.Item = Backbone.View.extend({
+        template: "events/item",
+        tagName: "li",
+        serialize: function() {return this.model.toJSON();}
+    });
+    GameEvent.Views.List = Backbone.View.extend({
+        template: "events/list",
+        initialize: function(){
+            this.collection.on("reset", this.render, this);
+        },
+        cleanup: function(){
+            this.collection.off(null, null, this);
+        },
+        className: "events-wrapper",
+        render: function(layout) {
+            var view = layout(this);
+            //this.$el.empty()
+            // call .cleanup() on all child views, and remove all appended views
+            view.cleanup();
+            this.collection.each(function(gameevent) {
+                this.insertView("ul", new Event.Views.Item({
+                    model: gameevent
+                }));
+            }, this);
+            return view.render();
+        }
+    });
+
+    return GameEvent;// Required, return the module for AMD compliance
 });
 
 define('modules/game_score',[
@@ -18805,49 +18827,49 @@ define('modules/game_score',[
   // Modules
   "modules/leaguevine",
   "modules/navigation",
-  
+
   "plugins/backbone.websqlajax"
 ],
 function(require, app, Backbone, Leaguevine) {
-	
-	var GameScore = app.module();
-	
-	GameScore.Model = Backbone.Model.extend({
-		defaults: {
-			game_id: null,
-			team_1_score: null,
-			team_2_score: null
-		},
-		//sync: Backbone.WebSQLAjaxSync,
-		//store: new Backbone.WebSQLStore("game_score"),
-		associations: {
-			"game_id": "game"
-		},
-		urlRoot: Leaguevine.API.root + "game_scores",
-		parse: function(resp, xhr) {
-			resp = Backbone.Model.prototype.parse(resp);
-			return resp;
-		},
-		toJSON: function() {
-			return _.clone(this.attributes);
-		}
-	});
-	return GameScore;// Required, return the module for AMD compliance
+
+    var GameScore = app.module();
+
+    GameScore.Model = Backbone.Model.extend({
+        defaults: {
+            game_id: null,
+            team_1_score: null,
+            team_2_score: null
+        },
+        sync: Backbone.WebSQLAjaxSync,
+        store: new Backbone.WebSQLStore("game_score"),
+        associations: {
+            "game_id": "game"
+        },
+        urlRoot: Leaguevine.API.root + "game_scores",
+        parse: function(resp, xhr) {
+            resp = Backbone.Model.prototype.parse(resp);
+            return resp;
+        },
+        toJSON: function() {
+            return _.clone(this.attributes);
+        }
+    });
+    return GameScore;// Required, return the module for AMD compliance
 });
 
 define('modules/trackedgame',[
-	"require",
+    "require",
   "app",
 
   // Libs
   "backbone",
 
-  // Modules  
+  // Modules
   "modules/game",
   "modules/player",
   "modules/gameevent",
   "modules/game_score",
-  
+
   "plugins/backbone.localStorage"
 ],
 
@@ -18864,14 +18886,14 @@ It has some data that is not persisted to the server.
 
 There are basically 3 types of buttons.
 1. Buttons that create an event
-	-player-action buttons
-	-immediate-event buttons (e.g., throwaway)
-	-player substitution buttons
+    -player-action buttons
+    -immediate-event buttons (e.g., throwaway)
+    -player substitution buttons
 2. Buttons that temporarily change the game state
 3. Buttons that change what is visible on the screen but do not modify any data
-	-Rotate through action/sub1/sub2 screens
-	-MISC action buttons
-	
+    -Rotate through action/sub1/sub2 screens
+    -MISC action buttons
+
 The basic workflow for event buttons is as follows:
 1. create an event.
 2. Using the type of button pressed and the current game state, set the event type, player ids and team ids.
@@ -18883,57 +18905,57 @@ A button that temporarily changes the game state does just that. It is not saved
 */
 
 function(require, app, Backbone) {
-    
-	var TrackedGame = app.module();
-	
-	TrackedGame.Model = Backbone.Model.extend({
-		sync: Backbone.localSync,
-		localStorage: new Backbone.LocalStore("trackedGame"),
-		defaults: {
-			game: {},
-			gameevents: [],
-			roster_1: [],//TeamPlayer.Collection
-			roster_2: [],
-			field_status_1: {},//keys=player_id, values=1(onfield) or 0(offfield)
-			field_status_2: {},
-			saved_status_1: {"last_o": null, "last_d": null},
-			saved_status_2: {"last_o": null, "last_d": null},
-			//previous_state: "blank",
-			current_state: "pulling",
-			is_over: false,
-			period_number: NaN,
-			team_pulled_to_start_ix: NaN,
-			team_in_possession_ix: NaN,
-			player_in_possession_id: NaN,
-			injury_to: false,//Whether or not substitutions will be injury substitutions.
-			visible_screen: 0,
-			showing_alternate: -1//I seem to be having trouble with using a boolean or using 0 and 1. So use 1 and -1.
-		},
-		toJSON: function() {//flatten the data so they are easy to read.
-			var temp = _.clone(this.attributes);
-			temp.game = this.get("game").toJSON();
-			temp.gameevents = _.isFunction(this.get("gameevents").get) ? this.get("gameevents").toJSON() : this.get("gameevents");
-			return temp;
-		},
-		
-		screens_list: [{b_class: ".roster_1", b_string: "Roster1"}, {b_class: ".roster_2", b_string: "Roster2"}, {b_class: ".t_game", b_string: "Action"}],
-		rotate_visibility: function() {
-			var n_screens = this.screens_list.length;
-			var sc_ix = this.get("visible_screen");
-			this.set("visible_screen", sc_ix==n_screens-1 ? 0 : sc_ix + 1);
-		},
-		
-		setButtonHeight: function() { 
-             //Dynamically calculates and sets the button height for all buttons in the 
+
+    var TrackedGame = app.module();
+
+    TrackedGame.Model = Backbone.Model.extend({
+        sync: Backbone.localSync,
+        localStorage: new Backbone.LocalStore("trackedGame"),
+        defaults: {
+            game: {},
+            gameevents: [],
+            roster_1: [],//TeamPlayer.Collection
+            roster_2: [],
+            field_status_1: {},//keys=player_id, values=1(onfield) or 0(offfield)
+            field_status_2: {},
+            saved_status_1: {"last_o": null, "last_d": null},
+            saved_status_2: {"last_o": null, "last_d": null},
+            //previous_state: "blank",
+            current_state: "pulling",
+            is_over: false,
+            period_number: NaN,
+            team_pulled_to_start_ix: NaN,
+            team_in_possession_ix: NaN,
+            player_in_possession_id: NaN,
+            injury_to: false,//Whether or not substitutions will be injury substitutions.
+            visible_screen: 0,
+            showing_alternate: -1//I seem to be having trouble with using a boolean or using 0 and 1. So use 1 and -1.
+        },
+        toJSON: function() {//flatten the data so they are easy to read.
+            var temp = _.clone(this.attributes);
+            temp.game = this.get("game").toJSON();
+            temp.gameevents = _.isFunction(this.get("gameevents").get) ? this.get("gameevents").toJSON() : this.get("gameevents");
+            return temp;
+        },
+
+        screens_list: [{b_class: ".roster_1", b_string: "Roster1"}, {b_class: ".roster_2", b_string: "Roster2"}, {b_class: ".t_game", b_string: "Action"}],
+        rotate_visibility: function() {
+            var n_screens = this.screens_list.length;
+            var sc_ix = this.get("visible_screen");
+            this.set("visible_screen", sc_ix==n_screens-1 ? 0 : sc_ix + 1);
+        },
+
+        setButtonHeight: function() {
+             //Dynamically calculates and sets the button height for all buttons in the
              //game tracking screen (not the substitution screen)
-            
+
              // Get the browser height
              // Taken from here: http://bugs.jquery.com/ticket/6724
              var browser_height = window.innerHeight ? window.innerHeight : $(window).height();
 
              // Save some space for the text, space between buttons, and the rotate button
              var non_button_height = 240;
-             
+
              // Divide the rest of the height between 5 rows of buttons
              var button_height = Math.floor((browser_height - non_button_height)/5);
              $(".t_game button").css({"height": button_height});
@@ -18942,432 +18964,432 @@ function(require, app, Backbone) {
              var score_height = button_height + 30;
              $("button.score").css({"height": score_height});
         },
-		
-		/*
-		* FUNCTIONS FOR GAME EVENTS
-		* 
-		* Pressing a player button will always create event.
-		* The type of button created will depend on the game state.
-		* 
-		* Pressing an auxilliary button might create an
-		* event (throwaway, unknown turn, injury, timeout, end_period).
-		* Tapping an aux button will always result in a state change.
-		* 
-		*/
-		
-		/*
-		* 
-		* Define game states. Game state determines effect of tapping a player button.
-		*/
-		game_states: {
-			pulling: {player_prompt: "Who pulled?", player_tap_event_type: 1},
-			picking_up: {player_prompt: "Who picked up?", player_tap_event_type: 10},
-			receiving: {player_prompt: "Completed pass to:", player_tap_event_type: 21, same_team: true},
-			scoring: {player_prompt: "Who caught the goal?", player_tap_event_type: 22, same_team: true},
-			dropping: {player_prompt: "Who dropped the disc?", player_tap_event_type: 33, same_team: true},
-			blocking: {player_prompt: "Who got the D?", player_tap_event_type: 34, same_team: false},
-			stalling: {player_prompt: "Who was marking?", player_tap_event_type: 51, same_team: false}
-		},
-		
-		/*
-		* Define the event types. Also specify whether the event is a turnover,
-		* whether it is usually accompanied by a screen toggle, and what the
-		* play-by-play will display.
-		*/
-		events_meta: {
-			1: {is_turnover: true, toggle_screen: false, next_player_as: 1, play_string: "pulled", next_state: "picking_up"},
-			10: {is_turnover: false, toggle_screen: false, next_player_as: 1, play_string: "picked up the disc", next_state: "receiving"},
-			21: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "completed a pass to", next_player_as: 2, next_state: "receiving"},
-			22: {is_turnover: false, toggle_screen: true, last_player_as: 1, play_string: "threw a goal to", next_player_as: 2, next_state: "pulling"},
-			30: {is_turnover: true, toggle_screen: false, last_player_as: 1, play_string: "turnover", next_state: "picking_up"},
-			32: {is_turnover: true, toggle_screen: false, last_player_as: 1, play_string: "threw the disc away", next_state: "picking_up"},
-			33: {is_turnover: true, toggle_screen: false, last_player_as: 1, play_string: "'s pass was dropped by", next_player_as: 2, next_state: "picking_up"},
-			34: {is_turnover: true, toggle_screen: false, last_player_as: 1, play_string: "'s pass was blocked by", next_player_as: 3, next_state: "picking_up"},
-			51: {is_turnover: true, toggle_screen: false, last_player_as: 1, play_string: "ran out of time while marked by", next_player_as: 2, next_state: "picking_up"},
-			80: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "stepped on the field"},
-			81: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "stepped off the field"},
-			82: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "bravely stepped on the field"},
-			83: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "limped off the field"},
-			91: {is_turnover: false, toggle_screen: false, play_string: "Timeout"},
-			92: {is_turnover: false, toggle_screen: true, play_string: "Injury timeout", next_state: "picking_up"},
-			94: {is_turnover: false, toggle_screen: true, play_string: "End of period", next_state: "pulling"},
-			98: {is_turnover: false, toggle_screen: false, play_string: "Game over"}
-		},
-		
-		//A helper function to create a template gameevent. Futher details will be added after.
-		create_event: function () {
-			var GameEvent = require("modules/gameevent");
-			var d = new Date();//"2011-12-19T15:28:46.493Z"
-			var time = d.getUTCFullYear() + "-" + (d.getUTCMonth() + 1) + "-" + d.getUTCDate() + "T" + d.getUTCHours() + ":" + d.getUTCMinutes() + ":" + d.getUTCSeconds();
-			var gameid = this.get("game").id;
-			return new GameEvent.Model({time: time, game_id: gameid});
-		},
-		
-		//Event type will be set either by an event button or by a player tap button.
-		
-		//Untouched throwaway, unknown turn, injury, timeout are all immediate events that do not require a game state.
-		immediate_event: function(event_type){
-			var this_event = this.create_event();
-			this_event.set({type: event_type});
-			this.process_event(this_event);
-		},
-		
-		player_tap: function(pl_id){//pl_id is the tapped player. Might be NaN
-			var this_event = this.create_event();
-			//Set the event's type based on the current state.
-			var state_meta = this.game_states[this.get("current_state")];
-			var event_type = state_meta.player_tap_event_type;
-			this_event.set({type: event_type});
-			
-			var event_meta = this.events_meta[event_type];
-			
-			//Determine how pl_id should be used.
-			var team_ix = this.get("team_in_possession_ix");
-			var team_id = this.get("game").get("team_"+team_ix+"_id");
-			if (_.has(event_meta,"next_player_as")){	
-				this_event.set("player_"+event_meta.next_player_as+"_id",pl_id);
-				this_event.set("player_"+event_meta.next_player_as+"_team_id",team_id);
-			}
-			
-			//For some states, setting the state swaps possession.
-			//Swap back (temporarily) because we will swap again when processing the event.
-			if (_.has(state_meta,"same_team") && !state_meta.same_team){
-				this.set("team_in_possession_ix",3-this.get("team_in_possession_ix"));
-			}
-			
-			this.process_event(this_event);
-		},
-		
-		process_event: function(this_event){
-			//The disc is still currently in possession of the team that started with the disc.
-			//Despite this, events where the second player is on the defending team already have
-			//the correct player_id and team_id set for the defending player.
-			
-			var last_pl_id = this.get("player_in_possession_id");
-			var team_ix = this.get("team_in_possession_ix");//team_ix is index of team that player is on. Might be NaN.
-			var last_team_id = this.get("game").get("team_"+team_ix).id;
-			var event_meta = this.events_meta[this_event.get("type")];
-			
-			if (_.has(event_meta,"last_player_as")){
-				//Hack for unknown turn which has a team but not a player.
-				if (this_event.get("type")!=30){
-					this_event.set("player_"+event_meta.last_player_as+"_id",last_pl_id);
-				}
-				this_event.set("player_"+event_meta.last_player_as+"_team_id",last_team_id);
-			}
-			
-			//Hack for timeout, assumes possession team is calling team.
-			if (this_event.get("type")==91 || this_event.get("type")==92){
-				this_event.set("int_1", last_team_id);
-			}
-			
-			//save the event to the server.
-			this.save_event(this_event, this);
-			
-		},
-		
-		injury_to: function(){
-			this.set("injury_to", true);
-			this.immediate_event(92);
-		},
-		
-		end_period: function(){
-			//the End Period button should be disabled if we are in an injury_to... but I will check for the state anywyay.
-			//if (this.get("current_state")=="pulling" && !this.get("injury_to")) {
-			var ev_type = 94;
-			var last_per_num = this.get("period_number");
-			//The following line COULD be used for specific end of period types,
-			//except that non AUDL games would have "end of first" events instead of half-time events.
-			//if (last_per_num <=3){ev_type = ev_type + last_per_num;}
-			this.set("period_number", last_per_num+1);
-			this.start_period_pull();
-			
-			var this_event = this.create_event();
-			this_event.set({type: ev_type});
-			this.save_event(this_event);
-			//}
-		},
-		
-		game_over: function(){
-			var this_event = this.create_event();
-			this_event.set({type: 98});
-			$.when(this.save_event(this_event)).then( function() {
-				this.set("is_over"); 
-			});
-			Backbone.history.navigate("games/"+this.get("game").id, true);
-		},
-		
-		field_status_events: function(){
-			var sc_ix = this.get("visible_screen");//0 is roster1, 1 is roster2, 2 is action
-			if (sc_ix>0){//If the new screen is roster2 or action.
-				var old_game = JSON.parse(localStorage.getItem("trackedGame-"+this.get("game").id));
-				var old_status = old_game && old_game["field_status_"+sc_ix];
-				var tm_id = this.get("game").get("team_"+sc_ix+"_id");
-				var new_status = this.get("field_status_"+sc_ix);
-				_.each(new_status, function (value, key, list){
-					//console.log(key + " " + value);
-					if ((old_status===null && value==1) || (old_status && old_status[key]!=value)){
-						var event_type = 80;
-						if (value===0){event_type = event_type + 1;}
-						if (this.get("injury_to")){event_type = event_type + 2;}
-						var this_event = this.create_event();
-						this_event.set({type: event_type, player_1_id: key, player_1_team_id: tm_id});
-						this.save_event(this_event);
-					}
-				}, this);
-				if (this.get("current_state")==="pulling"){
-					//Save the status to o or d-line
-					var dline_ix = this.get("team_in_possession_ix");
-					var saved_status = this.get("saved_status_"+sc_ix);
-					saved_status[sc_ix === dline_ix ? "last_d": "last_o"] = _.clone(new_status);
-					//this.set("saved_status_"+sc_ix, saved_status);
-					this.trigger("change:saved_status_"+sc_ix);
-					this.save();
-				}
-				
-			}
-		},
-		
-		save_event: function(event) {
-			var trackedgame=this;
-			$.when(event.save()).then(function(){
-				trackedgame.get("gameevents").add(event);//Triggers play-by-play update, and this.event_added
-			});
-		},
-		
-		update_state: function(){
-			//TODO: This might better belong in the immediate_event function.
-			//The state is changed elsewhere. This simply handles changing possession.
-			//The UI changes are handled by the views bound to the change in state.
-			var state_name = this.get("current_state");
-			if (_.has(this.game_states[state_name],"same_team") && !this.game_states[state_name].same_team){
-				this.set("team_in_possession_ix",3-this.get("team_in_possession_ix"));
-			}
-		},
-		
-		undo: function(){
-			var event_coll = this.get("gameevents");
-			var last_event = event_coll.at(event_coll.length-1);
-			last_event.destroy({wait: true});//Will trigger a remove event, which triggers event_removed.
-		},
-		
-		event_removed: function(model, collection, options){
-			//This is triggered when an event is successfully removed from the data store and then the events stack.
-			var last_event_meta = this.events_meta[model.get("type")];
-			
-			//undo substitution.
-			if (model.get("type")>= 80 && model.get("type")<=83){
-				//Instead we need to remove the tp from its current collection with silent:true
-				//and then add the tp to the other collection
-				var mv_pl_id = model.get("player_1_id"); //moved tp player_id
-				var mv_tm_id = model.get("player_1_team_id"); //moved team id. Is this used?
-				var team_ix = mv_tm_id == this.get("game").get("team_1_id") ? 1 : 2; //team index, 1 or 2
-				var my_status = this.get("field_status_"+team_ix);
-				my_status[mv_pl_id] = 1 - my_status[mv_pl_id];
-				this.trigger("change:field_status_"+team_ix);//So the view gets updated.
-			}
-			
-			//undo score
-			if (model.get("type")== 22){
-				var team_xx = this.get("team_in_possession_ix");
-				var game_model = this.get("game");
-				var team_score_string = "team_" + team_xx + "_score";
-				var last_score = game_model.get(team_score_string);
-				var new_score = last_score - 1;
-				game_model.set(team_score_string,new_score);
-			}
-			
-			if (last_event_meta.is_turnover){
-				this.set("team_in_possession_ix",3-this.get("team_in_possession_ix"));
-			}
-			
-			var event_coll = this.get("gameevents");
-			var remaining_event = event_coll.at(event_coll.length-1);
-			this.state_for_event(remaining_event);
-		},
-		
-		event_added: function(model, collection, options){
-			//Triggered when an event is successfully added to the stack.
-			var team_ix = this.get("team_in_possession_ix");
-			var event_meta = this.events_meta[model.get("type")];
-			
-			this.set("team_in_possession_ix",event_meta.is_turnover ? 3-team_ix : team_ix);
-			
-			//Hack for score.
-			if (model.get("type")== 22){
-				var game_model = this.get("game");
-				var team_score_string = "team_" + team_ix + "_score";
-				var last_score = game_model.get(team_score_string);
-				var new_score = last_score === "" ? 1 : last_score + 1;
-				game_model.set(team_score_string,new_score);
-			}
-			
-			if (event_meta.toggle_screen){
-				this.rotate_visibility();
-			}
-			
-			this.state_for_event(model);
-		},
-		
-		state_for_event: function(event){
-			var team_ix = this.get("team_in_possession_ix");
-			var event_meta = this.events_meta[event.get("type")];
-			
-			if (_.has(event_meta,"next_state")){
-				this.set("current_state",event_meta.next_state);
-				this.set("player_in_possession_id",event_meta.next_state == "receiving" ? event.get("player_" + event_meta.next_player_as + "_id"): NaN);
-			}
-			
-			//If the event is a sub off, and the substituting player had the disc, then make the next state picking up.
-			if ((event.get("type")==81 || event.get("type")==83) && event.get("player_1_id")==this.get("player_in_possession_id")){
-				this.set("current_state","picking_up");
-				this.set("player_in_possession_id",NaN);
-			}
-			
-			//If the event is not an injury timeout event or an injury substitution event, then we need to make sure injury timeout is off.
-			if (event.get("type") !== 82 && event.get("type")!==83 && event.get("type")!==92){
-				this.set("injury_to", false);
-			}
-			
-			this.save();
-		},
-		
-		start_period_pull: function(){
-			//This function is called at the beginning of a period (including the first) to determine which team has the disc.
-			var per_num = this.get("period_number");
-			if ( per_num==1 ){
-				//Alert to ask which team is pulling to start.
-				//TODO: Replace this with a nice view or style the alert.
-				var pulled_team_1=confirm("Press OK if " + this.get("game").get("team_1").name + " is pulling to start the game.");
-				this.set("team_pulled_to_start_ix", pulled_team_1 ? 1 : 2);
-			}
-			//Determine who should be pulling disc.
-			//If the period number is odd, then the team now pulling is the team that pulled to start the game.
-			var tip_ix = per_num%2==1 ? this.get("team_pulled_to_start_ix") : 3-this.get("team_pulled_to_start_ix");
-			this.set("team_in_possession_ix", tip_ix);
-		}
-		
-	});
-	
-	//
-	// ROUTER
-	//
-	TrackedGame.Router = Backbone.Router.extend({
-		routes : {
-			"track/:gameId": "trackGame",
-			"basic/:gameId": "basicGame"
-		},
-		trackGame: function (gameId) {
+
+        /*
+        * FUNCTIONS FOR GAME EVENTS
+        *
+        * Pressing a player button will always create event.
+        * The type of button created will depend on the game state.
+        *
+        * Pressing an auxilliary button might create an
+        * event (throwaway, unknown turn, injury, timeout, end_period).
+        * Tapping an aux button will always result in a state change.
+        *
+        */
+
+        /*
+        *
+        * Define game states. Game state determines effect of tapping a player button.
+        */
+        game_states: {
+            pulling: {player_prompt: "Who pulled?", player_tap_event_type: 1},
+            picking_up: {player_prompt: "Who picked up?", player_tap_event_type: 10},
+            receiving: {player_prompt: "Completed pass to:", player_tap_event_type: 21, same_team: true},
+            scoring: {player_prompt: "Who caught the goal?", player_tap_event_type: 22, same_team: true},
+            dropping: {player_prompt: "Who dropped the disc?", player_tap_event_type: 33, same_team: true},
+            blocking: {player_prompt: "Who got the D?", player_tap_event_type: 34, same_team: false},
+            stalling: {player_prompt: "Who was marking?", player_tap_event_type: 51, same_team: false}
+        },
+
+        /*
+        * Define the event types. Also specify whether the event is a turnover,
+        * whether it is usually accompanied by a screen toggle, and what the
+        * play-by-play will display.
+        */
+        events_meta: {
+            1: {is_turnover: true, toggle_screen: false, next_player_as: 1, play_string: "pulled", next_state: "picking_up"},
+            10: {is_turnover: false, toggle_screen: false, next_player_as: 1, play_string: "picked up the disc", next_state: "receiving"},
+            21: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "completed a pass to", next_player_as: 2, next_state: "receiving"},
+            22: {is_turnover: false, toggle_screen: true, last_player_as: 1, play_string: "threw a goal to", next_player_as: 2, next_state: "pulling"},
+            30: {is_turnover: true, toggle_screen: false, last_player_as: 1, play_string: "turnover", next_state: "picking_up"},
+            32: {is_turnover: true, toggle_screen: false, last_player_as: 1, play_string: "threw the disc away", next_state: "picking_up"},
+            33: {is_turnover: true, toggle_screen: false, last_player_as: 1, play_string: "'s pass was dropped by", next_player_as: 2, next_state: "picking_up"},
+            34: {is_turnover: true, toggle_screen: false, last_player_as: 1, play_string: "'s pass was blocked by", next_player_as: 3, next_state: "picking_up"},
+            51: {is_turnover: true, toggle_screen: false, last_player_as: 1, play_string: "ran out of time while marked by", next_player_as: 2, next_state: "picking_up"},
+            80: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "stepped on the field"},
+            81: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "stepped off the field"},
+            82: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "bravely stepped on the field"},
+            83: {is_turnover: false, toggle_screen: false, last_player_as: 1, play_string: "limped off the field"},
+            91: {is_turnover: false, toggle_screen: false, play_string: "Timeout"},
+            92: {is_turnover: false, toggle_screen: true, play_string: "Injury timeout", next_state: "picking_up"},
+            94: {is_turnover: false, toggle_screen: true, play_string: "End of period", next_state: "pulling"},
+            98: {is_turnover: false, toggle_screen: false, play_string: "Game over"}
+        },
+
+        //A helper function to create a template gameevent. Futher details will be added after.
+        create_event: function () {
+            var GameEvent = require("modules/gameevent");
+            var d = new Date();//"2011-12-19T15:28:46.493Z"
+            var time = d.getUTCFullYear() + "-" + (d.getUTCMonth() + 1) + "-" + d.getUTCDate() + "T" + d.getUTCHours() + ":" + d.getUTCMinutes() + ":" + d.getUTCSeconds();
+            var gameid = this.get("game").id;
+            return new GameEvent.Model({time: time, game_id: gameid});
+        },
+
+        //Event type will be set either by an event button or by a player tap button.
+
+        //Untouched throwaway, unknown turn, injury, timeout are all immediate events that do not require a game state.
+        immediate_event: function(event_type){
+            var this_event = this.create_event();
+            this_event.set({type: event_type});
+            this.process_event(this_event);
+        },
+
+        player_tap: function(pl_id){//pl_id is the tapped player. Might be NaN
+            var this_event = this.create_event();
+            //Set the event's type based on the current state.
+            var state_meta = this.game_states[this.get("current_state")];
+            var event_type = state_meta.player_tap_event_type;
+            this_event.set({type: event_type});
+
+            var event_meta = this.events_meta[event_type];
+
+            //Determine how pl_id should be used.
+            var team_ix = this.get("team_in_possession_ix");
+            var team_id = this.get("game").get("team_"+team_ix+"_id");
+            if (_.has(event_meta,"next_player_as")){
+                this_event.set("player_"+event_meta.next_player_as+"_id",pl_id);
+                this_event.set("player_"+event_meta.next_player_as+"_team_id",team_id);
+            }
+
+            //For some states, setting the state swaps possession.
+            //Swap back (temporarily) because we will swap again when processing the event.
+            if (_.has(state_meta,"same_team") && !state_meta.same_team){
+                this.set("team_in_possession_ix",3-this.get("team_in_possession_ix"));
+            }
+
+            this.process_event(this_event);
+        },
+
+        process_event: function(this_event){
+            //The disc is still currently in possession of the team that started with the disc.
+            //Despite this, events where the second player is on the defending team already have
+            //the correct player_id and team_id set for the defending player.
+
+            var last_pl_id = this.get("player_in_possession_id");
+            var team_ix = this.get("team_in_possession_ix");//team_ix is index of team that player is on. Might be NaN.
+            var last_team_id = this.get("game").get("team_"+team_ix).id;
+            var event_meta = this.events_meta[this_event.get("type")];
+
+            if (_.has(event_meta,"last_player_as")){
+                //Hack for unknown turn which has a team but not a player.
+                if (this_event.get("type")!=30){
+                    this_event.set("player_"+event_meta.last_player_as+"_id",last_pl_id);
+                }
+                this_event.set("player_"+event_meta.last_player_as+"_team_id",last_team_id);
+            }
+
+            //Hack for timeout, assumes possession team is calling team.
+            if (this_event.get("type")==91 || this_event.get("type")==92){
+                this_event.set("int_1", last_team_id);
+            }
+
+            //save the event to the server.
+            this.save_event(this_event, this);
+
+        },
+
+        injury_to: function(){
+            this.set("injury_to", true);
+            this.immediate_event(92);
+        },
+
+        end_period: function(){
+            //the End Period button should be disabled if we are in an injury_to... but I will check for the state anywyay.
+            //if (this.get("current_state")=="pulling" && !this.get("injury_to")) {
+            var ev_type = 94;
+            var last_per_num = this.get("period_number");
+            //The following line COULD be used for specific end of period types,
+            //except that non AUDL games would have "end of first" events instead of half-time events.
+            //if (last_per_num <=3){ev_type = ev_type + last_per_num;}
+            this.set("period_number", last_per_num+1);
+            this.start_period_pull();
+
+            var this_event = this.create_event();
+            this_event.set({type: ev_type});
+            this.save_event(this_event);
+            //}
+        },
+
+        game_over: function(){
+            var this_event = this.create_event();
+            this_event.set({type: 98});
+            $.when(this.save_event(this_event)).then( function() {
+                this.set("is_over");
+            });
+            Backbone.history.navigate("games/"+this.get("game").id, true);
+        },
+
+        field_status_events: function(){
+            var sc_ix = this.get("visible_screen");//0 is roster1, 1 is roster2, 2 is action
+            if (sc_ix>0){//If the new screen is roster2 or action.
+                var old_game = JSON.parse(localStorage.getItem("trackedGame-"+this.get("game").id));
+                var old_status = old_game && old_game["field_status_"+sc_ix];
+                var tm_id = this.get("game").get("team_"+sc_ix+"_id");
+                var new_status = this.get("field_status_"+sc_ix);
+                _.each(new_status, function (value, key, list){
+                    //console.log(key + " " + value);
+                    if ((old_status===null && value==1) || (old_status && old_status[key]!=value)){
+                        var event_type = 80;
+                        if (value===0){event_type = event_type + 1;}
+                        if (this.get("injury_to")){event_type = event_type + 2;}
+                        var this_event = this.create_event();
+                        this_event.set({type: event_type, player_1_id: key, player_1_team_id: tm_id});
+                        this.save_event(this_event);
+                    }
+                }, this);
+                if (this.get("current_state")==="pulling"){
+                    //Save the status to o or d-line
+                    var dline_ix = this.get("team_in_possession_ix");
+                    var saved_status = this.get("saved_status_"+sc_ix);
+                    saved_status[sc_ix === dline_ix ? "last_d": "last_o"] = _.clone(new_status);
+                    //this.set("saved_status_"+sc_ix, saved_status);
+                    this.trigger("change:saved_status_"+sc_ix);
+                    this.save();
+                }
+
+            }
+        },
+
+        save_event: function(event) {
+            var trackedgame=this;
+            $.when(event.save()).then(function(){
+                trackedgame.get("gameevents").add(event);//Triggers play-by-play update, and this.event_added
+            });
+        },
+
+        update_state: function(){
+            //TODO: This might better belong in the immediate_event function.
+            //The state is changed elsewhere. This simply handles changing possession.
+            //The UI changes are handled by the views bound to the change in state.
+            var state_name = this.get("current_state");
+            if (_.has(this.game_states[state_name],"same_team") && !this.game_states[state_name].same_team){
+                this.set("team_in_possession_ix",3-this.get("team_in_possession_ix"));
+            }
+        },
+
+        undo: function(){
+            var event_coll = this.get("gameevents");
+            var last_event = event_coll.at(event_coll.length-1);
+            last_event.destroy({wait: true});//Will trigger a remove event, which triggers event_removed.
+        },
+
+        event_removed: function(model, collection, options){
+            //This is triggered when an event is successfully removed from the data store and then the events stack.
+            var last_event_meta = this.events_meta[model.get("type")];
+
+            //undo substitution.
+            if (model.get("type")>= 80 && model.get("type")<=83){
+                //Instead we need to remove the tp from its current collection with silent:true
+                //and then add the tp to the other collection
+                var mv_pl_id = model.get("player_1_id"); //moved tp player_id
+                var mv_tm_id = model.get("player_1_team_id"); //moved team id. Is this used?
+                var team_ix = mv_tm_id == this.get("game").get("team_1_id") ? 1 : 2; //team index, 1 or 2
+                var my_status = this.get("field_status_"+team_ix);
+                my_status[mv_pl_id] = 1 - my_status[mv_pl_id];
+                this.trigger("change:field_status_"+team_ix);//So the view gets updated.
+            }
+
+            //undo score
+            if (model.get("type")== 22){
+                var team_xx = this.get("team_in_possession_ix");
+                var game_model = this.get("game");
+                var team_score_string = "team_" + team_xx + "_score";
+                var last_score = game_model.get(team_score_string);
+                var new_score = last_score - 1;
+                game_model.set(team_score_string,new_score);
+            }
+
+            if (last_event_meta.is_turnover){
+                this.set("team_in_possession_ix",3-this.get("team_in_possession_ix"));
+            }
+
+            var event_coll = this.get("gameevents");
+            var remaining_event = event_coll.at(event_coll.length-1);
+            this.state_for_event(remaining_event);
+        },
+
+        event_added: function(model, collection, options){
+            //Triggered when an event is successfully added to the stack.
+            var team_ix = this.get("team_in_possession_ix");
+            var event_meta = this.events_meta[model.get("type")];
+
+            this.set("team_in_possession_ix",event_meta.is_turnover ? 3-team_ix : team_ix);
+
+            //Hack for score.
+            if (model.get("type")== 22){
+                var game_model = this.get("game");
+                var team_score_string = "team_" + team_ix + "_score";
+                var last_score = game_model.get(team_score_string);
+                var new_score = last_score === "" ? 1 : last_score + 1;
+                game_model.set(team_score_string,new_score);
+            }
+
+            if (event_meta.toggle_screen){
+                this.rotate_visibility();
+            }
+
+            this.state_for_event(model);
+        },
+
+        state_for_event: function(event){
+            var team_ix = this.get("team_in_possession_ix");
+            var event_meta = this.events_meta[event.get("type")];
+
+            if (_.has(event_meta,"next_state")){
+                this.set("current_state",event_meta.next_state);
+                this.set("player_in_possession_id",event_meta.next_state == "receiving" ? event.get("player_" + event_meta.next_player_as + "_id"): NaN);
+            }
+
+            //If the event is a sub off, and the substituting player had the disc, then make the next state picking up.
+            if ((event.get("type")==81 || event.get("type")==83) && event.get("player_1_id")==this.get("player_in_possession_id")){
+                this.set("current_state","picking_up");
+                this.set("player_in_possession_id",NaN);
+            }
+
+            //If the event is not an injury timeout event or an injury substitution event, then we need to make sure injury timeout is off.
+            if (event.get("type") !== 82 && event.get("type")!==83 && event.get("type")!==92){
+                this.set("injury_to", false);
+            }
+
+            this.save();
+        },
+
+        start_period_pull: function(){
+            //This function is called at the beginning of a period (including the first) to determine which team has the disc.
+            var per_num = this.get("period_number");
+            if ( per_num==1 ){
+                //Alert to ask which team is pulling to start.
+                //TODO: Replace this with a nice view or style the alert.
+                var pulled_team_1=confirm("Press OK if " + this.get("game").get("team_1").name + " is pulling to start the game.");
+                this.set("team_pulled_to_start_ix", pulled_team_1 ? 1 : 2);
+            }
+            //Determine who should be pulling disc.
+            //If the period number is odd, then the team now pulling is the team that pulled to start the game.
+            var tip_ix = per_num%2==1 ? this.get("team_pulled_to_start_ix") : 3-this.get("team_pulled_to_start_ix");
+            this.set("team_in_possession_ix", tip_ix);
+        }
+
+    });
+
+    //
+    // ROUTER
+    //
+    TrackedGame.Router = Backbone.Router.extend({
+        routes : {
+            "track/:gameId": "trackGame",
+            "basic/:gameId": "basicGame"
+        },
+        trackGame: function (gameId) {
             if (!app.api.is_logged_in()) {//Ensure that the user is logged in
                 app.api.login();
                 return;
             }
-            
+
             //Load required modules.
-			//var Team = require("modules/team");
-			var Game = require("modules/game");
-			var TeamPlayer = require("modules/teamplayer");
-			var GameEvent = require("modules/gameevent");
-			
-			//Instantiate the trackedgame.
-			var trackedgame = new TrackedGame.Model({id: gameId});
-			trackedgame.fetch(); //uses localStorage. localStorage requests are synchronous.
-			
-			//It's useful to know if the game has been tracked previously.
-			var was_tracked = !isNaN(trackedgame.get("period_number"));
-			
-			//Check to see if the game is over and if so ask if it should be enabled.
-			if (was_tracked && trackedgame.get("is_over")) {
-				var undo_over = confirm("You previously marked this game as over. Press OK to resume taking stats.");
-				if (undo_over){
-					var events = trackedgame.get("gameevents");
-					var last_event = events.at(events.length-1);
-					if (last_event.get("type")==98) {
-						$.when(last_event.destroy()).then(function() {trackedgame.set("is_over",false);});
-					}
-				} else {
-					Backbone.history.navigate("games/"+gameId, true);
-				}
-			}
-			
-			if (!was_tracked){//Game has not yet started. Set it up now.
-				trackedgame.set("period_number", 1);
-				trackedgame.set("current_state","pulling");
-			}
-			
-			/*
-			* Trackedgame has many child objects.
-			* These need to be replaced with the proper Backbone models.
-			* These models need to be refreshed from the data store.
-			*/
-			
-			//.game
-			trackedgame.set("game", new Game.Model(trackedgame.get("game")), {silent:true});
-			if (!was_tracked) {trackedgame.get("game").id = gameId;}
-			trackedgame.get("game").fetch({success: function(){
-				trackedgame.get("game").trigger("change");
-			}});
-			//Game also has team_1 and team_2 objects that are not yet Backbone Models.
-			
-			//roster_1 and roster_2. These require the team_x_id which only comes back after the game is fetched.
-			trackedgame.set("roster_1", new TeamPlayer.Collection(), {silent:true});
-			trackedgame.set("roster_2", new TeamPlayer.Collection(), {silent:true});
-			trackedgame.get("game").on("change", function(){//We need the team ids before we can get the rosters.
-				for (var ix=1;ix<3;ix++){
-					_.extend(trackedgame.get("roster_"+ix),{team_id: trackedgame.get("game").get("team_"+ix+"_id")});
-					trackedgame.get("roster_"+ix).fetch();
-				}
-			});
-			
-			//.gameevents
-			trackedgame.set("gameevents",
-				new GameEvent.Collection(trackedgame.get("gameevents"),{game_id: gameId}));
-			//trackedgame.get("gameevents").fetch(); //TODO: Fetch gameevents once the API is capable of returning events created by the user.
-			
-			/*
-			* EXTRA MODEL BINDINGS.
-			*/
-			trackedgame.on("change:current_state",trackedgame.update_state,trackedgame);//update possession when the state changes.
-			trackedgame.on("change:is_over",trackedgame.save);//save the game when it is set to being over or not-over.
-			trackedgame.get("gameevents").on("add",trackedgame.event_added,trackedgame);
-			trackedgame.get("gameevents").on("remove",trackedgame.event_removed,trackedgame);
-			
-			trackedgame.get("game").on("change:team_1", function(){
-				if (trackedgame.get("game").get("team_1").name && !trackedgame.get("team_pulled_to_start_ix")){
-					trackedgame.start_period_pull();
-				}
-			});
-			
-			trackedgame.on("change:visible_screen", trackedgame.field_status_events);
-			trackedgame.get("roster_1").on("reset", function(collection, options){
-				var status_1 = _.clone(trackedgame.get("field_status_1"));
-				_.each(collection.models, function(tp, index, list){
-					if (status_1[tp.get("player_id")]===undefined){status_1[tp.get("player_id")] = 0;} 
-				}, this);
-				trackedgame.set("field_status_1", status_1, {silent:true});
-			}, this);
-			trackedgame.get("roster_2").on("reset", function(collection, options){
-				var status_2 = _.clone(trackedgame.get("field_status_2"));
-				_.each(collection.models, function(tp, index, list){
-					if (status_2[tp.get("player_id")]===undefined){status_2[tp.get("player_id")] = 0;} 
-				}, this);
-				trackedgame.set("field_status_2", status_2, {silent:true});
-			}, this);
-			
-			/*
-			* SET UP THE VIEWS
-			*/
-			var myLayout = app.router.useLayout("tracked_game");
-			myLayout.setViews({
-				".scoreboard": new TrackedGame.Views.Scoreboard({model: trackedgame}),//team names, score, possession indicator
-				".rotate_screen": new TrackedGame.Views.RotateButton({model: trackedgame}),//just a button, but changes its text so it is in a view
-				".main_section": new TrackedGame.Views.MainSection({model: trackedgame})//a container for either roster screen or action screen.
-			});
-			/*myLayout.insertView(new TrackedGame.Views.Scoreboard({model: trackedgame}));//team names, score, possession indicator
-			myLayout.insertView(new TrackedGame.Views.RotateButton({model: trackedgame}));//just a button, but changes its text so it is in a view
-			myLayout.insertView(new TrackedGame.Views.MainSection({model: trackedgame}));//a container for either roster screen or action screen.*/
-			var callback = trackedgame.setButtonHeight;
-			myLayout.render().then(function(){
+            //var Team = require("modules/team");
+            var Game = require("modules/game");
+            var TeamPlayer = require("modules/teamplayer");
+            var GameEvent = require("modules/gameevent");
+
+            //Instantiate the trackedgame.
+            var trackedgame = new TrackedGame.Model({id: gameId});
+            trackedgame.fetch(); //uses localStorage. localStorage requests are synchronous.
+
+            //It's useful to know if the game has been tracked previously.
+            var was_tracked = !isNaN(trackedgame.get("period_number"));
+
+            //Check to see if the game is over and if so ask if it should be enabled.
+            if (was_tracked && trackedgame.get("is_over")) {
+                var undo_over = confirm("You previously marked this game as over. Press OK to resume taking stats.");
+                if (undo_over){
+                    var events = trackedgame.get("gameevents");
+                    var last_event = events.at(events.length-1);
+                    if (last_event.get("type")==98) {
+                        $.when(last_event.destroy()).then(function() {trackedgame.set("is_over",false);});
+                    }
+                } else {
+                    Backbone.history.navigate("games/"+gameId, true);
+                }
+            }
+
+            if (!was_tracked){//Game has not yet started. Set it up now.
+                trackedgame.set("period_number", 1);
+                trackedgame.set("current_state","pulling");
+            }
+
+            /*
+            * Trackedgame has many child objects.
+            * These need to be replaced with the proper Backbone models.
+            * These models need to be refreshed from the data store.
+            */
+
+            //.game
+            trackedgame.set("game", new Game.Model(trackedgame.get("game")), {silent:true});
+            if (!was_tracked) {trackedgame.get("game").id = gameId;}
+            trackedgame.get("game").fetch({success: function(){
+                trackedgame.get("game").trigger("change");
+            }});
+            //Game also has team_1 and team_2 objects that are not yet Backbone Models.
+
+            //roster_1 and roster_2. These require the team_x_id which only comes back after the game is fetched.
+            trackedgame.set("roster_1", new TeamPlayer.Collection(), {silent:true});
+            trackedgame.set("roster_2", new TeamPlayer.Collection(), {silent:true});
+            trackedgame.get("game").on("change", function(){//We need the team ids before we can get the rosters.
+                for (var ix=1;ix<3;ix++){
+                    _.extend(trackedgame.get("roster_"+ix),{team_id: trackedgame.get("game").get("team_"+ix+"_id")});
+                    trackedgame.get("roster_"+ix).fetch();
+                }
+            });
+
+            //.gameevents
+            trackedgame.set("gameevents",
+                new GameEvent.Collection(trackedgame.get("gameevents"),{game_id: gameId}));
+            //trackedgame.get("gameevents").fetch(); //TODO: Fetch gameevents once the API is capable of returning events created by the user.
+
+            /*
+            * EXTRA MODEL BINDINGS.
+            */
+            trackedgame.on("change:current_state",trackedgame.update_state,trackedgame);//update possession when the state changes.
+            trackedgame.on("change:is_over",trackedgame.save);//save the game when it is set to being over or not-over.
+            trackedgame.get("gameevents").on("add",trackedgame.event_added,trackedgame);
+            trackedgame.get("gameevents").on("remove",trackedgame.event_removed,trackedgame);
+
+            trackedgame.get("game").on("change:team_1", function(){
+                if (trackedgame.get("game").get("team_1").name && !trackedgame.get("team_pulled_to_start_ix")){
+                    trackedgame.start_period_pull();
+                }
+            });
+
+            trackedgame.on("change:visible_screen", trackedgame.field_status_events);
+            trackedgame.get("roster_1").on("reset", function(collection, options){
+                var status_1 = _.clone(trackedgame.get("field_status_1"));
+                _.each(collection.models, function(tp, index, list){
+                    if (status_1[tp.get("player_id")]===undefined){status_1[tp.get("player_id")] = 0;}
+                }, this);
+                trackedgame.set("field_status_1", status_1, {silent:true});
+            }, this);
+            trackedgame.get("roster_2").on("reset", function(collection, options){
+                var status_2 = _.clone(trackedgame.get("field_status_2"));
+                _.each(collection.models, function(tp, index, list){
+                    if (status_2[tp.get("player_id")]===undefined){status_2[tp.get("player_id")] = 0;}
+                }, this);
+                trackedgame.set("field_status_2", status_2, {silent:true});
+            }, this);
+
+            /*
+            * SET UP THE VIEWS
+            */
+            var myLayout = app.router.useLayout("tracked_game");
+            myLayout.setViews({
+                ".scoreboard": new TrackedGame.Views.Scoreboard({model: trackedgame}),//team names, score, possession indicator
+                ".rotate_screen": new TrackedGame.Views.RotateButton({model: trackedgame}),//just a button, but changes its text so it is in a view
+                ".main_section": new TrackedGame.Views.MainSection({model: trackedgame})//a container for either roster screen or action screen.
+            });
+            /*myLayout.insertView(new TrackedGame.Views.Scoreboard({model: trackedgame}));//team names, score, possession indicator
+            myLayout.insertView(new TrackedGame.Views.RotateButton({model: trackedgame}));//just a button, but changes its text so it is in a view
+            myLayout.insertView(new TrackedGame.Views.MainSection({model: trackedgame}));//a container for either roster screen or action screen.*/
+            var callback = trackedgame.setButtonHeight;
+            myLayout.render().then(function(){
                 // Unbind any other bindings to the browser height
                 $(window).unbind("resize"); //Is there a better way to do this besides binding globally?
                 $(window).bind("resize", function() {
@@ -19375,576 +19397,575 @@ function(require, app, Backbone) {
                 });
                 callback();
             });
-		},
-		basicGame: function(gameId){
-			if (!app.api.is_logged_in()) {//Ensure that the user is logged in
+        },
+        basicGame: function(gameId){
+            if (!app.api.is_logged_in()) {//Ensure that the user is logged in
                 app.api.login();
                 return;
             }
-            
-            //Load required modules.
-			var Game = require("modules/game");
-			
-			//Instantiate the trackedgame.
-			var trackedgame = new TrackedGame.Model({id: gameId});
-			trackedgame.fetch(); //uses localStorage. localStorage requests are synchronous.
-			
-			//It's useful to know if the game has been tracked previously.
-			var was_tracked = !isNaN(trackedgame.get("period_number"));
-			if (!was_tracked){//Game has not yet started. Set it up now.
-				trackedgame.set("period_number", 1);
-				trackedgame.set("current_state","pulling");
-			}
-			
-			//.game
-			trackedgame.set("game", new Game.Model(trackedgame.get("game")), {silent:true});
-			if (!was_tracked) {trackedgame.get("game").id = gameId;}
-			trackedgame.get("game").fetch();
-			//Game also has team_1 and team_2 objects that are not yet Backbone Models.
-						
-			/*
-			* EXTRA MODEL BINDINGS.
-			*/
-			trackedgame.on("change:is_over",trackedgame.save);//save the game when it is set to being over or not-over.
-			
-			/*
-			* SET UP THE VIEWS
-			*/
-			var myLayout = app.router.useLayout("tracked_game");
-			myLayout.setViews({
-				".scoreboard": new TrackedGame.Views.Scoreboard({model: trackedgame}),//team names, score, possession indicator
-				".main_section": new TrackedGame.Views.Basic({model: trackedgame})
-			});
-		}
-	});
-	TrackedGame.router = new TrackedGame.Router();// INITIALIZE ROUTER
-	
-	/*
-	* TrackedGame page view hierarchy:
-	* 
-	* .scoreboard = Scoreboard. Includes team names and scores. (possession indicator?)
-	* .rotate_screen = RotateButton. A button that rotates the visibility of the remaining screens.
-	* .main_section = MainSection. Will set its contents depending on which screen is visible.
-	*   Either roster for 1, roster for 2, or action
-	*   - roster = Roster
-	*     - roster_onfield_sum = RosterSum
-	*     - roster_area = RosterList
-	*       - many RosterItem
-	*   - t_game = GameAction
-	*   - play_by_play = PlayByPlay
-	*   - player_area = PlayerArea
-	*     - player_area_1 = TeamPlayerArea. Not visible if the other player_area is visible.
-	*       - many PlayerButton
-	*     - player_area_2 = TeamPlayerArea. Not visible if the other player_area is visible.
-	*       - many PlayerButton
-	*   - action_area = ActionArea
-	*/
 
-	//
-	// VIEWS
-	//
-	
-	/*
-	* Scoreboard
-	*/
-	TrackedGame.Views.Scoreboard = Backbone.View.extend({
-		//this.model = trackedgame
-		template: "trackedgame/scoreboard",
-		className: "score_area",
-		initialize: function() {
-			this.model.get("game").on("change:team_1_score change:team_2_score", this.render, this);//Update the display when the score changes.
-			this.model.on("change:team_in_possession_ix", this.render, this);//Update the display when possession changes.
-		},
-		serialize: function() {
-			return this.model.toJSON();
-		}
-	});
-	/*
-	* Basic (scores only)
-	*/
-	TrackedGame.Views.Basic = Backbone.View.extend({
-		template: "trackedgame/basic",
-		initialize: function() {
-			this.model.get("game").on("change:team_1_score change:team_2_score", this.render, this);//Update the display when the score changes.
-			this.model.on("change:team_in_possession_ix", this.render, this);//Update the display when possession changes.
-		},
-		serialize: function() {
-			return this.model.toJSON();
-		},
-		events: {
-			"click button": "changeScore"
+            //Load required modules.
+            var Game = require("modules/game");
+
+            //Instantiate the trackedgame.
+            var trackedgame = new TrackedGame.Model({id: gameId});
+            trackedgame.fetch(); //uses localStorage. localStorage requests are synchronous.
+
+            //It's useful to know if the game has been tracked previously.
+            var was_tracked = !isNaN(trackedgame.get("period_number"));
+            if (!was_tracked){//Game has not yet started. Set it up now.
+                trackedgame.set("period_number", 1);
+                trackedgame.set("current_state","pulling");
+            }
+
+            //.game
+            trackedgame.set("game", new Game.Model(trackedgame.get("game")), {silent:true});
+            if (!was_tracked) {trackedgame.get("game").id = gameId;}
+            trackedgame.get("game").fetch();
+            //Game also has team_1 and team_2 objects that are not yet Backbone Models.
+
+            /*
+            * EXTRA MODEL BINDINGS.
+            */
+            trackedgame.on("change:is_over",trackedgame.save);//save the game when it is set to being over or not-over.
+
+            /*
+            * SET UP THE VIEWS
+            */
+            var myLayout = app.router.useLayout("tracked_game");
+            myLayout.setViews({
+                ".scoreboard": new TrackedGame.Views.Scoreboard({model: trackedgame}),//team names, score, possession indicator
+                ".main_section": new TrackedGame.Views.Basic({model: trackedgame})
+            });
+        }
+    });
+    TrackedGame.router = new TrackedGame.Router();// INITIALIZE ROUTER
+
+    /*
+    * TrackedGame page view hierarchy:
+    *
+    * .scoreboard = Scoreboard. Includes team names and scores. (possession indicator?)
+    * .rotate_screen = RotateButton. A button that rotates the visibility of the remaining screens.
+    * .main_section = MainSection. Will set its contents depending on which screen is visible.
+    *   Either roster for 1, roster for 2, or action
+    *   - roster = Roster
+    *     - roster_onfield_sum = RosterSum
+    *     - roster_area = RosterList
+    *       - many RosterItem
+    *   - t_game = GameAction
+    *   - play_by_play = PlayByPlay
+    *   - player_area = PlayerArea
+    *     - player_area_1 = TeamPlayerArea. Not visible if the other player_area is visible.
+    *       - many PlayerButton
+    *     - player_area_2 = TeamPlayerArea. Not visible if the other player_area is visible.
+    *       - many PlayerButton
+    *   - action_area = ActionArea
+    */
+
+    //
+    // VIEWS
+    //
+
+    /*
+    * Scoreboard
+    */
+    TrackedGame.Views.Scoreboard = Backbone.View.extend({
+        //this.model = trackedgame
+        template: "trackedgame/scoreboard",
+        className: "score_area",
+        initialize: function() {
+            this.model.get("game").on("change:team_1_score change:team_2_score", this.render, this);//Update the display when the score changes.
+            this.model.on("change:team_in_possession_ix", this.render, this);//Update the display when possession changes.
+        },
+        serialize: function() {
+            return this.model.toJSON();
+        }
+    });
+    /*
+    * Basic (scores only)
+    */
+    TrackedGame.Views.Basic = Backbone.View.extend({
+        template: "trackedgame/basic",
+        initialize: function() {
+            this.model.get("game").on("change:team_1_score change:team_2_score", this.render, this);//Update the display when the score changes.
+            this.model.on("change:team_in_possession_ix", this.render, this);//Update the display when possession changes.
+        },
+        serialize: function() {
+            return this.model.toJSON();
+        },
+        events: {
+            "click button": "changeScore"
        },
        changeScore: function(ev){
-			var classlist = ev.srcElement.classList;
-			var is_team_1 = classlist[0] == "team_1";
-			var game = this.model.get("game").toJSON();
-			var score_modifier = classlist[1] == "increment" ? 1 : -1;
-			if (is_team_1 == "1"){game.team_1_score = game.team_1_score + score_modifier;}
-			else {game.team_2_score = game.team_2_score + score_modifier;}
-			
-			var GameScore = require("modules/game_score");
-			var score = new GameScore.Model({
-				game_id: this.model.id,
-				team_1_score: game.team_1_score,
-				team_2_score: game.team_2_score
-			});
-			score.save();
-			this.model.get("game").set(game);
-			this.model.save();
+            var classlist = ev.srcElement.classList;
+            var is_team_1 = classlist[0] == "team_1";
+            var game = this.model.get("game").toJSON();
+            var score_modifier = classlist[1] == "increment" ? 1 : -1;
+            if (is_team_1 == "1"){game.team_1_score = game.team_1_score + score_modifier;}
+            else {game.team_2_score = game.team_2_score + score_modifier;}
+
+            var GameScore = require("modules/game_score");
+            var score = new GameScore.Model({
+                game_id: this.model.id,
+                team_1_score: game.team_1_score,
+                team_2_score: game.team_2_score
+            });
+            score.save();
+            this.model.get("game").set(game);
+            this.model.save();
        }
-	});
-	
-	/*
-	* RotateButton
-	*/
-	TrackedGame.Views.RotateButton = Backbone.View.extend({
-		//this.model = trackedgame.
-		tagName: "button",
-		className: "rotate",
-		template: "trackedgame/rotate_button",
-		initialize: function() {			
-			this.model.on("change:visible_screen", this.render, this);
-		},
-		cleanup: function() {
-			this.model.off(null, null, this);
-		},
-		render: function(manage) {
-			var n_screens = this.model.screens_list.length;
-			var sc_ix = this.model.get("visible_screen");
-			var next_screen_text = "";
-			sc_ix = sc_ix == n_screens-1 ? 0 : sc_ix + 1;
-			return manage(this).render({next_screen: this.model.screens_list[sc_ix].b_string});
-		},
-		events: {
-			"click": function() {
-				this.model.rotate_visibility();
-			}
-		}
-	});
-	
-	/*
-	* MainSection
-	*/
-	TrackedGame.Views.MainSection = Backbone.View.extend({
-		//tagName: "div",
-		template: "trackedgame/main",
-		className: "main_section_wrapper",
-		initialize: function(){
-			this.model.on("change:visible_screen", this.set_visibility, this);//re-render when screens rotate.
-		},
-		render: function(manage){
-			this.setViews({
-				".roster_1": new TrackedGame.Views.Roster({model: this.model, team_ix: 1}),
-				".roster_2": new TrackedGame.Views.Roster({model: this.model, team_ix: 2}),
-				".action": new TrackedGame.Views.GameAction({model: this.model})
-			});
-			return manage(this).render().then(function(){this.set_visibility();},this);
-		},
-		set_visibility: function(){
-			this.$(".roster_1").hide();
-			this.$(".roster_2").hide();
-			this.$(".action").hide();
-			var sc_ix = this.model.get("visible_screen");
-			if (sc_ix === 0){
-				this.$(".roster_1").show();
-			} else if (sc_ix==1){
-				this.$(".roster_2").show();
-			} else if (sc_ix==2){
-				this.$(".action").show();
-			}
-		}
-	});
-	
-	/*
-	* Parent view for the substitution screen. The layout has 2 of these.
-	* Each contains two subviews: the list of players and a single number indicating how many players are onfield.
-	* I'm using two subviews instead of putting everything in this view because I don't want the roster list to re-render when I update the number.
-	*/
-	TrackedGame.Views.Roster = Backbone.View.extend({
-		//passed this.model = trackedgame, and this.options.team_ix is the index of the team this view is used for.
-		template: "trackedgame/roster",
-		className: "roster_wrapper",
-		initialize: function() {
-			this.model.get("game").on("reset", this.render, this);//Game should only be reset once per router call.
-			this.model.on("change:saved_status_"+this.options.team_ix, this.set_last_visibility, this);
-		},
-		cleanup: function() {
-			this.model.get("game").off(null, null, this);
-			this.model.off(null, null, this);
-		},
-		render: function(manage) {
-			this.setViews({
-				".roster_onfield_sum": new TrackedGame.Views.RosterSum({model: this.model, team_ix: this.options.team_ix}),
-				".roster_area": new TrackedGame.Views.RosterList({model: this.model, team_ix: this.options.team_ix})
-			});
-			return manage(this).render({ team: this.model.get("game").get("team_"+this.options.team_ix)}).then(function(){
-				this.set_last_visibility();
-			});
-		},
-		set_last_visibility: function(){
-			this.$(".last_o").toggle(this.model.get("saved_status_"+this.options.team_ix).last_o !== null);
-			this.$(".last_d").toggle(this.model.get("saved_status_"+this.options.team_ix).last_d !== null);
-		},
-		events: {
-			"click .clear_roster": "clear_roster",
-			"click .last_o": "last_o",
-			"click .last_d": "last_d"
-		},
-		clear_roster: function(ev){
-			var my_status = this.model.get("field_status_"+this.options.team_ix);
-			_.each(my_status, function(value,key,list){
-				my_status[key]=0;
-			});
-			//this.model.set("field_status_"+this.options.team_ix);
-			this.model.trigger("change:field_status_"+this.options.team_ix);
-			this.model.trigger("arbitrary_trigger_"+this.options.team_ix);
-		},
-		last_o: function(ev){
-			this.do_saved_status(this.model.get("saved_status_"+this.options.team_ix).last_o);
-		},
-		last_d: function(ev){
-			this.do_saved_status(this.model.get("saved_status_"+this.options.team_ix).last_d);
-		},
-		do_saved_status: function(saved_status){
-			//It is possible that a saved status does not include all players.
-			//Therefore we need to clear the roster, then step through the saved status and set any
-			//matching players' status
-			var my_status = this.model.get("field_status_"+this.options.team_ix);
-			_.each(my_status, function(value,key,list){
-				my_status[key]=0;
-			});
-			_.each(saved_status, function(value, key, list){
-				my_status[key]=value;
-			});
-			this.model.trigger("change:field_status_"+this.options.team_ix);
-			this.model.trigger("arbitrary_trigger_"+this.options.team_ix);
-		}
-	});
-	TrackedGame.Views.RosterSum = Backbone.View.extend({
-		template: "trackedgame/roster_sum",
-		tagName: "span",
-		className: "roster_onfield_sum_value",
-		initialize: function() {
-			this.model.on("change:field_status_"+this.options.team_ix, this.render, this);
-		},
-		cleanup: function() {
-			this.model.off(null, null, this);
-		},
-		render: function(manage) {
-			var my_status = this.model.get("field_status_"+this.options.team_ix);
-			var n_onfield = 0;
-			_.each(my_status, function(value,key,list){n_onfield=n_onfield+value;});
-			return manage(this).render({onfield_sum: n_onfield});
-		}
-	});
-	TrackedGame.Views.RosterList = Backbone.View.extend({
-		//this.model is trackedgame. this.options.team_ix is the team for this view.
-		initialize: function() {//Re-render the whole list whenever the fetch of teamplayers returns.
-			this.model.get("roster_"+this.options.team_ix).on("reset", this.render, this);
-			this.model.on("arbitrary_trigger_"+this.options.team_ix, this.render, this);
-		},
-		cleanup: function() {
-			this.model.get("roster_"+this.options.team_ix).off(null, null, this);
-			this.model.off(null, null, this);
-		},
-		tagName: "ul",
-		render: function(manage){
-			this.model.get("roster_"+this.options.team_ix).each(function(tp) {//for each teamplayer in the collection.
-				this.insertView(new TrackedGame.Views.RosterItem({model: tp, trackedgame: this.model, team_ix: this.options.team_ix}));
-			}, this);
-			return manage(this).render();
-		}
-	});
-	TrackedGame.Views.RosterItem = Backbone.View.extend({
-		//this.model is the teamplayer. this.options.trackedgame, this.options.team_ix
-		template: "trackedgame/roster_item",
-		tagName: "li",
-		render: function(manage){
-			return manage(this).render(this.model.toJSON()).then(function(el){this.set_status();}, this);
-		},
-		events: {
-			"click": "toggle_me"
-		},
-		toggle_me: function(ev) {
-			var my_status = this.options.trackedgame.get("field_status_"+this.options.team_ix);
-			my_status[this.model.get("player_id")] = 1 - my_status[this.model.get("player_id")];
-			//this.options.trackedgame.set("field_status_"+this.options.team_ix, my_status);
-			this.options.trackedgame.trigger("change:field_status_"+this.options.team_ix);
-			this.set_status();
-		},
-		set_status: function(){
-			this.$el.toggleClass('onfield',this.options.trackedgame.get("field_status_"+this.options.team_ix)[this.model.get("player_id")]==1);
-		}
-	});
-    
+    });
+
     /*
-	Parent view for the game screen
-	*/
-	TrackedGame.Views.GameAction = Backbone.View.extend({
-		//this.model = trackedgame
-		template: "trackedgame/game_action",
-		className: "action_wrapper",
-		initialize: function() {
-			this.model.get("roster_1").on("reset", this.render, this);
-			this.model.get("roster_2").on("reset", this.render, this);
-		},
-		cleanup: function() {
-			this.model.get("roster_1").off(null, null, this);
-			this.model.get("roster_2").off(null, null, this);
-		},
-		render: function(layout) {
-			var view = layout(this);
-			this.setViews({
-				".playbyplay": new TrackedGame.Views.PlayByPlay({model: this.model}),
-				".player_area": new TrackedGame.Views.PlayerArea({model: this.model}),
-				".action_area": new TrackedGame.Views.ActionArea({model: this.model})
-			});
-			return view.render().then(function() {this.model.setButtonHeight();});
-		}
-	});
-	
-	/*
-	* View for PlayByPlay
-	*/
-	TrackedGame.Views.PlayByPlay = Backbone.View.extend({
-		//this.model is trackedgame
-		template: "trackedgame/playbyplay",
-		className: "last_action_area",
-		initialize: function() {//Update the play-by-play when a game event is added or removed.
-			this.model.get("gameevents").on("add remove", function() {this.render();}, this);
-		},
-		cleanup: function() {
-			this.model.get("gameevents").off(null, null, this);
-		},
-		render: function(layout) {
-			var view = layout(this);
-			var playtext = "";
-			//Use the last event to determine how to draw the play-by-play screen.
-			var _events = this.model.get("gameevents");
-			if (_events.length>0){
-				var last_event = _events.at(_events.length-1);
-				var event_meta = this.model.events_meta[last_event.get("type")];
-				//if event_meta has last_player_as or next_player_as and either of them have a value of 1.
-				var lpix = _.has(event_meta,"last_player_as") ? event_meta.last_player_as : null;
-				var npix = _.has(event_meta,"next_player_as") ? event_meta.next_player_as : null;
-				var players = [];
-				if (lpix || npix){
-					var t1 = this.model.get("roster_1").pluck("player");
-					var t2 = this.model.get("roster_2").pluck("player");
-					players = _.union(t1,t2);
-				}
-				if (lpix==1 || npix==1){
-					var pl1 = _.find(players, function(pl_obj){return pl_obj.id == last_event.get("player_1_id");});
-					if (pl1 !== undefined) {
+    * RotateButton
+    */
+    TrackedGame.Views.RotateButton = Backbone.View.extend({
+        //this.model = trackedgame.
+        tagName: "button",
+        className: "rotate",
+        template: "trackedgame/rotate_button",
+        initialize: function() {
+            this.model.on("change:visible_screen", this.render, this);
+        },
+        cleanup: function() {
+            this.model.off(null, null, this);
+        },
+        render: function(manage) {
+            var n_screens = this.model.screens_list.length;
+            var sc_ix = this.model.get("visible_screen");
+            var next_screen_text = "";
+            sc_ix = sc_ix == n_screens-1 ? 0 : sc_ix + 1;
+            return manage(this).render({next_screen: this.model.screens_list[sc_ix].b_string});
+        },
+        events: {
+            "click": function() {
+                this.model.rotate_visibility();
+            }
+        }
+    });
+
+    /*
+    * MainSection
+    */
+    TrackedGame.Views.MainSection = Backbone.View.extend({
+        //tagName: "div",
+        template: "trackedgame/main",
+        className: "main_section_wrapper",
+        initialize: function(){
+            this.model.on("change:visible_screen", this.set_visibility, this);//re-render when screens rotate.
+        },
+        render: function(manage){
+            this.setViews({
+                ".roster_1": new TrackedGame.Views.Roster({model: this.model, team_ix: 1}),
+                ".roster_2": new TrackedGame.Views.Roster({model: this.model, team_ix: 2}),
+                ".action": new TrackedGame.Views.GameAction({model: this.model})
+            });
+            return manage(this).render().then(function(){this.set_visibility();},this);
+        },
+        set_visibility: function(){
+            this.$(".roster_1").hide();
+            this.$(".roster_2").hide();
+            this.$(".action").hide();
+            var sc_ix = this.model.get("visible_screen");
+            if (sc_ix === 0){
+                this.$(".roster_1").show();
+            } else if (sc_ix==1){
+                this.$(".roster_2").show();
+            } else if (sc_ix==2){
+                this.$(".action").show();
+            }
+        }
+    });
+
+    /*
+    * Parent view for the substitution screen. The layout has 2 of these.
+    * Each contains two subviews: the list of players and a single number indicating how many players are onfield.
+    * I'm using two subviews instead of putting everything in this view because I don't want the roster list to re-render when I update the number.
+    */
+    TrackedGame.Views.Roster = Backbone.View.extend({
+        //passed this.model = trackedgame, and this.options.team_ix is the index of the team this view is used for.
+        template: "trackedgame/roster",
+        className: "roster_wrapper",
+        initialize: function() {
+            this.model.get("game").on("reset", this.render, this);//Game should only be reset once per router call.
+            this.model.on("change:saved_status_"+this.options.team_ix, this.set_last_visibility, this);
+        },
+        cleanup: function() {
+            this.model.get("game").off(null, null, this);
+            this.model.off(null, null, this);
+        },
+        render: function(manage) {
+            this.setViews({
+                ".roster_onfield_sum": new TrackedGame.Views.RosterSum({model: this.model, team_ix: this.options.team_ix}),
+                ".roster_area": new TrackedGame.Views.RosterList({model: this.model, team_ix: this.options.team_ix})
+            });
+            return manage(this).render({ team: this.model.get("game").get("team_"+this.options.team_ix)}).then(function(){
+                this.set_last_visibility();
+            });
+        },
+        set_last_visibility: function(){
+            this.$(".last_o").toggle(this.model.get("saved_status_"+this.options.team_ix).last_o !== null);
+            this.$(".last_d").toggle(this.model.get("saved_status_"+this.options.team_ix).last_d !== null);
+        },
+        events: {
+            "click .clear_roster": "clear_roster",
+            "click .last_o": "last_o",
+            "click .last_d": "last_d"
+        },
+        clear_roster: function(ev){
+            var my_status = this.model.get("field_status_"+this.options.team_ix);
+            _.each(my_status, function(value,key,list){
+                my_status[key]=0;
+            });
+            //this.model.set("field_status_"+this.options.team_ix);
+            this.model.trigger("change:field_status_"+this.options.team_ix);
+            this.model.trigger("arbitrary_trigger_"+this.options.team_ix);
+        },
+        last_o: function(ev){
+            this.do_saved_status(this.model.get("saved_status_"+this.options.team_ix).last_o);
+        },
+        last_d: function(ev){
+            this.do_saved_status(this.model.get("saved_status_"+this.options.team_ix).last_d);
+        },
+        do_saved_status: function(saved_status){
+            //It is possible that a saved status does not include all players.
+            //Therefore we need to clear the roster, then step through the saved status and set any
+            //matching players' status
+            var my_status = this.model.get("field_status_"+this.options.team_ix);
+            _.each(my_status, function(value,key,list){
+                my_status[key]=0;
+            });
+            _.each(saved_status, function(value, key, list){
+                my_status[key]=value;
+            });
+            this.model.trigger("change:field_status_"+this.options.team_ix);
+            this.model.trigger("arbitrary_trigger_"+this.options.team_ix);
+        }
+    });
+    TrackedGame.Views.RosterSum = Backbone.View.extend({
+        template: "trackedgame/roster_sum",
+        tagName: "span",
+        className: "roster_onfield_sum_value",
+        initialize: function() {
+            this.model.on("change:field_status_"+this.options.team_ix, this.render, this);
+        },
+        cleanup: function() {
+            this.model.off(null, null, this);
+        },
+        render: function(manage) {
+            var my_status = this.model.get("field_status_"+this.options.team_ix);
+            var n_onfield = 0;
+            _.each(my_status, function(value,key,list){n_onfield=n_onfield+value;});
+            return manage(this).render({onfield_sum: n_onfield});
+        }
+    });
+    TrackedGame.Views.RosterList = Backbone.View.extend({
+        //this.model is trackedgame. this.options.team_ix is the team for this view.
+        initialize: function() {//Re-render the whole list whenever the fetch of teamplayers returns.
+            this.model.get("roster_"+this.options.team_ix).on("reset", this.render, this);
+            this.model.on("arbitrary_trigger_"+this.options.team_ix, this.render, this);
+        },
+        cleanup: function() {
+            this.model.get("roster_"+this.options.team_ix).off(null, null, this);
+            this.model.off(null, null, this);
+        },
+        tagName: "ul",
+        render: function(manage){
+            this.model.get("roster_"+this.options.team_ix).each(function(tp) {//for each teamplayer in the collection.
+                this.insertView(new TrackedGame.Views.RosterItem({model: tp, trackedgame: this.model, team_ix: this.options.team_ix}));
+            }, this);
+            return manage(this).render();
+        }
+    });
+    TrackedGame.Views.RosterItem = Backbone.View.extend({
+        //this.model is the teamplayer. this.options.trackedgame, this.options.team_ix
+        template: "trackedgame/roster_item",
+        tagName: "li",
+        render: function(manage){
+            return manage(this).render(this.model.toJSON()).then(function(el){this.set_status();}, this);
+        },
+        events: {
+            "click": "toggle_me"
+        },
+        toggle_me: function(ev) {
+            var my_status = this.options.trackedgame.get("field_status_"+this.options.team_ix);
+            my_status[this.model.get("player_id")] = 1 - my_status[this.model.get("player_id")];
+            //this.options.trackedgame.set("field_status_"+this.options.team_ix, my_status);
+            this.options.trackedgame.trigger("change:field_status_"+this.options.team_ix);
+            this.set_status();
+        },
+        set_status: function(){
+            this.$el.toggleClass('onfield',this.options.trackedgame.get("field_status_"+this.options.team_ix)[this.model.get("player_id")]==1);
+        }
+    });
+
+    /*
+    Parent view for the game screen
+    */
+    TrackedGame.Views.GameAction = Backbone.View.extend({
+        //this.model = trackedgame
+        template: "trackedgame/game_action",
+        className: "action_wrapper",
+        initialize: function() {
+            this.model.get("roster_1").on("reset", this.render, this);
+            this.model.get("roster_2").on("reset", this.render, this);
+        },
+        cleanup: function() {
+            this.model.get("roster_1").off(null, null, this);
+            this.model.get("roster_2").off(null, null, this);
+        },
+        render: function(layout) {
+            var view = layout(this);
+            this.setViews({
+                ".playbyplay": new TrackedGame.Views.PlayByPlay({model: this.model}),
+                ".player_area": new TrackedGame.Views.PlayerArea({model: this.model}),
+                ".action_area": new TrackedGame.Views.ActionArea({model: this.model})
+            });
+            return view.render().then(function() {this.model.setButtonHeight();});
+        }
+    });
+
+    /*
+    * View for PlayByPlay
+    */
+    TrackedGame.Views.PlayByPlay = Backbone.View.extend({
+        //this.model is trackedgame
+        template: "trackedgame/playbyplay",
+        className: "last_action_area",
+        initialize: function() {//Update the play-by-play when a game event is added or removed.
+            this.model.get("gameevents").on("add remove", function() {this.render();}, this);
+        },
+        cleanup: function() {
+            this.model.get("gameevents").off(null, null, this);
+        },
+        render: function(layout) {
+            var view = layout(this);
+            var playtext = "";
+            //Use the last event to determine how to draw the play-by-play screen.
+            var _events = this.model.get("gameevents");
+            if (_events.length>0){
+                var last_event = _events.at(_events.length-1);
+                var event_meta = this.model.events_meta[last_event.get("type")];
+                //if event_meta has last_player_as or next_player_as and either of them have a value of 1.
+                var lpix = _.has(event_meta,"last_player_as") ? event_meta.last_player_as : null;
+                var npix = _.has(event_meta,"next_player_as") ? event_meta.next_player_as : null;
+                var players = [];
+                if (lpix || npix){
+                    var t1 = this.model.get("roster_1").pluck("player");
+                    var t2 = this.model.get("roster_2").pluck("player");
+                    players = _.union(t1,t2);
+                }
+                if (lpix==1 || npix==1){
+                    var pl1 = _.find(players, function(pl_obj){return pl_obj.id == last_event.get("player_1_id");});
+                    if (pl1 !== undefined) {
                         playtext = pl1.first_name[0] + ". " + pl1.last_name + " ";
                     } else {
                         playtext = "Unknown ";
                     }
-				}
-				
-				playtext += event_meta.play_string;
-				
-				if (npix>1){
-					var pl2 = _.find(players, function(pl_obj){return pl_obj.id == last_event.get("player_" + npix + "_id");});
+                }
+
+                playtext += event_meta.play_string;
+
+                if (npix>1){
+                    var pl2 = _.find(players, function(pl_obj){return pl_obj.id == last_event.get("player_" + npix + "_id");});
                     var pl2_name = 'Unknown';
                     if (pl2 !== undefined){
                         pl2_name = pl2.first_name[0] + ". " + pl2.last_name;
                     }
-					playtext = playtext + " " + pl2_name + ".";
-				}
-			}
-			return view.render({playtext: playtext});
-		}
-	});
-	
-	/*
-	Nested views for player buttons. PlayerArea>TeamPlayerArea*2>PlayerButton*8
-	*/
-	TrackedGame.Views.PlayerArea = Backbone.View.extend({
-		//this.model is trackedgame
-		template: "trackedgame/player_area",
-		initialize: function() {
-			this.model.on("change:visible_screen", function(){
-				var sc_ix = this.model.get("visible_screen");
-				if (sc_ix==2){
-					this.render();
-				}
-			}, this);
-			this.model.on("change:team_in_possession_ix", function() {this.set_teamplayer_visibility();}, this);//Update which player buttons to display.
-		},
-		cleanup: function() {
-			this.model.off(null, null, this);
-		},
-		render: function(manage) {
-			this.setViews({
-				//Need to pass the full trackedgame to the children views because we need to bind to its attributes that are not yet backbone model's'
-				".player_prompt": new TrackedGame.Views.PlayerActionPrompt({model: this.model}),
-				".player_area_1": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix: 1}),
-				".player_area_2": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix: 2})
-			});
-			return manage(this).render().then(function(el) {this.set_teamplayer_visibility();}, this);
-		},
-		set_teamplayer_visibility: function () {
-			this.$(".player_area_"+(3-this.model.get("team_in_possession_ix"))).hide();
-			this.$(".player_area_"+this.model.get("team_in_possession_ix")).show();
-		}
-	});
-	TrackedGame.Views.PlayerActionPrompt = Backbone.View.extend({
-		template: "trackedgame/player_action_prompt",
-		className: "player_prompt_action",
-		initialize: function() {
-			this.model.on("change:current_state", this.render, this);//Update the action prompt.
-		},
-		cleanup: function() {
-			this.model.off(null, null, this);
-		},
-		render: function(manage){
-			return manage(this).render({player_prompt: this.model.game_states[this.model.get("current_state")].player_prompt});
-		}
-		//serialize: {player_prompt: this.model.game_states[this.model.get("current_state")].player_prompt}
-	});
-	TrackedGame.Views.TeamPlayerArea = Backbone.View.extend({
-		//this.model = trackedgame; this.options.team_ix = 1 or 2
-		template: "trackedgame/teamplayer_area",
-		initialize: function() {
-			this.model.get("game").on("change:team_"+this.options.team_ix, this.render, this);//Team name will update when returned from db.
-			//Re-rendering is expensive, so we won't do it for every player swap, but we will do it
-			//whenever we change visibility to show this screen.
-			//this.model.on("change:field_status_"+this.options.team_ix, this.render, this);//Change displayed player buttons
-		},
-		cleanup: function() {
-			this.model.get("game").off(null, null, this);
-			this.model.off(null, null, this);
-		},
-		render: function(manage) {
-			var my_status = this.model.get("field_status_"+this.options.team_ix);
-			var n_onfield = 0;
-			this.model.get("roster_"+this.options.team_ix).each(function(tp) {
-				if (my_status[tp.get("player_id")]){
-					n_onfield = n_onfield + 1;
-					this.insertView("ul", new TrackedGame.Views.PlayerButton({
-						model: tp, trackedgame: this.model
-					}));
-				}
-			}, this);
-			//insert unknown buttons for less than 8 players.
-			var TeamPlayer = require("modules/teamplayer");
-			for(var i=n_onfield;i<8;i++){
-				this.insertView("ul", new TrackedGame.Views.PlayerButton({
-					model: new TeamPlayer.Model({
-						team_id: this.model.get("game").get("team_"+this.options.team_ix+"_id"),
-						player_id: NaN,
-						player: {id:NaN, last_name:"unknown"}}),
-					trackedgame: this.model
-				}));
-			}
-			var team = this.model.get("game").get("team_"+this.options.team_ix);
-			return manage(this).render({ team: team }).then(function(el){
-				this.model.setButtonHeight();
-			}, this);
-		}
-	});
-	TrackedGame.Views.PlayerButton = Backbone.View.extend({
-		template: "trackedgame/player_button",
-		tagName: "li",
-		serialize: function() {
-			return this.model.toJSON();//TODO: player model itself should generate the name.
-		},
-		events: {
-			"click": "player_tap"
-		},
-		player_tap: function(ev){
-            //var player_id = parseInt(this.$el.find("button.player").attr("id"),10);
-			this.options.trackedgame.player_tap(this.model.get("player_id"));
-		}
-	});
-	
-	
-	/*
-	View for action buttons. ActionArea> (should this be nested?)
-	*/
-	TrackedGame.Views.ActionArea = Backbone.View.extend({
-		template: "trackedgame/action_area",
-		initialize: function() {			
-			this.model.on("change:player_in_possession_id change:current_state change:period_number", this.render, this);
-			this.model.on("change:showing_alternate", this.show_action_buttons, this);//Which buttons are we showing?
-		},
-		cleanup: function() {
-			this.model.off(null, null, this);
-		},
-		render: function(layout) {
-			var view = layout(this);
-			var pl_string = "";
-			var ac_string = "";
-			var pl_id = this.model.get("player_in_possession_id");
-			var team_ix = this.model.get("team_in_possession_ix");
-			if (pl_id){
-				var pl_model = _.find(this.model.get("roster_" + team_ix).pluck("player"), function(pl_obj){return pl_obj.id == pl_id;});
-                if (pl_model !== undefined) {
-					pl_string = pl_model.first_name[0] + ". " + pl_model.last_name + " ";
-					ac_string = "throws a:";
+                    playtext = playtext + " " + pl2_name + ".";
                 }
-			}
-			return view.render({
-					player_string: pl_string,
-					action_string: ac_string,
-					per_num: this.model.get("period_number")
-				}).then(function(el) {
-					this.model.set("showing_alternate",-1);//We should probably ALWAYS show the default buttons after an event or state change.
-					//this.show_action_buttons();
-					this.show_player_name();
-					this.model.setButtonHeight();
-			});
-		},
-		show_action_buttons: function(ev){//shows or hides buttons depending on this.model.get("showing_alternate")
-			if (this.model.get("showing_alternate")==1) {
-				this.$(".main_action").hide();
-				this.$(".alternate_action").show();
-			}
-			else {
-				this.$(".alternate_action").hide();
-				this.$(".main_action").show();
-			}
-		},
-		toggle_action_buttons: function(ev){//toggle which buttons are being displayed.
-			this.model.set("showing_alternate",-1*this.model.get("showing_alternate"));//Changing this should trigger show_action_buttons.
-		},
+            }
+            return view.render({playtext: playtext});
+        }
+    });
+
+    /*
+    Nested views for player buttons. PlayerArea>TeamPlayerArea*2>PlayerButton*8
+    */
+    TrackedGame.Views.PlayerArea = Backbone.View.extend({
+        //this.model is trackedgame
+        template: "trackedgame/player_area",
+        initialize: function() {
+            this.model.on("change:visible_screen", function(){
+                var sc_ix = this.model.get("visible_screen");
+                if (sc_ix==2){
+                    this.render();
+                }
+            }, this);
+            this.model.on("change:team_in_possession_ix", function() {this.set_teamplayer_visibility();}, this);//Update which player buttons to display.
+        },
+        cleanup: function() {
+            this.model.off(null, null, this);
+        },
+        render: function(manage) {
+            this.setViews({
+                //Need to pass the full trackedgame to the children views because we need to bind to its attributes that are not yet backbone model's'
+                ".player_prompt": new TrackedGame.Views.PlayerActionPrompt({model: this.model}),
+                ".player_area_1": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix: 1}),
+                ".player_area_2": new TrackedGame.Views.TeamPlayerArea({model: this.model, team_ix: 2})
+            });
+            return manage(this).render().then(function(el) {this.set_teamplayer_visibility();}, this);
+        },
+        set_teamplayer_visibility: function () {
+            this.$(".player_area_"+(3-this.model.get("team_in_possession_ix"))).hide();
+            this.$(".player_area_"+this.model.get("team_in_possession_ix")).show();
+        }
+    });
+    TrackedGame.Views.PlayerActionPrompt = Backbone.View.extend({
+        template: "trackedgame/player_action_prompt",
+        className: "player_prompt_action",
+        initialize: function() {
+            this.model.on("change:current_state", this.render, this);//Update the action prompt.
+        },
+        cleanup: function() {
+            this.model.off(null, null, this);
+        },
+        render: function(manage){
+            return manage(this).render({player_prompt: this.model.game_states[this.model.get("current_state")].player_prompt});
+        }
+        //serialize: {player_prompt: this.model.game_states[this.model.get("current_state")].player_prompt}
+    });
+    TrackedGame.Views.TeamPlayerArea = Backbone.View.extend({
+        //this.model = trackedgame; this.options.team_ix = 1 or 2
+        template: "trackedgame/teamplayer_area",
+        initialize: function() {
+            this.model.get("game").on("change:team_"+this.options.team_ix, this.render, this);//Team name will update when returned from db.
+            //Re-rendering is expensive, so we won't do it for every player swap, but we will do it
+            //whenever we change visibility to show this screen.
+            //this.model.on("change:field_status_"+this.options.team_ix, this.render, this);//Change displayed player buttons
+        },
+        cleanup: function() {
+            this.model.get("game").off(null, null, this);
+            this.model.off(null, null, this);
+        },
+        render: function(manage) {
+            var my_status = this.model.get("field_status_"+this.options.team_ix);
+            var n_onfield = 0;
+            this.model.get("roster_"+this.options.team_ix).each(function(tp) {
+                if (my_status[tp.get("player_id")]){
+                    n_onfield = n_onfield + 1;
+                    this.insertView("ul", new TrackedGame.Views.PlayerButton({
+                        model: tp, trackedgame: this.model
+                    }));
+                }
+            }, this);
+            //insert unknown buttons for less than 8 players.
+            var TeamPlayer = require("modules/teamplayer");
+            for(var i=n_onfield;i<8;i++){
+                this.insertView("ul", new TrackedGame.Views.PlayerButton({
+                    model: new TeamPlayer.Model({
+                        team_id: this.model.get("game").get("team_"+this.options.team_ix+"_id"),
+                        player_id: NaN,
+                        player: {id:NaN, last_name:"unknown"}}),
+                    trackedgame: this.model
+                }));
+            }
+            var team = this.model.get("game").get("team_"+this.options.team_ix);
+            return manage(this).render({ team: team }).then(function(el){
+                this.model.setButtonHeight();
+            }, this);
+        }
+    });
+    TrackedGame.Views.PlayerButton = Backbone.View.extend({
+        template: "trackedgame/player_button",
+        tagName: "li",
+        serialize: function() {
+            return this.model.toJSON();//TODO: player model itself should generate the name.
+        },
+        events: {
+            "click": "player_tap"
+        },
+        player_tap: function(ev){
+            //var player_id = parseInt(this.$el.find("button.player").attr("id"),10);
+            this.options.trackedgame.player_tap(this.model.get("player_id"));
+        }
+    });
+
+
+    /*
+    View for action buttons. ActionArea> (should this be nested?)
+    */
+    TrackedGame.Views.ActionArea = Backbone.View.extend({
+        template: "trackedgame/action_area",
+        initialize: function() {
+            this.model.on("change:player_in_possession_id change:current_state change:period_number", this.render, this);
+            this.model.on("change:showing_alternate", this.show_action_buttons, this);//Which buttons are we showing?
+        },
+        cleanup: function() {
+            this.model.off(null, null, this);
+        },
+        render: function(layout) {
+            var view = layout(this);
+            var pl_string = "";
+            var ac_string = "";
+            var pl_id = this.model.get("player_in_possession_id");
+            var team_ix = this.model.get("team_in_possession_ix");
+            if (pl_id){
+                var pl_model = _.find(this.model.get("roster_" + team_ix).pluck("player"), function(pl_obj){return pl_obj.id == pl_id;});
+                if (pl_model !== undefined) {
+                    pl_string = pl_model.first_name[0] + ". " + pl_model.last_name + " ";
+                    ac_string = "throws a:";
+                }
+            }
+            return view.render({
+                    player_string: pl_string,
+                    action_string: ac_string,
+                    per_num: this.model.get("period_number")
+                }).then(function(el) {
+                    this.model.set("showing_alternate",-1);//We should probably ALWAYS show the default buttons after an event or state change.
+                    //this.show_action_buttons();
+                    this.show_player_name();
+                    this.model.setButtonHeight();
+            });
+        },
+        show_action_buttons: function(ev){//shows or hides buttons depending on this.model.get("showing_alternate")
+            if (this.model.get("showing_alternate")==1) {
+                this.$(".main_action").hide();
+                this.$(".alternate_action").show();
+            }
+            else {
+                this.$(".alternate_action").hide();
+                this.$(".main_action").show();
+            }
+        },
+        toggle_action_buttons: function(ev){//toggle which buttons are being displayed.
+            this.model.set("showing_alternate",-1*this.model.get("showing_alternate"));//Changing this should trigger show_action_buttons.
+        },
         show_player_name: function(ev){
             //Update the player name that is shown above the action buttons
             this.$(".action_prompt_player").html(this.model.get("player_in_possession_name"));
         },
-		events: {
-			"click .misc": "toggle_action_buttons",
-			"click .score": "score",
-			"click .completion": "completion",
-			"click .dropped_pass": "dropped_pass",
-			"click .defd_pass": "defd_pass",
-			"click .stall": "stall",
-			"click .throwaway": "throwaway",
-			"click .unknown_turn": "unknown_turn",
-			"click .timeout": "timeout",
-			"click .injury": "injury",
-			"click .end_of_period": "end_of_period",
-			"click .undo": "undo"
-		},
-		undo: function(){this.model.undo();},
-		score: function(){this.model.set("current_state","scoring");},
-		completion: function(){this.model.set("current_state","receiving");},
-		dropped_pass: function(){this.model.set("current_state","dropping");},
-		defd_pass: function(){this.model.set("current_state","blocking");},
-		stall: function(){this.model.set("current_state","stalling");},
-		throwaway: function(){this.model.immediate_event(32);},
-		unknown_turn: function(){this.model.immediate_event(30);},
-		timeout: function(){this.model.immediate_event(91);},
-		injury: function(){this.model.injury_to();},
-		end_of_period: function(){this.model.end_period();}
-	});
-	
-	
+        events: {
+            "click .misc": "toggle_action_buttons",
+            "click .score": "score",
+            "click .completion": "completion",
+            "click .dropped_pass": "dropped_pass",
+            "click .defd_pass": "defd_pass",
+            "click .stall": "stall",
+            "click .throwaway": "throwaway",
+            "click .unknown_turn": "unknown_turn",
+            "click .timeout": "timeout",
+            "click .injury": "injury",
+            "click .end_of_period": "end_of_period",
+            "click .undo": "undo"
+        },
+        undo: function(){this.model.undo();},
+        score: function(){this.model.set("current_state","scoring");},
+        completion: function(){this.model.set("current_state","receiving");},
+        dropped_pass: function(){this.model.set("current_state","dropping");},
+        defd_pass: function(){this.model.set("current_state","blocking");},
+        stall: function(){this.model.set("current_state","stalling");},
+        throwaway: function(){this.model.immediate_event(32);},
+        unknown_turn: function(){this.model.immediate_event(30);},
+        timeout: function(){this.model.immediate_event(91);},
+        injury: function(){this.model.injury_to();},
+        end_of_period: function(){this.model.end_period();}
+    });
 
-	return TrackedGame;
+
+
+    return TrackedGame;
 });
-
 require([
 	"app",
 
