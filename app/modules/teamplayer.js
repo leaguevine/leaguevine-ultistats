@@ -99,12 +99,14 @@ function(require, app, Backbone, Leaguevine) {
                 });
             }
             var sort_setting = JSON.parse(localStorage.getItem("settings-Sort players by:"));
-            if (sort_setting){
-                if (sort_setting.value == "nick name"){return this_obj.nick_name;}
-                else if (sort_setting.value == "jersey"){return this_obj.number;}
+            if (sort_setting){//Possible values: "jersey","full name","first name","nick name","last name"
+                if (sort_setting.value == "jersey"){return this_obj.number;}
+                else if (sort_setting.value == "full name"){return this.obj.full_name;}
+                else if (sort_setting.value == "first name"){return this_obj.first_name;}
+                else if (sort_setting.value == "nick name"){return this_obj.nick_name;}
                 else if (sort_setting.value == "last name"){return this_obj.last_name;}
             }
-            return this_obj.full_name;
+            return this_obj.number;//Default property to sort on if this setting is not yet saved.
         },
         parse: function(resp, xhr) {
             resp = Backbone.Collection.prototype.parse(resp);
