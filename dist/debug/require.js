@@ -16138,7 +16138,7 @@ function(require, app, Backbone, Navigation) {
 			"order": 2,
 			"name": "Sort players by:",
 			"type": "Select",
-			"value": "full name",
+			"value": "jersey",
 			"option_list":["jersey","full name","first name","nick name","last name"]
 		},
 		{
@@ -19966,6 +19966,7 @@ function(require, app, Backbone) {
 
     return TrackedGame;
 });
+
 require([
 	"app",
 
@@ -20137,4 +20138,5 @@ require.config({
 		}
 	}
 });
+
 define("config", function(){});
